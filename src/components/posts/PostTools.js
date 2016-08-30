@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router'
 import Hint from '../hints/Hint'
 import {
+  BoltIcon,
   BubbleIcon,
   EyeIcon,
   FlagIcon,
@@ -130,6 +131,20 @@ RepostTool.propTypes = {
   postRepostsCount: PropTypes.number,
 }
 
+const WatchTool = ({ isMobile, isWatchingPost, onClickWatchPost }) =>
+  <span className={classNames('PostTool WatchTool', { isWatchingPost }, { isPill: isMobile })}>
+    <button className={classNames({ isActive: isWatchingPost })} onClick={onClickWatchPost}>
+      <BoltIcon />
+      <Hint>{ isWatchingPost ? 'Watching' : 'Watch' }</Hint>
+    </button>
+  </span>
+
+WatchTool.propTypes = {
+  isMobile: PropTypes.bool,
+  isWatchingPost: PropTypes.bool.isRequired,
+  onClickWatchPost: PropTypes.func.isRequired,
+}
+
 const ShareTool = ({ isLoggedIn, onClickSharePost }) =>
   <span className={classNames('PostTool', 'ShareTool', { isPill: !isLoggedIn })}>
     <button onClick={onClickSharePost}>
@@ -202,6 +217,11 @@ export const PostTools = (props) => {
   if (author.hasRepostingEnabled && !(isOwnPost && parseInt(postRepostsCount, 10) === 0)) {
     cells.push(<RepostTool key={`RepostTool_${postId}`} {...props} />)
   }
+
+  if (!isOwnPost) {
+    cells.push(<WatchTool key={`WatchTool_${postId}`} {...props} />)
+  }
+
   if (author.hasSharingEnabled) {
     cells.push(<ShareTool key={`ShareTool_${postId}`} {...props} />)
   }

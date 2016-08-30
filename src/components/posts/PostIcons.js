@@ -2,6 +2,13 @@
 import React from 'react'
 import { SVGIcon } from '../svg/SVGComponents'
 
+export const BoltIcon = () =>
+  <SVGIcon className="BoltIcon">
+    <g>
+      <polygon points="14.2,8 9.6,8 9.6,2 5,12 9.6,12 9.6,18" />
+    </g>
+  </SVGIcon>
+
 export const BubbleIcon = () =>
   <SVGIcon className="BubbleIcon">
     <g>

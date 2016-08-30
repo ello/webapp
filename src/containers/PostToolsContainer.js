@@ -30,6 +30,8 @@ import ShareDialog from '../components/dialogs/ShareDialog'
 import { PostTools } from '../components/posts/PostTools'
 
 export function mapStateToProps(state, props) {
+  const deviceSize = selectDeviceSize(state)
+  const isLoggedIn = selectIsLoggedIn(state)
   const post = selectPostFromPropsPostId(state, props)
   const propsPostId = selectPropsPostId(state, props)
   const propsPostToken = selectPropsPostToken(state, props)
@@ -42,9 +44,11 @@ export function mapStateToProps(state, props) {
                                 `${streamPostIdOrToken}` === `${propsPostToken}`)
   return {
     detailLink: `/${props.author.username}/post/${post.token}`,
-    deviceSize: selectDeviceSize(state),
+    deviceSize,
     isCommentsRequesting,
-    isLoggedIn: selectIsLoggedIn(state),
+    isLoggedIn,
+    isMobile: deviceSize === 'mobile',
+    isWatchingPost: isLoggedIn && post.watching,
     isOwnPost: selectIsOwnPost(state, props),
     pathname: selectPathname(state),
     postCommentsCount: post.commentsCount,
@@ -73,6 +77,7 @@ class PostToolsContainer extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
     isRepostAnimating: PropTypes.bool,
+    isWatchingPost: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
     postCommentsCount: PropTypes.number,
     postLoved: PropTypes.bool,
@@ -196,17 +201,31 @@ class PostToolsContainer extends Component {
     }
   }
 
+  onClickWatchPost = () => {
+    const { dispatch, isLoggedIn, post, isWatchingPost } = this.props
+    if (!isLoggedIn) {
+      this.onSignUp()
+      return
+    }
+    if (isWatchingPost) {
+      console.log(dispatch, post) // eslint-disable-line no-console
+      // dispatch(postActions.unwatchPost(post))
+    } else {
+      // dispatch(postActions.watchPost(post))
+    }
+  }
+
   onClickDeletePost = () => {
     const { dispatch } = this.props
     dispatch(openModal(
       <ConfirmDialog
         title="Delete Post?"
-        onConfirm={this.onCofirmDeletePost}
+        onConfirm={this.onConfirmDeletePost}
         onDismiss={this.onCloseModal}
       />))
   }
 
-  onCofirmDeletePost = () => {
+  onConfirmDeletePost = () => {
     const { dispatch, pathname, post, previousPath } = this.props
     this.onCloseModal()
     const action = postActions.deletePost(post)
@@ -236,6 +255,7 @@ class PostToolsContainer extends Component {
       onClickFlagPost: this.onClickFlagPost,
       onClickLovePost: this.onClickLovePost,
       onClickRepostPost: this.onClickRepostPost,
+      onClickWatchPost: this.onClickWatchPost,
       onClickSharePost: this.onClickSharePost,
       onClickToggleComments: this.onClickToggleComments,
       onClickToggleLovers: this.onClickToggleLovers,
