@@ -208,10 +208,9 @@ class PostToolsContainer extends Component {
       return
     }
     if (isWatchingPost) {
-      console.log(dispatch, post) // eslint-disable-line no-console
-      // dispatch(postActions.unwatchPost(post))
+      dispatch(postActions.unwatchPost(post))
     } else {
-      // dispatch(postActions.watchPost(post))
+      dispatch(postActions.watchPost(post))
     }
   }
 

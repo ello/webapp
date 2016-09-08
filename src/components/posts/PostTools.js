@@ -141,7 +141,7 @@ const WatchTool = ({ isMobile, isWatchingPost, onClickWatchPost }) =>
 
 WatchTool.propTypes = {
   isMobile: PropTypes.bool,
-  isWatchingPost: PropTypes.bool.isRequired,
+  isWatchingPost: PropTypes.bool,
   onClickWatchPost: PropTypes.func.isRequired,
 }
 

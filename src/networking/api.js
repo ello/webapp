@@ -203,6 +203,17 @@ export function unlovePost(idOrToken) {
     path: getAPIPath(`posts/${idOrToken}/love`),
   }
 }
+// Watch
+export function watchPost(idOrToken) {
+  return {
+    path: getAPIPath(`posts/${idOrToken}/watches`),
+  }
+}
+export function unwatchPost(idOrToken) {
+  return {
+    path: getAPIPath(`posts/${idOrToken}/watch`),
+  }
+}
 export function deletePost(idOrToken) {
   return {
     path: getAPIPath(`posts/${idOrToken}`),

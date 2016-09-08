@@ -111,6 +111,22 @@ export function lovePost(post) {
   }
 }
 
+export function watchPost(post) {
+  return {
+    type: POST.WATCH,
+    payload: {
+      endpoint: api.watchPost(post.id),
+      method: 'POST',
+      model: post,
+    },
+    meta: {
+      mappingType: MAPPING_TYPES.WATCH,
+      resultKey: `/posts/${post.id}/watch`,
+      updateKey: `/posts/${post.id}/`,
+    },
+  }
+}
+
 export function toggleComments(post, showComments) {
   return {
     type: POST.TOGGLE_COMMENTS,
@@ -171,6 +187,21 @@ export function unlovePost(post) {
     },
     meta: {
       resultKey: `/posts/${post.id}/love`,
+      updateKey: `/posts/${post.id}/`,
+    },
+  }
+}
+
+export function unwatchPost(post) {
+  return {
+    type: POST.WATCH,
+    payload: {
+      endpoint: api.unwatchPost(post.id),
+      method: 'DELETE',
+      model: post,
+    },
+    meta: {
+      resultKey: `/posts/${post.id}/watch`,
       updateKey: `/posts/${post.id}/`,
     },
   }
