@@ -7,7 +7,6 @@
 .Post {
   position: relative;
   margin-bottom: 20px;
-  overflow: hidden;
 }
 
 .Column {
@@ -15,13 +14,6 @@
   width: calc(50% - 20px);
   margin-left: 20px;
   vertical-align: top;
-}
-
-@media (--break-2) {
-  .PostDetail .Post,
-  .no-touch .Posts.asGrid .Post {
-    overflow: visible;
-  }
 }
 
 @media (--break-3) {

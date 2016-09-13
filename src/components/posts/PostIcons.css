@@ -3,6 +3,10 @@
 /* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
 /* stylelint-disable selector-no-qualifying-type */
 
+.Post .BoltIcon > g {
+  stroke-linejoin: bevel;
+}
+
 .Post .BubbleIcon > g,
 .Post .FlagIcon > g,
 .Post .RepostIcon > g,
@@ -30,6 +34,7 @@
 /* // ------------------------------------- */
 /* // PostTools */
 
+.WatchTool > button.isActive > .BoltIcon > g,
 .Post .isCommentsActive .BubbleIcon > g,
 .PostDetails .Post .BubbleIcon > g {
   fill: #000;

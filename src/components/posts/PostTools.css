@@ -117,6 +117,52 @@
   left: 10px;
 }
 
+.WatchTool.isPill {
+  position: absolute;
+  right: 0;
+  bottom: -35px;
+  display: none;
+  height: 22px;
+  line-height: 22px;
+  color: #fff;
+}
+
+.isCommentsActive .WatchTool.isPill {
+  display: block;
+}
+
+.PostDetail .WatchTool.isPill {
+  bottom: -45px;
+  display: block;
+}
+
+.WatchTool.isPill > button > .SVGIcon {
+  position: absolute;
+  right: 10px;
+  z-index: 1;
+  transform: scale(0.8);
+}
+
+.WatchTool.isPill > button > .SVGIcon > g { /* stylelint-disable-line */
+  fill: #fff;
+  stroke: #fff;
+}
+
+.WatchTool.isPill > button > .Hint {
+  position: static;
+  display: inline-block;
+  padding-right: 20px;
+  visibility: visible;
+  background-color: #aaa;
+  border-color: #aaa;
+  opacity: 1;
+}
+
+.WatchTool.isPill.isWatchingPost > button > .Hint {
+  background-color: #000;
+  border-color: #000;
+}
+
 .ShareTool {
   position: absolute;
   top: 19px;
