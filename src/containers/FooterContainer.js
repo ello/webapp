@@ -5,10 +5,9 @@ import {
   selectDeviceSize,
   selectIsGridMode,
   selectIsLayoutToolHidden,
-  selectIsOffsetLayout,
 } from '../selectors/gui'
 import { selectStreamType } from '../selectors/stream'
-import { scrollToTop, scrollToOffsetTop } from '../vendor/scrolling'
+import { scrollToTop } from '../vendor/scrolling'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/Footer'
 
@@ -18,7 +17,6 @@ function mapStateToProps(state) {
   return {
     isGridMode: selectIsGridMode(state),
     isLayoutToolHidden: selectIsLayoutToolHidden(state),
-    isOffsetLayout: selectIsOffsetLayout(state),
     isPaginatoring: streamType === LOAD_NEXT_CONTENT_REQUEST && deviceSize === 'mobile',
   }
 }
@@ -29,7 +27,6 @@ class FooterContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLayoutToolHidden: PropTypes.bool.isRequired,
-    isOffsetLayout: PropTypes.bool.isRequired,
     isPaginatoring: PropTypes.bool,
   }
 
@@ -38,8 +35,7 @@ class FooterContainer extends Component {
   }
 
   onClickScrollToTop = () => {
-    const { isOffsetLayout } = this.props
-    return isOffsetLayout ? scrollToOffsetTop() : scrollToTop()
+    scrollToTop()
   }
 
   onClickToggleLayoutMode = () => {

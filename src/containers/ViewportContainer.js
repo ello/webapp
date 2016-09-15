@@ -2,22 +2,18 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import {
-  selectCoverOffset,
   selectInnerHeight,
   selectInnerWidth,
   selectIsAuthenticationView,
-  selectIsCoverHidden,
   selectIsNavbarFixed,
   selectIsNavbarHidden,
   selectIsNavbarSkippingTransition,
   selectIsNotificationsActive,
-  selectIsOffsetLayout,
   selectIsOnboardingView,
   selectIsProfileMenuActive,
-  selectScrollDirectionOffset,
 } from '../selectors/gui'
 import { selectPathname } from '../selectors/routing'
-import { setIsOffsetLayout, setScrollState, setViewportSizeAttributes } from '../actions/gui'
+import { setScrollState, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
@@ -25,19 +21,16 @@ import { Viewport } from '../components/viewport/Viewport'
 
 function mapStateToProps(state) {
   return {
-    coverOffset: selectCoverOffset(state),
     innerHeight: selectInnerHeight(state),
     innerWidth: selectInnerWidth(state),
     isAuthenticationView: selectIsAuthenticationView(state),
-    isCoverHidden: selectIsCoverHidden(state),
     isNavbarFixed: selectIsNavbarFixed(state),
     isNavbarHidden: selectIsNavbarHidden(state),
     isNavbarSkippingTransition: selectIsNavbarSkippingTransition(state),
     isNotificationsActive: selectIsNotificationsActive(state),
-    isOffsetLayout: selectIsOffsetLayout(state),
     isOnboardingView: selectIsOnboardingView(state),
     isProfileMenuActive: selectIsProfileMenuActive(state),
-    offset: selectScrollDirectionOffset(state),
+    offset: 160,
     pathname: selectPathname(state),
   }
 }
@@ -45,17 +38,14 @@ function mapStateToProps(state) {
 /* eslint-disable react/no-unused-prop-types */
 class ViewportContainer extends Component {
   static propTypes = {
-    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     innerHeight: PropTypes.number,
     innerWidth: PropTypes.number,
     isAuthenticationView: PropTypes.bool,
-    isCoverHidden: PropTypes.bool,
     isNavbarFixed: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
     isNavbarSkippingTransition: PropTypes.bool,
     isNotificationsActive: PropTypes.bool,
-    isOffsetLayout: PropTypes.bool,
     isOnboardingView: PropTypes.bool,
     isProfileMenuActive: PropTypes.bool,
     offset: PropTypes.number,
@@ -74,7 +64,6 @@ class ViewportContainer extends Component {
   componentDidMount() {
     addResizeObject(this)
     addScrollObject(this)
-    this.updateIsOffsetLayout()
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -83,7 +72,6 @@ class ViewportContainer extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.pathname === this.props.pathname) { return }
-    this.updateIsOffsetLayout()
   }
 
   componentWillUnmount() {
@@ -104,7 +92,6 @@ class ViewportContainer extends Component {
     const { dispatch, isNavbarFixed } = this.props
     if (isNavbarFixed) {
       dispatch(setScrollState({
-        isCoverHidden: false,
         isFixed: false,
         isHidden: false,
         isSkippingTransition: false,
@@ -124,8 +111,6 @@ class ViewportContainer extends Component {
     const { scrollY, scrollDirection } = scrollProperties
     const {
       dispatch,
-      coverOffset,
-      isCoverHidden,
       isNavbarFixed,
       isNavbarHidden,
       isNavbarSkippingTransition,
@@ -133,9 +118,6 @@ class ViewportContainer extends Component {
     let nextIsFixed = isNavbarFixed
     let nextIsHidden = isNavbarHidden
     let nextIsSkippingTransition = isNavbarSkippingTransition
-
-    // Whether scroll has surpassed the height of the cover offset
-    const nextIsCoverHidden = scrollY >= coverOffset
 
     // Going from absolute to fixed positioning
     if (scrollY >= this.props.offset && !isNavbarFixed) {
@@ -157,23 +139,13 @@ class ViewportContainer extends Component {
       }
     }
     // If something changed dispatch it for the reducer
-    if (isCoverHidden !== nextIsCoverHidden ||
-        isNavbarFixed !== nextIsFixed || isNavbarHidden !== nextIsHidden ||
+    if (isNavbarFixed !== nextIsFixed || isNavbarHidden !== nextIsHidden ||
         isNavbarSkippingTransition !== nextIsSkippingTransition) {
       dispatch(setScrollState({
-        isCoverHidden: nextIsCoverHidden,
         isFixed: nextIsFixed,
         isHidden: nextIsHidden,
         isSkippingTransition: nextIsSkippingTransition,
       }))
-    }
-  }
-
-  updateIsOffsetLayout() {
-    const { isOffsetLayout, pathname, routerParams: { username, token } } = this.props
-    const isUserDetailOrSettings = (username && !token) || pathname === '/settings'
-    if (isOffsetLayout !== isUserDetailOrSettings) {
-      this.props.dispatch(setIsOffsetLayout({ isOffsetLayout: isUserDetailOrSettings }))
     }
   }
 

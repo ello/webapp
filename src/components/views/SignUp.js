@@ -5,7 +5,7 @@ import RegistrationRequestForm from '../forms/RegistrationRequestForm'
 import Cover from '../assets/Cover'
 import Credits from '../assets/Credits'
 
-export const SignUp = ({ coverDPI, coverOffset, onClickTrackCredits, promotion }) =>
+export const SignUp = ({ coverDPI, onClickTrackCredits, promotion }) =>
   <MainView className="Authentication isSignUp">
     <div className="AuthenticationFormDialog">
       <RegistrationRequestForm />
@@ -16,14 +16,12 @@ export const SignUp = ({ coverDPI, coverOffset, onClickTrackCredits, promotion }
     <Cover
       coverDPI={coverDPI}
       coverImage={promotion ? promotion.coverImage : null}
-      coverOffset={coverOffset}
       modifiers="isFullScreen hasOverlay"
     />
   </MainView>
 
 SignUp.propTypes = {
   coverDPI: PropTypes.string.isRequired,
-  coverOffset: PropTypes.number.isRequired,
   onClickTrackCredits: PropTypes.func.isRequired,
   promotion: PropTypes.object,
 }

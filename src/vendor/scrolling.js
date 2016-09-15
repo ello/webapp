@@ -44,10 +44,6 @@ export function scrollToTop(pos = 0) {
   }
 }
 
-export function scrollToOffsetTop() {
-  window.scrollTo(0, Math.round(window.innerWidth * 0.5625) - 200)
-}
-
 function scrollElToFn(el, top) {
   return () => {
     el.scrollTop = top

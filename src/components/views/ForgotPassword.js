@@ -54,7 +54,7 @@ ForgotPasswordForm.propTypes = {
 }
 
 export const ForgotPassword = (props) => {
-  const { coverDPI, coverOffset, emailState, isFormValid, isSubmitted, promotion } = props
+  const { coverDPI, emailState, isFormValid, isSubmitted, promotion } = props
   const { onBlurControl, onChangeControl, onClickTrackCredits, onFocusControl, onSubmit } = props
   return (
     <MainView className="Authentication isForgotPassword">
@@ -81,7 +81,6 @@ export const ForgotPassword = (props) => {
       <Cover
         coverDPI={coverDPI}
         coverImage={promotion ? promotion.coverImage : null}
-        coverOffset={coverOffset}
         modifiers="isFullScreen hasOverlay"
       />
     </MainView>
@@ -90,7 +89,6 @@ export const ForgotPassword = (props) => {
 
 ForgotPassword.propTypes = {
   coverDPI: PropTypes.string.isRequired,
-  coverOffset: PropTypes.number.isRequired,
   emailState: PropTypes.object.isRequired,
   isSubmitted: PropTypes.bool.isRequired,
   isFormValid: PropTypes.bool.isRequired,

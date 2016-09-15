@@ -64,14 +64,12 @@ const initialSizeState = {
   columnWidth: 0,
   contentWidth: 0,
   coverDPI: 'xhdpi',
-  coverOffset: 0,
   deviceSize: 'tablet',
   innerHeight: 0,
   innerWidth: 0,
 }
 
 const initialScrollState = {
-  isCoverHidden: false,
   isNavbarFixed: false,
   isNavbarHidden: false,
   isNavbarSkippingTransition: false,
@@ -101,7 +99,6 @@ export const initialState = {
   isGridMode: true,
   isLayoutToolHidden: false,
   isNotificationsUnread: false,
-  isOffsetLayout: false,
   isOnboardingView: false,
   lastDiscoverBeaconVersion: '0',
   lastFollowingBeaconVersion: '0',
@@ -155,8 +152,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
       return { ...state, activeUserFollowingType: action.payload.tab }
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:
       return { ...state, isProfileMenuActive: action.payload.isProfileMenuActive }
-    case GUI.SET_IS_OFFSET_LAYOUT:
-      return { ...state, isOffsetLayout: action.payload.isOffsetLayout }
     case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
       return { ...state, lastDiscoverBeaconVersion: action.payload.version }
     case GUI.SET_LAST_FOLLOWING_BEACON_VERSION:
@@ -169,7 +164,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case GUI.SET_SCROLL_STATE:
       return {
         ...state,
-        isCoverHidden: _.get(action.payload, 'isCoverHidden', state.isCoverHidden),
         isNavbarFixed: _.get(action.payload, 'isNavbarFixed', state.isNavbarFixed),
         isNavbarHidden: _.get(action.payload, 'isNavbarHidden', state.isNavbarHidden),
         isNavbarSkippingTransition:

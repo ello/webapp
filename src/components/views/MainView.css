@@ -5,19 +5,8 @@
   background-color: #fff;
 }
 
-.UserDetail.MainView,
-.Settings.MainView {
-  min-height: 100vh; /* stylelint-disable-line */
-  padding-top: 40px;
-  margin-top: calc(56.25% + 40px);
-}
-
 .PostDetail.MainView {
   padding-bottom: 30px;
-}
-
-.UserDetail.MainView.isCoverInactive {
-  margin-top: 0;
 }
 
 .DiscoverPageTitle {
@@ -34,14 +23,6 @@
   }
 }
 
-/* 375 / 16 = 23.4375em */
-@media (min-width: 23.4375em) {
-  .UserDetail.MainView,
-  .Settings.MainView {
-    margin-top: calc(56.25% + 20px);
-  }
-}
-
 @media (--break-2) {
   .MainView {
     padding-top: 80px;
@@ -49,11 +30,6 @@
 
   .Authentication.MainView {
     padding-top: 0;
-  }
-
-  .UserDetail.MainView,
-  .Settings.MainView {
-    margin-top: 56.25%;
   }
 
   .DiscoverPageTitle {

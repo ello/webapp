@@ -2,7 +2,6 @@ import {
   selectCommentOffset,
   selectIsMobileGridStream,
   selectHasSaidHelloTo,
-  selectScrollDirectionOffset,
 } from '../../../src/selectors/gui'
 
 describe('gui selectors', () => {
@@ -47,21 +46,6 @@ describe('gui selectors', () => {
       expect(selectHasSaidHelloTo(state, props)).to.be.true
       // TODO: Not sure why but this returns 2?
       // expect(selectHasSaidHelloTo.recomputations()).to.equal(1)
-    })
-  })
-
-  context('#selectScrollDirectionOffset', () => {
-    it('selects with memoization the comment offset', () => {
-      let state = { gui: { coverOffset: 0, change: false } }
-      expect(selectScrollDirectionOffset(state)).to.equal(160)
-
-      state = { gui: { coverOffset: 0, change: true } }
-      expect(selectScrollDirectionOffset(state)).to.equal(160)
-      expect(selectScrollDirectionOffset.recomputations()).to.equal(1)
-
-      state = { gui: { coverOffset: 100, change: true } }
-      expect(selectScrollDirectionOffset(state)).to.equal(20)
-      expect(selectScrollDirectionOffset.recomputations()).to.equal(2)
     })
   })
 })

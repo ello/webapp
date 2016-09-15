@@ -6,7 +6,7 @@ import { debounce, sample, set } from 'lodash'
 import { isAndroid, isElloAndroid } from '../vendor/jello'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
-import { selectCurrentStream, selectCoverDPI, selectCoverOffset } from '../selectors/gui'
+import { selectCurrentStream, selectCoverDPI } from '../selectors/gui'
 import {
   selectBuildVersion,
   selectBundleId,
@@ -35,7 +35,6 @@ function mapStateToProps(state) {
   const obj = {
     currentStream: selectCurrentStream(state),
     coverDPI: selectCoverDPI(state),
-    coverOffset: selectCoverOffset(state),
     promotions: selectPromotionsAuthentication(state),
     webOnboardingVersionSeen: selectWebOnboardingVersion(state),
   }
@@ -54,7 +53,6 @@ class EnterContainer extends Component {
     buildVersion: PropTypes.string,
     bundleId: PropTypes.string,
     coverDPI: PropTypes.string,
-    coverOffset: PropTypes.number,
     currentStream: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     marketingVersion: PropTypes.string,
@@ -182,7 +180,7 @@ class EnterContainer extends Component {
   }
 
   render() {
-    const { coverDPI, coverOffset } = this.props
+    const { coverDPI } = this.props
     const {
       userState, showUserError,
       passwordState, showPasswordError,
@@ -237,7 +235,6 @@ class EnterContainer extends Component {
         <Cover
           coverDPI={coverDPI}
           coverImage={promotion ? promotion.coverImage : null}
-          coverOffset={coverOffset}
           modifiers="isFullScreen hasOverlay"
         />
       </MainView>

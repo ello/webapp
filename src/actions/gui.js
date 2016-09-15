@@ -7,15 +7,6 @@ export function setActiveUserFollowingType(type) {
   }
 }
 
-export function setIsOffsetLayout({ isOffsetLayout }) {
-  return {
-    type: GUI.SET_IS_OFFSET_LAYOUT,
-    payload: {
-      isOffsetLayout,
-    },
-  }
-}
-
 export function setIsProfileMenuActive({ isActive }) {
   return {
     type: GUI.SET_IS_PROFILE_MENU_ACTIVE,
@@ -52,11 +43,10 @@ export function setLastStarredBeaconVersion({ version }) {
   }
 }
 
-export function setScrollState({ isCoverHidden, isFixed, isHidden, isSkippingTransition }) {
+export function setScrollState({ isFixed, isHidden, isSkippingTransition }) {
   return {
     type: GUI.SET_SCROLL_STATE,
     payload: {
-      isCoverHidden,
       isNavbarFixed: isFixed,
       isNavbarHidden: isHidden,
       isNavbarSkippingTransition: isSkippingTransition,

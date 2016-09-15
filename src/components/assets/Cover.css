@@ -14,10 +14,6 @@
   transition: background-color var(--speed) ease, opacity var(--speed2) ease;
 }
 
-.Cover.isHidden {
-  opacity: 0;
-}
-
 .Cover.isFullScreen {
   bottom: 0;
   padding-bottom: 0;

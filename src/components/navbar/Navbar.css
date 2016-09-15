@@ -20,8 +20,7 @@
   display: none;
 }
 
-.isNavbarFixed ~ .Navbar,
-.isOffsetLayout ~ .Navbar {
+.isNavbarFixed ~ .Navbar {
   position: fixed;
 }
 
@@ -31,7 +30,7 @@
   transform: translate3d(0, -100%, 0);
 }
 
-.isNavbarSkippingTransition:not(.isOffsetLayout) ~ .Navbar {
+.isNavbarSkippingTransition ~ .Navbar {
   transition: none !important;
 }
 
