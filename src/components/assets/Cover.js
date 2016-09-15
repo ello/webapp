@@ -27,15 +27,12 @@ export default class Cover extends Component {
   static propTypes = {
     coverDPI: PropTypes.string,
     coverImage: PropTypes.object,
-    coverOffset: PropTypes.number,
-    isHidden: PropTypes.bool,
     modifiers: PropTypes.string,
     useGif: PropTypes.bool,
   }
 
   static defaultProps = {
     coverDPI: 'xhdpi',
-    isHidden: false,
     modifiers: '',
     useGif: false,
   }
@@ -69,10 +66,10 @@ export default class Cover extends Component {
   }
 
   render() {
-    const { isHidden, modifiers } = this.props
+    const { modifiers } = this.props
     const { status } = this.state
     return (
-      <div className={classNames('Cover', status, modifiers, { isHidden })}>
+      <div className={classNames('Cover', status, modifiers)}>
         <ImageAsset
           className="CoverImage"
           isBackgroundImage

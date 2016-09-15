@@ -1,6 +1,4 @@
 import React, { PropTypes } from 'react'
-import classNames from 'classnames'
-import Cover from '../assets/Cover'
 import { UserDetailHelmet } from '../helmets/UserDetailHelmet'
 import StreamContainer from '../../containers/StreamContainer'
 import UserContainer from '../../containers/UserContainer'
@@ -38,24 +36,20 @@ export const UserDetail = (props) => {
   // deconstruct props
   const { isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = props
   const { activeType, onSubmitHello, onTabClick, streamAction, tabs, user } = props
-  const { coverDPI, coverImage, coverOffset, isCoverActive, isCoverHidden } = props
-  const useGif = user.viewsAdultContent || !user.postsAdultContent
+  // const useGif = user.viewsAdultContent || !user.postsAdultContent
 
   // construct component props
-  const coverProps = { coverDPI, coverImage, coverOffset, isHidden: isCoverHidden, useGif }
-  const userListProps = { className: 'isUserDetailHeader', showBlockMuteButton: true, useGif, user }
+  const userListProps = { className: 'isUserDetailHeader', showBlockMuteButton: true, user }
   const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }
   const streamProps = { action: streamAction, isUserDetail: true }
   const zeroProps = {
     isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts, onSubmitHello, user,
   }
-  const classList = classNames('UserDetail', { isCoverInactive: !isCoverActive })
 
   return (
-    <MainView className={classList}>
+    <MainView className="UserDetail">
       <UserDetailHelmet user={user} />
       <div className="UserDetails">
-        {isCoverActive ? <Cover {...coverProps} /> : null}
         <UserContainer {...userListProps} isUserDetail type="list" />
         {tabs ? <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} /> : null}
         {hasZeroPosts || hasZeroFollowers ? <ZeroStates {...zeroProps} /> : null}
@@ -67,11 +61,6 @@ export const UserDetail = (props) => {
 
 UserDetail.propTypes = {
   activeType: PropTypes.string,
-  coverDPI: PropTypes.string,
-  coverImage: PropTypes.shape({}),
-  coverOffset: PropTypes.number,
-  isCoverActive: PropTypes.bool.isRequired,
-  isCoverHidden: PropTypes.bool,
   isLoggedIn: PropTypes.bool.isRequired,
   isSelf: PropTypes.bool.isRequired,
   hasSaidHelloTo: PropTypes.bool.isRequired,

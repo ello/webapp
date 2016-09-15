@@ -4,7 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import { sample } from 'lodash'
 import { isAndroid } from '../vendor/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
-import { selectCoverDPI, selectCoverOffset } from '../selectors/gui'
+import { selectCoverDPI } from '../selectors/gui'
 import { selectPromotionsAuthentication } from '../selectors/promotions'
 import { sendForgotPasswordRequest } from '../actions/authentication'
 import { trackEvent } from '../actions/analytics'
@@ -14,7 +14,6 @@ import { ForgotPassword } from '../components/views/ForgotPassword'
 function mapStateToProps(state) {
   return {
     coverDPI: selectCoverDPI(state),
-    coverOffset: selectCoverOffset(state),
     promotions: selectPromotionsAuthentication(state),
   }
 }
@@ -23,7 +22,6 @@ class ForgotPasswordContainer extends Component {
 
   static propTypes = {
     coverDPI: PropTypes.string,
-    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     promotions: PropTypes.array.isRequired,
   }
@@ -90,12 +88,11 @@ class ForgotPasswordContainer extends Component {
   }
 
   render() {
-    const { coverDPI, coverOffset } = this.props
+    const { coverDPI } = this.props
     const { emailState, formStatus, promotion } = this.state
     return (
       <ForgotPassword
         coverDPI={coverDPI}
-        coverOffset={coverOffset}
         emailState={emailState}
         isSubmitted={formStatus === STATUS.SUBMITTED}
         isFormValid={isFormValid([emailState])}
