@@ -5,14 +5,7 @@ import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
 import { USER } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import {
-  selectActiveUserFollowingType,
-  selectCoverDPI,
-  selectCoverOffset,
-  selectHasSaidHelloTo,
-  selectIsCoverHidden,
-  selectIsOmnibarActive,
-} from '../selectors/gui'
+import { selectActiveUserFollowingType, selectHasSaidHelloTo } from '../selectors/gui'
 import { selectParamsType, selectParamsUsername } from '../selectors/params'
 import { selectStreamType } from '../selectors/stream'
 import { selectUserFromUsername } from '../selectors/user'
@@ -63,11 +56,6 @@ export function mapStateToProps(state, props) {
 
   return {
     activeUserFollowingType,
-    coverDPI: selectCoverDPI(state),
-    coverImage: user && user.coverImage ? user.coverImage : null,
-    coverOffset: selectCoverOffset(state),
-    isCoverActive: !selectIsOmnibarActive(state),
-    isCoverHidden: selectIsCoverHidden(state),
     isLoggedIn,
     isSelf,
     hasZeroFollowers: user ? user.followersCount < 1 : false,
@@ -89,8 +77,6 @@ class UserDetailContainer extends Component {
     coverImage: PropTypes.object,
     coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
-    isCoverActive: PropTypes.bool.isRequired,
-    isCoverHidden: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isSelf: PropTypes.bool.isRequired,
     hasSaidHelloTo: PropTypes.bool.isRequired,
@@ -144,7 +130,6 @@ class UserDetailContainer extends Component {
     const { activeUserFollowingType, dispatch, streamAction, tabs, user, viewKey } = this.props
     const { isLoggedIn, isSelf } = this.props
     const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = this.props
-    const { coverDPI, coverImage, coverOffset, isCoverActive, isCoverHidden } = this.props
     const { isStreamFailing } = this.state
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
 
@@ -158,11 +143,6 @@ class UserDetailContainer extends Component {
     if (!user) { return null }
     const props = {
       activeType: activeUserFollowingType,
-      coverDPI,
-      coverImage,
-      coverOffset,
-      isCoverActive,
-      isCoverHidden,
       isLoggedIn,
       isSelf,
       hasSaidHelloTo,

@@ -11,7 +11,6 @@ import { persistStore, storages } from 'redux-persist'
 // import './main.sass'
 import './main.css'
 import { addFeatureDetection, isIOS } from './vendor/jello'
-import { scrollToOffsetTop } from './vendor/scrolling'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import store from './store'
 import createRoutes from './routes'
@@ -62,15 +61,6 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   const persistor = persistStore(store, { storage, whitelist }, () => {
     const root = document.getElementById('root')
     ReactDOM.render(element, root)
-
-    // Scroll fix for layouts with Covers and universal rendering Normally we
-    // call this in componentDidMount, but for the server rendered pages that
-    // happens well after the page has drawn. Calling it here tries to prevent
-    // the jumpiness for the initial page load.
-    const viewport = root.querySelector('.Viewport.isOffsetLayout')
-    if (viewport) {
-      scrollToOffsetTop()
-    }
   })
 
   // check and update current version and only kill off the persisted reducers

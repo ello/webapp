@@ -7,7 +7,7 @@ import { debounce, isEmpty, get } from 'lodash'
 import { PREFERENCES, SETTINGS } from '../../constants/locales/en'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
-import { selectCoverDPI, selectCoverOffset, selectIsCoverHidden } from '../../selectors/gui'
+import { selectCoverDPI } from '../../selectors/gui'
 import { selectAvailability, selectBlockedCount, selectMutedCount } from '../../selectors/profile'
 import { openModal, closeModal, openAlert, closeAlert } from '../../actions/modals'
 import { logout } from '../../actions/authentication'
@@ -52,9 +52,7 @@ class Settings extends Component {
   static propTypes = {
     blockedCount: PropTypes.number.isRequired,
     coverDPI: PropTypes.string,
-    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
-    isCoverHidden: PropTypes.bool,
     mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
   }
@@ -72,12 +70,6 @@ class Settings extends Component {
     this.emailValue = profile.email
     this.usernameValue = profile.username
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 666)
-  }
-
-  componentDidMount() {
-    // Calculate the cover height (ResizeComponent isn't initialized yet)
-    const offset = Math.round((window.innerWidth * 0.5625)) - 200
-    window.scrollTo(0, offset)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -303,7 +295,7 @@ class Settings extends Component {
 
   render() {
     const {
-      blockedCount, coverDPI, coverOffset, dispatch, isCoverHidden, mutedCount, profile,
+      blockedCount, coverDPI, dispatch, mutedCount, profile,
     } = this.props
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
@@ -332,8 +324,6 @@ class Settings extends Component {
           <Cover
             coverDPI={coverDPI}
             coverImage={profile.coverImage}
-            coverOffset={coverOffset}
-            isHidden={isCoverHidden}
             useGif
           />
         </div>
@@ -571,8 +561,6 @@ function mapStateToProps(state) {
     availability: selectAvailability(state),
     blockedCount: selectBlockedCount(state) || 0,
     coverDPI: selectCoverDPI(state),
-    coverOffset: selectCoverOffset(state),
-    isCoverHidden: selectIsCoverHidden(state),
     mutedCount: selectMutedCount(state) || 0,
     profile: state.profile,
   }

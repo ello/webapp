@@ -52,7 +52,7 @@ export function isFSAName(action, fn) {
   const names = camelize(action.type.toLowerCase()).split('.')
   const namespace = names[0]
   const type = names.length >= 1 ? names[1] : null
-  // GUI.SET_IS_OFFSET_LAYOUT === setIsOffsetLayout
+  // GUI.SET_IS_PROFILE_MENU_ACTIVE === setIsProfileMenuActive
   if (type && type === fn.name) { return true }
   // USER.FLAG === flagUser
   return type && camelize([type, namespace].join('_')) === fn.name

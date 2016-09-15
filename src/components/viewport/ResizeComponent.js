@@ -70,7 +70,6 @@ function getResizeProperties() {
     columnWidth,
     contentWidth,
     coverDPI: getCoverDPI(wiw),
-    coverOffset: Math.round((wiw * 0.5625)),
     deviceSize,
     innerHeight: window.innerHeight,
     innerWidth: wiw,
