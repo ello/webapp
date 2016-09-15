@@ -10,7 +10,6 @@ export const Viewport = props =>
       { isNavbarHidden: props.isNavbarHidden },
       { isNavbarSkippingTransition: props.isNavbarSkippingTransition },
       { isNotificationsActive: props.isNotificationsActive },
-      { isOffsetLayout: props.isOffsetLayout },
       { isOnboardingView: props.isOnboardingView },
       { isProfileMenuActive: props.isProfileMenuActive },
     )}
@@ -23,7 +22,6 @@ Viewport.propTypes = {
   isNavbarHidden: PropTypes.bool.isRequired,
   isNavbarSkippingTransition: PropTypes.bool.isRequired,
   isNotificationsActive: PropTypes.bool.isRequired,
-  isOffsetLayout: PropTypes.bool.isRequired,
   isOnboardingView: PropTypes.bool.isRequired,
   isProfileMenuActive: PropTypes.bool.isRequired,
 }

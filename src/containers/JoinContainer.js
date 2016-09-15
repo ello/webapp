@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { debounce } from 'lodash'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
-import { selectCoverDPI, selectCoverOffset } from '../selectors/gui'
+import { selectCoverDPI } from '../selectors/gui'
 import { selectParamsInvitationCode } from '../selectors/params'
 import { selectAvailability, selectEmail } from '../selectors/profile'
 import { getInviteEmail } from '../actions/invitations'
@@ -22,7 +22,6 @@ function mapStateToProps(state, props) {
   return {
     availability: selectAvailability(state),
     coverDPI: selectCoverDPI(state),
-    coverOffset: selectCoverOffset(state),
     email: selectEmail(state),
     invitationCode: selectParamsInvitationCode(state, props),
   }
@@ -32,7 +31,6 @@ class JoinContainer extends Component {
 
   static propTypes = {
     coverDPI: PropTypes.string,
-    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
     invitationCode: PropTypes.string,
@@ -202,13 +200,12 @@ class JoinContainer extends Component {
   render() {
     const { emailState, passwordState, showPasswordError,
       showUsernameError, usernameState } = this.state
-    const { coverDPI, coverOffset, email } = this.props
+    const { coverDPI, email } = this.props
     const isValid = isFormValid([emailState, usernameState, passwordState])
     return (
       <Join
         coverDPI={coverDPI}
         coverImage={null}
-        coverOffset={coverOffset}
         email={email}
         isValid={isValid}
         onChangePasswordControl={this.onChangePasswordControl}

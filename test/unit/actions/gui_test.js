@@ -22,26 +22,6 @@ describe('gui actions', () => {
     })
   })
 
-  context('#setIsOffsetLayout', () => {
-    const action = subject.setIsOffsetLayout({ isOffsetLayout: false })
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type', () => {
-      expect(isFSAName(action, subject.setIsOffsetLayout)).to.be.true
-    })
-
-    it('has a payload with the correct keys', () => {
-      expect(action.payload).to.have.keys('isOffsetLayout')
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.isOffsetLayout).to.be.false
-    })
-  })
-
   context('#setIsProfileMenuActive', () => {
     const action = subject.setIsProfileMenuActive({ isActive: true })
 
@@ -124,7 +104,6 @@ describe('gui actions', () => {
 
   context('#setScrollState', () => {
     const action = subject.setScrollState({
-      isCoverHidden: false,
       isFixed: true,
       isHidden: false,
       isSkippingTransition: false,
@@ -140,7 +119,6 @@ describe('gui actions', () => {
 
     it('has a payload with the correct keys', () => {
       expect(action.payload).to.have.keys(
-        'isCoverHidden',
         'isNavbarFixed',
         'isNavbarHidden',
         'isNavbarSkippingTransition',
@@ -148,7 +126,6 @@ describe('gui actions', () => {
     })
 
     it('sets the appropriate payload', () => {
-      expect(action.payload.isCoverHidden).to.be.false
       expect(action.payload.isNavbarFixed).to.be.true
       expect(action.payload.isNavbarHidden).to.be.false
       expect(action.payload.isNavbarSkippingTransition).to.be.false
@@ -161,7 +138,6 @@ describe('gui actions', () => {
       columnWidth: 320,
       contentWidth: 1280,
       coverDPI: 'xhdpi',
-      coverOffset: 200,
       deviceSize: 'desktop',
       innerHeight: 768,
       innerWidth: 1360,
@@ -181,7 +157,6 @@ describe('gui actions', () => {
         'columnWidth',
         'contentWidth',
         'coverDPI',
-        'coverOffset',
         'deviceSize',
         'innerHeight',
         'innerWidth',
@@ -193,7 +168,6 @@ describe('gui actions', () => {
       expect(action.payload.columnWidth).to.equal(320)
       expect(action.payload.contentWidth).to.equal(1280)
       expect(action.payload.coverDPI).to.equal('xhdpi')
-      expect(action.payload.coverOffset).to.equal(200)
       expect(action.payload.deviceSize).to.equal('desktop')
       expect(action.payload.innerHeight).to.equal(768)
       expect(action.payload.innerWidth).to.equal(1360)

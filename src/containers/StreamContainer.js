@@ -65,7 +65,6 @@ class StreamContainer extends Component {
     innerWidth: PropTypes.number,
     isGridMode: PropTypes.bool,
     isModalComponent: PropTypes.bool,
-    isUserDetail: PropTypes.bool.isRequired,
     json: PropTypes.object.isRequired,
     omnibar: PropTypes.object,
     paginatorText: PropTypes.string,
@@ -82,7 +81,6 @@ class StreamContainer extends Component {
   static defaultProps = {
     paginatorText: 'Loading',
     ignoresScrollPosition: false,
-    isUserDetail: false,
     isModalComponent: false,
   }
 
@@ -124,12 +122,8 @@ class StreamContainer extends Component {
       addScrollObject(this.scrollObject)
     }
 
-    let shouldScrollToTop = true
-    if (this.props.isUserDetail) {
-      this.scrollToUserDetail()
-      shouldScrollToTop = false
-      this.saveScroll = false
-    } else if (routerState.didComeFromSeeMoreCommentsLink) {
+    const shouldScrollToTop = true
+    if (routerState.didComeFromSeeMoreCommentsLink) {
       this.saveScroll = false
     } else {
       this.saveScroll = true
@@ -185,7 +179,7 @@ class StreamContainer extends Component {
     }
 
     const { action } = this.state
-    const { innerHeight, stream, omnibar, isUserDetail } = this.props
+    const { innerHeight, stream, omnibar } = this.props
     const canScroll = document.body.scrollHeight > innerHeight
     const shouldScroll = this.shouldScroll && (canScroll ||
       (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
@@ -195,10 +189,6 @@ class StreamContainer extends Component {
       if (this.attemptToRestoreScroll()) {
         this.shouldScroll = false
       }
-    }
-
-    if (isUserDetail && !omnibar.isActive && this.wasOmnibarActive) {
-      this.scrollToUserDetail()
     }
     this.wasOmnibarActive = omnibar.isActive
   }
@@ -265,12 +255,6 @@ class StreamContainer extends Component {
       const sessionStorageKey = SESSION_KEYS.scrollLocationKey(scrollSessionKey)
       Session.setItem(sessionStorageKey, scrollTopValue)
     }
-  }
-
-  scrollToUserDetail() {
-    const { innerWidth } = this.props
-    const offset = Math.round((innerWidth * 0.5625)) - 200
-    window.scrollTo(0, offset)
   }
 
   attemptToRestoreScroll(fromMount = false) {

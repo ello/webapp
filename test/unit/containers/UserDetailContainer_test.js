@@ -130,10 +130,6 @@ describe('UserDetailContainer', () => {
     it('sets tabs to the expected group', () => {
       expect(nextProps.tabs).to.deep.equal(tabs)
     })
-
-    it('sets the cover to inactive once the omnibar is active', () => {
-      expect(nextProps.isCoverActive).to.be.false
-    })
   })
 })
 
