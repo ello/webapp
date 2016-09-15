@@ -1,7 +1,7 @@
 @import "../../lib/styles/properties.css";
 
 .MainView {
-  padding-top: 85px;
+  /* padding-top: 85px; */
   background-color: #fff;
 }
 
@@ -19,17 +19,17 @@
 
 @media (--break-2-max) {
   .isLoggedOut .MainView {
-    padding-top: 50px;
+    /* padding-top: 50px; */
   }
 }
 
 @media (--break-2) {
   .MainView {
-    padding-top: 80px;
+    /* padding-top: 80px; */
   }
 
   .Authentication.MainView {
-    padding-top: 0;
+    /* padding-top: 0; */
   }
 
   .DiscoverPageTitle {
@@ -40,7 +40,7 @@
 
 @media (--break-3) {
   .isOnboardingView ~ .MainView {
-    padding-top: 0;
+    /* padding-top: 0; */
     padding-bottom: 80px;
   }
 }
