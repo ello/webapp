@@ -2,10 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { debounce, get, sample } from 'lodash'
+import { debounce, get } from 'lodash'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectCoverDPI } from '../selectors/gui'
-import { selectPromotions } from '../selectors/promotions'
 import {
   selectPropsPathname, selectPropsQueryTerms, selectPropsQueryType,
 } from '../selectors/routing'
@@ -16,7 +14,6 @@ import { hideSoftKeyboard } from '../vendor/jello'
 import SearchControl from '../components/forms/SearchControl'
 import StreamContainer from './StreamContainer'
 import { MainView } from '../components/views/MainView'
-import Promotion from '../components/assets/Promotion'
 
 const TABS = [
   { type: 'posts', children: 'Posts' },
@@ -32,10 +29,8 @@ export function getStreamAction(terms, type) {
 
 export function mapStateToProps(state, props) {
   return {
-    coverDPI: selectCoverDPI(state),
     isLoggedIn: selectIsLoggedIn(state),
     pathname: selectPropsPathname(state, props),
-    promotions: selectPromotions(state),
     terms: selectPropsQueryTerms(state, props) || '',
     type: selectPropsQueryType(state, props) || 'posts',
   }
@@ -43,12 +38,10 @@ export function mapStateToProps(state, props) {
 
 class SearchContainer extends Component {
   static propTypes = {
-    coverDPI: PropTypes.string.isRequired,
     debounceWait: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
-    promotions: PropTypes.array,
     type: PropTypes.string.isRequired,
     terms: PropTypes.string.isRequired,
   }
@@ -61,23 +54,17 @@ class SearchContainer extends Component {
   }
 
   componentWillMount() {
-    const { debounceWait = 666, promotions, type } = this.props
+    const { debounceWait = 666, type } = this.props
     if (debounceWait > 0) {
       this.search = debounce(this.search, debounceWait)
     }
-    this.state = { promotion: sample(promotions), type }
+    this.state = { type }
   }
 
   componentDidMount() {
     const { terms } = this.props
     const { type } = this.state
     this.search({ terms, type })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.state.promotion) {
-      this.setState({ promotion: sample(nextProps.promotions) })
-    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -120,8 +107,8 @@ class SearchContainer extends Component {
   }
 
   render() {
-    const { coverDPI, isLoggedIn, terms } = this.props
-    const { promotion, type } = this.state
+    const { terms } = this.props
+    const { type } = this.state
     let inputText = terms
     if (type === 'users' && terms.length === 0) {
       inputText = '@'
@@ -130,12 +117,6 @@ class SearchContainer extends Component {
     }
     return (
       <MainView className="Search">
-        <Promotion
-          coverDPI={coverDPI}
-          isLoggedIn={isLoggedIn}
-          onClickTrackCredits={this.onClickTrackCredits}
-          promotion={promotion}
-        />
         <SearchControl
           activeType={type}
           onChange={this.onChangeControl}

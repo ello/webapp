@@ -29,6 +29,9 @@ export const selectIsOnboardingView = state => get(state, 'gui.isOnboardingView'
 export const selectIsProfileMenuActive = state => get(state, 'gui.isProfileMenuActive')
 export const selectIsTextToolsActive = state => get(state, 'gui.isTextToolsActive')
 export const selectLastNotificationCheck = state => get(state, 'gui.lastNotificationCheck')
+export const selectLastDiscoverBeaconVersion = state => get(state, 'gui.lastDiscoverBeaconVersion')
+export const selectLastFollowingBeaconVersion = state => get(state, 'gui.lastFollowingBeaconVersion') // eslint-disable-line
+export const selectLastStarredBeaconVersion = state => get(state, 'gui.lastStarredBeaconVersion')
 export const selectSaidHelloTo = state => get(state, 'gui.saidHelloTo')
 export const selectTextToolsCoordinates = state => get(state, 'gui.textToolsCoordinates')
 export const selectTextToolsStates = state => get(state, 'gui.textToolsStates')
