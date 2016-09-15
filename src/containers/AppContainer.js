@@ -15,6 +15,7 @@ import { startRefreshTimer } from '../components/viewport/RefreshOnFocus'
 import AnalyticsContainer from '../containers/AnalyticsContainer'
 import EditorToolsContainer from '../containers/EditorToolsContainer'
 import FooterContainer from '../containers/FooterContainer'
+import HeroContainer from '../containers/HeroContainer'
 import KeyboardContainer from '../containers/KeyboardContainer'
 import ModalContainer from '../containers/ModalContainer'
 import NavbarContainer from '../containers/NavbarContainer'
@@ -111,6 +112,7 @@ class AppContainer extends Component {
         <AppHelmet pagination={pagination} pathname={pathname} />
         <ViewportContainer routerParams={params} />
         {isLoggedIn ? <OmnibarContainer /> : null}
+        <HeroContainer params={params} />
         {children}
         <NavbarContainer routerParams={params} />
         <FooterContainer />
