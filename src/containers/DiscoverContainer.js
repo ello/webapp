@@ -1,12 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { sample } from 'lodash'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectCategories, selectCategoryPageTitle } from '../selectors/categories'
-import { selectCoverDPI } from '../selectors/gui'
 import { selectParamsType } from '../selectors/params'
-import { selectPromotions } from '../selectors/promotions'
 import { selectPropsPathname } from '../selectors/routing'
 import {
   bindDiscoverKey,
@@ -17,11 +14,7 @@ import {
   loadDiscoverUsers,
   // loadFeaturedUsers,
 } from '../actions/discover'
-import { setLastDiscoverBeaconVersion } from '../actions/gui'
-import { trackEvent } from '../actions/analytics'
 import { Discover } from '../components/views/Discover'
-
-const BEACON_VERSION = '1'
 
 // TODO: Move to a selector
 export function getStreamAction(type) {
@@ -91,13 +84,10 @@ function mapStateToProps(state, props) {
   const titlePrefix = pageTitle ? `${pageTitle} | ` : ''
   const title = `${titlePrefix} Ello`
   return {
-    coverDPI: selectCoverDPI(state),
-    isBeaconActive: isLoggedIn && state.gui.lastDiscoverBeaconVersion !== BEACON_VERSION,
     isLoggedIn,
     pageTitle,
     paramsType: selectParamsType(state, props),
     pathname: selectPropsPathname(state, props),
-    promotions: selectPromotions(state),
     primary,
     secondary,
     tertiary,
@@ -107,14 +97,11 @@ function mapStateToProps(state, props) {
 
 class DiscoverContainer extends Component {
   static propTypes = {
-    coverDPI: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    isBeaconActive: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     pageTitle: PropTypes.string,
     paramsType: PropTypes.string.isRequired,
     pathname: PropTypes.string.isRequired,
-    promotions: PropTypes.array.isRequired,
     primary: PropTypes.array,
     secondary: PropTypes.array,
     tertiary: PropTypes.array,
@@ -129,16 +116,8 @@ class DiscoverContainer extends Component {
     store.dispatch(getStreamAction(routerState.params.type || 'featured'))
 
   componentWillMount() {
-    const { dispatch, paramsType, promotions } = this.props
+    const { dispatch, paramsType } = this.props
     dispatch(bindDiscoverKey(paramsType))
-    this.state = { promotion: sample(promotions) }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { pathname, promotions } = nextProps
-    if (!this.state.promotion || this.props.pathname !== pathname) {
-      this.setState({ promotion: sample(promotions) })
-    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -152,29 +131,13 @@ class DiscoverContainer extends Component {
     }
   }
 
-  onClickTrackCredits = () => {
-    const { dispatch } = this.props
-    dispatch(trackEvent('banderole-credits-clicked'))
-  }
-
-  onDismissZeroStream = () => {
-    const { dispatch } = this.props
-    dispatch(setLastDiscoverBeaconVersion({ version: BEACON_VERSION }))
-  }
-
   render() {
-    const { coverDPI, isBeaconActive, isLoggedIn, pageTitle, paramsType,
-            pathname, primary, secondary, tertiary, title } = this.props
-    const { promotion } = this.state
+    const { isLoggedIn, pageTitle, paramsType, pathname } = this.props
+    const { primary, secondary, tertiary, title } = this.props
     const props = {
-      coverDPI,
-      isBeaconActive,
       isLoggedIn,
-      onClickTrackCredits: this.onClickTrackCredits,
-      onDismissZeroStream: this.onDismissZeroStream,
       pageTitle,
       pathname,
-      promotion,
       streamAction: getStreamAction(paramsType),
       tabs: generateTabs(primary, secondary, tertiary),
       title,
