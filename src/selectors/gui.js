@@ -19,9 +19,7 @@ export const selectIsAuthenticationView = (state) => get(state, 'gui.isAuthentic
 export const selectIsCompleterActive = (state) => get(state, 'gui.isCompleterActive')
 export const selectIsGridMode = (state) => get(state, 'gui.isGridMode')
 export const selectIsLayoutToolHidden = (state) => get(state, 'gui.isLayoutToolHidden')
-export const selectIsNavbarFixed = (state) => get(state, 'gui.isNavbarFixed')
 export const selectIsNavbarHidden = (state) => get(state, 'gui.isNavbarHidden')
-export const selectIsNavbarSkippingTransition = (state) => get(state, 'gui.isNavbarSkippingTransition') // eslint-disable-line
 export const selectIsNotificationsActive = (state) => get(state, 'gui.isNotificationsActive')
 export const selectIsNotificationsUnread = (state) => get(state, 'gui.isNotificationsUnread')
 export const selectIsOmnibarActive = (state) => get(state, 'gui.isOmnibarActive')
@@ -50,5 +48,9 @@ export const selectIsMobileGridStream = createSelector(
 export const selectHasSaidHelloTo = createSelector(
   [selectSaidHelloTo, selectParamsUsername], (saidHelloTo, username) =>
     saidHelloTo.indexOf(username) !== -1
+)
+
+export const selectScrollOffset = createSelector(
+  [selectInnerHeight], (innerHeight) => Math.round(innerHeight * 0.5)
 )
 

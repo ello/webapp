@@ -5,33 +5,29 @@ import {
   selectInnerHeight,
   selectInnerWidth,
   selectIsAuthenticationView,
-  selectIsNavbarFixed,
   selectIsNavbarHidden,
-  selectIsNavbarSkippingTransition,
   selectIsNotificationsActive,
   selectIsOnboardingView,
   selectIsProfileMenuActive,
+  selectScrollOffset,
 } from '../selectors/gui'
 import { selectPathname } from '../selectors/routing'
-import { setScrollState, setViewportSizeAttributes } from '../actions/gui'
+import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
-
 
 function mapStateToProps(state) {
   return {
     innerHeight: selectInnerHeight(state),
     innerWidth: selectInnerWidth(state),
     isAuthenticationView: selectIsAuthenticationView(state),
-    isNavbarFixed: selectIsNavbarFixed(state),
     isNavbarHidden: selectIsNavbarHidden(state),
-    isNavbarSkippingTransition: selectIsNavbarSkippingTransition(state),
     isNotificationsActive: selectIsNotificationsActive(state),
     isOnboardingView: selectIsOnboardingView(state),
     isProfileMenuActive: selectIsProfileMenuActive(state),
-    offset: 160,
     pathname: selectPathname(state),
+    scrollOffset: selectScrollOffset(state),
   }
 }
 
@@ -41,23 +37,20 @@ class ViewportContainer extends Component {
     innerHeight: PropTypes.number,
     innerWidth: PropTypes.number,
     isAuthenticationView: PropTypes.bool,
-    isNavbarFixed: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
-    isNavbarSkippingTransition: PropTypes.bool,
     isNotificationsActive: PropTypes.bool,
     isOnboardingView: PropTypes.bool,
     isProfileMenuActive: PropTypes.bool,
-    offset: PropTypes.number,
     pathname: PropTypes.string.isRequired,
     routerParams: PropTypes.shape({
       username: PropTypes.string,
       token: PropTypes.string,
     }).isRequired,
+    scrollOffset: PropTypes.number,
   }
 
   componentWillMount() {
     this.hasResized = false
-    this.scrollYAtDirectionChange = null
   }
 
   componentDidMount() {
@@ -88,70 +81,33 @@ class ViewportContainer extends Component {
   }
 
   onScrollTop() {
-    const { dispatch, isNavbarFixed } = this.props
-    if (isNavbarFixed) {
-      dispatch(setScrollState({
-        isFixed: false,
-        isHidden: false,
-        isSkippingTransition: false,
-      }))
-    }
+    const { dispatch } = this.props
+    dispatch(setIsNavbarHidden({ isHidden: false }))
   }
 
-  onScrollDirectionChange(scrollProperties) {
-    const { scrollY } = scrollProperties
-    if (scrollY >= this.props.offset) {
-      this.scrollYAtDirectionChange = scrollY
-    }
-  }
+  onScroll({ scrollDirection, scrollY }) {
+    const { dispatch, isNavbarHidden, scrollOffset } = this.props
 
-  // TODO: Lots of optimizations here I'm sure
-  onScroll(scrollProperties) {
-    const { scrollY, scrollDirection } = scrollProperties
-    const {
-      dispatch,
-      isNavbarFixed,
-      isNavbarHidden,
-      isNavbarSkippingTransition,
-    } = this.props
-    let nextIsFixed = isNavbarFixed
-    let nextIsHidden = isNavbarHidden
-    let nextIsSkippingTransition = isNavbarSkippingTransition
-
-    // Going from absolute to fixed positioning
-    if (scrollY >= this.props.offset && !isNavbarFixed) {
-      nextIsFixed = true
-      nextIsHidden = true
-      nextIsSkippingTransition = true
-    }
-
-    // Scroll just changed directions so it's about to either be shown or hidden
-    if (scrollY >= this.props.offset && this.scrollYAtDirectionChange) {
-      const distance = Math.abs(scrollY - this.scrollYAtDirectionChange)
-      const delay = scrollDirection === 'down' ? 20 : 80
-      const isScrollingDown = scrollDirection === 'down'
-
-      if (distance >= delay) {
-        nextIsHidden = isScrollingDown
-        nextIsSkippingTransition = false
-        this.scrollYAtDirectionChange = null
+    // Scroll positions less than the height of the viewport, show the navbar
+    if (scrollY < scrollOffset) {
+      if (isNavbarHidden) {
+        dispatch(setIsNavbarHidden({ isHidden: false }))
       }
+      return
     }
-    // If something changed dispatch it for the reducer
-    if (isNavbarFixed !== nextIsFixed || isNavbarHidden !== nextIsHidden ||
-        isNavbarSkippingTransition !== nextIsSkippingTransition) {
-      dispatch(setScrollState({
-        isFixed: nextIsFixed,
-        isHidden: nextIsHidden,
-        isSkippingTransition: nextIsSkippingTransition,
-      }))
+    if (!isNavbarHidden && scrollDirection === 'down') {
+      dispatch(setIsNavbarHidden({ isHidden: true }))
+      return
+    }
+    if (isNavbarHidden && scrollDirection === 'up') {
+      dispatch(setIsNavbarHidden({ isHidden: false }))
+      return
     }
   }
 
   render() {
     return <Viewport {...this.props} />
   }
-
 }
 
 export default connect(mapStateToProps)(ViewportContainer)

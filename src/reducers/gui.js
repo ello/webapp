@@ -1,5 +1,5 @@
 import { REHYDRATE } from 'redux-persist/constants'
-import _ from 'lodash'
+import get from 'lodash/get'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   AUTHENTICATION,
@@ -70,9 +70,7 @@ const initialSizeState = {
 }
 
 const initialScrollState = {
-  isNavbarFixed: false,
   isNavbarHidden: false,
-  isNavbarSkippingTransition: false,
 }
 
 const initialNonPersistedState = {
@@ -150,6 +148,11 @@ export const gui = (state = initialState, action = { type: '' }) => {
       return { ...state, activeNotificationsType: action.payload.activeTabType }
     case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
       return { ...state, activeUserFollowingType: action.payload.tab }
+    case GUI.SET_IS_NAVBAR_HIDDEN:
+      return {
+        ...state,
+        isNavbarHidden: get(action.payload, 'isNavbarHidden', state.isNavbarHidden),
+      }
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:
       return { ...state, isProfileMenuActive: action.payload.isProfileMenuActive }
     case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
@@ -161,14 +164,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case GUI.SET_SCROLL:
       newState.history[action.payload.key] = { ...action.payload }
       return newState
-    case GUI.SET_SCROLL_STATE:
-      return {
-        ...state,
-        isNavbarFixed: _.get(action.payload, 'isNavbarFixed', state.isNavbarFixed),
-        isNavbarHidden: _.get(action.payload, 'isNavbarHidden', state.isNavbarHidden),
-        isNavbarSkippingTransition:
-          _.get(action.payload, 'isNavbarSkippingTransition', state.isNavbarSkippingTransition),
-      }
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
       return { ...state, ...action.payload }
     case GUI.TOGGLE_NOTIFICATIONS:
@@ -192,10 +187,10 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE:
       location = action.payload
       pathname = location.pathname
-      isAuthenticationView = _.some(AUTHENTICATION_WHITELIST, pagex => pagex.test(pathname))
-      isLayoutToolHidden = _.some(NO_LAYOUT_TOOLS, pagex => pagex.test(pathname))
-      isOnboardingView = _.some(ONBOARDING_WHITELIST, pagex => pagex.test(pathname))
-      if (_.some(STREAMS_WHITELIST, re => re.test(pathname))) {
+      isAuthenticationView = AUTHENTICATION_WHITELIST.some(pagex => pagex.test(pathname))
+      isLayoutToolHidden = NO_LAYOUT_TOOLS.some(pagex => pagex.test(pathname))
+      isOnboardingView = ONBOARDING_WHITELIST.some(pagex => pagex.test(pathname))
+      if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
           ...state,
           ...initialScrollState,

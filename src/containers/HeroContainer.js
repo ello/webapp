@@ -87,7 +87,6 @@ const PROMOTION_ROUTES = [
   /^\/search/,
 ]
 
-// TODO: The pathame === `/` will sometimes be `/following`, so this needs some work.
 const selectHasPromotion = createSelector(
   [selectPathname], (pathname) =>
     (pathname === '/' || PROMOTION_ROUTES.some((route) => route.test(pathname)))
@@ -98,7 +97,6 @@ const selectHasCoverProfile = createSelector(
     !!(username && !(/^\/[\w\-]+\/post\/.+/.test(pathname)))
 )
 
-// TODO: The pathame === `/` will sometimes be `/following`, so this needs some work.
 const selectBroadcast = createSelector(
   [selectPathname, selectLastDiscoverBeaconVersion, selectLastFollowingBeaconVersion, selectLastStarredBeaconVersion], // eslint-disable-line
   (pathname, lastDiscoverBeaconVersion, lastFollowingBeaconVersion, lastStarredBeaconVersion) => {
