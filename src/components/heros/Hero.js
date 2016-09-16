@@ -1,15 +1,10 @@
 import React, { PropTypes } from 'react'
 import Promotion from '../assets/Promotion'
 import { ZeroStream } from '../zeros/Zeros'
+import UserContainer from '../../containers/UserContainer'
 
 const styles = {
   backgroundColor: 'white',
-}
-
-const fauxCover = {
-  height: 'calc(100vh - 80px)',
-  backgroundColor: 'lightgreen',
-  textAlign: 'center',
 }
 
 const Hero = ({
@@ -21,6 +16,7 @@ const Hero = ({
   onClickTrackCredits,
   onDismissZeroStream,
   promotion,
+  user,
 }) =>
   <div className="Hero" style={{ ...styles }}>
     <div style={{ height: 80 }} />
@@ -35,8 +31,13 @@ const Hero = ({
         promotion={promotion}
       /> : null
     }
-    { hasCoverProfile ?
-      <div style={{ ...fauxCover }}>Cover Profile 2.0</div> : null
+    { hasCoverProfile && user ?
+      <div
+        className="FakeCover"
+        style={{ backgroundImage: `url(${user.coverImage[coverDPI].url})` }}
+      >
+        <UserContainer user={user} type="profile" />
+      </div> : null
     }
   </div>
 
@@ -49,6 +50,7 @@ Hero.propTypes = {
   onClickTrackCredits: PropTypes.func.isRequired,
   onDismissZeroStream: PropTypes.func.isRequired,
   promotion: PropTypes.object,
+  user: PropTypes.object,
 }
 
 export default Hero

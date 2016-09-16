@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectUserFromPropsUserId } from '../selectors/user'
-import { UserAvatar, UserCompact, UserGrid, UserList } from '../components/users/UserRenderables'
+import { UserAvatar, UserCompact, UserGrid,
+  UserList, UserProfile } from '../components/users/UserRenderables'
 import MessageDialog from '../components/dialogs/MessageDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
@@ -42,6 +43,7 @@ class UserContainer extends Component {
       'avatar',
       'compact',
       'grid',
+      'profile',
       'list',
     ]).isRequired,
     useGif: PropTypes.bool,
@@ -103,6 +105,14 @@ class UserContainer extends Component {
         return <UserCompact className={className} user={user} />
       case 'grid':
         return <UserGrid user={user} />
+      case 'profile':
+        return (
+          <UserProfile
+            onClickHireMe={isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal}
+            onClickShareProfile={this.onClickShareProfile}
+            user={user}
+          />
+        )
       case 'list':
         return (
           <UserList

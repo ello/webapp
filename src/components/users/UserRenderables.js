@@ -95,6 +95,58 @@ UserGrid.propTypes = {
   user: PropTypes.object,
 }
 
+export const UserProfile = props => {
+  const { user, onClickHireMe, onClickShareProfile } = props
+  return (
+    <div className="UserProfile">
+      <Avatar
+        alt={user.name ? user.name : user.username}
+        className="isLarge"
+        priority={user.relationshipPriority}
+        size="large"
+        sources={user.avatar}
+        to={`/${user.username}`}
+        useGif={(user.viewsAdultContent || !user.postsAdultContent)}
+        userId={user.id}
+        username={user.username}
+      />
+      <RelationshipContainer
+        hasBlockMuteButton
+        relationshipPriority={user.relationshipPriority}
+        user={user}
+      />
+      <UserDetailUserNames user={user} />
+      <UserStats
+        followersCount={user.followersCount}
+        followingCount={user.followingCount}
+        lovesCount={user.lovesCount}
+        postsCount={user.postsCount}
+        username={user.username}
+      />
+      <UserInfo user={user} />
+      <div className="ProfileButtons">
+        <button className="ProfileButtonsShareButton" onClick={onClickShareProfile} >
+          <ShareIcon />
+        </button>
+        <MiniPillButton onClick={onClickShareProfile} >
+          Share Profile
+        </MiniPillButton>
+        {user.isHireable ?
+          <MiniPillButton onClick={onClickHireMe} >
+            Hire Me
+          </MiniPillButton> : null
+        }
+      </div>
+    </div>
+  )
+}
+
+UserProfile.propTypes = {
+  onClickHireMe: PropTypes.func,
+  onClickShareProfile: PropTypes.func,
+  user: PropTypes.object,
+}
+
 export const UserList = (props) => {
   const { className, isUserDetail, onClickHireMe, onClickShareProfile,
     showBlockMuteButton, useGif, user } = props
