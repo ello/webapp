@@ -54,6 +54,20 @@
     padding: 0 20px;
   }
 
+  .no-touch .isNavbarHidden ~ .Footer:hover {
+    transform: none;
+  }
+
+  .no-touch .isNavbarHidden ~ .Footer::before {
+    position: absolute;
+    top: -15px;
+    right: 0;
+    left: 0;
+    height: 15px;
+    content: "";
+    background-color: rgba(0, 0, 0, 0);
+  }
+
   .FooterTools {
     right: 20px;
   }
