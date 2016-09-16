@@ -53,14 +53,14 @@ describe('gui selectors', () => {
   context('#selectScrollOffset', () => {
     it('selects with memoization the scroll offset', () => {
       let state = { gui: { innerHeight: 100, change: false } }
-      expect(selectScrollOffset(state)).to.equal(50)
+      expect(selectScrollOffset(state)).to.equal(20)
 
       state = { gui: { innerHeight: 100, change: true } }
-      expect(selectScrollOffset(state)).to.equal(50)
+      expect(selectScrollOffset(state)).to.equal(20)
       expect(selectScrollOffset.recomputations()).to.equal(1)
 
       state = { gui: { innerHeight: 666, change: true } }
-      expect(selectScrollOffset(state)).to.equal(333)
+      expect(selectScrollOffset(state)).to.equal(586)
       expect(selectScrollOffset.recomputations()).to.equal(2)
     })
   })
