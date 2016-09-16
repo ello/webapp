@@ -13,6 +13,7 @@ import {
 } from '../selectors/gui'
 import { selectPromotions } from '../selectors/promotions'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
+import { selectUserFromUsername } from '../selectors/user'
 import { trackEvent } from '../actions/analytics'
 import {
   setLastDiscoverBeaconVersion,
@@ -59,6 +60,7 @@ function mapStateToProps(state, props) {
     pathname: selectPathname(state),
     promotions: selectPromotions(state),
     viewName: selectViewNameFromRoute(state, props),
+    user: selectUserFromUsername(state, props),
   }
 }
 
@@ -72,6 +74,7 @@ class HeroContainer extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
     promotions: PropTypes.array,
+    user: PropTypes.object,
     viewName: PropTypes.string.isRequired,
   }
 
@@ -127,6 +130,7 @@ class HeroContainer extends Component {
       onClickTrackCredits: this.onClickTrackCredits,
       onDismissZeroStream: this.onDismissZeroStream,
       promotion: this.state.promotion,
+      user: this.props.user,
     }
     return <Hero {...props} />
   }
