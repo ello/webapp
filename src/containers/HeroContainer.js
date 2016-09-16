@@ -3,6 +3,7 @@ import { createSelector } from 'reselect'
 import sample from 'lodash/sample'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
+import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en.js'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectCoverDPI,
@@ -11,101 +12,38 @@ import {
   selectLastStarredBeaconVersion,
 } from '../selectors/gui'
 import { selectPromotions } from '../selectors/promotions'
-import { selectParamsUsername } from '../selectors/params'
-import { selectPathname } from '../selectors/routing'
+import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { trackEvent } from '../actions/analytics'
 import {
   setLastDiscoverBeaconVersion,
   setLastFollowingBeaconVersion,
   setLastStarredBeaconVersion,
 } from '../actions/gui'
-import Promotion from '../components/assets/Promotion'
-import { ZeroStream } from '../components/zeros/Zeros'
-
-// -------------------------------------
-
-const styles = {
-  backgroundColor: 'white',
-}
-
-const fauxCover = {
-  height: 'calc(100vh - 80px)',
-  backgroundColor: 'lightgreen',
-  textAlign: 'center',
-}
-
-const Hero = ({
-  broadcast,
-  coverDPI,
-  hasCoverProfile,
-  hasPromotion,
-  isLoggedIn,
-  onClickTrackCredits,
-  onDismissZeroStream,
-  promotion,
-}) =>
-  <div className="Hero" style={{ ...styles }}>
-    <div style={{ height: 80 }} />
-    { broadcast ? <ZeroStream onDismiss={onDismissZeroStream}>{broadcast}</ZeroStream> : null }
-    { hasPromotion ?
-      <Promotion
-        coverDPI={coverDPI}
-        isLoggedIn={isLoggedIn}
-        onClickTrackCredits={onClickTrackCredits}
-        promotion={promotion}
-      /> : null
-    }
-    { hasCoverProfile ?
-      <div style={{ ...fauxCover }}>Cover Profile 2.0</div> : null
-    }
-  </div>
-
-Hero.propTypes = {
-  broadcast: PropTypes.string,
-  coverDPI: PropTypes.string.isRequired,
-  hasCoverProfile: PropTypes.bool,
-  hasPromotion: PropTypes.bool,
-  isLoggedIn: PropTypes.bool.isRequired,
-  onClickTrackCredits: PropTypes.func.isRequired,
-  onDismissZeroStream: PropTypes.func.isRequired,
-  promotion: PropTypes.object,
-}
-
-// -------------------------------------
-
-const DISCOVER_BEACON_VERSION = '1'
-const DISCOVER_BEACON_TEXT = 'Explore creators, curated categories and communities.'
-
-const FOLLOWING_BEACON_VERSION = '1'
-const FOLLOWING_BEACON_TEXT = 'Follow the creators and communities that inspire you.'
-
-const STARRED_BEACON_VERSION = '1'
-const STARRED_BEACON_TEXT = 'Star creators and communities to curate a second stream.'
+import Hero from '../components/heros/Hero'
 
 const PROMOTION_ROUTES = [
   /^\/discover/,
   /^\/search/,
 ]
 
-const selectHasPromotion = createSelector(
+export const selectHasPromotion = createSelector(
   [selectPathname], (pathname) =>
     (pathname === '/' || PROMOTION_ROUTES.some((route) => route.test(pathname)))
 )
 
-const selectHasCoverProfile = createSelector(
-  [selectPathname, selectParamsUsername], (pathname, username) =>
-    !!(username && !(/^\/[\w\-]+\/post\/.+/.test(pathname)))
+export const selectHasCoverProfile = createSelector(
+  [selectViewNameFromRoute], (viewName) => viewName === 'userDetail'
 )
 
-const selectBroadcast = createSelector(
-  [selectPathname, selectLastDiscoverBeaconVersion, selectLastFollowingBeaconVersion, selectLastStarredBeaconVersion], // eslint-disable-line
-  (pathname, lastDiscoverBeaconVersion, lastFollowingBeaconVersion, lastStarredBeaconVersion) => {
-    if (/^\/following/.test(pathname)) {
-      return lastFollowingBeaconVersion !== FOLLOWING_BEACON_VERSION ? FOLLOWING_BEACON_TEXT : null
-    } else if (/^\/starred/.test(pathname)) {
-      return lastStarredBeaconVersion !== STARRED_BEACON_VERSION ? STARRED_BEACON_TEXT : null
-    } else if (pathname === '/' || /^\/discover/.test(pathname)) {
-      return lastDiscoverBeaconVersion !== DISCOVER_BEACON_VERSION ? DISCOVER_BEACON_TEXT : null
+export const selectBroadcast = createSelector(
+  [selectViewNameFromRoute, selectLastDiscoverBeaconVersion, selectLastFollowingBeaconVersion, selectLastStarredBeaconVersion], // eslint-disable-line
+  (viewName, lastDiscoverBeaconVersion, lastFollowingBeaconVersion, lastStarredBeaconVersion) => {
+    if (viewName === 'discover') {
+      return lastDiscoverBeaconVersion !== DISCOVER.BEACON_VERSION ? DISCOVER.BEACON_TEXT : null
+    } else if (viewName === 'following') {
+      return lastFollowingBeaconVersion !== FOLLOWING.BEACON_VERSION ? FOLLOWING.BEACON_TEXT : null
+    } else if (viewName === 'starred') {
+      return lastStarredBeaconVersion !== STARRED.BEACON_VERSION ? STARRED.BEACON_TEXT : null
     }
     return null
   }
@@ -120,6 +58,7 @@ function mapStateToProps(state, props) {
     isLoggedIn: selectIsLoggedIn(state),
     pathname: selectPathname(state),
     promotions: selectPromotions(state),
+    viewName: selectViewNameFromRoute(state, props),
   }
 }
 
@@ -133,6 +72,7 @@ class HeroContainer extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
     promotions: PropTypes.array,
+    viewName: PropTypes.string.isRequired,
   }
 
   // static preRender = (store) =>
@@ -156,9 +96,7 @@ class HeroContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const shouldUpdate = shallowCompare(this, nextProps, nextState)
-    return shouldUpdate
-    // return shallowCompare(this, nextProps, nextState)
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickTrackCredits = () => {
@@ -166,15 +104,15 @@ class HeroContainer extends Component {
   }
 
   onDismissZeroStream = () => {
-    const { dispatch, pathname } = this.props
-    if (/^\/following/.test(pathname)) {
-      dispatch(setLastFollowingBeaconVersion({ version: FOLLOWING_BEACON_VERSION }))
+    const { dispatch, viewName } = this.props
+    if (viewName === 'discover') {
+      dispatch(setLastDiscoverBeaconVersion({ version: DISCOVER.BEACON_VERSION }))
       return
-    } else if (/^\/starred/.test(pathname)) {
-      dispatch(setLastStarredBeaconVersion({ version: STARRED_BEACON_VERSION }))
+    } else if (viewName === 'following') {
+      dispatch(setLastFollowingBeaconVersion({ version: FOLLOWING.BEACON_VERSION }))
       return
-    } else if (pathname === '/' || /^\/discover/.test(pathname)) {
-      dispatch(setLastDiscoverBeaconVersion({ version: DISCOVER_BEACON_VERSION }))
+    } else if (viewName === 'starred') {
+      dispatch(setLastStarredBeaconVersion({ version: STARRED.BEACON_VERSION }))
       return
     }
   }

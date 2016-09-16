@@ -41,3 +41,18 @@ export const SETTINGS = {
   },
 }
 
+export const DISCOVER = {
+  BEACON_VERSION: '1',
+  BEACON_TEXT: 'Explore creators, curated categories and communities.',
+}
+
+export const FOLLOWING = {
+  BEACON_VERSION: '1',
+  BEACON_TEXT: 'Follow the creators and communities that inspire you.',
+}
+
+export const STARRED = {
+  BEACON_VERSION: '1',
+  BEACON_TEXT: 'Star creators and communities to curate a second stream.',
+}
+
