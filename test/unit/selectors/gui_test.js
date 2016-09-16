@@ -2,6 +2,7 @@ import {
   selectCommentOffset,
   selectIsMobileGridStream,
   selectHasSaidHelloTo,
+  selectScrollOffset,
 } from '../../../src/selectors/gui'
 
 describe('gui selectors', () => {
@@ -46,6 +47,21 @@ describe('gui selectors', () => {
       expect(selectHasSaidHelloTo(state, props)).to.be.true
       // TODO: Not sure why but this returns 2?
       // expect(selectHasSaidHelloTo.recomputations()).to.equal(1)
+    })
+  })
+
+  context('#selectScrollOffset', () => {
+    it('selects with memoization the scroll offset', () => {
+      let state = { gui: { innerHeight: 100, change: false } }
+      expect(selectScrollOffset(state)).to.equal(50)
+
+      state = { gui: { innerHeight: 100, change: true } }
+      expect(selectScrollOffset(state)).to.equal(50)
+      expect(selectScrollOffset.recomputations()).to.equal(1)
+
+      state = { gui: { innerHeight: 666, change: true } }
+      expect(selectScrollOffset(state)).to.equal(333)
+      expect(selectScrollOffset.recomputations()).to.equal(2)
     })
   })
 })
