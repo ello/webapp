@@ -1,37 +1,22 @@
 @import "../../lib/styles/properties.css";
 
 .Navbar {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: var(--z-navbar);
   padding: 10px;
   background-color: #fff;
-  transition:
-    transform 150ms ease,
-    visibility 150ms,
-    background-color var(--speed) ease,
-    height 150ms ease,
-    opacity var(--speed);
+  transition: transform 150ms ease, background-color var(--speed) ease, height 150ms ease;
 }
 
 .isOnboardingView ~ .Navbar {
   display: none;
 }
 
-.isNavbarFixed ~ .Navbar {
-  position: fixed;
-}
-
-.isNavbarFixed.isNavbarHidden ~ .Navbar {
-  visibility: hidden;
-  transition-delay: 0s var(--speed) 0s;
+.isNavbarHidden ~ .Navbar {
   transform: translate3d(0, -100%, 0);
-}
-
-.isNavbarSkippingTransition ~ .Navbar {
-  transition: none !important;
 }
 
 .isLoggedIn .Navbar {
