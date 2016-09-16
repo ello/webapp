@@ -100,6 +100,20 @@
     padding: 20px;
   }
 
+  .no-touch .isNavbarHidden ~ .Navbar:hover {
+    transform: none;
+  }
+
+  .no-touch .isNavbarHidden ~ .Navbar::after {
+    position: absolute;
+    right: 0;
+    bottom: -15px;
+    left: 0;
+    height: 15px;
+    content: "";
+    background-color: rgba(0, 0, 0, 0);
+  }
+
   .isLoggedIn .Navbar {
     height: 80px;
   }
