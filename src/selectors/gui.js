@@ -19,9 +19,7 @@ export const selectIsAuthenticationView = state => get(state, 'gui.isAuthenticat
 export const selectIsCompleterActive = state => get(state, 'gui.isCompleterActive')
 export const selectIsGridMode = state => get(state, 'gui.isGridMode')
 export const selectIsLayoutToolHidden = state => get(state, 'gui.isLayoutToolHidden')
-export const selectIsNavbarFixed = state => get(state, 'gui.isNavbarFixed')
 export const selectIsNavbarHidden = state => get(state, 'gui.isNavbarHidden')
-export const selectIsNavbarSkippingTransition = state => get(state, 'gui.isNavbarSkippingTransition') // eslint-disable-line
 export const selectIsNotificationsActive = state => get(state, 'gui.isNotificationsActive')
 export const selectIsNotificationsUnread = state => get(state, 'gui.isNotificationsUnread')
 export const selectIsOmnibarActive = state => get(state, 'gui.isOmnibarActive')
@@ -29,7 +27,7 @@ export const selectIsOnboardingView = state => get(state, 'gui.isOnboardingView'
 export const selectIsProfileMenuActive = state => get(state, 'gui.isProfileMenuActive')
 export const selectIsTextToolsActive = state => get(state, 'gui.isTextToolsActive')
 export const selectLastNotificationCheck = state => get(state, 'gui.lastNotificationCheck')
-export const selectLastDiscoverBeaconVersion = state => get(state, 'gui.lastDiscoverBeaconVersion')
+export const selectLastDiscoverBeaconVersion = state => get(state, 'gui.lastDiscoverBeaconVersion') // eslint-disable-line
 export const selectLastFollowingBeaconVersion = state => get(state, 'gui.lastFollowingBeaconVersion') // eslint-disable-line
 export const selectLastStarredBeaconVersion = state => get(state, 'gui.lastStarredBeaconVersion')
 export const selectSaidHelloTo = state => get(state, 'gui.saidHelloTo')
@@ -50,5 +48,9 @@ export const selectIsMobileGridStream = createSelector(
 export const selectHasSaidHelloTo = createSelector(
   [selectSaidHelloTo, selectParamsUsername], (saidHelloTo, username) =>
     saidHelloTo.indexOf(username) !== -1
+)
+
+export const selectScrollOffset = createSelector(
+  [selectInnerHeight], (innerHeight) => Math.round(innerHeight * 0.5)
 )
 

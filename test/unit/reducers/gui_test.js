@@ -35,9 +35,7 @@ describe('gui reducer', () => {
       'isCompleterActive',
       'isGridMode',
       'isLayoutToolHidden',
-      'isNavbarFixed',
       'isNavbarHidden',
-      'isNavbarSkippingTransition',
       'isNotificationsActive',
       'isNotificationsUnread',
       'isOmnibarActive',
@@ -168,25 +166,19 @@ describe('gui reducer', () => {
       expect(lastState.history['2']).to.deep.equal({ ...action1.payload, ...action2.payload })
     })
 
-    it('GUI.SET_SCROLL_STATE updates properties from the initialScrollState', () => {
+    it('GUI.SET_IS_NAVBAR_HIDDEN updates properties from the initialScrollState', () => {
       const initialState = reducer(undefined, {})
-      expect(initialState).to.have.property('isNavbarFixed', false)
       expect(initialState).to.have.property('isNavbarHidden', false)
-      expect(initialState).to.have.property('isNavbarSkippingTransition', false)
 
       const action = {
-        type: GUI.SET_SCROLL_STATE,
+        type: GUI.SET_IS_NAVBAR_HIDDEN,
         payload: {
-          isNavbarFixed: true,
           isNavbarHidden: true,
-          isNavbarSkippingTransition: true,
         },
       }
 
       const nextState = reducer(initialState, action)
-      expect(nextState).to.have.property('isNavbarFixed', true)
       expect(nextState).to.have.property('isNavbarHidden', true)
-      expect(nextState).to.have.property('isNavbarSkippingTransition', true)
     })
 
     it('GUI.SET_VIEWPORT_SIZE_ATTRIBUTES', () => {

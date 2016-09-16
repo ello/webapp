@@ -20,11 +20,10 @@
 
 /* Hide it when the Paginator is visible */
 .Footer.isPaginatoring {
-  transform: translate3d(0, 100%, 0);
+  transform: translate3d(0, 100%, 0) !important;
 }
 
-/* Piggy back off of the Navbar for the moment */
-.isNavbarFixed.isNavbarHidden ~ .Footer {
+.isNavbarHidden ~ .Footer {
   transform: translate3d(0, 100%, 0);
 }
 

@@ -22,6 +22,28 @@ describe('gui actions', () => {
     })
   })
 
+  context('#setIsNavbarHidden', () => {
+    const action = subject.setIsNavbarHidden({ isHidden: false })
+
+    it('is an FSA compliant action', () => {
+      expect(isFSA(action)).to.be.true
+    })
+
+    it('has similar action.name and action.type', () => {
+      expect(isFSAName(action, subject.setIsNavbarHidden)).to.be.true
+    })
+
+    it('has a payload with the correct keys', () => {
+      expect(action.payload).to.have.keys(
+        'isNavbarHidden',
+      )
+    })
+
+    it('sets the appropriate payload', () => {
+      expect(action.payload.isNavbarHidden).to.be.false
+    })
+  })
+
   context('#setIsProfileMenuActive', () => {
     const action = subject.setIsProfileMenuActive({ isActive: true })
 
@@ -99,36 +121,6 @@ describe('gui actions', () => {
 
     it('sets the appropriate payload', () => {
       expect(action.payload.version).to.equal('668')
-    })
-  })
-
-  context('#setScrollState', () => {
-    const action = subject.setScrollState({
-      isFixed: true,
-      isHidden: false,
-      isSkippingTransition: false,
-    })
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has similar action.name and action.type', () => {
-      expect(isFSAName(action, subject.setScrollState)).to.be.true
-    })
-
-    it('has a payload with the correct keys', () => {
-      expect(action.payload).to.have.keys(
-        'isNavbarFixed',
-        'isNavbarHidden',
-        'isNavbarSkippingTransition',
-      )
-    })
-
-    it('sets the appropriate payload', () => {
-      expect(action.payload.isNavbarFixed).to.be.true
-      expect(action.payload.isNavbarHidden).to.be.false
-      expect(action.payload.isNavbarSkippingTransition).to.be.false
     })
   })
 
