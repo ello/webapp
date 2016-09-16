@@ -5,6 +5,7 @@ import {
   selectLocation,
   selectPreviousPath,
   selectPathname,
+  selectViewNameFromRoute,
 } from '../../../src/selectors/routing'
 
 
@@ -78,6 +79,64 @@ describe('routing selectors', () => {
       const state = { routing }
       const props = { ...propsLocation }
       expect(selectPathname(state, props)).to.deep.equal(routing.location.pathname)
+    })
+  })
+
+  context('#selectViewNameFromRoute', () => {
+    it('selects with memoization the view name identifier associated with a route', () => {
+      let state = { routing: { location: { pathname: '/following', change: false } } }
+      const props = { params: { username: 'mk' } }
+      selectViewNameFromRoute.resetRecomputations()
+      expect(selectViewNameFromRoute(state)).to.equal('following')
+
+      state = { routing: { location: { pathname: '/following', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('following')
+      expect(selectViewNameFromRoute.recomputations()).to.equal(1)
+
+      state = { routing: { location: { pathname: '/starred', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('starred')
+
+      state = { routing: { location: { pathname: '/search', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('search')
+
+      state = { routing: { location: { pathname: '/', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('discover')
+
+      state = { routing: { location: { pathname: '/discover', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('discover')
+
+      state = { routing: { location: { pathname: '/discover/stuff', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('discover')
+
+      state = { routing: { location: { pathname: '/invitations', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('invitations')
+
+      state = { routing: { location: { pathname: '/settings', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('settings')
+
+      state = { routing: { location: { pathname: '/notifications', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('notifications')
+
+      state = { routing: { location: { pathname: '/mk/post/etlb9br06dh6tleztw4g', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('postDetail')
+
+      state = { routing: { location: { pathname: '/mk', change: true } } }
+      expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
+
+      state = { routing: { location: { pathname: '/mk/loves', change: true } } }
+      expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
+
+      state = { routing: { location: { pathname: '/mk/following', change: true } } }
+      expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
+
+      state = { routing: { location: { pathname: '/mk/followers', change: true } } }
+      expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
+
+      state = { routing: { location: { pathname: '/mk/post/etlb9br06dh6tleztw4g', change: true } } }
+      expect(selectViewNameFromRoute(state, props)).not.to.equal('userDetail')
+
+      expect(selectViewNameFromRoute.recomputations()).to.equal(15)
+      selectViewNameFromRoute.resetRecomputations()
     })
   })
 })
