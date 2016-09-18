@@ -8,7 +8,10 @@
   z-index: var(--z-navbar);
   padding: 10px;
   background-color: #fff;
-  transition: transform 150ms ease, background-color var(--speed) ease, height 150ms ease;
+  transition:
+    transform 150ms ease,
+    height 150ms ease,
+    opacity 0s;
 }
 
 .isOnboardingView ~ .Navbar {
@@ -16,6 +19,8 @@
 }
 
 .isNavbarHidden ~ .Navbar {
+  opacity: 0;
+  transition-delay: 0s, 0s, 150ms;
   transform: translate3d(0, -100%, 0);
 }
 
@@ -101,6 +106,8 @@
   }
 
   .no-touch .isNavbarHidden ~ .Navbar:hover {
+    opacity: 1;
+    transition-delay: 0s;
     transform: none;
   }
 
