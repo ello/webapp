@@ -3,7 +3,7 @@ before_install:
 - cp .env.example .env
 script:
 - npm test
-- rvm use 2.3.1
+- rvm use ruby-head
 - gem install danger
 - danger
 notifications:
