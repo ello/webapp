@@ -89,7 +89,7 @@ export function usersAsInviteeGrid(invitations) {
   )
 }
 
-export function postsAsGrid(posts, columnCount) {
+export function postsAsGrid(posts, columnCount, isPostHeaderHidden = false) {
   const columns = []
   for (let i = 0; i < columnCount; i++) {
     columns.push([])
@@ -103,7 +103,7 @@ export function postsAsGrid(posts, columnCount) {
         <div className="Column" key={`column_${index}`}>
           {columnPosts.map((post) =>
             <article className="PostGrid" key={`postsAsGrid_${post.id}`}>
-              <PostContainer post={post} />
+              <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
             </article>
           )}
         </div>
@@ -112,12 +112,12 @@ export function postsAsGrid(posts, columnCount) {
   )
 }
 
-export function postsAsList(posts) {
+export function postsAsList(posts, columnCount, isPostHeaderHidden = false) {
   return (
     <div className="Posts asList">
       {posts.data.map((post) =>
         <article className="PostList" key={`postsAsList_${post.id}`}>
-          <PostContainer post={post} />
+          <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
         </article>
       )}
     </div>
