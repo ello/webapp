@@ -82,35 +82,61 @@ function stubAuthPromotion(username = '666') {
 
 function stubUser(properties) {
   const defaultProps = {
-    username: 'username',
-    name: 'name',
-    postsAdultContent: false,
-    viewsAdultContent: true,
-    hasCommentingEnabled: true,
-    hasSharingEnabled: true,
-    hasRepostingEnabled: true,
-    hasLovesEnabled: true,
+    avatar: stubAvatar(),
+    backgroundPosition: null,
+    badForSeo: false,
+    coverImage: stubCoverImage(),
     experimentalFeatures: false,
-    relationshipPriority: null,
-    postsCount: 0,
-    followersCount: 0,
-    followingCount: 0,
-    lovesCount: 0,
-    formattedShortBio: '<p>Formatted Short Bio</p>',
-    shortBio: '<p>Formatted Short Bio</p>',
     externalLinksList: [
       {
         url: 'http://www.google.com',
         text: 'google.com',
       },
     ],
-    backgroundPosition: null,
-    avatar: stubAvatar(),
-    coverImage: stubCoverImage(),
+    followersCount: 0,
+    followingCount: 0,
+    formattedShortBio: '<p>Formatted Short Bio</p>',
+    hasCommentingEnabled: true,
+    hasLovesEnabled: true,
+    hasRepostingEnabled: true,
+    hasSharingEnabled: true,
+    lovesCount: 0,
+    name: 'name',
+    postsAdultContent: false,
+    postsCount: 0,
+    relationshipPriority: null,
+    shortBio: '<p>Formatted Short Bio</p>',
+    username: 'username',
+    viewsAdultContent: true,
   }
   const model = { ...commonProps, ...defaultProps, ...properties }
   addToJSON(MAPPING_TYPES.USERS, model)
   return model
+}
+
+export function stubEmbedRegion(properties) {
+  const defaultProps = {
+    kind: 'embed',
+    data: {
+      id: 'service-url/embed-service-id',
+      service: 'service',
+      thumbnailLargeUrl: 'image-large-url',
+      thumbnailSmallUrl: 'image-small-url',
+      url: 'service/service-url/embed-service-id',
+    },
+  }
+  return { ...defaultProps, ...properties }
+}
+
+export function stubImageRegion(properties) {
+  const defaultProps = {
+    kind: 'image',
+    data: {
+      alt: 'image-alt',
+      url: 'image-url',
+    },
+  }
+  return { ...defaultProps, ...properties }
 }
 
 function stubTextRegion(properties) {

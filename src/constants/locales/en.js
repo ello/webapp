@@ -1,4 +1,9 @@
 /* eslint-disable max-len */
+export const DISCOVER = {
+  BEACON_VERSION: '1',
+  BEACON_TEXT: 'Explore creators, curated categories and communities.',
+}
+
 export const ERROR_MESSAGES = {
   NONE: '',
   EMAIL: {
@@ -21,6 +26,17 @@ export const ERROR_MESSAGES = {
   },
 }
 
+export const FOLLOWING = {
+  BEACON_VERSION: '1',
+  BEACON_TEXT: 'Follow the creators and communities that inspire you.',
+}
+
+export const META = {
+  DESCRIPTION: 'Welcome to the Creators Network. Ello is a community to discover, discuss, publish, share and promote the things you are passionate about.',
+  IMAGE: '/apple-touch-icon.png',
+  TITLE: 'Ello | The Creators Network.',
+}
+
 export const PREFERENCES = {
   NSFW_VIEW: {
     term: 'View Adult Content',
@@ -39,16 +55,6 @@ export const SETTINGS = {
     term: 'Delete Account',
     desc: 'By deleting your account you remove your personal information from Ello. Your account cannot be restored.',
   },
-}
-
-export const DISCOVER = {
-  BEACON_VERSION: '1',
-  BEACON_TEXT: 'Explore creators, curated categories and communities.',
-}
-
-export const FOLLOWING = {
-  BEACON_VERSION: '1',
-  BEACON_TEXT: 'Follow the creators and communities that inspire you.',
 }
 
 export const STARRED = {

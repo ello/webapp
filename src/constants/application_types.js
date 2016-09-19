@@ -1,7 +1,3 @@
-export const META = {
-  TITLE: 'Ello | The Creators Network.',
-}
-
 export const ONBOARDING_VERSION = '2'
 
 export const SHORTCUT_KEYS = {

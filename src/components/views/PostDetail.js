@@ -1,13 +1,11 @@
 import React, { PropTypes } from 'react'
 import Editor from '../editor/Editor'
-import { PostDetailHelmet } from '../helmets/PostDetailHelmet'
 import PostContainer from '../../containers/PostContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import { MainView } from '../views/MainView'
 
 export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
   <MainView className="PostDetail">
-    {author && post ? <PostDetailHelmet author={author} post={post} /> : null}
     <div className="PostDetails Posts asList">
       <article className="PostList" id={`Post_${post ? post.id : '_'}`}>
         <div className="StreamContainer">
