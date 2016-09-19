@@ -10,6 +10,10 @@
   overflow: hidden;
 }
 
+.Post.isPostHeaderHidden {
+  padding-top: 15px;
+}
+
 .Column {
   display: inline-block;
   width: calc(50% - 20px);
@@ -21,6 +25,10 @@
   .PostDetail .Post,
   .no-touch .Posts.asGrid .Post {
     overflow: visible;
+  }
+
+  .Post.isPostHeaderHidden {
+    padding-top: 20px;
   }
 }
 
