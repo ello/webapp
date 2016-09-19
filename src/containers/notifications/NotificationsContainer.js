@@ -159,7 +159,7 @@ class NotificationsContainer extends Component {
             action={streamAction}
             className="isFullWidth"
             isModalComponent
-            key={`notificationView_${activeTabType}`}
+            key={`notificationView_${activeTabType}_${isReloading}`}
           />
         </div>
       </div>
