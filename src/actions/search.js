@@ -39,7 +39,7 @@ export function searchForUsers(terms) {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
         asGrid: StreamRenderables.usersAsGrid,
-        asList: StreamRenderables.usersAsList,
+        asList: StreamRenderables.usersAsGrid,
         asZero: <ZeroState />,
       },
       resultKey: '/search/users',

@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import StreamContainer from '../../containers/StreamContainer'
-import UserContainer from '../../containers/UserContainer'
 import { MainView } from '../views/MainView'
 import { TabListButtons } from '../tabs/TabList'
 import { ZeroStateCreateRelationship, ZeroStateFirstPost, ZeroStateSayHello } from '../zeros/Zeros'
@@ -38,7 +37,6 @@ export const UserDetail = (props) => {
   // const useGif = user.viewsAdultContent || !user.postsAdultContent
 
   // construct component props
-  const userListProps = { className: 'isUserDetailHeader', showBlockMuteButton: true, user }
   const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }
   const streamProps = { action: streamAction, isUserDetail: true }
   const zeroProps = {
@@ -47,7 +45,6 @@ export const UserDetail = (props) => {
   return (
     <MainView className="UserDetail">
       <div className="UserDetails">
-        <UserContainer {...userListProps} isUserDetail type="list" />
         {tabs ? <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} /> : null}
         {hasZeroPosts || hasZeroFollowers ? <ZeroStates {...zeroProps} /> : null}
         {streamAction ? <StreamContainer {...streamProps} /> : null}

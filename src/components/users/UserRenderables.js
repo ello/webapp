@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import classNames from 'classnames'
 import { Link } from 'react-router'
 import Avatar from '../assets/Avatar'
 import CoverMini from '../assets/CoverMini'
@@ -144,67 +143,6 @@ export const UserProfile = props => {
 UserProfile.propTypes = {
   onClickHireMe: PropTypes.func,
   onClickShareProfile: PropTypes.func,
-  user: PropTypes.object,
-}
-
-export const UserList = (props) => {
-  const { className, isUserDetail, onClickHireMe, onClickShareProfile,
-    showBlockMuteButton, useGif, user } = props
-  return (
-    <div className={classNames(className, 'UserList')}>
-      <Avatar
-        alt={isUserDetail && user.name ? user.name : user.username}
-        className="isLarge"
-        priority={user.relationshipPriority}
-        size="large"
-        sources={user.avatar}
-        to={`/${user.username}`}
-        useGif={useGif && (user.viewsAdultContent || !user.postsAdultContent)}
-        userId={user.id}
-        username={user.username}
-      />
-      <RelationshipContainer
-        hasBlockMuteButton={showBlockMuteButton}
-        relationshipPriority={user.relationshipPriority}
-        user={user}
-      />
-      {isUserDetail ? <UserDetailUserNames user={user} /> : <UserNames user={user} />}
-      <UserStats
-        followersCount={user.followersCount}
-        followingCount={user.followingCount}
-        lovesCount={user.lovesCount}
-        postsCount={user.postsCount}
-        username={user.username}
-      />
-      <UserInfo user={user} />
-      {user.isHireable ?
-        <div className="ProfileButtons">
-          <MiniPillButton onClick={onClickHireMe} >
-            Hire Me
-          </MiniPillButton>
-          <button className="ProfileButtonsShareButton" onClick={onClickShareProfile} >
-            <ShareIcon />
-          </button>
-        </div>
-        :
-        <div className="ProfileButtons">
-          <MiniPillButton onClick={onClickShareProfile} >
-            Share Profile
-          </MiniPillButton>
-        </div>
-      }
-    </div>
-  )
-}
-
-UserList.propTypes = {
-  className: PropTypes.string,
-  isLoggedIn: PropTypes.bool,
-  isUserDetail: PropTypes.bool,
-  onClickHireMe: PropTypes.func,
-  onClickShareProfile: PropTypes.func,
-  showBlockMuteButton: PropTypes.bool,
-  useGif: PropTypes.bool,
   user: PropTypes.object,
 }
 
