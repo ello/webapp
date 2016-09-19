@@ -85,12 +85,14 @@ describe('HeroContainer', () => {
   context('#selectBroadcast', () => {
     it('selects with memoization whether the current route has a broadcast message', () => {
       let state = {
+        authentication: { isLoggedIn: true },
         gui: { lastDiscoverBeaconVersion: null },
         routing: { location: { pathname: '/discover', change: false } },
       }
       expect(selectBroadcast(state)).to.equal(DISCOVER.BEACON_TEXT)
 
       state = {
+        authentication: { isLoggedIn: true },
         gui: { lastDiscoverBeaconVersion: null },
         routing: { location: { pathname: '/discover', change: true } },
       }
@@ -98,30 +100,35 @@ describe('HeroContainer', () => {
       expect(selectBroadcast.recomputations()).to.equal(1)
 
       state = {
+        authentication: { isLoggedIn: true },
         gui: { lastDiscoverBeaconVersion: '1' },
         routing: { location: { pathname: '/discover', change: true } },
       }
       expect(selectBroadcast(state)).to.equal(null)
 
       state = {
+        authentication: { isLoggedIn: true },
         gui: { lastFollowingBeaconVersion: null },
         routing: { location: { pathname: '/following', change: true } },
       }
       expect(selectBroadcast(state)).to.equal(FOLLOWING.BEACON_TEXT)
 
       state = {
+        authentication: { isLoggedIn: true },
         gui: { lastFollowingBeaconVersion: '1' },
         routing: { location: { pathname: '/following', change: true } },
       }
       expect(selectBroadcast(state)).to.equal(null)
 
       state = {
+        authentication: { isLoggedIn: true },
         gui: { lastStarredBeaconVersion: null },
         routing: { location: { pathname: '/starred', change: true } },
       }
       expect(selectBroadcast(state)).to.equal(STARRED.BEACON_TEXT)
 
       state = {
+        authentication: { isLoggedIn: true },
         gui: { lastStarredBeaconVersion: '1' },
         routing: { location: { pathname: '/starred', change: true } },
       }

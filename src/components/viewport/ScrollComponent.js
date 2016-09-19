@@ -3,10 +3,6 @@ let lastScrollDirection = null
 let lastScrollY = null
 let ticking = false
 const scrollObjects = []
-const scrollTargetObjects = []
-
-// SHARED METHODS
-// -------------------------------------
 
 function callMethod(component, method, scrollProperties) {
   if (component[method]) {
@@ -47,9 +43,6 @@ function getScrollAction(scrollProperties) {
   }
   return null
 }
-
-// SCROLLING THE WINDOW
-// -------------------------------------
 
 function getScrollY() {
   return Math.ceil(window.pageYOffset)
@@ -117,69 +110,6 @@ export function removeScrollObject(obj) {
   if (scrollObjects.length === 0) {
     hasWindowListener = false
     window.removeEventListener('scroll', windowWasScrolled)
-  }
-}
-
-// SCROLLING AN ELEMENT
-// -------------------------------------
-
-function getTargetScrollY(el) {
-  return Math.ceil(el.scrollTop)
-}
-
-function getTargetScrollHeight(el) {
-  return Math.max(el.scrollHeight, el.offsetHeight)
-}
-
-function getTargetScrollBottom(scrollHeight, el) {
-  return Math.round(scrollHeight - el.offsetHeight)
-}
-
-function getTargetScrollProperties(el) {
-  const scrollY = getTargetScrollY(el)
-  const scrollHeight = getTargetScrollHeight(el)
-  const scrollBottom = getTargetScrollBottom(scrollHeight, el)
-  return {
-    scrollY,
-    scrollHeight,
-    scrollBottom,
-    scrollPercent: getScrollPercent(0, scrollBottom, scrollY),
-  }
-}
-
-function targetScrolled() {
-  for (const obj of scrollTargetObjects) {
-    const scrollProperties = getTargetScrollProperties(obj.element)
-    const scrollAction = getScrollAction(scrollProperties)
-    callMethod(obj.component, 'onScrollTarget', scrollProperties)
-    if (scrollAction) {
-      callMethod(obj.component, `${scrollAction}Target`, scrollProperties)
-    }
-  }
-}
-
-function targetWasScrolled() {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      targetScrolled()
-      ticking = false
-    })
-    ticking = true
-  }
-}
-
-export function addScrollTarget(obj) {
-  if (scrollTargetObjects.indexOf(obj) === -1) {
-    scrollTargetObjects.push(obj)
-    obj.element.addEventListener('scroll', targetWasScrolled)
-  }
-}
-
-export function removeScrollTarget(obj) {
-  const index = scrollTargetObjects.indexOf(obj)
-  if (index > -1) {
-    scrollTargetObjects.splice(index, 1)
-    obj.element.removeEventListener('scroll', targetWasScrolled)
   }
 }
 
