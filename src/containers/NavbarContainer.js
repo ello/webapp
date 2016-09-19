@@ -69,7 +69,9 @@ class NavbarContainer extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     isNotificationsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
-    routerParams: PropTypes.object.isRequired,
+    params: PropTypes.shape({
+      type: PropTypes.string,
+    }).isRequired,
   }
 
   componentWillMount() {
@@ -115,11 +117,11 @@ class NavbarContainer extends Component {
   }
 
   onClickNavbarMark = () => {
-    const { currentStream, dispatch, pathname, routerParams } = this.props
+    const { currentStream, dispatch, pathname, params } = this.props
     if (currentStream === pathname) {
       if (/^\/discover/.test(pathname)) {
-        if (routerParams.type) {
-          dispatch(getDiscoverAction(routerParams.type))
+        if (params.type) {
+          dispatch(getDiscoverAction(params.type))
         }
       } else if (/^\/following$/.test(pathname)) {
         dispatch(loadFriends())
