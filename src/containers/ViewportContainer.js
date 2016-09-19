@@ -43,10 +43,6 @@ class ViewportContainer extends Component {
     isOnboardingView: PropTypes.bool,
     isProfileMenuActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
-    routerParams: PropTypes.shape({
-      username: PropTypes.string,
-      token: PropTypes.string,
-    }).isRequired,
     scrollOffset: PropTypes.number,
   }
 

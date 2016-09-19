@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import { UserDetailHelmet } from '../helmets/UserDetailHelmet'
 import StreamContainer from '../../containers/StreamContainer'
 import UserContainer from '../../containers/UserContainer'
 import { MainView } from '../views/MainView'
@@ -45,10 +44,8 @@ export const UserDetail = (props) => {
   const zeroProps = {
     isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts, onSubmitHello, user,
   }
-
   return (
     <MainView className="UserDetail">
-      <UserDetailHelmet user={user} />
       <div className="UserDetails">
         <UserContainer {...userListProps} isUserDetail type="list" />
         {tabs ? <TabListButtons {...tabProps} onTabClick={({ type }) => onTabClick(type)} /> : null}
