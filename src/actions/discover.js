@@ -83,7 +83,7 @@ export function loadFeaturedUsers() {
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.usersAsList,
+        asList: StreamRenderables.usersAsGrid,
         asGrid: StreamRenderables.usersAsGrid,
       },
     },

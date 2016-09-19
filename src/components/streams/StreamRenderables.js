@@ -52,16 +52,6 @@ export function usersAsGrid(users) {
   )
 }
 
-export function usersAsList(users) {
-  return (
-    <div className="Users asList">
-      {users.data.map((user) =>
-        <UserContainer user={user} key={`userList_${user.id}`} type="list" />
-      )}
-    </div>
-  )
-}
-
 export function usersAsInviteeList(invitations) {
   return (
     <div className="Users asInviteeList">
