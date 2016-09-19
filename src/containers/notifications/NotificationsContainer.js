@@ -15,6 +15,7 @@ import {
 } from '../../components/notifications/NotificationIcons'
 import { TabListButtons } from '../../components/tabs/TabList'
 import { Paginator } from '../../components/streams/Paginator'
+import Session from '../../vendor/session'
 
 function mapStateToProps(state) {
   const activeTabType = selectActiveNotificationsType(state)
@@ -54,8 +55,14 @@ class NotificationsContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.activeTabType !== this.props.activeTabType && this.scrollContainer) {
-      this.scrollContainer.scrollTop = 0
+    const { activeTabType } = this.props
+    if (this.scrollContainer && prevProps.activeTabType !== activeTabType) {
+      const scrollY = Session.getItem(`/notifications/${activeTabType || 'all'}/scrollY`)
+      if (scrollY) {
+        this.scrollContainer.scrollTop = scrollY
+      } else {
+        this.scrollContainer.scrollTop = 0
+      }
     }
   }
 
@@ -83,6 +90,8 @@ class NotificationsContainer extends Component {
         payload: { activeTabType: type },
       })
     }
+    const pathname = `/notifications/${this.state.activeTabType || 'all'}`
+    Session.setItem(`${pathname}/scrollY`, this.scrollContainer.scrollTop)
     this.setState({ activeTabType: type })
   }
 
@@ -149,11 +158,8 @@ class NotificationsContainer extends Component {
           <StreamContainer
             action={streamAction}
             className="isFullWidth"
-            key={`notificationView_${activeTabType}`}
-            ref={(comp) => { this.streamContainer = comp }}
-            scrollContainer={this.scrollContainer}
-            scrollSessionKey={`notifications_${activeTabType}`}
             isModalComponent
+            key={`notificationView_${activeTabType}`}
           />
         </div>
       </div>

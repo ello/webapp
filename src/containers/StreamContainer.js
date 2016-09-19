@@ -1,13 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { browserHistory } from 'react-router'
 import shallowCompare from 'react-addons-shallow-compare'
 import { debounce, get } from 'lodash'
 import classNames from 'classnames'
-import scrollTop from '../vendor/scrolling'
 import { runningFetches } from '../sagas/requester'
 import * as ACTION_TYPES from '../constants/action_types'
-import { SESSION_KEYS } from '../constants/application_types'
 import {
   selectColumnCount,
   selectHistory,
@@ -17,12 +14,7 @@ import {
 } from '../selectors/gui'
 import { selectPathname } from '../selectors/routing'
 import { findModel } from '../helpers/json_helper'
-import {
-  addScrollObject,
-  addScrollTarget,
-  removeScrollObject,
-  removeScrollTarget,
-} from '../components/viewport/ScrollComponent'
+import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { ElloMark } from '../components/svg/ElloIcons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
@@ -59,7 +51,6 @@ class StreamContainer extends Component {
     columnCount: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    ignoresScrollPosition: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
     innerHeight: PropTypes.number,
     innerWidth: PropTypes.number,
@@ -73,71 +64,39 @@ class StreamContainer extends Component {
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string,
     routerState: PropTypes.object,
-    scrollContainer: PropTypes.object,
-    scrollSessionKey: PropTypes.string,
     stream: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
     paginatorText: 'Loading',
-    ignoresScrollPosition: false,
     isModalComponent: false,
   }
 
   componentWillMount() {
-    const { action, dispatch, omnibar, pathname } = this.props
+    const { action, dispatch, omnibar } = this.props
     if (typeof window !== 'undefined' && action) {
       dispatch(action)
     }
 
-    let browserListen
-    if (browserHistory) {
-      browserListen = browserHistory.listen
-    } else {
-      browserListen = (listener) => {
-        listener({ key: 'testing' })
-        return () => null
-      }
-    }
-    const unlisten = browserListen((location) => {
-      this.state = { action, locationKey: /\/search/.test(pathname) ? '/search' : location.key }
-    })
-    unlisten()
-    this.setScroll = debounce(this.setScroll, 300)
-    this.setScrollTarget = debounce(this.setScrollTarget, 300)
-    this.shouldScroll = true
+    this.state = { action }
     this.wasOmnibarActive = omnibar.isActive
+    this.setScroll = debounce(this.setScroll, 333)
   }
 
   componentDidMount() {
-    const { isModalComponent, routerState, scrollContainer } = this.props
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    if (isModalComponent && scrollContainer) {
-      this.scrollObject = { component: this, element: scrollContainer }
-      addScrollTarget(this.scrollObject)
-    } else if (!isModalComponent) {
+    const { isModalComponent } = this.props
+    if (!isModalComponent) {
       this.scrollObject = this
       addScrollObject(this.scrollObject)
     }
-
-    const shouldScrollToTop = true
-    if (routerState.didComeFromSeeMoreCommentsLink) {
-      this.saveScroll = false
-    } else {
-      this.saveScroll = true
-    }
-    this.attemptToRestoreScroll(shouldScrollToTop)
   }
 
   componentWillReceiveProps(nextProps) {
     const { stream } = nextProps
     const { action } = this.state
-    if (this.props.isModalComponent && !this.props.scrollContainer && nextProps.scrollContainer) {
-      this.scrollObject = { component: this, element: nextProps.scrollContainer }
-      addScrollTarget(this.scrollObject)
-    }
     if (!action) { return }
     if (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.setState({ hidePaginator: true })
@@ -177,19 +136,7 @@ class StreamContainer extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-
-    const { action } = this.state
-    const { innerHeight, stream, omnibar } = this.props
-    const canScroll = document.body.scrollHeight > innerHeight
-    const shouldScroll = this.shouldScroll && (canScroll ||
-      (stream.type === ACTION_TYPES.LOAD_STREAM_SUCCESS &&
-       action && action.payload &&
-       stream.payload.endpoint.path === action.payload.endpoint.path))
-    if (shouldScroll) {
-      if (this.attemptToRestoreScroll()) {
-        this.shouldScroll = false
-      }
-    }
+    const { omnibar } = this.props
     this.wasOmnibarActive = omnibar.isActive
   }
 
@@ -198,16 +145,10 @@ class StreamContainer extends Component {
       window.embetter.stopPlayers()
     }
     removeScrollObject(this.scrollObject)
-    removeScrollTarget(this.scrollObject)
-    this.saveScroll = false
   }
 
   onScroll() {
     this.setScroll()
-  }
-
-  onScrollTarget() {
-    this.setScrollTarget()
   }
 
   onScrollBottom() {
@@ -231,77 +172,10 @@ class StreamContainer extends Component {
   }
 
   setScroll() {
-    if (!this.saveScroll) { return }
-    const { dispatch } = this.props
-    const scrollTopValue = scrollTop(window)
-
-    dispatch({
-      type: ACTION_TYPES.GUI.SET_SCROLL,
-      payload: {
-        key: this.state.locationKey,
-        scrollTop: scrollTopValue,
-      },
-    })
-  }
-
-  setScrollTarget() {
-    if (!this.saveScroll) { return }
-    const { scrollContainer, scrollSessionKey } = this.props
-    let scrollTopValue
-    if (scrollContainer) {
-      scrollTopValue = scrollTop(scrollContainer)
+    const { pathname } = this.props
+    if (/\/notifications\b/.test(pathname)) {
+      Session.setItem(`${pathname}/scrollY`, window.scrollY)
     }
-    if (scrollSessionKey) {
-      const sessionStorageKey = SESSION_KEYS.scrollLocationKey(scrollSessionKey)
-      Session.setItem(sessionStorageKey, scrollTopValue)
-    }
-  }
-
-  attemptToRestoreScroll(fromMount = false) {
-    const { innerHeight, history, routerState, scrollContainer, isModalComponent } = this.props
-    let scrollTopValue = null
-    if (!routerState.didComeFromSeeMoreCommentsLink && !this.props.ignoresScrollPosition) {
-      if (fromMount && !isModalComponent) {
-        window.scrollTo(0, 0)
-        return false
-      }
-
-      this.saveScroll = true
-
-      let sessionScrollLocation = null
-      if (this.props.scrollSessionKey) {
-        const sessionStorageKey = SESSION_KEYS.scrollLocationKey(this.props.scrollSessionKey)
-        sessionScrollLocation = parseInt(Session.getItem(sessionStorageKey), 10)
-      }
-
-      if (sessionScrollLocation !== null) {
-        scrollTopValue = sessionScrollLocation
-      } else if (history[this.state.locationKey]) {
-        const historyObj = history[this.state.locationKey]
-        scrollTopValue = historyObj.scrollTop
-      }
-    } else if (routerState.didComeFromSeeMoreCommentsLink) {
-      this.saveScroll = true
-      scrollTopValue = document.body.scrollHeight - innerHeight
-    }
-
-    if (scrollTopValue) {
-      requestAnimationFrame(() => {
-        if (!this.saveScroll) {
-          return
-        }
-
-        if (isModalComponent) {
-          if (scrollContainer) {
-            scrollContainer.scrollTop = scrollTopValue
-          }
-        } else if (typeof window !== 'undefined') {
-          window.scrollTo(0, scrollTopValue)
-        }
-      })
-      return true
-    }
-    return false
   }
 
   loadPage(rel) {

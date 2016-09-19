@@ -4,8 +4,9 @@ import 'isomorphic-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router, browserHistory } from 'react-router'
+import { applyRouterMiddleware, browserHistory, Router } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import useScroll from 'react-router-scroll/lib/useScroll'
 import { persistStore, storages } from 'redux-persist'
 
 // import './main.sass'
@@ -14,7 +15,7 @@ import { addFeatureDetection, isIOS } from './vendor/jello'
 import { updateStrings as updateTimeAgoStrings } from './vendor/time_ago_in_words'
 import store from './store'
 import createRoutes from './routes'
-import session from './vendor/session'
+import Session from './vendor/session'
 import Honeybadger from './vendor/honeybadger'
 import MemoryStore from './vendor/memory_store'
 
@@ -28,6 +29,13 @@ if (isIOS()) {
 }
 /* eslint-enable global-require */
 
+function shouldScroll(prevRouterProps, { location }) {
+  const notificationScrollY = Session.getItem(`${location.pathname}/scrollY`)
+  if (/\/notifications\b/.test(location.pathname) && notificationScrollY) {
+    return [0, notificationScrollY]
+  }
+  return location.action !== 'REPLACE'
+}
 
 // ONLY FOR PERFORMANCE TESTING!
 // if (process.env.NODE_ENV !== 'production') {
@@ -50,7 +58,11 @@ const history = syncHistoryWithStore(browserHistory, store)
 const routes = createRoutes(store)
 const element = (
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <Router
+      history={history}
+      render={applyRouterMiddleware(useScroll(shouldScroll))}
+      routes={routes}
+    />
   </Provider>
 )
 
@@ -69,14 +81,14 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   if (hasLocalStorage) {
     if (localStorage.getItem('APP_VERSION') !== APP_VERSION) {
       persistor.purge(['json'])
-      session.clear()
+      Session.clear()
       storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }
   } else {
     storage.getItem('APP_VERSION', (error, result) => {
       if (result && result !== APP_VERSION) {
         persistor.purge(['json'])
-        session.clear()
+        Session.clear()
         storage.setItem('APP_VERSION', APP_VERSION, () => {})
       }
     })

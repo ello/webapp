@@ -161,9 +161,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
       return { ...state, lastFollowingBeaconVersion: action.payload.version }
     case GUI.SET_LAST_STARRED_BEACON_VERSION:
       return { ...state, lastStarredBeaconVersion: action.payload.version }
-    case GUI.SET_SCROLL:
-      newState.history[action.payload.key] = { ...action.payload }
-      return newState
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
       return { ...state, ...action.payload }
     case GUI.TOGGLE_NOTIFICATIONS:
