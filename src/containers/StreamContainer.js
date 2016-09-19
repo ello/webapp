@@ -56,6 +56,7 @@ class StreamContainer extends Component {
     innerWidth: PropTypes.number,
     isGridMode: PropTypes.bool,
     isModalComponent: PropTypes.bool,
+    isPostHeaderHidden: PropTypes.bool,
     json: PropTypes.object.isRequired,
     omnibar: PropTypes.object,
     paginatorText: PropTypes.string,
@@ -249,7 +250,7 @@ class StreamContainer extends Component {
   }
 
   render() {
-    const { className, columnCount, initModel, isGridMode, json,
+    const { className, columnCount, initModel, isGridMode, isPostHeaderHidden, json,
       paginatorText, renderObj, result, stream } = this.props
     const { action, hidePaginator } = this.state
     if (!action) { return null }
@@ -276,7 +277,7 @@ class StreamContainer extends Component {
     const pagination = result.pagination
     return (
       <section className={classNames('StreamContainer', className)}>
-        {meta.renderStream[renderMethod](renderObj, columnCount)}
+        {meta.renderStream[renderMethod](renderObj, columnCount, isPostHeaderHidden)}
         {this.props.children}
         <Paginator
           hasShowMoreButton={

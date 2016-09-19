@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 import shallowCompare from 'react-addons-shallow-compare'
 import { get } from 'lodash'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -92,6 +93,7 @@ class PostContainer extends Component {
     isGridMode: PropTypes.bool,
     isOnFeaturedCategory: PropTypes.bool,
     isPostDetail: PropTypes.bool,
+    isPostHeaderHidden: PropTypes.bool,
     isRepost: PropTypes.bool,
     isReposting: PropTypes.bool,
     post: PropTypes.object,
@@ -121,6 +123,7 @@ class PostContainer extends Component {
       isGridMode,
       isOnFeaturedCategory,
       isPostDetail,
+      isPostHeaderHidden,
       isRepost,
       isReposting,
       post,
@@ -138,6 +141,8 @@ class PostContainer extends Component {
       const { authorLinkObject } = this.props
       const reProps = { post, repostAuthor: authorLinkObject, repostedBy: author }
       postHeader = <RepostHeader {...reProps} />
+    } else if (isPostHeaderHidden) {
+      postHeader = null
     } else if (isOnFeaturedCategory && categoryName && categoryPath) {
       const catProps = { post, author, categoryName, categoryPath }
       postHeader = <CategoryHeader {...catProps} />
@@ -147,7 +152,7 @@ class PostContainer extends Component {
 
     const isRepostAnimating = isReposting && !postBody
     return (
-      <div className="Post">
+      <div className={classNames('Post', { isPostHeaderHidden: isPostHeaderHidden && !isRepost })}>
         {postHeader}
         {showEditor ?
           <Editor post={post} /> :
