@@ -1,10 +1,9 @@
 language: node_js
-rvm:
-- 2.3.1
 before_install:
 - cp .env.example .env
 script:
 - npm test
+- rvm use 2.3.1
 - gem install danger
 - danger
 notifications:
