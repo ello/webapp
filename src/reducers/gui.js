@@ -41,7 +41,16 @@ const NO_LAYOUT_TOOLS = [
   /^\/notifications\b/,
   /^\/settings\b/,
   /^\/onboarding\b/,
+  /^\/[\w\-]+\/following\b/,
+  /^\/[\w\-]+\/followers\b/,
 ]
+
+function getIsLayoutToolHidden() {
+  const pathname = location.pathname
+  const locationType = get(location, 'query.type')
+  const isUserSearch = locationType === 'users' && /^\/search\b/.test(pathname)
+  return isUserSearch || NO_LAYOUT_TOOLS.some(pagex => pagex.test(pathname))
+}
 
 export const findLayoutMode = (modes) => {
   for (const mode of modes) {
@@ -181,11 +190,11 @@ export const gui = (state = initialState, action = { type: '' }) => {
         }
       }
       return state
-    case LOCATION_CHANGE:
+    case LOCATION_CHANGE: {
       location = action.payload
       pathname = location.pathname
       isAuthenticationView = AUTHENTICATION_WHITELIST.some(pagex => pagex.test(pathname))
-      isLayoutToolHidden = NO_LAYOUT_TOOLS.some(pagex => pagex.test(pathname))
+      isLayoutToolHidden = getIsLayoutToolHidden(location)
       isOnboardingView = ONBOARDING_WHITELIST.some(pagex => pagex.test(pathname))
       if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
@@ -206,6 +215,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
         isGridMode: getIsGridMode(state.modes),
         isOnboardingView,
       }
+    }
     case OMNIBAR.OPEN:
     case OMNIBAR.CLOSE:
       return { ...state, isOmnibarActive: action.payload.isActive }

@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectUserFromPropsUserId } from '../selectors/user'
-import { UserAvatar, UserCompact, UserGrid,
-  UserList, UserProfile } from '../components/users/UserRenderables'
+import { UserAvatar, UserCompact, UserGrid, UserProfile } from '../components/users/UserRenderables'
 import MessageDialog from '../components/dialogs/MessageDialog'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
@@ -39,7 +38,6 @@ class UserContainer extends Component {
     lovesCount: PropTypes.number,
     postsCount: PropTypes.number,
     relationshipPriority: PropTypes.string,
-    showBlockMuteButton: PropTypes.bool,
     type: PropTypes.oneOf([
       'avatar',
       'compact',
@@ -47,7 +45,6 @@ class UserContainer extends Component {
       'profile',
       'list',
     ]).isRequired,
-    useGif: PropTypes.bool,
     user: PropTypes.object,
   }
 
@@ -98,7 +95,7 @@ class UserContainer extends Component {
   }
 
   render() {
-    const { className, isLoggedIn, showBlockMuteButton, type, user, useGif } = this.props
+    const { className, isLoggedIn, type, user } = this.props
     switch (type) {
       case 'avatar':
         return <UserAvatar user={user} />
@@ -111,18 +108,6 @@ class UserContainer extends Component {
           <UserProfile
             onClickHireMe={isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal}
             onClickShareProfile={this.onClickShareProfile}
-            user={user}
-          />
-        )
-      case 'list':
-        return (
-          <UserList
-            className={className}
-            isLoggedIn={isLoggedIn}
-            onClickHireMe={isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal}
-            onClickShareProfile={this.onClickShareProfile}
-            showBlockMuteButton={showBlockMuteButton}
-            useGif={useGif}
             user={user}
           />
         )
