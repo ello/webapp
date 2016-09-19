@@ -49,6 +49,7 @@ export function mapStateToProps(state, props) {
   const user = selectUserFromUsername(state, props)
   const activeUserFollowingType = selectActiveUserFollowingType(state)
   const isLoggedIn = selectIsLoggedIn(state)
+  const isPostHeaderHidden = type !== 'loves'
   const isSelf = isLoggedIn && user ? user.relationshipPriority === 'self' : false
   const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
   const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
@@ -57,6 +58,7 @@ export function mapStateToProps(state, props) {
   return {
     activeUserFollowingType,
     isLoggedIn,
+    isPostHeaderHidden,
     isSelf,
     hasZeroFollowers: user ? user.followersCount < 1 : false,
     hasZeroPosts: user ? user.postsCount < 1 : false,
@@ -76,6 +78,7 @@ class UserDetailContainer extends Component {
     activeUserFollowingType: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    isPostHeaderHidden: PropTypes.bool,
     isSelf: PropTypes.bool.isRequired,
     hasSaidHelloTo: PropTypes.bool.isRequired,
     hasZeroFollowers: PropTypes.bool.isRequired,
@@ -128,7 +131,7 @@ class UserDetailContainer extends Component {
 
   render() {
     const { activeUserFollowingType, dispatch, streamAction, tabs, user, viewKey } = this.props
-    const { isLoggedIn, isSelf } = this.props
+    const { isLoggedIn, isPostHeaderHidden, isSelf } = this.props
     const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = this.props
     const { isStreamFailing } = this.state
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
@@ -144,6 +147,7 @@ class UserDetailContainer extends Component {
     const props = {
       activeType: activeUserFollowingType,
       isLoggedIn,
+      isPostHeaderHidden,
       isSelf,
       hasSaidHelloTo,
       hasZeroFollowers,

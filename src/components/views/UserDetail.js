@@ -32,13 +32,14 @@ ZeroStates.propTypes = {
 
 export const UserDetail = (props) => {
   // deconstruct props
-  const { isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = props
+  const { isLoggedIn, isPostHeaderHidden, isSelf } = props
+  const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = props
   const { activeType, onSubmitHello, onTabClick, streamAction, tabs, user } = props
   // const useGif = user.viewsAdultContent || !user.postsAdultContent
 
   // construct component props
   const tabProps = { activeType, className: 'LabelTabList', tabClasses: 'LabelTab', tabs }
-  const streamProps = { action: streamAction, isUserDetail: true }
+  const streamProps = { action: streamAction, isPostHeaderHidden }
   const zeroProps = {
     isLoggedIn, isSelf, hasSaidHelloTo, hasZeroFollowers, hasZeroPosts, onSubmitHello, user,
   }
@@ -56,6 +57,7 @@ export const UserDetail = (props) => {
 UserDetail.propTypes = {
   activeType: PropTypes.string,
   isLoggedIn: PropTypes.bool.isRequired,
+  isPostHeaderHidden: PropTypes.bool,
   isSelf: PropTypes.bool.isRequired,
   hasSaidHelloTo: PropTypes.bool.isRequired,
   hasZeroFollowers: PropTypes.bool.isRequired,
