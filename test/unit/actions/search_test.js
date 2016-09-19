@@ -1,7 +1,7 @@
 import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/search'
 import {
-  postsAsGrid, postsAsList, usersAsGrid, usersAsList,
+  postsAsGrid, postsAsList, usersAsGrid,
 } from '../../../src/components/streams/StreamRenderables'
 
 describe('search actions', () => {
@@ -67,7 +67,7 @@ describe('search actions', () => {
     })
 
     it('has asList, asGrid and asZero properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(usersAsList)
+      expect(action.meta.renderStream.asList).to.equal(usersAsGrid)
       expect(action.meta.renderStream.asGrid).to.equal(usersAsGrid)
       expect(action.meta.renderStream.asZero).to.exist
     })

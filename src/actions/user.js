@@ -65,7 +65,7 @@ export function loadUserFollowing(username, priority) {
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.usersAsList,
+        asList: StreamRenderables.usersAsGrid,
         asGrid: StreamRenderables.usersAsGrid,
       },
       resultKey: `/${username}/following?per_page=10&priority=${priority}`,
@@ -79,7 +79,7 @@ export function loadUserUsers(username, type) {
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.usersAsList,
+        asList: StreamRenderables.usersAsGrid,
         asGrid: StreamRenderables.usersAsGrid,
       },
     },
