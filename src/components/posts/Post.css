@@ -9,6 +9,10 @@
   margin-bottom: 20px;
 }
 
+.Post.isPostHeaderHidden {
+  padding-top: 15px;
+}
+
 .Column {
   display: inline-block;
   width: calc(50% - 20px);
