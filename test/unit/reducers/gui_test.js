@@ -155,17 +155,6 @@ describe('gui reducer', () => {
       expect(reducer(undefined, action)).to.have.property('lastStarredBeaconVersion', '667')
     })
 
-    it('GUI.SET_SCROLL', () => {
-      const initialState = reducer(undefined, {})
-      expect(initialState.history).to.be.empty
-      const action1 = { type: GUI.SET_SCROLL, payload: { key: '1', scrollTop: 0 } }
-      const nextState = reducer(initialState, action1)
-      expect(nextState.history['1']).to.deep.equal(action1.payload)
-      const action2 = { type: GUI.SET_SCROLL, payload: { key: '2', scrollTop: 800 } }
-      const lastState = reducer(nextState, action2)
-      expect(lastState.history['2']).to.deep.equal({ ...action1.payload, ...action2.payload })
-    })
-
     it('GUI.SET_IS_NAVBAR_HIDDEN updates properties from the initialScrollState', () => {
       const initialState = reducer(undefined, {})
       expect(initialState).to.have.property('isNavbarHidden', false)
