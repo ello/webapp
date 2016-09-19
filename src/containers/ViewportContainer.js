@@ -78,8 +78,10 @@ class ViewportContainer extends Component {
   }
 
   onScrollTop() {
-    const { dispatch } = this.props
-    dispatch(setIsNavbarHidden({ isHidden: false }))
+    const { dispatch, isNavbarHidden } = this.props
+    if (isNavbarHidden) {
+      dispatch(setIsNavbarHidden({ isHidden: false }))
+    }
   }
 
   onScroll({ scrollDirection, scrollY }) {
