@@ -51,6 +51,6 @@ export const selectHasSaidHelloTo = createSelector(
 )
 
 export const selectScrollOffset = createSelector(
-  [selectInnerHeight], (innerHeight) => Math.round(innerHeight - 80)
+  [selectInnerHeight], innerHeight => Math.round(innerHeight - 80)
 )
 

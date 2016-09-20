@@ -56,11 +56,6 @@ export const UserDetail = (props) => {
 
 UserDetail.propTypes = {
   activeType: PropTypes.string,
-  coverDPI: PropTypes.string,
-  coverImage: PropTypes.object,
-  coverOffset: PropTypes.number,
-  isCoverActive: PropTypes.bool.isRequired,
-  isCoverHidden: PropTypes.bool,
   isLoggedIn: PropTypes.bool.isRequired,
   isPostHeaderHidden: PropTypes.bool,
   isSelf: PropTypes.bool.isRequired,

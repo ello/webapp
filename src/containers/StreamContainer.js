@@ -50,10 +50,7 @@ class StreamContainer extends Component {
     className: PropTypes.string,
     columnCount: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
     initModel: PropTypes.object,
-    innerHeight: PropTypes.number,
-    innerWidth: PropTypes.number,
     isGridMode: PropTypes.bool,
     isModalComponent: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
@@ -64,7 +61,6 @@ class StreamContainer extends Component {
     renderObj: PropTypes.object.isRequired,
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string,
-    routerState: PropTypes.object,
     stream: PropTypes.object.isRequired,
   }
 

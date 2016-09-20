@@ -75,9 +75,6 @@ export function mapStateToProps(state, props) {
 class UserDetailContainer extends Component {
   static propTypes = {
     activeUserFollowingType: PropTypes.string,
-    coverDPI: PropTypes.string,
-    coverImage: PropTypes.object,
-    coverOffset: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isPostHeaderHidden: PropTypes.bool,
