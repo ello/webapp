@@ -256,14 +256,13 @@ UserDrawer.propTypes = {
 }
 
 // -----------------
-// TODO: Set the regular size for mobile layouts
 
-export const UserProfileCard = ({ user, onClickHireMe }) =>
+export const UserProfileCard = ({ isMobile, onClickHireMe, user }) =>
   <div className="UserProfileCard" >
     <Avatar
       className="inUserProfileCard"
       priority={user.relationshipPriority}
-      size="large"
+      size={isMobile ? 'regular' : 'large'}
       sources={user.avatar}
       to={`/${user.username}`}
       userId={`${user.id}`}
@@ -271,7 +270,7 @@ export const UserProfileCard = ({ user, onClickHireMe }) =>
     />
     <UserProfileButtons
       className="inUserProfileCard"
-      onClickHireMe={!user.isHireable ? onClickHireMe : null}
+      onClickHireMe={user.isHireable ? onClickHireMe : null}
     >
       <RelationshipContainer
         className="isPill inUserProfileCard"
@@ -292,10 +291,12 @@ export const UserProfileCard = ({ user, onClickHireMe }) =>
       postsCount={user.postsCount}
       username={user.username}
     />
-    <UserInfoCell
-      className="inUserProfileCard"
-      shortBio={user.formattedShortBio}
-    />
+    { !isMobile ?
+      <UserInfoCell
+        className="inUserProfileCard"
+        shortBio={user.formattedShortBio}
+      /> : null
+    }
     <BackgroundImage
       className="hasOverlay inUserProfileCard"
       coverImage={user.coverImage}
@@ -304,8 +305,9 @@ export const UserProfileCard = ({ user, onClickHireMe }) =>
   </div>
 
 UserProfileCard.propTypes = {
-  user: PropTypes.object,
+  isMobile: PropTypes.bool,
   onClickHireMe: PropTypes.func,
+  user: PropTypes.object,
 }
 
 // -----------------
