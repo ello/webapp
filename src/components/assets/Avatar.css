@@ -15,11 +15,10 @@
 }
 
 .Avatar.inUserProfile {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 180px;
   height: 180px;
+  margin-top: 100px;
+  margin-bottom: 15px;
   background-color: transparent;
 }
 
@@ -118,8 +117,13 @@
   }
 
   .Avatar.inUserProfile {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 260px;
     height: 260px;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   .Avatar.inUserProfileCard {
