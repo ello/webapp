@@ -108,12 +108,9 @@
 
 @import "components/uploaders/Uploader.css";
 
-@import "components/users/UserAvatar.css";
-@import "components/users/UserCard.css";
-@import "components/users/UserCompact.css";
-@import "components/users/UserDrawer.css";
+@import "components/users/UserParts.css";
 @import "components/users/UserInvitee.css";
-@import "components/users/UserProfile.css";
+@import "components/users/UserRenderables.css";
 
 @import "components/viewport/Viewport.css";
 

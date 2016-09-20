@@ -69,8 +69,8 @@ export function loadCommunities() {
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
-        asList: StreamRenderables.usersAsCards,
-        asGrid: StreamRenderables.usersAsCards,
+        asList: StreamRenderables.usersAsGrid,
+        asGrid: StreamRenderables.usersAsGrid,
       },
     },
   }
