@@ -37,6 +37,14 @@
   text-rendering: optimizeLegibility; /* stylelint-disable-line */
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: uppercase;
+}
+
 .truncate {
   max-width: 100%;
   overflow: hidden;

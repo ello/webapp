@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import { createSelector } from 'reselect'
 import shallowCompare from 'react-addons-shallow-compare'
+import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
@@ -177,26 +178,34 @@ class RelationshipContainer extends Component {
     const { className, relationshipPriority, userId } = this.props
     const { onClickCallback, shouldRenderBlockMute } = this.props
     return (
-      <div className="RelationshipContainer" data-priority={relationshipPriority}>
+      <div
+        className={classNames('RelationshipContainer', className)}
+        data-priority={relationshipPriority}
+      >
         {shouldRenderBlockMute ?
           <BlockMuteButton
+            className={className}
             onClick={this.onOpenBlockMuteModal}
             priority={relationshipPriority}
             userId={userId}
           /> : null
         }
-        <RelationshipButton
-          className={className}
-          onClick={this[onClickCallback]}
-          priority={relationshipPriority}
-          userId={userId}
-        />
-        <StarshipButton
-          className={className}
-          onClick={this[onClickCallback]}
-          priority={relationshipPriority}
-          userId={userId}
-        />
+        {!shouldRenderBlockMute ?
+          <RelationshipButton
+            className={className}
+            onClick={this[onClickCallback]}
+            priority={relationshipPriority}
+            userId={userId}
+          /> : null
+        }
+        {!shouldRenderBlockMute ?
+          <StarshipButton
+            className={className}
+            onClick={this[onClickCallback]}
+            priority={relationshipPriority}
+            userId={userId}
+          /> : null
+        }
       </div>
     )
   }

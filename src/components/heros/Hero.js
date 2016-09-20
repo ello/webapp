@@ -2,10 +2,7 @@ import React, { PropTypes } from 'react'
 import Promotion from '../assets/Promotion'
 import { ZeroStream } from '../zeros/Zeros'
 import UserContainer from '../../containers/UserContainer'
-
-const styles = {
-  backgroundColor: 'white',
-}
+import BackgroundImage from '../assets/BackgroundImage'
 
 const Hero = ({
   broadcast,
@@ -18,8 +15,7 @@ const Hero = ({
   promotion,
   user,
 }) =>
-  <div className="Hero" style={{ ...styles }}>
-    <div style={{ height: 80 }} />
+  <div className="Hero" >
     { broadcast ?
       <ZeroStream onDismiss={onDismissZeroStream}>{broadcast}</ZeroStream> : null
     }
@@ -32,10 +28,12 @@ const Hero = ({
       /> : null
     }
     { hasCoverProfile && user ?
-      <div
-        className="FakeCover"
-        style={{ backgroundImage: `url(${user.coverImage[coverDPI].url})` }}
-      >
+      <div className="FakeCover">
+        <BackgroundImage
+          className="hasOverlay inHero"
+          coverImage={user.coverImage}
+          to={`/${user.username}`}
+        />
         <UserContainer user={user} type="profile" />
       </div> : null
     }

@@ -7,10 +7,11 @@
   overflow: hidden;
   font-size: 0.75rem;
   line-height: 30px;
+  color: #fff;
   text-align: center;
   white-space: nowrap;
-  background-color: #fff;
-  border: 1px solid #000;
+  background-color: #00d101;
+  border: 1px solid #00d101;
   border-radius: 15px;
   transition:
     background-color var(--speed) var(--ease),
@@ -22,15 +23,15 @@
 
 .no-touch .RelationshipButton:hover {
   color: #fff;
-  background-color: #aaa;
-  border-color: #aaa;
+  background-color: #000;
+  border-color: #000;
 }
 
 .RelationshipButton[data-priority="friend"],
 .RelationshipButton[data-priority="noise"] {
   color: #fff;
-  background-color: #000;
-  border-color: #000;
+  background-color: #aaa;
+  border-color: #aaa;
 }
 
 .RelationshipButton[data-priority="block"],
@@ -50,8 +51,17 @@
   margin-top: -4px;
 }
 
-/* // ------------------------------------- */
-/* // Within post and repost headers... */
+/* -------------------------------------
+Within UserProfiles...  */
+
+.RelationshipContainer.inUserProfileCard,
+.RelationshipContainer.inUserProfile {
+  display: inline-block;
+}
+
+/* -------------------------------------
+Within post and repost headers...  */
+
 .RelationshipButton.isInHeader {
   width: 20px;
   height: 20px;
