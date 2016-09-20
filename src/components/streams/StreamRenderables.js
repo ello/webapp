@@ -6,7 +6,6 @@ import PostContainer from '../../containers/PostContainer'
 import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
 import UserContainer from '../../containers/UserContainer'
-import UserCard from '../users/UserCard'
 import UserInvitee from '../users/UserInvitee'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
@@ -25,16 +24,6 @@ export function categoriesAsGrid(categories) {
         >
           <span className="CategoryLinkName">{category.name}</span>
         </Link>
-      )}
-    </div>
-  )
-}
-
-export function usersAsCards(users) {
-  return (
-    <div className="Cards">
-      {users.data.map(user =>
-        <UserCard user={user} key={`userCard_${user.id}`} />
       )}
     </div>
   )
