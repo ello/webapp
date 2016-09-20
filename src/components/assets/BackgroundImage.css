@@ -9,17 +9,20 @@
   bottom: 0;
   left: 0;
   z-index: 0;
+  overflow: hidden;
   background: rgba(0, 0, 0, 0.2) no-repeat 50% 50%;
   background-size: cover;
   transition: background-color var(--speed) ease, opacity var(--speed2) ease;
 }
 
-.BackgroundImage.inHero,
-.BackgroundImage.inUserProfileCard {
-  min-height: 540px;
+.BackgroundImage.inHero {
+  height: 220px;
 }
 
-/* The animation lives in global.sass :( */
+.BackgroundImage.inUserProfileCard {
+  height: 250px;
+}
+
 .BackgroundImage.isRequesting {
   animation: animateLavaLamp 3s infinite linear;
 }
@@ -57,6 +60,17 @@
 
 .BackgroundImage.hasOverlay::before {
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+@media (--break-2) {
+  .BackgroundImage.inHero {
+    height: auto;
+  }
+
+  .BackgroundImage.inUserProfileCard {
+    height: auto;
+    min-height: 540px;
+  }
 }
 
 /* .AnimatedCover { */

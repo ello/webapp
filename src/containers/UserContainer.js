@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectDeviceSize } from '../selectors/gui'
 import { selectUserFromPropsUserId } from '../selectors/user'
 import {
   UserAvatar,
@@ -20,10 +21,12 @@ import { getElloPlatform } from '../vendor/jello'
 
 export function mapStateToProps(state, props) {
   const user = selectUserFromPropsUserId(state, props)
+  const deviceSize = selectDeviceSize(state)
   return {
     followersCount: user.followersCount,
     followingCount: user.followingCount,
     isLoggedIn: selectIsLoggedIn(state),
+    isMobile: deviceSize === 'mobile',
     lovesCount: user.lovesCount,
     postsCount: user.postsCount,
     relationshipPriority: user.relationshipPriority,
@@ -40,6 +43,7 @@ class UserContainer extends Component {
     followingCount: PropTypes.number,
     followersCount: PropTypes.number,
     isLoggedIn: PropTypes.bool,
+    isMobile: PropTypes.bool,
     lovesCount: PropTypes.number,
     postsCount: PropTypes.number,
     relationshipPriority: PropTypes.string,
@@ -100,7 +104,7 @@ class UserContainer extends Component {
   }
 
   render() {
-    const { className, isLoggedIn, type, user } = this.props
+    const { className, isLoggedIn, isMobile, type, user } = this.props
     const onHireMeFunc = isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
     switch (type) {
       case 'avatar':
@@ -110,6 +114,7 @@ class UserContainer extends Component {
       case 'grid':
         return (
           <UserProfileCard
+            isMobile={isMobile}
             onClickHireMe={onHireMeFunc}
             user={user}
           />
