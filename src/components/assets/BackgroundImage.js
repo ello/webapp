@@ -26,9 +26,6 @@ export function getSource(props) {
 export default class BackgroundImage extends Component {
   static propTypes = {
     className: PropTypes.string,
-    coverDPI: PropTypes.string,
-    coverImage: PropTypes.object,
-    useGif: PropTypes.bool,
   }
 
   static defaultProps = {

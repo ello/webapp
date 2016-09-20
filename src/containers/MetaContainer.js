@@ -22,7 +22,7 @@ import {
 } from '../selectors/user'
 
 const selectMetaPageType = createSelector(
-  [selectViewNameFromRoute], (viewName) =>
+  [selectViewNameFromRoute], viewName =>
     (viewName === 'postDetail' || viewName === 'userDetail' ? `${viewName}Tags` : 'defaultTags')
 )
 
@@ -52,10 +52,7 @@ class MetaContainer extends Component {
     pathname: PropTypes.string,
     postMetaCanonicalUrl: PropTypes.string,
     postMetaDescription: PropTypes.string,
-    postMetaImages: PropTypes.shape({
-      openGraphImages: PropTypes.array.isRequired,
-      schemaImages: PropTypes.array.isRequired,
-    }),
+    postMetaImages: PropTypes.object,
     postMetaRobots: PropTypes.string,
     postMetaTitle: PropTypes.string,
     postMetaUrl: PropTypes.string,

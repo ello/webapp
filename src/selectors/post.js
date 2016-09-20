@@ -87,7 +87,7 @@ export const selectPostTextContent = createSelector(
 )
 
 export const selectPostMetaDescription = createSelector(
-  [selectPostTextContent], (text) =>
+  [selectPostTextContent], text =>
     (text && text.length ? text : 'Discover more amazing work like this on Ello.')
 )
 

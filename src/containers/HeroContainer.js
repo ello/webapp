@@ -28,12 +28,12 @@ const PROMOTION_ROUTES = [
 ]
 
 export const selectHasPromotion = createSelector(
-  [selectPathname], (pathname) =>
-    (pathname === '/' || PROMOTION_ROUTES.some((route) => route.test(pathname)))
+  [selectPathname], pathname =>
+    (pathname === '/' || PROMOTION_ROUTES.some(route => route.test(pathname)))
 )
 
 export const selectHasCoverProfile = createSelector(
-  [selectViewNameFromRoute], (viewName) => viewName === 'userDetail'
+  [selectViewNameFromRoute], viewName => viewName === 'userDetail'
 )
 
 export const selectBroadcast = createSelector(
@@ -74,7 +74,6 @@ class HeroContainer extends Component {
     hasPromotion: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
-    promotions: PropTypes.array,
     user: PropTypes.object,
     viewName: PropTypes.string.isRequired,
   }
