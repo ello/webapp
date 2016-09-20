@@ -13,8 +13,14 @@
 
 .StarshipButton[data-priority="noise"] .StarIcon > g,
 .no-touch .StarshipButton:hover > .StarIcon > g {
-  fill: #000;
-  stroke: #000;
+  fill: #aaa;
+  stroke: #aaa;
+}
+
+.StarshipButton.inUserProfileCard,
+.StarshipButton.inUserProfile {
+  position: absolute;
+  margin-right: -15px;
 }
 
 .StarshipButton.isInHeader {

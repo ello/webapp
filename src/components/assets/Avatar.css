@@ -14,6 +14,22 @@
   transition: transform var(--speed) var(--ease);
 }
 
+.Avatar.inUserProfile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 180px;
+  background-color: transparent;
+}
+
+.Avatar.inUserProfileCard {
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+}
+
 .Avatar.isXLarge {
   width: 220px;
   height: 220px;
@@ -99,6 +115,16 @@
   .Avatar {
     width: 40px;
     height: 40px;
+  }
+
+  .Avatar.inUserProfile {
+    width: 260px;
+    height: 260px;
+  }
+
+  .Avatar.inUserProfileCard {
+    width: 200px;
+    height: 200px;
   }
 
   .Avatar.isLarge {

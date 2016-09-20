@@ -5,14 +5,20 @@
   height: 30px;
 }
 
+.BlockMuteButton.inUserProfile {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .BlockMuteButton > .DotsIcon > g {
-  fill: #aaa;
+  fill: #fff;
   stroke: transparent;
 }
 
 /* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
 .no-touch .BlockMuteButton:hover > .DotsIcon > g {
-  fill: #000;
+  fill: var(--color-danger);
 }
 /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 
