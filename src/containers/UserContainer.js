@@ -52,7 +52,6 @@ class UserContainer extends Component {
       'compact',
       'grid',
       'profile',
-      'list',
     ]).isRequired,
     user: PropTypes.object,
   }
