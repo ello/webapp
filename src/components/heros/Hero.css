@@ -1,0 +1,34 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable no-unsupported-browser-features */
+
+.Hero {
+  padding-top: 85px;
+  background-color: #fff;
+}
+
+/* TODO: Rename this */
+.FakeCover {
+  position: relative;
+  display: flex;
+  height: calc(100vh - 80px);
+  min-height: 540px;
+}
+
+.isOnboardingView ~ .Hero,
+.isAuthenticationView ~ .Hero {
+  padding-top: 0 !important;
+}
+
+@media (--break-2-max) {
+  .isLoggedOut .Hero {
+    padding-top: 50px;
+  }
+}
+
+@media (--break-2) {
+  .Hero {
+    padding-top: 80px;
+  }
+}
+

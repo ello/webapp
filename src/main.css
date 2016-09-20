@@ -5,6 +5,7 @@
 /* A, B, C, D, E, F... */
 @import "components/assets/AppStores.css";
 @import "components/assets/Avatar.css";
+@import "components/assets/BackgroundImage.css";
 @import "components/assets/Cover.css";
 @import "components/assets/CoverMini.css";
 @import "components/assets/Credits.css";
@@ -56,6 +57,8 @@
 @import "components/forms/Preference.css";
 @import "components/forms/RegistrationRequestForm.css";
 @import "components/forms/ToggleControl.css";
+
+@import "components/heros/Hero.css";
 
 @import "components/hints/Hint.css";
 
@@ -109,10 +112,8 @@
 @import "components/users/UserCard.css";
 @import "components/users/UserCompact.css";
 @import "components/users/UserDrawer.css";
-@import "components/users/UserGrid.css";
 @import "components/users/UserInvitee.css";
 @import "components/users/UserProfile.css";
-@import "components/users/UserVitals.css";
 
 @import "components/viewport/Viewport.css";
 

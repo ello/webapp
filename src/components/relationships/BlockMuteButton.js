@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react'
+import classNames from 'classnames'
 import Hint from '../hints/Hint'
 import { DotsIcon } from '../relationships/RelationshipIcons'
 
-const BlockMuteButton = ({ onClick }) =>
+const BlockMuteButton = ({ className, onClick }) =>
   <button
-    className="BlockMuteButton"
+    className={classNames('BlockMuteButton', className)}
     onClick={onClick}
   >
     <DotsIcon />
@@ -12,6 +13,7 @@ const BlockMuteButton = ({ onClick }) =>
   </button>
 
 BlockMuteButton.propTypes = {
+  className: PropTypes.string,
   onClick: PropTypes.func,
 }
 

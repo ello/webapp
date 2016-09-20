@@ -30,8 +30,6 @@ export function categoriesAsGrid(categories) {
   )
 }
 
-// TODO: convert these into react components (@see UserVitals)
-// to hopefully get better errors out of rendering streams
 export function usersAsCards(users) {
   return (
     <div className="Cards">
