@@ -44,7 +44,7 @@ export const selectUserMetaDescription = createSelector(
 )
 
 export const selectUserMetaImage = createSelector(
-  [selectUserFromUsername], (user) =>
+  [selectUserFromUsername], user =>
     get(user, 'coverImage.optimized.url', null)
 )
 

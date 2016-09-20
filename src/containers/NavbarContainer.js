@@ -69,9 +69,7 @@ class NavbarContainer extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     isNotificationsActive: PropTypes.bool,
     pathname: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      type: PropTypes.string,
-    }).isRequired,
+    params: PropTypes.object.isRequired,
   }
 
   componentWillMount() {

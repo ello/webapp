@@ -25,9 +25,6 @@ export function getSource(props) {
 
 export default class Cover extends Component {
   static propTypes = {
-    isHidden: PropTypes.bool,
-    coverDPI: PropTypes.string,
-    coverImage: PropTypes.object,
     modifiers: PropTypes.string,
   }
 
