@@ -120,7 +120,7 @@ export function watchPost(post) {
       model: post,
     },
     meta: {
-      mappingType: MAPPING_TYPES.WATCH,
+      mappingType: MAPPING_TYPES.WATCHES,
       resultKey: `/posts/${post.id}/watch`,
       updateKey: `/posts/${post.id}/`,
     },

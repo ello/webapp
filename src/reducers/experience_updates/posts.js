@@ -82,6 +82,27 @@ methods.updatePostLoves = (state, newState, action) => {
   return newState
 }
 
+methods.updatePostWatch = (state, newState, action) => {
+  const { method, model } = action.payload
+  const newPost = {
+    id: model ? model.id : '',
+    watching: method === 'POST',
+  }
+  if (action.type === ACTION_TYPES.POST.WATCH_FAILURE) {
+    if (method === 'POST') {
+      newPost.watching = false
+    } else {
+      newPost.watching = true
+    }
+  }
+  jsonReducer.methods.mergeModel(
+    newState,
+    MAPPING_TYPES.POSTS,
+    newPost
+  )
+  return newState
+}
+
 methods.addOrUpdatePost = (newState, action) => {
   const { model, response } = action.payload
   const user = model ?

@@ -357,6 +357,10 @@ export default function json(state = {}, action = { type: '' }) {
     case ACTION_TYPES.POST.LOVE_SUCCESS:
     case ACTION_TYPES.POST.LOVE_FAILURE:
       return postMethods.updatePostLoves(state, newState, action)
+    case ACTION_TYPES.POST.WATCH_REQUEST:
+    case ACTION_TYPES.POST.WATCH_SUCCESS:
+    case ACTION_TYPES.POST.WATCH_FAILURE:
+      return postMethods.updatePostWatch(state, newState, action)
     case ACTION_TYPES.PROFILE.LOAD_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS:
     case ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS:

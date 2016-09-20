@@ -15,4 +15,5 @@ export const POSTS = 'posts'
 export const RELATIONSHIPS = 'relationships'
 export const SETTINGS = 'settings'
 export const USERS = 'users'
+export const WATCHES = 'watches'
 
