@@ -11,8 +11,7 @@
 .FakeCover {
   position: relative;
   display: flex;
-  height: calc(100vh - 80px);
-  min-height: 540px;
+  overflow: hidden;
 }
 
 .isOnboardingView ~ .Hero,
@@ -29,6 +28,11 @@
 @media (--break-2) {
   .Hero {
     padding-top: 80px;
+  }
+
+  .FakeCover {
+    height: calc(100vh - 80px);
+    min-height: 540px;
   }
 }
 
