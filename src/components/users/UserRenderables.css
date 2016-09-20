@@ -1,0 +1,178 @@
+@import "../../lib/styles/properties.css";
+
+/* stylelint-disable no-unsupported-browser-features */
+
+/* -------------------------------------
+Users Collections  */
+
+@media (--break-2) {
+  .Users.asGrid {
+    margin-left: -20px;
+  }
+}
+
+@media (--break-4) {
+  .Users.asGrid {
+    margin-left: -40px;
+  }
+}
+
+/* -------------------------------------
+User Avatar  */
+
+.UserAvatar {
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+}
+
+/* -------------------------------------
+User Compact  */
+
+.UserCompact {
+  position: relative;
+  height: 40px;
+  margin-bottom: 40px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.UserCompactHeader {
+  display: inline-block;
+  width: calc(100% - 120px);
+  height: 40px;
+  overflow: hidden;
+  line-height: 40px;
+}
+
+.UserCompactUserLink {
+  display: inline-block;
+  transition: color var(--speed) ease;
+}
+
+.no-touch .UserCompactUserLink:hover {
+  color: #999;
+}
+
+.UserCompactUsername {
+  padding-left: 10px;
+}
+
+.UserCompact > .RelationshipContainer {
+  position: absolute;
+  top: 5px;
+  right: -8px;
+}
+
+.UserCompact > .RelationshipContainer .StarshipButton {
+  color: #aaa;
+}
+
+/* -------------------------------------
+User Drawer  */
+
+.UserDrawer {
+  position: relative;
+  max-width: 780px;
+  min-height: 90px;
+  padding-left: 20px;
+}
+
+.UserDrawer > .SVGIcon {
+  position: absolute;
+  top: 15px;
+  left: 0;
+}
+
+.UserDrawer .UserAvatar {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+@media (--break-2) {
+  .UserDrawer > .SVGIcon {
+    top: 30px;
+  }
+}
+
+/* -------------------------------------
+User Profile  */
+
+.UserProfile {
+  position: relative;
+  flex-grow: 1;
+  max-width: 600px;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin: auto;
+  color: #000;
+  text-align: center;
+}
+
+@media (--break-2) {
+  .UserProfile {
+    min-height: 360px;
+    padding-right: 0;
+    padding-left: 0;
+    color: #fff;
+  }
+}
+
+/* -------------------------------------
+User Cards  */
+
+.UserProfileCard {
+  position: relative;
+  height: 250px;
+  padding: 20px;
+  margin-top: 10px;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  background-color: transparent;
+  border-radius: 5px;
+}
+
+@media (--break-2) {
+  .UserProfileCard {
+    display: inline-block;
+    width: calc(50% - 20px);
+    height: 540px;
+    margin-top: 20px;
+    margin-left: 20px;
+    vertical-align: top;
+  }
+}
+
+@media (--break-3) {
+  .UserProfileCard {
+    width: calc(33.33333% - 20px);
+  }
+}
+
+@media (--break-4) {
+  .UserProfileCard {
+    width: calc(25% - 40px);
+    margin-top: 40px;
+    margin-left: 40px;
+  }
+}
+
+@media (--break-5) {
+  .UserProfileCard {
+    width: calc(20% - 40px);
+  }
+}
+
+@media (--break-6) {
+  .UserProfileCard {
+    width: calc(16.66666% - 40px);
+  }
+}
+
+@media (--break-7) {
+  .UserProfileCard {
+    width: calc(14.28571% - 40px);
+  }
+}
+

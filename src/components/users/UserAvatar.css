@@ -1,8 +1,0 @@
-@import "../../lib/styles/properties.css";
-
-.UserAvatar {
-  position: relative;
-  display: inline-block;
-  font-size: 14px;
-}
-
