@@ -209,8 +209,10 @@ class PostToolsContainer extends Component {
     }
     if (isWatchingPost) {
       dispatch(postActions.unwatchPost(post))
+      dispatch(trackEvent('unwatched-post'))
     } else {
       dispatch(postActions.watchPost(post))
+      dispatch(trackEvent('watched-post'))
     }
   }
 
