@@ -1,23 +1,18 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import {
-  selectDeviceSize,
-  selectIsGridMode,
-  selectIsLayoutToolHidden,
-} from '../selectors/gui'
+import { selectIsGridMode, selectIsLayoutToolHidden } from '../selectors/gui'
 import { selectStreamType } from '../selectors/stream'
 import { scrollToTop } from '../vendor/scrolling'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/Footer'
 
 function mapStateToProps(state) {
-  const deviceSize = selectDeviceSize(state)
   const streamType = selectStreamType(state)
   return {
     isGridMode: selectIsGridMode(state),
     isLayoutToolHidden: selectIsLayoutToolHidden(state),
-    isPaginatoring: streamType === LOAD_NEXT_CONTENT_REQUEST && deviceSize === 'mobile',
+    isPaginatoring: streamType === LOAD_NEXT_CONTENT_REQUEST,
   }
 }
 
