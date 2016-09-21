@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
-import { isIOS } from '../vendor/jello'
-import { scrollToTop } from '../vendor/scrolling'
+import { isIOS, scrollTo } from '../vendor/jello'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { SESSION_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -111,7 +110,7 @@ class NavbarContainer extends Component {
   onClickLoadMorePosts = () => {
     const { dispatch } = this.props
     dispatch({ type: ADD_NEW_IDS_TO_RESULT })
-    scrollToTop()
+    scrollTo(0, 0)
   }
 
   onClickNavbarMark = () => {
@@ -126,14 +125,14 @@ class NavbarContainer extends Component {
       } else if (/^\/starred/.test(pathname)) {
         dispatch(loadNoise())
       }
-      scrollToTop()
+      scrollTo(0, 0)
     }
   }
 
   onClickOmniButton = () => {
     const { dispatch } = this.props
     dispatch(openOmnibar())
-    scrollToTop()
+    scrollTo(0, 0)
   }
 
   onClickToggleLayoutMode = () => {

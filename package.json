@@ -101,7 +101,9 @@
       "react/forbid-prop-types": [
         1,
         {
-          "forbid": ["any"]
+          "forbid": [
+            "any"
+          ]
         }
       ],
       "react/jsx-filename-extension": [
@@ -211,6 +213,7 @@
     "simple-oauth2": "1.0.0",
     "style-loader": "0.13.1",
     "trunc-html": "1.1.2",
+    "tween.js": "16.3.5",
     "url-regex": "3.2.0",
     "webpack": "1.13.2",
     "webpack-sources": "0.1.2"

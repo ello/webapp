@@ -12,9 +12,14 @@ import {
   selectInnerWidth,
   selectIsGridMode,
 } from '../selectors/gui'
-import { selectPathname } from '../selectors/routing'
 import { findModel } from '../helpers/json_helper'
-import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
+import { getQueryParamValue } from '../helpers/uri_helper'
+import {
+  addScrollObject,
+  addScrollTarget,
+  removeScrollObject,
+  removeScrollTarget,
+} from '../components/viewport/ScrollComponent'
 import { ElloMark } from '../components/svg/ElloIcons'
 import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
@@ -34,7 +39,6 @@ export function makeMapStateToProps() {
       json: state.json,
       isGridMode: selectIsGridMode(state),
       omnibar: state.omnibar,
-      pathname: selectPathname(state),
       routerState: state.routing.location.state || {},
       stream: state.stream,
     }
@@ -57,10 +61,10 @@ class StreamContainer extends Component {
     json: PropTypes.object.isRequired,
     omnibar: PropTypes.object,
     paginatorText: PropTypes.string,
-    pathname: PropTypes.string,
     renderObj: PropTypes.object.isRequired,
     result: PropTypes.object.isRequired,
     resultPath: PropTypes.string,
+    scrollContainer: PropTypes.object,
     stream: PropTypes.object.isRequired,
   }
 
@@ -84,16 +88,24 @@ class StreamContainer extends Component {
     if (window.embetter) {
       window.embetter.reloadPlayers()
     }
-    const { isModalComponent } = this.props
-    if (!isModalComponent) {
+    const { isModalComponent, scrollContainer } = this.props
+    if (isModalComponent && scrollContainer) {
+      this.scrollObject = { component: this, element: scrollContainer }
+      addScrollTarget(this.scrollObject)
+    } else if (!isModalComponent) {
       this.scrollObject = this
       addScrollObject(this.scrollObject)
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { stream } = nextProps
+    const { scrollContainer, stream } = nextProps
+    const { isModalComponent } = this.props
     const { action } = this.state
+    if (isModalComponent && !this.props.scrollContainer && scrollContainer) {
+      this.scrollObject = { component: this, element: scrollContainer }
+      addScrollTarget(this.scrollObject)
+    }
     if (!action) { return }
     if (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.setState({ hidePaginator: true })
@@ -142,9 +154,14 @@ class StreamContainer extends Component {
       window.embetter.stopPlayers()
     }
     removeScrollObject(this.scrollObject)
+    removeScrollTarget(this.scrollObject)
   }
 
   onScroll() {
+    this.setScroll()
+  }
+
+  onScrollTarget() {
     this.setScroll()
   }
 
@@ -169,9 +186,16 @@ class StreamContainer extends Component {
   }
 
   setScroll() {
-    const { pathname } = this.props
-    if (/\/notifications\b/.test(pathname)) {
-      Session.setItem(`${pathname}/scrollY`, window.scrollY)
+    const path = get(this.state, 'action.payload.endpoint.path')
+    if (!path) { return }
+    if (/\/notifications/.test(path)) {
+      const category = getQueryParamValue('category', path) || 'all'
+      const { isModalComponent, scrollContainer } = this.props
+      if (isModalComponent && scrollContainer) {
+        Session.setItem(`/notifications/${category}/scrollY`, scrollContainer.scrollTop)
+      } else {
+        Session.setItem(`/notifications/${category}/scrollY`, window.scrollY)
+      }
     }
   }
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { GUI, LOAD_STREAM_SUCCESS } from '../../constants/action_types'
-import { scrollElToTop } from '../../vendor/scrolling'
+import { GUI, LOAD_STREAM_REQUEST, LOAD_STREAM_SUCCESS } from '../../constants/action_types'
+import { scrollTo } from '../../vendor/jello'
 import { selectActiveNotificationsType } from '../../selectors/gui'
 import { selectStreamType } from '../../selectors/stream'
 import { toggleNotifications } from '../../actions/gui'
@@ -32,6 +32,7 @@ class NotificationsContainer extends Component {
     activeTabType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     streamAction: PropTypes.object,
+    streamType: PropTypes.string,
   }
 
   static defaultProps = {
@@ -55,13 +56,12 @@ class NotificationsContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { activeTabType } = this.props
-    if (this.scrollContainer && prevProps.activeTabType !== activeTabType) {
+    const { activeTabType, streamType } = this.props
+    if (this.scrollContainer && prevProps.activeTabType === activeTabType &&
+        (streamType === LOAD_STREAM_SUCCESS || streamType === LOAD_STREAM_REQUEST)) {
       const scrollY = Session.getItem(`/notifications/${activeTabType || 'all'}/scrollY`)
       if (scrollY) {
         this.scrollContainer.scrollTop = scrollY
-      } else {
-        this.scrollContainer.scrollTop = 0
       }
     }
   }
@@ -80,9 +80,9 @@ class NotificationsContainer extends Component {
   }
 
   onClickTab = ({ type }) => {
-    const { dispatch } = this.props
-    if (this.state.activeTabType === type) {
-      scrollElToTop(this.scrollContainer)
+    const { activeTabType, dispatch } = this.props
+    if (activeTabType === type) {
+      scrollTo(0, 0, { el: this.scrollContainer })
       this.setState({ isReloading: true })
     } else {
       dispatch({
@@ -90,8 +90,6 @@ class NotificationsContainer extends Component {
         payload: { activeTabType: type },
       })
     }
-    const pathname = `/notifications/${this.state.activeTabType || 'all'}`
-    Session.setItem(`${pathname}/scrollY`, this.scrollContainer.scrollTop)
     this.setState({ activeTabType: type })
   }
 
@@ -160,6 +158,7 @@ class NotificationsContainer extends Component {
             className="isFullWidth"
             isModalComponent
             key={`notificationView_${activeTabType}_${isReloading}`}
+            scrollContainer={this.scrollContainer}
           />
         </div>
       </div>

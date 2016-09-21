@@ -10,7 +10,7 @@ import { openModal, closeModal } from '../actions/modals'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import { getEditorId } from '../components/editor/Editor'
-import { scrollToLastTextBlock } from '../vendor/scrolling'
+import { scrollToLastTextBlock } from '../vendor/jello'
 import { CommentTools } from '../components/comments/CommentTools'
 
 
