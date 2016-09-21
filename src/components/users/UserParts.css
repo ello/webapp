@@ -32,7 +32,7 @@ User Cells  */
 
 @media (--break-2) {
   .UserCell.inUserProfile {
-    margin-left: 280px;
+    margin-left: 300px;
     text-align: left;
   }
 
@@ -95,6 +95,11 @@ User Names  */
 
 .UserNamesCell.inUserProfile {
   padding-bottom: 5px !important;
+}
+
+.UserNamesCell.inUserProfile.isSingle {
+  min-height: 0;
+  max-height: 40px;
 }
 
 .UserName {

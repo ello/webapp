@@ -39,7 +39,7 @@ UserStatsLink.propTypes = {
 // -----------------
 
 export const UserNamesCell = ({ className, name, username, children }) =>
-  <div className={classNames('UserCell UserNamesCell', className)}>
+  <div className={classNames('UserCell UserNamesCell', className, { isSingle: !name })}>
     <h1 className="UserName">
       <Link className="truncate" to={`/${username}`} >{name || `@${username}`}</Link>
     </h1>
@@ -186,10 +186,10 @@ UserLinksCell.propTypes = {
 export const UserProfileButtons = ({ children, className, onClickHireMe }) =>
   <div className={classNames('UserProfileButtons', className)}>
     {onClickHireMe ?
-      <MiniPillButton onClick={onClickHireMe} >Collab</MiniPillButton> : null
+      <MiniPillButton className="size58" onClick={onClickHireMe} >Collab</MiniPillButton> : null
     }
     {onClickHireMe ?
-      <MiniPillButton onClick={onClickHireMe} >Hire</MiniPillButton> : null
+      <MiniPillButton className="size58" onClick={onClickHireMe} >Hire</MiniPillButton> : null
     }
     {children}
   </div>
