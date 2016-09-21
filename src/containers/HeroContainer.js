@@ -121,16 +121,19 @@ class HeroContainer extends Component {
   }
 
   render() {
+    const { user } = this.props
     const props = {
       broadcast: this.state.broadcast,
-      coverDPI: this.props.coverDPI,
+      dpi: this.props.coverDPI,
       hasCoverProfile: this.props.hasCoverProfile,
       hasPromotion: this.props.hasPromotion,
       isLoggedIn: this.props.isLoggedIn,
       onClickTrackCredits: this.onClickTrackCredits,
       onDismissZeroStream: this.onDismissZeroStream,
       promotion: this.state.promotion,
-      user: this.props.user,
+      sources: user && user.coverImage,
+      userId: user && user.id,
+      useGif: user && (user.viewsAdultContent || !user.postsAdultContent),
     }
     return <Hero {...props} />
   }
