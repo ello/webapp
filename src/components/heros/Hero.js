@@ -7,7 +7,7 @@ import BackgroundImage from '../assets/BackgroundImage'
 const HeroProfile = ({ dpi, sources, userId, useGif }) =>
   <div className="HeroImage">
     <BackgroundImage
-      className="hasOverlay inHero"
+      className="hasOverlay7 inHero"
       sources={sources}
       dpi={dpi}
       useGif={useGif}
