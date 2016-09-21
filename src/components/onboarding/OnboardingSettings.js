@@ -31,7 +31,7 @@ const OnboardingSettings = (props, context) => {
         />
         <BackgroundImage
           className="hasOverlay inOnboarding"
-          coverImage={coverImage}
+          sources={coverImage}
           useGif
         />
       </div>

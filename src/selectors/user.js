@@ -9,7 +9,7 @@ const selectJson = state => get(state, 'json')
 
 // props.user.xxx
 export const selectPropsUser = (state, props) => get(props, 'user')
-export const selectPropsUserId = (state, props) => get(props, 'user.id')
+export const selectPropsUserId = (state, props) => get(props, 'userId') || get(props, 'user.id')
 
 // state.json.users.xxx
 export const selectUsers = state => get(state, 'json.users')

@@ -303,7 +303,6 @@ class Settings extends Component {
       return null
     }
 
-    // const { isInfoFormSaving } = this.state
     const mdash = <span>&mdash;</span>
     const boxControlClassNames = 'isBoxControl onWhite'
 
@@ -321,12 +320,12 @@ class Settings extends Component {
           />
           <BackgroundImage
             className="hasOverlay inSettings"
-            coverImage={profile.coverImage}
+            sources={profile.coverImage}
             useGif
           />
         </div>
         <button className="SettingsLogoutButton" onClick={this.onLogOut}>Logout</button>
-        <div className="SettingsBody" >
+        <div className="SettingsBody">
           <div className="SettingsAvatarPicker" >
             <Uploader
               className="isAvatarUploader isSettingsAvatarUploader isLGUploader"

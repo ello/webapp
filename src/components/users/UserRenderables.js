@@ -122,7 +122,7 @@ export const UserProfileCard = ({ isMobile, onClickHireMe, user }) =>
     }
     <BackgroundImage
       className="hasOverlay inUserProfileCard"
-      coverImage={user.coverImage}
+      sources={user.coverImage}
       to={`/${user.username}`}
     />
   </div>
