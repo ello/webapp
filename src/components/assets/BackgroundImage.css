@@ -19,6 +19,11 @@
   height: 220px;
 }
 
+.BackgroundImage.inOnboarding,
+.BackgroundImage.inSettings {
+  height: 220px;
+}
+
 .BackgroundImage.inUserProfileCard {
   height: 250px;
 }
@@ -61,6 +66,10 @@
 .BackgroundImage.hasOverlay::before {
   background-color: rgba(0, 0, 0, 0.4);
 }
+
+/* .no-touch .BackgroundImage.isLink:hover::before { */
+/*   background-color: rgba(255, 255, 255, 0.4); */
+/* } */
 
 @media (--break-2) {
   .BackgroundImage.inHero {

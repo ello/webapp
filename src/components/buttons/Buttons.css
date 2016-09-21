@@ -12,6 +12,11 @@
   transition: background-color var(--speed), border-color var(--speed), color var(--speed);
 }
 
+.MiniPillButton.isLink {
+  display: inline-block;
+  padding-top: 0;
+}
+
 .no-touch .MiniPillButton:hover {
   color: #fff;
   background-color: #00d101;

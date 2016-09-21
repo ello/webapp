@@ -1,22 +1,25 @@
 @import "../../lib/styles/properties.css";
 
+.Settings {
+  position: relative;
+  max-width: 780px;
+  padding: 0 10px 20px;
+  margin: 0 auto;
+}
+
 .SettingsCoverPicker {
   position: relative;
-  z-index: -1;
+  margin-bottom: 40px;
 }
 
 .SettingsBody {
   position: relative;
-  max-width: 780px;
-  padding-bottom: 20px;
-  margin-right: 20px;
-  margin-left: 20px;
 }
 
 .SettingsLogoutButton {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 230px;
+  right: 10px;
   font-size: 14px;
   line-height: 1.2;
   color: #aaa;
@@ -115,10 +118,9 @@
     font-size: 24px;
   }
 
-  .SettingsBody {
-    max-width: 1000px;
-    margin-right: 20px;
-    margin-left: 20px;
+  .Settings {
+    padding-right: 20px;
+    padding-left: 20px;
   }
 
   .SettingsAvatarPicker > .Uploader {
@@ -129,28 +131,14 @@
   }
 }
 
-@media (--break-3) {
-  .SettingsBody {
-    max-width: 1000px;
-    padding-left: 220px;
-  }
-
-  .SettingsAvatarPicker > .Uploader {
-    margin-left: -220px;
-  }
-
-  .SettingsAvatarPicker .Avatar {
-    left: -220px;
-  }
-}
-
 @media (--break-4) {
-  .SettingsBody {
-    margin-right: 40px;
-    margin-left: 40px;
+  .Settings {
+    padding-right: 40px;
+    padding-left: 40px;
   }
 
   .SettingsLogoutButton {
+    top: 240px;
     right: 40px;
   }
 }

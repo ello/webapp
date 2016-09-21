@@ -15,15 +15,6 @@
   height: 220px;
 }
 
-.isSettingsCoverUploader {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
-
 .isXLUploader {
   width: 220px;
   padding-top: 240px;
@@ -125,11 +116,6 @@
   margin-top: 0;
 }
 
-.isSettingsCoverUploader .UploaderButton,
-.isSettingsCoverUploader .UploaderMessages {
-  transform: translateY(-160px);
-}
-
 @media (--break-2) {
   .isLGUploader {
     width: 180px;
@@ -149,7 +135,7 @@
 
 /* 1160 / 16 = 72.5em */
 @media (min-width: 72.5em) {
-  .OnboardingCoverPicker .UploaderMessages {
+  .isCoverUploader .UploaderMessages {
     position: absolute;
     top: -15px;
     right: -180px;
