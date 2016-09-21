@@ -67,9 +67,11 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* .no-touch .BackgroundImage.isLink:hover::before { */
-/*   background-color: rgba(255, 255, 255, 0.4); */
-/* } */
+/* stylelint-disable selector-max-specificity */
+.no-touch .BackgroundImage.isLink:hover::before {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+/* stylelint-enable selector-max-specificity */
 
 @media (--break-2) {
   .BackgroundImage.inHero {
