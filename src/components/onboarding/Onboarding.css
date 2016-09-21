@@ -2,7 +2,7 @@
 
 .OnboardingSettings {
   position: relative;
-  max-width: 770px;
+  max-width: 780px;
   margin: 0 auto;
 }
 
@@ -21,20 +21,12 @@
   text-align: center;
 }
 
-.OnboardingCoverPicker .CoverMini,
 .OnboardingAvatarPicker .Avatar {
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
   z-index: 1;
-}
-
-.OnboardingCoverPicker .CoverMini {
-  height: 220px !important;
-}
-
-.OnboardingAvatarPicker .Avatar {
   margin: 0 auto;
 }
 
