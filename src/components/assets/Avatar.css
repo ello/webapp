@@ -82,8 +82,6 @@
   opacity: 0;
 }
 
-.isUserDetailHeader .isPending > .AvatarImage,
-.isUserDetailHeader .isRequesting > .AvatarImage,
 .PostHeader .isPending > .AvatarImage,
 .PostHeader .isRequesting > .AvatarImage {
   opacity: 1;
