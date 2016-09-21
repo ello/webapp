@@ -479,7 +479,6 @@ WatchOnOriginalPostNotification.propTypes = {
 
 export const WatchOnRepostNotification = ({ assets, createdAt, repost, repostAuthor, user }) => {
   const activityPath = getActivityPath(user, repost)
-  console.log('repost', repost)
   const summary = parseSummary(repost, activityPath, assets)
   return (
     <Notification
