@@ -26,6 +26,7 @@ export function getSource(props) {
 export default class BackgroundImage extends Component {
   static propTypes = {
     className: PropTypes.string,
+    // to: PropTypes.string,
   }
 
   static defaultProps = {
@@ -77,4 +78,12 @@ export default class BackgroundImage extends Component {
     )
   }
 }
+
+    // return to ?
+    //   <Link to={to} className={classList, isLink}>
+    //     <ImageAsset {...imageProps} />
+    //   </Link> :
+    //   <span className={classList}>
+    //     <ImageAsset {...imageProps} />
+    //   </span>
 
