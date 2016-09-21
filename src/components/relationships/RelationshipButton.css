@@ -57,6 +57,7 @@ Within UserProfiles...  */
 .RelationshipContainer.inUserProfileCard,
 .RelationshipContainer.inUserProfile {
   display: inline-block;
+  vertical-align: top;
 }
 
 /* -------------------------------------

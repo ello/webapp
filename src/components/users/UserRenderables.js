@@ -135,7 +135,7 @@ UserProfileCard.propTypes = {
 
 // -----------------
 
-export const UserProfile = ({ user, onClickHireMe, onClickShareProfile }) =>
+export const UserProfile = ({ isLoggedIn, user, onClickHireMe, onClickShareProfile }) =>
   <div className="UserProfile">
     <Avatar
       alt={user.name ? user.name : user.username}
@@ -153,7 +153,7 @@ export const UserProfile = ({ user, onClickHireMe, onClickShareProfile }) =>
       name={user.name}
       username={user.username}
     >
-      {user.relationshipPriority !== 'self' ?
+      {isLoggedIn && user.relationshipPriority !== 'self' ?
         <RelationshipContainer
           hasBlockMuteButton
           className="inUserProfile"
@@ -197,6 +197,7 @@ export const UserProfile = ({ user, onClickHireMe, onClickShareProfile }) =>
   </div>
 
 UserProfile.propTypes = {
+  isLoggedIn: PropTypes.bool,
   onClickHireMe: PropTypes.func,
   onClickShareProfile: PropTypes.func,
   user: PropTypes.object,

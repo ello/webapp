@@ -21,6 +21,7 @@
 .StarshipButton.inUserProfile {
   position: absolute;
   margin-right: -15px;
+  color: #fff;
 }
 
 .StarshipButton.isInHeader {
