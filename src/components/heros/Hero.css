@@ -18,6 +18,23 @@
   padding-top: 0 !important;
 }
 
+.ScrollToContentButton {
+  width: 40px;
+  height: 40px;
+  background-color: #000;
+  border-radius: 20px;
+  position: absolute;
+  bottom: 40px;
+  left: calc(50% - 20px);
+}
+
+.ScrollToContentIcon circle,
+.ScrollToContentIcon g,
+.ScrollToContentIcon polyline {
+  fill: none;
+  stroke: #fff;
+}
+
 @media (--break-2-max) {
   .isLoggedOut .Hero {
     padding-top: 50px;
