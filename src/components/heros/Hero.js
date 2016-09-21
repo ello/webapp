@@ -3,6 +3,17 @@ import Promotion from '../assets/Promotion'
 import { ZeroStream } from '../zeros/Zeros'
 import UserContainer from '../../containers/UserContainer'
 import BackgroundImage from '../assets/BackgroundImage'
+import { SVGIcon } from '../svg/SVGComponents'
+
+const ScrollToContentIcon = () =>
+  <button className="ScrollToContentButton">
+    <SVGIcon className="ScrollToContentIcon">
+      <g>
+        <polyline fill="none" points="13.5,8.2 10,11.8 6.5,8.2" />
+        <circle fill="none" cx="10" cy="10" r="7" />
+      </g>
+    </SVGIcon>
+  </button>
 
 const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
   <div className="HeroImage">
@@ -13,6 +24,7 @@ const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
       useGif={useGif}
     />
     <UserContainer userId={userId} type="profile" key={`HeroProfile_${pathname}`} />
+    <ScrollToContentIcon />
   </div>
 
 HeroProfile.propTypes = {
