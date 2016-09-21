@@ -27,7 +27,7 @@ import {
   updateBlock,
 } from '../../actions/editor'
 import { closeOmnibar } from '../../actions/omnibar'
-import { scrollToLastTextBlock } from '../../vendor/scrolling'
+import { scrollToLastTextBlock } from '../../vendor/jello'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsGridMode, selectIsLayoutToolHidden } from '../selectors/gui'
 import { selectStreamType } from '../selectors/stream'
-import { scrollToTop } from '../vendor/scrolling'
+import { scrollTo } from '../vendor/jello'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/Footer'
 
@@ -30,7 +30,7 @@ class FooterContainer extends Component {
   }
 
   onClickScrollToTop = () => {
-    scrollToTop()
+    scrollTo(0, 0)
   }
 
   onClickToggleLayoutMode = () => {

@@ -1,3 +1,5 @@
+import TWEEN from 'tween.js'
+
 let memoizedIsAndroid
 let memoizedIsChrome
 let memoizedIsElloAndroid
@@ -82,6 +84,54 @@ export function addFeatureDetection() {
 export function hideSoftKeyboard() {
   if (document.activeElement) {
     document.activeElement.blur()
+  }
+}
+
+export function scrollTo(x, y, options = {}) {
+  const el = options.el
+  let animate = () => {
+    requestAnimationFrame(animate)
+    TWEEN.update()
+  }
+  function updateScroll() {
+    if (el) {
+      el.scrollLeft = this.x
+      el.scrollTop = this.y
+    } else {
+      window.scrollTo(this.x, this.y)
+    }
+  }
+  new TWEEN.Tween({
+    x: el ? el.scrollLeft : window.pageXOffset || document.documentElement.scrollLeft,
+    y: el ? el.scrollTop : window.pageYOffset || document.documentElement.scrollTop,
+  })
+    .easing(options.easing || TWEEN.Easing.Quartic.InOut)
+    .to({ x: x || 0, y: y || 0 }, options.duration || 1000)
+    .onUpdate(updateScroll)
+    .onComplete(() => { animate = () => {} })
+    .start()
+  requestAnimationFrame(animate)
+}
+
+function isElementInViewport(el, topOffset = 0) {
+  const rect = el.getBoundingClientRect()
+  return (
+    rect.top >= topOffset && rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  )
+}
+
+export function scrollToLastTextBlock(editorId, isNavbarHidden) {
+  const textBlocks = document.querySelectorAll(`[data-editor-id='${editorId}'] div.text`)
+  const lastTextBlock = textBlocks[textBlocks.length - 1]
+  if (lastTextBlock && !isElementInViewport(lastTextBlock, isNavbarHidden ? 0 : 80)) {
+    const pos = lastTextBlock.getBoundingClientRect()
+    if (pos.top > window.innerHeight) {
+      scrollTo(0, window.scrollY + ((pos.top - window.innerHeight) + 140))
+    } else {
+      scrollTo(0, window.scrollY + (pos.top - 100))
+    }
   }
 }
 

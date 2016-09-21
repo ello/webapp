@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { scrollToTop } from '../../vendor/scrolling'
+import { scrollTo } from '../../vendor/jello'
 import { selectPropsPathname } from '../../selectors/routing'
 import { selectStreamType } from '../../selectors/stream'
 import { loadNotifications } from '../../actions/notifications'
@@ -47,7 +47,7 @@ class Notifications extends Component {
 
   onClickTab = ({ type }) => {
     if (this.state.activeTabType === type) {
-      scrollToTop()
+      scrollTo(0, 0)
       this.setState({ isReloading: true })
     }
     this.setState({ activeTabType: type })
