@@ -130,6 +130,7 @@ class HeroContainer extends Component {
       isLoggedIn: this.props.isLoggedIn,
       onClickTrackCredits: this.onClickTrackCredits,
       onDismissZeroStream: this.onDismissZeroStream,
+      pathname: this.props.pathname,
       promotion: this.state.promotion,
       sources: user && user.coverImage,
       userId: user && user.id,

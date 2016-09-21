@@ -39,10 +39,6 @@ User Cells  */
   .UserCell.inUserProfileCard {
     text-align: left;
   }
-
-  .UserCell + .UserCell {
-    border-color: #fff;
-  }
 }
 
 /* -------------------------------------
@@ -174,7 +170,7 @@ User Stats */
 
 .UserStatsLink.isActive dd,
 .no-touch .UserStatsLink:not(.asDisabled):hover dd {
-  color: #00f;
+  color: #000;
 }
 
 /* Temporary disable a few of these buttons */
@@ -191,6 +187,11 @@ User Stats */
 @media (--break-2) {
   .UserStatsCell dd {
     color: #ccc;
+  }
+
+  .UserStatsLink.isActive dd,
+  .no-touch .UserStatsLink:not(.asDisabled):hover dd {
+    color: #fff;
   }
 }
 
@@ -235,7 +236,9 @@ User Links */
   display: block;
 }
 
-.no-touch .UserExternalLinksLabel > a:hover {
-  color: #00f;
+@media (--break-2) {
+  .no-touch .UserExternalLinksLabel > a:hover {
+    color: #aaa;
+  }
 }
 
