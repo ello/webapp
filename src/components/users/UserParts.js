@@ -40,8 +40,8 @@ UserStatsLink.propTypes = {
 
 export const UserNamesCell = ({ className, name, username, children }) =>
   <div className={classNames('UserCell UserNamesCell', className)}>
-    <h1 className="UserName truncate">
-      <Link to={`/${username}`} >{name || `@${username}`}</Link>
+    <h1 className="UserName">
+      <Link className="truncate" to={`/${username}`} >{name || `@${username}`}</Link>
     </h1>
     {name ? <h2 className="UserUsername truncate">@{username}</h2> : null}
     { children }
@@ -58,8 +58,8 @@ UserNamesCell.propTypes = {
 
 export const UserNamesCellCard = ({ className, name, username }) =>
   <div className={classNames('UserCell UserNamesCell', className)}>
-    <h2 className="UserName truncate">
-      <Link to={`/${username}`} >{name || `@${username}`}</Link>
+    <h2 className="UserName">
+      <Link className="truncate" to={`/${username}`} >{name || `@${username}`}</Link>
     </h2>
     {name ? <h3 className="UserUsername truncate">@{username}</h3> : null}
   </div>
