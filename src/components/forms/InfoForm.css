@@ -16,7 +16,7 @@
   transform: scale(0.6);
 }
 
-@media (--break-3) {
+@media (--break-2) {
   .OnboardingInfoForm {
     min-height: 410px;
     padding-top: 40px;

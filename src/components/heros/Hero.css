@@ -7,8 +7,7 @@
   background-color: #fff;
 }
 
-/* TODO: Rename this */
-.FakeCover {
+.HeroImage {
   position: relative;
   display: flex;
   overflow: hidden;
@@ -30,7 +29,7 @@
     padding-top: 80px;
   }
 
-  .FakeCover {
+  .HeroImage {
     height: calc(100vh - 80px);
     min-height: 540px;
   }
