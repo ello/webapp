@@ -381,3 +381,128 @@ RepostNotification.propTypes = {
   post: PropTypes.object,
 }
 
+// WATCHES
+export const WatchCommentNotification = (props) => {
+  const { assets, author, comment, createdAt, parentPost, parentPostAuthor } = props
+  const activityPath = getActivityPath(parentPostAuthor, parentPost)
+  const summary = parseSummaryForCommentNotification(parentPost, comment, activityPath, assets)
+  return (
+    <Notification
+      activityPath={activityPath}
+      className="WatchCommentNotification"
+      createdAt={createdAt}
+      notifier={author}
+      summary={summary}
+    >
+      <p>
+        <UserTextLink user={author} />
+        {' commented on a '}
+        <PostTextLink author={parentPostAuthor} post={parentPost} />
+        {' you\'re watching.'}
+      </p>
+    </Notification>
+  )
+}
+WatchCommentNotification.propTypes = {
+  assets: PropTypes.object,
+  author: PropTypes.object,
+  comment: PropTypes.object,
+  createdAt: PropTypes.string,
+  parentPost: PropTypes.object,
+  parentPostAuthor: PropTypes.object,
+}
+
+export const WatchNotification = ({ assets, author, createdAt, post, user }) => {
+  const activityPath = getActivityPath(user, post)
+  const summary = parseSummary(post, activityPath, assets)
+  return (
+    <Notification
+      activityPath={activityPath}
+      className="WatchNotification"
+      createdAt={createdAt}
+      notifier={user}
+      summary={summary}
+    >
+      <p>
+        <UserTextLink user={user} />
+        {' is watching your '}
+        <PostTextLink author={author} post={post} />
+        {'.'}
+      </p>
+    </Notification>
+  )
+}
+WatchNotification.propTypes = {
+  assets: PropTypes.object,
+  author: PropTypes.object,
+  createdAt: PropTypes.string,
+  post: PropTypes.object,
+  user: PropTypes.object,
+}
+
+export const WatchOnOriginalPostNotification = (props) => {
+  const { assets, createdAt, repost, repostAuthor,
+    repostedSource, repostedSourceAuthor, user } = props
+  const activityPath = getActivityPath(user, repost)
+  const summary = parseSummary(repost, activityPath, assets)
+  return (
+    <Notification
+      activityPath={activityPath}
+      className="WatchOnOriginalPostNotification"
+      createdAt={createdAt}
+      notifier={user}
+      summary={summary}
+    >
+      <p>
+        <UserTextLink user={user} />
+        {' is watching '}
+        <UserTextLink user={repostAuthor} />
+        {'\'s '}
+        <PostTextLink author={repostAuthor} post={repost} text="repost" />
+        {' of your '}
+        <PostTextLink author={repostedSourceAuthor} post={repostedSource} />
+        {'.'}
+      </p>
+    </Notification>
+  )
+}
+WatchOnOriginalPostNotification.propTypes = {
+  assets: PropTypes.object,
+  createdAt: PropTypes.string,
+  repost: PropTypes.object,
+  repostAuthor: PropTypes.object,
+  repostedSource: PropTypes.object,
+  repostedSourceAuthor: PropTypes.object,
+  user: PropTypes.object,
+}
+
+
+export const WatchOnRepostNotification = ({ assets, createdAt, repost, repostAuthor, user }) => {
+  const activityPath = getActivityPath(user, repost)
+  console.log('repost', repost)
+  const summary = parseSummary(repost, activityPath, assets)
+  return (
+    <Notification
+      activityPath={activityPath}
+      className="WatchOnRepostNotification"
+      createdAt={createdAt}
+      notifier={user}
+      summary={summary}
+    >
+      <p>
+        <UserTextLink user={user} />
+        {' is watching your '}
+        <PostTextLink author={repostAuthor} post={repost} text="repost" />
+        {'.'}
+      </p>
+    </Notification>
+  )
+}
+WatchOnRepostNotification.propTypes = {
+  assets: PropTypes.object,
+  createdAt: PropTypes.string,
+  repost: PropTypes.object,
+  repostAuthor: PropTypes.object,
+  user: PropTypes.object,
+}
+

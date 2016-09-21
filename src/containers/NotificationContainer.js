@@ -16,6 +16,10 @@ import {
   NewFollowedUserPost,
   PostMentionNotification,
   RepostNotification,
+  WatchNotification,
+  WatchCommentNotification,
+  WatchOnOriginalPostNotification,
+  WatchOnRepostNotification,
 } from '../components/notifications/NotificationRenderables'
 
 const NOTIFICATION_KIND = {
@@ -31,6 +35,10 @@ const NOTIFICATION_KIND = {
   NEW_FOLLOWER: 'new_follower_post',
   POST_MENTION: 'post_mention_notification',
   REPOST: 'repost_notification',
+  WATCH: 'watch_notification',
+  WATCH_COMMENT: 'watch_comment_notification',
+  WATCH_ORIGINAL: 'watch_on_original_post_notification',
+  WATCH_REPOST: 'watch_on_repost_notification',
   WELCOME: 'welcome_notification',
 }
 
@@ -38,15 +46,18 @@ const SUBJECT_TYPE = {
   LOVE: 'love',
   POST: 'post',
   USER: 'user',
+  WATCH: 'watch',
 }
 
 function mapStateToProps(state, ownProps) {
   const { notification } = ownProps
   const subject = getLinkObject(notification, 'subject', state.json)
 
-  let lovePost = null
-  let lovePostAuthor = null
-  let loveUser = null
+  // postActions are used for loves/watches
+  let postActionPost = null
+  let postActionAuthor = null
+  let postActionUser = null
+
   let postAuthor = null
   let repost = null
   let repostAuthor = null
@@ -75,15 +86,16 @@ function mapStateToProps(state, ownProps) {
         state.json[MAPPING_TYPES.USERS][repostedSource.authorId]
     }
   }
-  // subject is a love
-  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.LOVE) {
-    loveUser = getLinkObject(subject, 'user', state.json)
-    lovePost = getLinkObject(subject, 'post', state.json)
-    lovePostAuthor = getLinkObject(lovePost, 'author', state.json) ||
-      state.json[MAPPING_TYPES.USERS][lovePost.authorId]
+  // subject is a love or a watch
+  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.LOVE ||
+      notification.subjectType.toLowerCase() === SUBJECT_TYPE.WATCH) {
+    postActionUser = getLinkObject(subject, 'user', state.json)
+    postActionPost = getLinkObject(subject, 'post', state.json)
+    postActionAuthor = getLinkObject(postActionPost, 'author', state.json) ||
+      state.json[MAPPING_TYPES.USERS][postActionPost.authorId]
     // repost
-    if (lovePost.repostId) {
-      repost = lovePost
+    if (postActionPost.repostId) {
+      repost = postActionPost
       repostAuthor = getLinkObject(repost, 'author', state.json)
       repostedSource = getLinkObject(repost, 'repostedSource', state.json)
       repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json) ||
@@ -97,12 +109,12 @@ function mapStateToProps(state, ownProps) {
     assets: state.json.assets,
     createdAt: notification.createdAt,
     kind: notification.kind,
-    lovePost,
-    lovePostAuthor,
-    loveUser,
-    postAuthor,
     parentPost,
     parentPostAuthor,
+    postActionAuthor,
+    postActionPost,
+    postActionUser,
+    postAuthor,
     repost,
     repostAuthor,
     repostedSource,
@@ -116,11 +128,11 @@ class NotificationParser extends Component {
     assets: PropTypes.object,
     createdAt: PropTypes.string.isRequired,
     kind: PropTypes.string,
-    lovePost: PropTypes.object,
-    lovePostAuthor: PropTypes.object,
-    loveUser: PropTypes.object,
     parentPost: PropTypes.object,
     parentPostAuthor: PropTypes.object,
+    postActionAuthor: PropTypes.object,
+    postActionPost: PropTypes.object,
+    postActionUser: PropTypes.object,
     postAuthor: PropTypes.object,
     repost: PropTypes.object,
     repostAuthor: PropTypes.object,
@@ -138,11 +150,11 @@ class NotificationParser extends Component {
       assets,
       createdAt,
       kind,
-      lovePost,
-      lovePostAuthor,
-      loveUser,
       parentPost,
       parentPostAuthor,
+      postActionAuthor,
+      postActionPost,
+      postActionUser,
       postAuthor,
       repost,
       repostAuthor,
@@ -204,10 +216,10 @@ class NotificationParser extends Component {
         return (
           <LoveNotification
             assets={assets}
-            author={lovePostAuthor}
+            author={postActionAuthor}
             createdAt={createdAt}
-            post={lovePost}
-            user={loveUser}
+            post={postActionPost}
+            user={postActionUser}
           />
         )
       case NOTIFICATION_KIND.LOVE_ORIGINAL:
@@ -219,7 +231,7 @@ class NotificationParser extends Component {
             repostAuthor={repostAuthor}
             repostedSource={repostedSource}
             repostedSourceAuthor={repostedSourceAuthor}
-            user={loveUser}
+            user={postActionUser}
           />
         )
       case NOTIFICATION_KIND.LOVE_REPOST:
@@ -229,7 +241,7 @@ class NotificationParser extends Component {
             createdAt={createdAt}
             repost={repost}
             repostAuthor={repostAuthor}
-            user={loveUser}
+            user={postActionUser}
           />
         )
       case NOTIFICATION_KIND.NEW_FOLLOWER:
@@ -252,6 +264,49 @@ class NotificationParser extends Component {
             author={postAuthor}
             createdAt={createdAt}
             post={subject}
+          />
+        )
+      case NOTIFICATION_KIND.WATCH:
+        return (
+          <WatchNotification
+            assets={assets}
+            author={postActionAuthor}
+            createdAt={createdAt}
+            post={postActionPost}
+            user={postActionUser}
+          />
+        )
+      case NOTIFICATION_KIND.WATCH_COMMENT:
+        return (
+          <WatchCommentNotification
+            assets={assets}
+            author={postAuthor}
+            comment={subject}
+            createdAt={createdAt}
+            parentPost={parentPost}
+            parentPostAuthor={parentPostAuthor}
+          />
+        )
+      case NOTIFICATION_KIND.WATCH_ORIGINAL:
+        return (
+          <WatchOnOriginalPostNotification
+            assets={assets}
+            createdAt={createdAt}
+            repost={repost}
+            repostAuthor={repostAuthor}
+            repostedSource={repostedSource}
+            repostedSourceAuthor={repostedSourceAuthor}
+            user={postActionUser}
+          />
+        )
+      case NOTIFICATION_KIND.WATCH_REPOST:
+        return (
+          <WatchOnRepostNotification
+            assets={assets}
+            createdAt={createdAt}
+            repost={repost}
+            repostAuthor={repostAuthor}
+            user={postActionUser}
           />
         )
       case NOTIFICATION_KIND.WELCOME:
