@@ -67,9 +67,13 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+.BackgroundImage.hasOverlay7::before {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
 /* stylelint-disable selector-max-specificity */
 .no-touch .BackgroundImage.isLink:hover::before {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 /* stylelint-enable selector-max-specificity */
 
