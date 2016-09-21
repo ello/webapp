@@ -19,6 +19,11 @@
   height: 220px;
 }
 
+.BackgroundImage.inOnboarding,
+.BackgroundImage.inSettings {
+  height: 220px;
+}
+
 .BackgroundImage.inUserProfileCard {
   height: 250px;
 }
