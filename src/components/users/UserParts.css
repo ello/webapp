@@ -132,6 +132,12 @@ User Dirt */
   right: 0;
 }
 
+@media (--break-2-max) {
+  .UserDirtShareButton {
+    color: #aaa;
+  }
+}
+
 @media (--break-2) {
   .UserDirtLabel {
     color: #ccc;
