@@ -50,3 +50,4 @@ export const selectViewNameFromRoute = createSelector(
     return 'unknown'
   }
 )
+
