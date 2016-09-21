@@ -28,11 +28,11 @@ const Hero = ({
       /> : null
     }
     { hasCoverProfile && user ?
-      <div className="FakeCover">
+      <div className="HeroImage">
         <BackgroundImage
           className="hasOverlay inHero"
+          coverDPI={coverDPI}
           coverImage={user.coverImage}
-          to={`/${user.username}`}
         />
         <UserContainer user={user} type="profile" />
       </div> : null
