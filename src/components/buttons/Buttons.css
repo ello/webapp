@@ -15,6 +15,7 @@
 .MiniPillButton.isLink {
   display: inline-block;
   padding-top: 0;
+  vertical-align: top;
 }
 
 .MiniPillButton.size58 {

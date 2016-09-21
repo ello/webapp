@@ -38,7 +38,7 @@
 /* Temporary till we can fix the layout position for these in UserProfile */
 @media (--break-2-max) {
   .BlockMuteButton > .DotsIcon > g {
-    fill: var(--color-danger);
+    fill: #aaa;
   }
 }
 

@@ -121,6 +121,7 @@ class UserContainer extends Component {
       case 'profile':
         return (
           <UserProfile
+            isLoggedIn={isLoggedIn}
             onClickHireMe={onHireMeFunc}
             onClickShareProfile={this.onClickShareProfile}
             user={user}
