@@ -4,7 +4,7 @@ import { ZeroStream } from '../zeros/Zeros'
 import UserContainer from '../../containers/UserContainer'
 import BackgroundImage from '../assets/BackgroundImage'
 
-const HeroProfile = ({ dpi, sources, userId, useGif }) =>
+const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
   <div className="HeroImage">
     <BackgroundImage
       className="hasOverlay7 inHero"
@@ -12,11 +12,12 @@ const HeroProfile = ({ dpi, sources, userId, useGif }) =>
       dpi={dpi}
       useGif={useGif}
     />
-    <UserContainer userId={userId} type="profile" />
+    <UserContainer userId={userId} type="profile" key={`HeroProfile_${pathname}`} />
   </div>
 
 HeroProfile.propTypes = {
   dpi: PropTypes.string.isRequired,
+  pathname: PropTypes.string,
   sources: PropTypes.object,
   userId: PropTypes.string,
   useGif: PropTypes.bool,
@@ -26,7 +27,7 @@ const Hero = (props) => {
   const { dpi } = props
   const { broadcast, onDismissZeroStream } = props
   const { hasPromotion, isLoggedIn, onClickTrackCredits, promotion } = props
-  const { sources, hasCoverProfile, userId, useGif } = props
+  const { sources, hasCoverProfile, userId, useGif, pathname } = props
 
   const getHeroImage = () => {
     if (hasPromotion) {
@@ -39,7 +40,15 @@ const Hero = (props) => {
         />
       )
     } else if (userId && hasCoverProfile) {
-      return <HeroProfile dpi={dpi} sources={sources} userId={userId} useGif={useGif} />
+      return (
+        <HeroProfile
+          dpi={dpi}
+          pathname={pathname}
+          sources={sources}
+          userId={userId}
+          useGif={useGif}
+        />
+      )
     }
     return null
   }
@@ -63,6 +72,7 @@ Hero.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   onClickTrackCredits: PropTypes.func.isRequired,
   onDismissZeroStream: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
   promotion: PropTypes.object,
   sources: PropTypes.object,
   useGif: PropTypes.bool,
