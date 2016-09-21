@@ -17,6 +17,12 @@
   padding-top: 0;
 }
 
+.MiniPillButton.size58 {
+  width: 58px;
+  padding-right: 0;
+  padding-left: 0;
+}
+
 .no-touch .MiniPillButton:hover {
   color: #fff;
   background-color: #00d101;
