@@ -66,6 +66,10 @@
   top: 80px;
 }
 
+.MainView > .UserDetails {
+  min-height: 100vh;
+}
+
 @media (--break-2) {
   .MainView > .StreamContainer .StreamBusyIndicator {
     top: 120px;

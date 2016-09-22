@@ -20,6 +20,7 @@ import {
   setLastFollowingBeaconVersion,
   setLastStarredBeaconVersion,
 } from '../actions/gui'
+import { scrollTo } from '../vendor/jello'
 import Hero from '../components/heros/Hero'
 
 const PROMOTION_ROUTES = [
@@ -78,8 +79,15 @@ class HeroContainer extends Component {
     viewName: PropTypes.string.isRequired,
   }
 
-  // static preRender = (store) =>
-    // store.dispatch(loadNoise())
+  static childContextTypes = {
+    onClickScrollToContent: PropTypes.func,
+  }
+
+  getChildContext() {
+    return {
+      onClickScrollToContent: this.onClickScrollToContent,
+    }
+  }
 
   componentWillMount() {
     this.state = { promotion: null, broadcast: this.props.broadcast }
@@ -100,6 +108,10 @@ class HeroContainer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
+  }
+
+  onClickScrollToContent = () => {
+    scrollTo(0, window.innerHeight)
   }
 
   onClickTrackCredits = () => {

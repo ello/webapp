@@ -21,12 +21,12 @@ const ShareIcon = () =>
 
 // -----------------
 
-const UserStatsLink = ({ asDisabled = false, children, to }) =>
+const UserStatsLink = ({ asDisabled = false, children, to }, { onClickScrollToContent }) =>
   (asDisabled ?
     <span className="UserStatsLink asDisabled">
       {children}
     </span> :
-    <Link activeClassName="isActive" className="UserStatsLink" to={to}>
+    <Link activeClassName="isActive" onClick={onClickScrollToContent} className="UserStatsLink" to={to}>
       {children}
     </Link>)
 
@@ -34,6 +34,9 @@ UserStatsLink.propTypes = {
   asDisabled: PropTypes.bool,
   children: PropTypes.node,
   to: PropTypes.string,
+}
+UserStatsLink.contextTypes = {
+  onClickScrollToContent: PropTypes.func,
 }
 
 // -----------------
