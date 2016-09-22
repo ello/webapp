@@ -165,7 +165,7 @@ export const UserProfile = ({ isLoggedIn, user, onClickHireMe, onClickShareProfi
     <UserDirtCell
       className="inUserProfile"
       onClickShareProfile={onClickShareProfile}
-      totalViewsCount={user.totalViewsCount || '2.3m'}
+      totalViewsCount={user.totalViewsCount}
     />
     <UserStatsCell
       className="inUserProfile"
