@@ -9,7 +9,7 @@ const ScrollToContentIcon = () =>
   <button className="ScrollToContentButton">
     <SVGIcon className="ScrollToContentIcon">
       <g>
-        <polyline fill="none" points="13.5,8.2 10,11.8 6.5,8.2" />
+        <polyline fill="none" points="13.5,8 10,12 6.5,8" />
         <circle fill="none" cx="10" cy="10" r="7" />
       </g>
     </SVGIcon>
