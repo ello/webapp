@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../../selectors/authentication'
+import { selectIsOwnPage } from '../../selectors/profile'
 import { selectPostFromPropsPostId, selectIsOwnPost } from '../../selectors/post'
 import { openModal, closeModal } from '../../actions/modals'
 import {
@@ -43,6 +44,7 @@ function mapStateToProps(state, props) {
   return {
     isLoggedIn: selectIsLoggedIn(state),
     post: selectPostFromPropsPostId(state, props),
+    isOwnPage: selectIsOwnPage(state),
     isOwnPost: selectIsOwnPost(state, props),
   }
 }
@@ -55,6 +57,7 @@ class Editor extends Component {
     dispatch: PropTypes.func.isRequired,
     isComment: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
+    isOwnPage: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isPostDetail: PropTypes.bool,
     onSubmit: PropTypes.func,
@@ -66,9 +69,14 @@ class Editor extends Component {
   static defaultProps = {
     autoPopulate: null,
     isComment: false,
+    isOwnPage: false,
     isPostDetail: false,
     shouldLoadFromState: false,
     shouldPersist: false,
+  }
+
+  static contextTypes = {
+    onClickScrollToContent: PropTypes.func,
   }
 
   componentWillMount() {
@@ -82,7 +90,7 @@ class Editor extends Component {
   }
 
   submit = (data) => {
-    const { comment, dispatch, isComment, onSubmit, post } = this.props
+    const { comment, dispatch, isComment, isOwnPage, onSubmit, post } = this.props
     if (isComment) {
       if (comment && comment.isEditing) {
         dispatch(toggleCommentEditing(comment, false))
@@ -105,6 +113,11 @@ class Editor extends Component {
       )
     }
     if (onSubmit) { onSubmit() }
+    // if on own page scroll down to top of post content
+    if (isOwnPage) {
+      const { onClickScrollToContent } = this.context
+      onClickScrollToContent()
+    }
   }
 
   cancel = () => {

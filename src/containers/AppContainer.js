@@ -24,6 +24,7 @@ import ModalContainer from '../containers/ModalContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import OmnibarContainer from '../containers/OmnibarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
+import { scrollTo } from '../vendor/jello'
 
 function mapStateToProps(state) {
   return {
@@ -49,6 +50,16 @@ class AppContainer extends Component {
       ])
     }
     return store.dispatch(getCategories())
+  }
+
+  static childContextTypes = {
+    onClickScrollToContent: PropTypes.func,
+  }
+
+  getChildContext() {
+    return {
+      onClickScrollToContent: this.onClickScrollToContent,
+    }
   }
 
   componentDidMount() {
@@ -83,6 +94,10 @@ class AppContainer extends Component {
 
   componentWillUnmount() {
     removeGlobalDrag()
+  }
+
+  onClickScrollToContent = () => {
+    scrollTo(0, window.innerHeight)
   }
 
   render() {

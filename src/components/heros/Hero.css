@@ -19,13 +19,17 @@
 }
 
 .ScrollToContentButton {
+  position: absolute;
+  bottom: 40px;
+  left: calc(50% - 20px);
   width: 40px;
   height: 40px;
   background-color: #000;
   border-radius: 20px;
-  position: absolute;
-  bottom: 40px;
-  left: calc(50% - 20px);
+}
+
+.ScrollToContentIcon {
+  margin-top: -4px;
 }
 
 .ScrollToContentIcon circle,
