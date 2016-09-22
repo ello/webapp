@@ -21,7 +21,7 @@ ScrollToContentIcon.contextTypes = {
 const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
   <div className="HeroImage">
     <BackgroundImage
-      className="hasOverlay7 inHero"
+      className="hasOverlay inHero"
       sources={sources}
       dpi={dpi}
       useGif={useGif}
