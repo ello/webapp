@@ -71,6 +71,10 @@ class NavbarContainer extends Component {
     params: PropTypes.object.isRequired,
   }
 
+  static contextTypes = {
+    onClickScrollToContent: PropTypes.func,
+  }
+
   componentWillMount() {
     this.checkForNotifications()
   }
@@ -108,9 +112,15 @@ class NavbarContainer extends Component {
   }
 
   onClickLoadMorePosts = () => {
-    const { dispatch } = this.props
+    const { dispatch, params } = this.props
     dispatch({ type: ADD_NEW_IDS_TO_RESULT })
-    scrollTo(0, 0)
+    // if on user page and more content scroll to top of content
+    if (params.username && !params.token) {
+      const { onClickScrollToContent } = this.context
+      onClickScrollToContent()
+    } else {
+      scrollTo(0, 0)
+    }
   }
 
   onClickNavbarMark = () => {

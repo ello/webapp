@@ -1,5 +1,7 @@
 @import "../../lib/styles/properties.css";
 
+/* stylelint-disable no-unsupported-browser-features */
+
 .StreamContainer {
   padding: 10px;
 }

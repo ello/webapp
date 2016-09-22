@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { get } from 'lodash'
+import { selectPathname } from './routing'
 
 // state.profile.xxx
 export const selectAllowsAnalytics = state => get(state, 'profile.allowsAnalytics')
@@ -58,6 +59,13 @@ export const selectLinksAsText = createSelector(
       return links
     }
     return links.map(link => link.text).join(', ')
+  }
+)
+
+export const selectIsOwnPage = createSelector(
+  [selectUsername, selectPathname], (username, pathname) => {
+    const re = new RegExp(`/${username}$`)
+    return re.test(pathname)
   }
 )
 
