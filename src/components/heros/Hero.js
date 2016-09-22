@@ -5,8 +5,8 @@ import UserContainer from '../../containers/UserContainer'
 import BackgroundImage from '../assets/BackgroundImage'
 import { SVGIcon } from '../svg/SVGComponents'
 
-const ScrollToContentIcon = () =>
-  <button className="ScrollToContentButton">
+const ScrollToContentIcon = (props, { onClickScrollToContent }) =>
+  <button className="ScrollToContentButton" onClick={onClickScrollToContent}>
     <SVGIcon className="ScrollToContentIcon">
       <g>
         <polyline fill="none" points="13.5,8 10,12 6.5,8" />
@@ -14,6 +14,9 @@ const ScrollToContentIcon = () =>
       </g>
     </SVGIcon>
   </button>
+ScrollToContentIcon.contextTypes = {
+  onClickScrollToContent: React.PropTypes.func,
+}
 
 const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
   <div className="HeroImage">
@@ -26,7 +29,6 @@ const HeroProfile = ({ dpi, pathname, sources, userId, useGif }) =>
     <UserContainer userId={userId} type="profile" key={`HeroProfile_${pathname}`} />
     <ScrollToContentIcon />
   </div>
-
 HeroProfile.propTypes = {
   dpi: PropTypes.string.isRequired,
   pathname: PropTypes.string,
