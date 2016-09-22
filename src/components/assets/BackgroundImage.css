@@ -64,11 +64,7 @@
 }
 
 .BackgroundImage.hasOverlay::before {
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.BackgroundImage.hasOverlay7::before {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 /* stylelint-disable selector-max-specificity */

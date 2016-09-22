@@ -27,6 +27,12 @@
   border-color: #000;
 }
 
+.RelationshipButton[data-priority="self"] {
+  padding: 0 10px;
+  background-color: #aaa;
+  border: 1px solid #aaa;
+}
+
 .RelationshipButton[data-priority="friend"],
 .RelationshipButton[data-priority="noise"] {
   color: #fff;

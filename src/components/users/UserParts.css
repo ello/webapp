@@ -146,10 +146,7 @@ User Dirt */
 
   .no-touch .UserDirtShareButton {
     color: #fff;
-  }
-
-  .no-touch .UserDirtShareButton:hover g:nth-of-type(2) { /* stylelint-disable-line */
-    transform: translate3d(0, -2px, 0);
+    display: none;
   }
 }
 
@@ -180,7 +177,6 @@ User Stats */
 .UserStatsCountLabel {
   display: inline-block;
   padding-bottom: 2px;
-  border-bottom: 1px solid;
 }
 
 .UserStatsLink.isActive dd,
@@ -249,6 +245,8 @@ User Links */
 
 .UserExternalLinksLabel {
   display: block;
+  margin-bottom: 10px;
+  line-height: 16px;
 }
 
 .UserExternalLinksLabel > a {

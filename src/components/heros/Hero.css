@@ -19,6 +19,7 @@
 }
 
 .ScrollToContentButton {
+  display: none;
   position: absolute;
   bottom: 40px;
   left: calc(50% - 20px);
@@ -46,6 +47,9 @@
 }
 
 @media (--break-2) {
+  .ScrollToContentButton {
+    display: inline;
+  }
   .Hero {
     padding-top: 80px;
   }

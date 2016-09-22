@@ -8,7 +8,7 @@ import { MiniPillButton } from '../buttons/Buttons'
 // -------------------------------------
 // UserProfile Cells and parts
 
-const ShareIcon = () =>
+export const ShareIcon = () =>
   <SVGIcon className="ShareIcon">
     <g>
       <polyline points="7.8,7.3 5,7.3 5,17.3 15,17.3 15,7.3 12.2,7.3" />
@@ -75,10 +75,10 @@ UserNamesCellCard.propTypes = {
 
 // -----------------
 
-export const UserDirtCell = ({ className, onClickShareProfile, totalViewsCount }) =>
+export const UserDirtCell = ({ className, onClickShareProfile, totalPostViewsCount }) =>
   <div className={classNames('UserCell UserDirtCell', className)}>
-    { totalViewsCount ? <span className="UserDirtCount uppercase">{totalViewsCount} </span> : null }
-    { totalViewsCount ? <span className="UserDirtLabel">Total Views</span> : null }
+    { totalPostViewsCount ? <span className="UserDirtCount uppercase">{totalPostViewsCount} </span> : null }
+    { totalPostViewsCount ? <span className="UserDirtLabel">Total Views</span> : null }
     { onClickShareProfile ?
       <button className="UserDirtShareButton" onClick={onClickShareProfile} >
         <ShareIcon />
@@ -89,7 +89,7 @@ export const UserDirtCell = ({ className, onClickShareProfile, totalViewsCount }
 UserDirtCell.propTypes = {
   className: PropTypes.string,
   onClickShareProfile: PropTypes.func,
-  totalViewsCount: PropTypes.string,
+  totalPostViewsCount: PropTypes.string,
 }
 
 // -----------------

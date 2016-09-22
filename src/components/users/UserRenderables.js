@@ -121,7 +121,7 @@ export const UserProfileCard = ({ isMobile, onClickHireMe, user }) =>
       /> : null
     }
     <BackgroundImage
-      className="hasOverlay7 inUserProfileCard"
+      className="hasOverlay inUserProfileCard"
       sources={user.coverImage}
       to={`/${user.username}`}
     />
@@ -162,11 +162,13 @@ export const UserProfile = ({ isLoggedIn, user, onClickHireMe, onClickShareProfi
         /> : null
       }
     </UserNamesCell>
-    <UserDirtCell
-      className="inUserProfile"
-      onClickShareProfile={onClickShareProfile}
-      totalViewsCount={user.totalViewsCount}
-    />
+    {user.totalPostViewsCount && parseInt(user.totalPostViewsCount, 10) > 0 ?
+      <UserDirtCell
+        className="inUserProfile"
+        onClickShareProfile={onClickShareProfile}
+        totalPostViewsCount={user.totalPostViewsCount}
+      /> : null
+    }
     <UserStatsCell
       className="inUserProfile"
       followersCount={user.followersCount}

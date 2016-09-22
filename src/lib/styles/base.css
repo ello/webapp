@@ -50,12 +50,6 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.isChrome *,
-.isChrome *::before,
-.isChrome *::after {
-  -webkit-font-smoothing: subpixel-antialiased;
-}
-
 html {
   font: normal 400 100% / 1.5 var(--fontstack-sanserif-regular);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);

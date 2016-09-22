@@ -94,7 +94,6 @@ class RelationshipButton extends Component {
         data-priority={priority}
         to="/settings"
       >
-        {className === 'isInHeader' ? <HeaderPlusIcon /> : <MiniPlusIcon />}
         <span>Edit Profile</span>
       </Link>
     )
