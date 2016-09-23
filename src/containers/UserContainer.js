@@ -16,7 +16,7 @@ import RegistrationRequestDialog from '../components/dialogs/RegistrationRequest
 import ShareDialog from '../components/dialogs/ShareDialog'
 import { closeModal, openModal } from '../actions/modals'
 import { trackEvent } from '../actions/analytics'
-import { sendMessage } from '../actions/user'
+import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../vendor/jello'
 
 export function mapStateToProps(state, props) {
@@ -73,6 +73,25 @@ class UserContainer extends Component {
     dispatch(trackEvent('open-share-dialog-profile'))
   }
 
+  onOpenCollabModal = () => {
+    const { dispatch, user } = this.props
+    dispatch(openModal(
+      <MessageDialog
+        name={`${user.name ? user.name : user.username}`}
+        onConfirm={this.onConfirmCollab}
+        onDismiss={this.onDismissModal}
+        titlePrefix="Collaborate with"
+      />
+    ))
+    dispatch(trackEvent('open-collab-dialog-profile', { platform: getElloPlatform() }))
+  }
+
+  onConfirmCollab = ({ message }) => {
+    const { dispatch, user } = this.props
+    dispatch(collabWithUser(user.id, message))
+    dispatch(trackEvent('send-collab-dialog-profile', { platform: getElloPlatform() }))
+  }
+
   onOpenHireMeModal = () => {
     const { dispatch, user } = this.props
     dispatch(openModal(
@@ -80,6 +99,7 @@ class UserContainer extends Component {
         name={`${user.name ? user.name : user.username}`}
         onConfirm={this.onConfirmHireMe}
         onDismiss={this.onDismissModal}
+        titlePrefix="Hire"
       />
     ))
     dispatch(trackEvent('open-hire-dialog-profile', { platform: getElloPlatform() }))
@@ -87,7 +107,7 @@ class UserContainer extends Component {
 
   onConfirmHireMe = ({ message }) => {
     const { dispatch, user } = this.props
-    dispatch(sendMessage(user.id, message))
+    dispatch(hireUser(user.id, message))
     dispatch(trackEvent('send-hire-dialog-profile', { platform: getElloPlatform() }))
   }
 
@@ -105,6 +125,7 @@ class UserContainer extends Component {
   render() {
     const { className, isLoggedIn, isMobile, type, user } = this.props
     const onHireMeFunc = isLoggedIn ? this.onOpenHireMeModal : this.onOpenSignupModal
+    const onCollabFunc = isLoggedIn ? this.onOpenCollabModal : this.onOpenSignupModal
     switch (type) {
       case 'avatar':
         return <UserAvatar user={user} />
@@ -114,6 +135,7 @@ class UserContainer extends Component {
         return (
           <UserProfileCard
             isMobile={isMobile}
+            onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
             user={user}
           />
@@ -122,6 +144,7 @@ class UserContainer extends Component {
         return (
           <UserProfile
             isLoggedIn={isLoggedIn}
+            onClickCollab={onCollabFunc}
             onClickHireMe={onHireMeFunc}
             onClickShareProfile={this.onClickShareProfile}
             user={user}

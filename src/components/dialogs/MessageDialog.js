@@ -7,6 +7,7 @@ export default class MessageDialog extends Component {
     name: PropTypes.string.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onDismiss: PropTypes.func.isRequired,
+    titlePrefix: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
@@ -36,11 +37,11 @@ export default class MessageDialog extends Component {
   }
 
   renderCompose() {
-    const { name, onDismiss } = this.props
+    const { name, onDismiss, titlePrefix } = this.props
     const { isValid } = this.state
     return (
       <div className="Dialog MessageDialog">
-        <h2 className="MessageDialogTitle">{`Email ${name}`}</h2>
+        <h2 className="MessageDialogTitle">{`${titlePrefix} ${name}`}</h2>
         <form
           className="MessageForm"
           id="MessageForm"
@@ -86,7 +87,7 @@ export default class MessageDialog extends Component {
               <polyline points="4.8,10.8 9.9,17 17.2,5" />
             </g>
           </SVGIcon>
-          <span>{`Message sent to ${name}`}</span>
+          <span>{`Email sent to ${name}`}</span>
         </h2>
         <button
           className="MessageDialogButton isOkayButton"

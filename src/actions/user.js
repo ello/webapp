@@ -103,7 +103,18 @@ export function loadUserDrawer(endpoint, post, resultType) {
   }
 }
 
-export function sendMessage(id, message) {
+export function collabWithUser(id, message) {
+  return {
+    type: ACTION_TYPES.USER.COLLAB_WITH,
+    payload: {
+      body: { body: message },
+      endpoint: api.collabWithUser(id),
+      method: 'POST',
+    },
+  }
+}
+
+export function hireUser(id, message) {
   return {
     type: ACTION_TYPES.USER.HIRE_ME,
     payload: {
@@ -113,3 +124,4 @@ export function sendMessage(id, message) {
     },
   }
 }
+

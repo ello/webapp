@@ -332,6 +332,11 @@ export function userResources(idOrUsername, resource) {
     params,
   }
 }
+export function collabWithUser(id) {
+  return {
+    path: getAPIPath(`users/${id}/collaborate`),
+  }
+}
 export function flagUser(idOrUsername, kind) {
   return {
     path: getAPIPath(`users/${idOrUsername}/flag/${kind}`),

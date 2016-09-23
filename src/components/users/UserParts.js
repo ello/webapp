@@ -186,10 +186,10 @@ UserLinksCell.propTypes = {
   externalLinksList: PropTypes.array,
 }
 
-export const UserProfileButtons = ({ children, className, onClickHireMe }) =>
+export const UserProfileButtons = ({ children, className, onClickCollab, onClickHireMe }) =>
   <div className={classNames('UserProfileButtons', className)}>
-    {onClickHireMe ?
-      <MiniPillButton className="size58" onClick={onClickHireMe} >Collab</MiniPillButton> : null
+    {onClickCollab ?
+      <MiniPillButton className="size58" onClick={onClickCollab} >Collab</MiniPillButton> : null
     }
     {onClickHireMe ?
       <MiniPillButton className="size58" onClick={onClickHireMe} >Hire</MiniPillButton> : null
@@ -200,6 +200,7 @@ export const UserProfileButtons = ({ children, className, onClickHireMe }) =>
 UserProfileButtons.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
 }
 

@@ -80,7 +80,7 @@ UserDrawer.propTypes = {
 
 // -----------------
 
-export const UserProfileCard = ({ isMobile, onClickHireMe, user }) =>
+export const UserProfileCard = ({ isMobile, onClickCollab, onClickHireMe, user }) =>
   <div className="UserProfileCard" >
     <Avatar
       className="inUserProfileCard"
@@ -93,6 +93,7 @@ export const UserProfileCard = ({ isMobile, onClickHireMe, user }) =>
     />
     <UserProfileButtons
       className="inUserProfileCard"
+      onClickCollab={user.isCollaborateable ? onClickCollab : null}
       onClickHireMe={user.isHireable ? onClickHireMe : null}
     >
       <RelationshipContainer
@@ -129,13 +130,15 @@ export const UserProfileCard = ({ isMobile, onClickHireMe, user }) =>
 
 UserProfileCard.propTypes = {
   isMobile: PropTypes.bool,
+  onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
   user: PropTypes.object,
 }
 
 // -----------------
 
-export const UserProfile = ({ isLoggedIn, user, onClickHireMe, onClickShareProfile }) =>
+export const UserProfile = ({ isLoggedIn, user, onClickCollab,
+  onClickHireMe, onClickShareProfile }) =>
   <div className="UserProfile">
     <Avatar
       alt={user.name ? user.name : user.username}
@@ -188,6 +191,7 @@ export const UserProfile = ({ isLoggedIn, user, onClickHireMe, onClickShareProfi
     />
     <UserProfileButtons
       className="inUserProfile"
+      onClickCollab={user.isCollaborateable ? onClickCollab : null}
       onClickHireMe={user.isHireable ? onClickHireMe : null}
     >
       <RelationshipContainer
@@ -200,6 +204,7 @@ export const UserProfile = ({ isLoggedIn, user, onClickHireMe, onClickShareProfi
 
 UserProfile.propTypes = {
   isLoggedIn: PropTypes.bool,
+  onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
   onClickShareProfile: PropTypes.func,
   user: PropTypes.object,
