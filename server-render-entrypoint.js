@@ -9,7 +9,6 @@ import Honeybadger from 'honeybadger'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
-import { updateStrings as updateTimeAgoStrings } from './src/lib/time_ago_in_words'
 import { createElloStore } from './src/store'
 import createRoutes from './src/routes'
 import { serverRoot } from './src/sagas'
@@ -40,6 +39,11 @@ function handlePrerender(context) {
   const isServer = true
   const routes = createRoutes(store, isServer)
   const history = syncHistoryWithStore(memoryHistory, store)
+  // const history = syncHistoryWithStore(memoryHistory, store, {
+  //   selectLocationState(state) {
+  //     return state.get('routing').toJS()
+  //   },
+  // })
   const sagaTask = store.runSaga(serverRoot)
 
   match({ history, routes, location: url }, (error, redirectLocation, renderProps) => {

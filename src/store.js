@@ -3,7 +3,9 @@ import createLogger from 'redux-logger'
 import { browserHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
+// import { combineReducers } from 'redux-immutable'
 import { autoRehydrate } from 'redux-persist'
+// import { fromJS } from 'immutable'
 import createSagaMiddleware, { END } from 'redux-saga'
 import * as reducers from './reducers'
 import rootSaga from './sagas'
@@ -30,6 +32,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       logger
     ),
   )(createStore)(reducer, initialState)
+  // )(createStore)(reducer, fromJS(initialState))
   store.close = () => store.dispatch(END)
 
   store.sagaTask = sagaMiddleware.run(rootSaga)
@@ -43,6 +46,7 @@ const createServerStore = (history, initialState = {}) => {
   const store = compose(
     applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger),
   )(createStore)(reducer, initialState)
+  // )(createStore)(reducer, fromJS(initialState))
 
   store.runSaga = sagaMiddleware.run
   store.close = () => store.dispatch(END)
@@ -52,6 +56,7 @@ const createServerStore = (history, initialState = {}) => {
 const createElloStore = (history, initialState = {}) => {
   if (typeof window !== 'undefined') return createBrowserStore(browserHistory, initialState)
   return createServerStore(history, initialState)
+  // return createServerStore(history, fromJS(initialState))
 }
 
 export { createElloStore }

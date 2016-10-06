@@ -1,3 +1,4 @@
+import { fromJS } from 'immutable'
 import { PROMOTIONS } from '../constants/action_types'
 
 const initialState = {
@@ -6,27 +7,17 @@ const initialState = {
   loggedOut: [],
 }
 
-export function promotions(state = initialState, action) {
+export default (state = initialState, action) => {
+  const map = fromJS(state)
   switch (action.type) {
     case PROMOTIONS.AUTHENTICATION_SUCCESS:
-      return {
-        ...state,
-        authentication: action.payload.response,
-      }
+      return map.set('authentication', action.payload.response).toJS()
     case PROMOTIONS.LOGGED_IN_SUCCESS:
-      return {
-        ...state,
-        loggedIn: action.payload.response,
-      }
+      return map.set('loggedIn', action.payload.response).toJS()
     case PROMOTIONS.LOGGED_OUT_SUCCESS:
-      return {
-        ...state,
-        loggedOut: action.payload.response,
-      }
+      return map.set('loggedOut', action.payload.response).toJS()
     default:
       return state
   }
 }
-
-export default promotions
 
