@@ -1,4 +1,4 @@
-export { authentication } from './authentication'
+export { default as authentication } from './authentication'
 export { emoji } from './emoji'
 export { gui } from './gui'
 export { json } from './json'
