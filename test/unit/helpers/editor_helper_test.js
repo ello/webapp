@@ -1,3 +1,4 @@
+import { fromJS } from 'immutable'
 import * as subject from '../../../src/helpers/editor_helper'
 import { COMMENT, EDITOR, POST } from '../../../src/constants/action_types'
 
@@ -7,38 +8,43 @@ describe('editor helper', () => {
 
   describe('@initialState', () => {
     it('should have the correct default properties', () => {
-      expect(subject.initialState.collection).to.be.empty
-      expect(subject.initialState.hasContent).to.be.false
-      expect(subject.initialState.hasMedia).to.be.false
-      expect(subject.initialState.hasMention).to.be.false
-      expect(subject.initialState.isLoading).to.be.false
-      expect(subject.initialState.isPosting).to.be.false
-      expect(subject.initialState.order).to.be.empty
-      expect(subject.initialState.postBuyLink).to.be.null
-      expect(subject.initialState.shouldPersist).to.be.false
-      expect(subject.initialState.uid).to.equal(0)
+      expect(subject.initialState.get('collection')).to.be.empty
+      expect(subject.initialState).to.have.property('hasContent', false)
+      expect(subject.initialState).to.have.property('hasMedia', false)
+      expect(subject.initialState).to.have.property('hasMention', false)
+      expect(subject.initialState).to.have.property('isLoading', false)
+      expect(subject.initialState).to.have.property('isPosting', false)
+      expect(subject.initialState.get('order')).to.be.empty
+      expect(subject.initialState).to.have.property('postBuyLink', null)
+      expect(subject.initialState).to.have.property('shouldPersist', false)
+      expect(subject.initialState.get('uid')).to.equal(0)
     })
   })
 
-  describe('#addCompletions', () => {
+  describe('#getCompletions', () => {
+    let completions = null
+    afterEach(() => {
+      completions = null
+    })
+
     it('sets proper completions for users', () => {
       action = { payload: { response: { autocompleteResults: 'archer' }, type: 'user' } }
-      state = subject.methods.addCompletions(subject.initialState, action)
-      expect(state.completions).to.deep.equal({ data: 'archer', type: 'user' })
+      completions = subject.methods.getCompletions(action)
+      expect(completions).to.deep.equal({ data: 'archer', type: 'user' })
     })
 
     it('sets proper completions for emoji', () => {
       action = {
         payload: { response: { emojis: [{ name: 'metal' }] }, type: 'emoji', word: ':met' },
       }
-      state = subject.methods.addCompletions(subject.initialState, action)
-      expect(state.completions).to.deep.equal({ data: [{ name: 'metal' }], type: 'emoji' })
+      completions = subject.methods.getCompletions(action)
+      expect(completions).to.deep.equal({ data: [{ name: 'metal' }], type: 'emoji' })
     })
 
     it('sets completions to null without a response', () => {
       action = { payload: { response: null, type: 'user' } }
-      state = subject.methods.addCompletions(subject.initialState, action)
-      expect(state.completions).to.be.null
+      completions = subject.methods.getCompletions(action)
+      expect(completions).to.be.null
     })
   })
 
@@ -62,35 +68,45 @@ describe('editor helper', () => {
     })
   })
 
-  describe('#addHasContent', () => {
+  describe('#hasContent', () => {
+    let hasContent = false
+    afterEach(() => {
+      hasContent = false
+    })
+
     it('returns the original state if no firstBlock', () => {
-      const newState = { collection: {}, order: [] }
-      state = subject.methods.addHasContent(newState)
-      expect(state).to.deep.equal(newState)
+      const newState = fromJS({ collection: {}, order: [] })
+      hasContent = subject.methods.hasContent(newState)
+      expect(hasContent).to.be.false
     })
 
     it('sets hasContent to true if order.length > 1', () => {
-      const newState = { collection: { 1: { something: '' } }, order: [1, 2] }
-      state = subject.methods.addHasContent(newState)
-      expect(state.hasContent).to.be.true
+      const newState = fromJS({ collection: { 1: { something: '' } }, order: [1, 2] })
+      hasContent = subject.methods.hasContent(newState)
+      expect(hasContent).to.be.true
     })
 
     it('sets hasContent to true if firstBlock.data.length and not a <br>', () => {
-      const newState = { collection: { 0: { data: 'krieger' } }, order: [0] }
-      state = subject.methods.addHasContent(newState)
-      expect(state.hasContent).to.be.true
+      const newState = fromJS({ collection: { 0: { data: 'krieger' } }, order: [0] })
+      hasContent = subject.methods.hasContent(newState)
+      expect(hasContent).to.be.true
     })
 
     it('sets hasContent to false if firstBlock.data is a <br>', () => {
-      const newState = { collection: { 0: { data: '<br>' } }, order: [0] }
-      state = subject.methods.addHasContent(newState)
-      expect(state.hasContent).to.be.false
+      const newState = fromJS({ collection: { 0: { data: '<br>' } }, order: [0] })
+      hasContent = subject.methods.hasContent(newState)
+      expect(hasContent).to.be.false
     })
   })
 
-  describe('#addHasMedia', () => {
+  describe('#hasMedia', () => {
+    let hasMedia = false
+    afterEach(() => {
+      hasMedia = false
+    })
+
     it('sets hasMedia to false if no image/embed kind', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             data: 'archer Phrasing!?',
@@ -98,13 +114,13 @@ describe('editor helper', () => {
           },
         },
         order: [0],
-      }
-      state = subject.methods.addHasMedia(newState)
-      expect(state.hasMedia).to.be.false
+      })
+      hasMedia = subject.methods.hasMedia(newState)
+      expect(hasMedia).to.be.false
     })
 
     it('sets hasMedia to true if an image is present', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             data: 'path/to/image.png',
@@ -116,13 +132,13 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
-      state = subject.methods.addHasMedia(newState)
-      expect(state.hasMedia).to.be.true
+      })
+      hasMedia = subject.methods.hasMedia(newState)
+      expect(hasMedia).to.be.true
     })
 
     it('sets hasMedia to true if an embed is present', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             data: 'Stir Friday',
@@ -134,15 +150,20 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
-      state = subject.methods.addHasMedia(newState)
-      expect(state.hasMedia).to.be.true
+      })
+      hasMedia = subject.methods.hasMedia(newState)
+      expect(hasMedia).to.be.true
     })
   })
 
-  describe('#addHasMention', () => {
+  describe('#hasMention', () => {
+    let hasMention = false
+    afterEach(() => {
+      hasMention = false
+    })
+
     it('sets hasMention to false if no mention is present', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             data: 'archer Phrasing!?',
@@ -150,13 +171,13 @@ describe('editor helper', () => {
           },
         },
         order: [0],
-      }
-      state = subject.methods.addHasMention(newState)
-      expect(state.hasMention).to.be.false
+      })
+      hasMention = subject.methods.hasMention(newState)
+      expect(hasMention).to.be.false
     })
 
     it('sets hasMention to true if a mention is present', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             data: '@archer That\'s how you get ants',
@@ -164,15 +185,20 @@ describe('editor helper', () => {
           },
         },
         order: [0],
-      }
-      state = subject.methods.addHasMention(newState)
-      expect(state.hasMention).to.be.true
+      })
+      hasMention = subject.methods.hasMention(newState)
+      expect(hasMention).to.be.true
     })
   })
 
-  describe('#addIsLoading', () => {
+  describe('#isLoading', () => {
+    let isLoading = false
+    afterEach(() => {
+      isLoading = false
+    })
+
     it('sets isLoading to false if no image is loading', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             data: '/path/to/avatar/archer.png',
@@ -186,13 +212,13 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
-      state = subject.methods.addIsLoading(newState)
-      expect(state.isLoading).to.be.false
+      })
+      isLoading = subject.methods.isLoading(newState)
+      expect(isLoading).to.be.false
     })
 
     it('sets isLoading to true if an image is loading', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             data: '/path/to/avatar/archer.png',
@@ -206,9 +232,30 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
-      state = subject.methods.addIsLoading(newState)
-      expect(state.isLoading).to.be.true
+      })
+      isLoading = subject.methods.isLoading(newState)
+      expect(isLoading).to.be.true
+    })
+
+    it('sets isLoading to true if the dragBlock image is loading', () => {
+      const newState = fromJS({
+        dragBlock: { isLoading: true },
+        collection: {
+          0: {
+            data: '/path/to/avatar/archer.png',
+            kind: 'image',
+            isLoading: true,
+          },
+          1: {
+            data: '/path/to/avatar/lana.png',
+            kind: 'image',
+            isLoading: false,
+          },
+        },
+        order: [0, 1],
+      })
+      isLoading = subject.methods.isLoading(newState)
+      expect(isLoading).to.be.true
     })
   })
 
@@ -230,9 +277,10 @@ describe('editor helper', () => {
         state: subject.initialState,
       })
       expect(addEmptySpy.called).to.be.false
-      expect(state.uid).to.equal(1)
-      expect(state.order.length).to.equal(1)
-      expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
+      expect(state.get('uid')).to.equal(1)
+      expect(state.get('order').size).to.equal(1)
+      expect(state.getIn(['collection', '0'])).to.have.property('kind', 'text')
+      expect(state.getIn(['collection', '0'])).to.have.property('uid', 0)
     })
 
     it('adds the block to the collection and calls #addEmptyTextBlock', () => {
@@ -242,20 +290,23 @@ describe('editor helper', () => {
         state: subject.initialState,
       })
       expect(addEmptySpy.called).to.be.true
-      expect(state.uid).to.equal(1)
-      expect(state.order.length).to.equal(1)
-      expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0 })
+      expect(state.get('uid')).to.equal(1)
+      expect(state.get('order').size).to.equal(1)
+      expect(state.getIn(['collection', '0'])).to.have.property('kind', 'text')
+      expect(state.getIn(['collection', '0'])).to.have.property('uid', 0)
     })
 
     it('adds the linkUrl when buy link is present', () => {
       state = subject.methods.add({
         block: { kind: 'text' },
         shouldCheckForEmpty: true,
-        state: { ...subject.initialState, postBuyLink: 'yeah' },
+        state: subject.initialState.set('postBuyLink', 'yeah'),
       })
-      expect(state.uid).to.equal(1)
-      expect(state.order.length).to.equal(1)
-      expect(state.collection[0]).to.deep.equal({ kind: 'text', uid: 0, linkUrl: 'yeah' })
+      expect(state.get('uid')).to.equal(1)
+      expect(state.get('order').size).to.equal(1)
+      expect(state.getIn(['collection', '0'])).to.have.property('kind', 'text')
+      expect(state.getIn(['collection', '0'])).to.have.property('linkUrl', 'yeah')
+      expect(state.getIn(['collection', '0'])).to.have.property('uid', 0)
     })
   })
 
@@ -274,7 +325,7 @@ describe('editor helper', () => {
     })
 
     it('removes last empty text block if the second to last was a text block', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -289,24 +340,26 @@ describe('editor helper', () => {
         },
         order: [0, 1],
         uid: 2,
-      }
+      })
       state = subject.methods.addEmptyTextBlock(newState)
       expect(addSpy.called).to.be.false
       expect(removeSpy.called).to.be.true
-      expect(state.order).to.deep.equal([0])
-      expect(state.collection[1]).to.be.undefined
+      expect(state.get('order').first()).to.equal(0)
+      expect(state.getIn(['collection', '1'])).to.be.undefined
     })
 
     it('adds an empty text block if order.length is 0', () => {
       state = subject.methods.addEmptyTextBlock(subject.initialState)
       expect(addSpy.called).to.be.true
       expect(removeSpy.called).to.be.false
-      expect(state.order).to.deep.equal([0])
-      expect(state.collection[0]).to.deep.equal({ kind: 'text', data: '', uid: 0 })
+      expect(state.get('order').first()).to.equal(0)
+      expect(state.getIn(['collection', '0'])).to.have.property('data', '')
+      expect(state.getIn(['collection', '0'])).to.have.property('kind', 'text')
+      expect(state.getIn(['collection', '0'])).to.have.property('uid', 0)
     })
 
     it('adds an empty text block if the last item is not text', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -321,13 +374,16 @@ describe('editor helper', () => {
         },
         order: [0, 1],
         uid: 2,
-      }
+      })
       state = subject.methods.addEmptyTextBlock(newState)
       expect(addSpy.called).to.be.true
       expect(removeSpy.called).to.be.false
-      expect(state.order).to.deep.equal([0, 1, 2])
-      expect(state.collection[2]).to.deep.equal({ kind: 'text', data: '', uid: 2 })
-      expect(state.uid).to.equal(3)
+      expect(state.get('order').size).to.equal(3)
+      expect(state.get('order').last()).to.equal(2)
+      expect(state.getIn(['collection', '2'])).to.have.property('data', '')
+      expect(state.getIn(['collection', '2'])).to.have.property('kind', 'text')
+      expect(state.getIn(['collection', '2'])).to.have.property('uid', 2)
+      expect(state.get('uid')).to.equal(3)
     })
   })
 
@@ -343,7 +399,7 @@ describe('editor helper', () => {
     })
 
     it('removes the block from the collection and calls #addEmptyTextBlock', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -353,18 +409,22 @@ describe('editor helper', () => {
         },
         order: [0],
         uid: 1,
-      }
+      })
       state = subject.methods.remove({
         state: newState,
         uid: 0,
       })
       expect(addEmptySpy.called).to.be.true
-      expect(state.order).to.deep.equal([1])
-      expect(state.collection[1]).to.deep.equal({ kind: 'text', data: '', uid: 1 })
+      const order = state.get('order')
+      expect(order.size).to.equal(1)
+      expect(order.first()).to.equal(1)
+      expect(state.getIn(['collection', '1'])).to.have.property('data', '')
+      expect(state.getIn(['collection', '1'])).to.have.property('kind', 'text')
+      expect(state.getIn(['collection', '1'])).to.have.property('uid', 1)
     })
 
     it('removes the block from the collection', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -379,21 +439,23 @@ describe('editor helper', () => {
         },
         order: [0, 1],
         uid: 2,
-      }
+      })
       state = subject.methods.remove({
         shouldCheckForEmpty: false,
         state: newState,
         uid: 1,
       })
       expect(addEmptySpy.called).to.be.false
-      expect(state.order).to.deep.equal([0])
-      expect(state.collection[1]).to.be.undefined
+      const order = state.get('order')
+      expect(order.size).to.equal(1)
+      expect(order.first()).to.equal(0)
+      expect(state.getIn(['collection', '1'])).to.be.undefined
     })
   })
 
   describe('#removeEmptyTextBlock', () => {
     it('removes the last text block if it is empty', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -407,14 +469,16 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
+      })
       state = subject.methods.removeEmptyTextBlock(newState)
-      expect(state.collection[1]).to.be.undefined
-      expect(state.order).to.deep.equal([0])
+      const order = state.get('order')
+      expect(order.size).to.equal(1)
+      expect(order.first()).to.equal(0)
+      expect(state.getIn(['collection', '1'])).to.be.undefined
     })
 
     it('does not remove the last text block if it is not empty', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -428,46 +492,52 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
+      })
       state = subject.methods.removeEmptyTextBlock(newState)
-      expect(state.collection[1]).not.to.be.undefined
-      expect(state.order).to.deep.equal([0, 1])
+      const order = state.get('order')
+      expect(order.size).to.equal(2)
+      expect(order.last()).to.equal(1)
+      expect(state.getIn(['collection', '1'])).not.to.be.undefined
     })
   })
 
   describe('#updateBlock', () => {
     it('updates the block with the new content', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: 'Woodhouse!',
         },
-      }
+      })
       state = subject.methods.updateBlock(newState, { payload: { block: 'Yes sir', uid: 0 } })
-      expect(state.collection[0]).to.equal('Yes sir')
+      expect(state.getIn(['collection', '0'])).to.equal('Yes sir')
     })
   })
 
   describe('#reorderBlocks', () => {
     it('moves forward in the array when the delta is 1', () => {
-      const newState = {
+      const newState = fromJS({
         order: [0, 1, 2],
-      }
+      })
       state = subject.methods.reorderBlocks(newState, { payload: { delta: 1, uid: 0 } })
-      expect(state.order).to.deep.equal([1, 0, 2])
+      expect(state.getIn(['order', 0])).to.equal(1)
+      expect(state.getIn(['order', 1])).to.equal(0)
+      expect(state.getIn(['order', 2])).to.equal(2)
     })
 
     it('moves backwards in the array when the delta is -1', () => {
-      const newState = {
+      const newState = fromJS({
         order: [0, 1, 2],
-      }
+      })
       state = subject.methods.reorderBlocks(newState, { payload: { delta: -1, uid: 2 } })
-      expect(state.order).to.deep.equal([0, 2, 1])
+      expect(state.getIn(['order', 0])).to.equal(0)
+      expect(state.getIn(['order', 1])).to.equal(2)
+      expect(state.getIn(['order', 2])).to.equal(1)
     })
   })
 
   describe('#appendText', () => {
     it('appends text to the last text block found', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -481,15 +551,15 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
+      })
       state = subject.methods.appendText(newState, ' That\'s like killing a unicorn!')
-      expect(state.collection[0].data).to.equal(
+      expect(state.getIn(['collection', '0', 'data'])).to.equal(
         '@lana You killed a black astronaut, Cyril! That\'s like killing a unicorn!'
       )
     })
 
     it('does not append text if there is no text block', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           1: {
             kind: 'image',
@@ -498,13 +568,13 @@ describe('editor helper', () => {
           },
         },
         order: [1],
-      }
+      })
       state = subject.methods.appendText(newState, ' That\'s like killing a unicorn!')
-      expect(state.collection[1].data).to.equal('/path/to/avatar/lana.png')
+      expect(state.getIn(['collection', '1', 'data'])).to.equal('/path/to/avatar/lana.png')
     })
   })
 
-  describe('#appendUsernames', () => {
+  describe.only('#appendUsernames', () => {
     it('appends usernames to the last text block found', () => {
       const newState = {
         collection: {

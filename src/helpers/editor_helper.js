@@ -1,13 +1,13 @@
+import { fromJS } from 'immutable'
 import cloneDeep from 'lodash/cloneDeep'
 import get from 'lodash/get'
 import reduce from 'lodash/reduce'
-import values from 'lodash/values'
 import { suggestEmoji } from '../components/completers/EmojiSuggester'
 import { userRegex } from '../components/completers/Completer'
 import { COMMENT, EDITOR, POST } from '../constants/action_types'
 
 const methods = {}
-const initialState = {
+const initialState = fromJS({
   collection: {},
   hasContent: false,
   hasMedia: false,
@@ -18,22 +18,19 @@ const initialState = {
   postBuyLink: null,
   shouldPersist: false,
   uid: 0,
-}
+})
 
-methods.addCompletions = (state, action) => {
-  const newState = cloneDeep(state)
+methods.getCompletions = (action) => {
   const { payload } = action
   if (payload && payload.response) {
     const { type = 'user', word } = payload
     if (type === 'user') {
-      newState.completions = { data: payload.response.autocompleteResults, type }
+      return { data: payload.response.autocompleteResults, type }
     } else if (type === 'emoji') {
-      newState.completions = { data: suggestEmoji(word, payload.response.emojis), type }
+      return { data: suggestEmoji(word, payload.response.emojis), type }
     }
-  } else {
-    newState.completions = null
   }
-  return newState
+  return null
 }
 
 
@@ -58,135 +55,110 @@ methods.rehydrateEditors = (persistedEditors = {}) => {
   return editors
 }
 
-methods.addHasContent = (state) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  const firstBlock = collection[order[0]]
-  if (!firstBlock) { return state }
-  const hasContent = Boolean(
-    order.length > 1 ||
-    (firstBlock &&
-    firstBlock.data.length &&
-    firstBlock.data !== '<br>')
+methods.hasContent = (state) => {
+  const order = state.get('order')
+  const firstBlock = state.getIn(['collection', `${order.get(0)}`])
+  if (!firstBlock) { return false }
+  const data = firstBlock.get('data')
+  return !!(order.size > 1 || (data.length && data !== '<br>'))
+}
+
+methods.hasMedia = (state) => {
+  const collection = state.get('collection')
+  const order = state.get('order')
+  return order.some(uid => /embed|image/.test(collection.get(`${uid}`).get('kind')))
+}
+
+methods.hasMention = (state) => {
+  const collection = state.get('collection')
+  const order = state.get('order')
+  return order.some((uid) => {
+    const block = collection.get(`${uid}`)
+    return block && /text/.test(block.get('kind')) && userRegex.test(block.get('data'))
+  })
+}
+
+methods.isLoading = (state) => {
+  const collection = state.get('collection')
+  let isLoading = collection.valueSeq().some(block =>
+    /image/.test(block.get('kind')) && block.get('isLoading')
   )
-  newState.hasContent = hasContent
-  return newState
-}
-
-methods.addHasMedia = (state) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  newState.hasMedia = order.some(uid => /embed|image/.test(collection[uid].kind))
-  return newState
-}
-
-methods.addHasMention = (state) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  let hasMention = false
-  for (const uid of order) {
-    const block = collection[uid]
-    if (block && /text/.test(block.kind) && userRegex.test(block.data)) {
-      hasMention = true
-      break
-    }
-  }
-  newState.hasMention = hasMention
-  return newState
-}
-
-methods.addIsLoading = (state) => {
-  const newState = cloneDeep(state)
-  const { collection } = newState
-  let isLoading = values(collection).some(block =>
-    /image/.test(block.kind) && block.isLoading
-  )
-  if (!isLoading && newState.dragBlock) { isLoading = newState.dragBlock.isLoading }
-  newState.isLoading = isLoading
-  return newState
+  const dragBlock = state.get('dragBlock')
+  if (!isLoading && dragBlock) { isLoading = dragBlock.get('isLoading') }
+  return isLoading
 }
 
 methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  const newBlock = { ...block, uid: newState.uid }
-  if (newState.postBuyLink) {
-    newBlock.linkUrl = newState.postBuyLink
+  const uid = state.get('uid')
+  const newBlock = { ...block, uid }
+  const postBuyLink = state.get('postBuyLink')
+  if (postBuyLink) {
+    newBlock.linkUrl = postBuyLink
   }
-  collection[newState.uid] = newBlock
-  order.push(newState.uid)
-  newState.uid += 1
-  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
-  return newState
+  const order = state.get('order')
+  const updatedState = state.setIn(['collection', `${uid}`], fromJS(newBlock))
+    .set('order', order.push(uid))
+    .set('uid', uid + 1)
+  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(updatedState) }
+  return updatedState
 }
 
 methods.addEmptyTextBlock = (state, shouldCheckForEmpty = false) => {
-  let newState = cloneDeep(state)
-  const { collection, order } = newState
-  if (order.length > 1) {
-    const last = collection[order[order.length - 1]]
-    const secondToLast = collection[order[order.length - 2]]
-    if (/text/.test(secondToLast.kind) && /text/.test(last.kind) && !last.data.length) {
-      return methods.remove({ shouldCheckForEmpty, state: newState, uid: last.uid })
+  const order = state.get('order')
+  const last = state.getIn(['collection', `${order.last()}`])
+  if (order.size > 1) {
+    const secondToLast = state.getIn(['collection', `${order.get(-2)}`])
+    if (/text/.test(secondToLast.get('kind')) && /text/.test(last.get('kind')) && !last.get('data').length) {
+      return methods.remove({ shouldCheckForEmpty, state, uid: last.get('uid') })
     }
   }
-  if (!order.length || !/text/.test(collection[order[order.length - 1]].kind)) {
-    newState = methods.add({ block: { data: '', kind: 'text' }, state: newState })
+  if (!order.size || !/text/.test(last.get('kind'))) {
+    return methods.add({ block: { data: '', kind: 'text' }, state })
   }
-  return newState
+  return state
 }
 
 methods.remove = ({ shouldCheckForEmpty = true, state, uid }) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  delete collection[uid]
-  order.splice(order.indexOf(uid), 1)
-  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(newState) }
-  return newState
+  const order = state.get('order')
+  const updatedState = state.deleteIn(['collection', `${uid}`])
+    .deleteIn(['order', `${order.indexOf(uid)}`])
+  if (shouldCheckForEmpty) { return methods.addEmptyTextBlock(updatedState) }
+  return updatedState
 }
 
 methods.removeEmptyTextBlock = (state) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  if (order.length > 0) {
-    const last = collection[order[order.length - 1]]
-    if (last && /text/.test(last.kind) && !last.data.length) {
-      delete collection[last.uid]
-      order.splice(order.indexOf(last.uid), 1)
+  const order = state.get('order')
+  if (order.size > 0) {
+    const last = state.getIn(['collection', `${order.last()}`])
+    if (last && /text/.test(last.get('kind')) && !last.get('data').length) {
+      return state.deleteIn(['collection', `${last.get('uid')}`])
+        .deleteIn(['order', `${order.indexOf(last.get('uid'))}`])
     }
   }
-  return newState
+  return state
 }
 
 methods.updateBlock = (state, action) => {
-  const newState = cloneDeep(state)
   const { block, uid } = action.payload
-  newState.collection[uid] = block
-  return newState
+  return state.setIn(['collection', `${uid}`], fromJS(block))
 }
 
 methods.reorderBlocks = (state, action) => {
-  const newState = cloneDeep(state)
-  const { order } = newState
+  const order = state.get('order')
   const { delta, uid } = action.payload
   const index = order.indexOf(uid)
-  // remove from old spot
-  order.splice(index, 1)
-  // add to new spot
-  order.splice(index + delta, 0, uid)
-  return newState
+  // remove from old spot and add to new spot
+  return state.set('order', order.splice(index, 1).splice(index + delta, 0, uid))
 }
 
 methods.appendText = (state, text) => {
-  const newState = cloneDeep(state)
-  const { collection, order } = newState
-  const textBlocks = order.filter(orderUid => /text/.test(collection[orderUid].kind))
-  const lastTextBlock = collection[textBlocks[textBlocks.length - 1]]
+  const order = state.get('order')
+  const textBlocks = order.filter(uid => /text/.test(state.getIn(['collection', `${uid}`, 'kind'])))
+  const lastTextBlock = state.getIn(['collection', `${textBlocks.last()}`])
   if (lastTextBlock) {
-    lastTextBlock.data += text
-    collection[lastTextBlock.uid] = lastTextBlock
+    return state.setIn(['collection', `${lastTextBlock.get('uid')}`, 'data'], lastTextBlock.get('data') + text)
   }
-  return newState
+  return state
 }
 
 methods.appendUsernames = (state, usernames) => {
