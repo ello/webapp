@@ -1,5 +1,5 @@
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { routeReducer as reducer } from '../../../src/reducers/routing'
+import { default as reducer } from '../../../src/reducers/routing'
 
 describe('promotions reducer', () => {
   context('#initialState', () => {

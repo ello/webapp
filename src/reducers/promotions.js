@@ -1,17 +1,16 @@
 import { fromJS } from 'immutable'
 import { PROMOTIONS } from '../constants/action_types'
 
-const initialState = {
+const initialState = fromJS({
   authentication: [],
-}
+})
 
 export default (state = initialState, action) => {
-  const map = fromJS(state)
   switch (action.type) {
     case PROMOTIONS.AUTHENTICATION_SUCCESS:
-      return map.set('authentication', action.payload.response).toJS()
+      return initialState.set('authentication', action.payload.response).toJS()
     default:
-      return state
+      return initialState.toJS()
   }
 }
 
