@@ -1,6 +1,6 @@
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../../../src/constants/action_types'
-import { authentication as reducer } from '../../../src/reducers/authentication'
+import { default as reducer } from '../../../src/reducers/authentication'
 
 describe('authentication reducer', () => {
   const initialState = reducer(undefined, {})
@@ -8,6 +8,7 @@ describe('authentication reducer', () => {
     accessToken: '1234',
     createdAt: 1468968055,
     expiresIn: 7200,
+    isLoggedIn: false,
     refreshToken: '5678',
     scope: 'public scoped_refresh_token',
     tokenType: 'bearer',
@@ -23,7 +24,6 @@ describe('authentication reducer', () => {
         'expirationDate',
         'expiresIn',
         'isLoggedIn',
-        'refreshTimeoutId',
         'refreshToken',
         'tokenType'
       )
@@ -31,57 +31,19 @@ describe('authentication reducer', () => {
   })
 
   context('AUTHENTICATION', () => {
-    it('AUTHENTICATION.SCHEDULE_REFRESH updates the refreshTimeoutId', () => {
-      const action = {
-        type: AUTHENTICATION.SCHEDULE_REFRESH,
-        payload: { refreshTimeoutId: '666' },
-      }
-      const reducedState = reducer(undefined, action)
-      expect(reducedState).to.have.property('refreshTimeoutId', '666')
-    })
-
-    it('AUTHENTICATION.CANCEL_REFRESH updates the refreshTimeoutId', () => {
-      const setAction = {
-        type: AUTHENTICATION.SCHEDULE_REFRESH,
-        payload: { refreshTimeoutId: '666' },
-      }
-      const clearAction = { type: AUTHENTICATION.CANCEL_REFRESH }
-      const reducedState = reducer(undefined, setAction)
-      expect(reducedState).to.have.property('refreshTimeoutId', '666')
-      expect(reducer(reducedState, clearAction)).to.have.property('refreshTimeoutId', null)
-    })
-
     it('AUTHENTICATION.CLEAR_STORE resets to initialState', () => {
-      const setAction = {
-        type: AUTHENTICATION.SCHEDULE_REFRESH,
-        payload: { refreshTimeoutId: '666' },
-      }
       const clearAction = { type: AUTHENTICATION.CLEAR_STORE }
-      const reducedState = reducer(undefined, setAction)
-      expect(reducedState).to.have.property('refreshTimeoutId', '666')
-      expect(reducer(reducedState, clearAction)).to.deep.equal(initialState)
+      expect(reducer({ archer: 'phrasing' }, clearAction)).to.deep.equal(initialState)
     })
 
     it('AUTHENTICATION.LOGOUT_SUCCESS resets to initialState', () => {
-      const setAction = {
-        type: AUTHENTICATION.SCHEDULE_REFRESH,
-        payload: { refreshTimeoutId: '666' },
-      }
       const clearAction = { type: AUTHENTICATION.LOGOUT_SUCCESS }
-      const reducedState = reducer(undefined, setAction)
-      expect(reducedState).to.have.property('refreshTimeoutId', '666')
-      expect(reducer(reducedState, clearAction)).to.deep.equal(initialState)
+      expect(reducer({ archer: 'phrasing' }, clearAction)).to.deep.equal(initialState)
     })
 
     it('AUTHENTICATION.LOGOUT_FAILURE resets to initialState', () => {
-      const setAction = {
-        type: AUTHENTICATION.SCHEDULE_REFRESH,
-        payload: { refreshTimeoutId: '666' },
-      }
       const clearAction = { type: AUTHENTICATION.LOGOUT_FAILURE }
-      const reducedState = reducer(undefined, setAction)
-      expect(reducedState).to.have.property('refreshTimeoutId', '666')
-      expect(reducer(reducedState, clearAction)).to.deep.equal(initialState)
+      expect(reducer({ archer: 'phrasing' }, clearAction)).to.deep.equal(initialState)
     })
 
     it('AUTHENTICATION.USER_SUCCESS updates with response items', () => {
@@ -95,7 +57,6 @@ describe('authentication reducer', () => {
         ...stubbedResponse,
         isLoggedIn: true,
         expirationDate: newDate,
-        refreshTimeoutId: null,
       })
     })
 
@@ -110,21 +71,14 @@ describe('authentication reducer', () => {
         ...stubbedResponse,
         isLoggedIn: true,
         expirationDate: newDate,
-        refreshTimeoutId: null,
       })
     })
   })
 
   context('PROFILE', () => {
     it('PROFILE.DELETE_SUCCESS resets to initialState', () => {
-      const setAction = {
-        type: AUTHENTICATION.SCHEDULE_REFRESH,
-        payload: { refreshTimeoutId: '666' },
-      }
       const clearAction = { type: PROFILE.DELETE_SUCCESS }
-      const reducedState = reducer(undefined, setAction)
-      expect(reducedState).to.have.property('refreshTimeoutId', '666')
-      expect(reducer(reducedState, clearAction)).to.deep.equal(initialState)
+      expect(reducer({ archer: 'phrasing' }, clearAction)).to.deep.equal(initialState)
     })
 
     it('PROFILE.SIGNUP_SUCCESS updates with response items', () => {
@@ -138,26 +92,22 @@ describe('authentication reducer', () => {
         ...stubbedResponse,
         isLoggedIn: true,
         expirationDate: newDate,
-        refreshTimeoutId: null,
       })
     })
   })
 
   context('REHYDRATE', () => {
-    it('disregards any persisted refreshTimeoutId', () => {
+    it('updates with authentication from persisted data', () => {
       const action = {
-        key: 'authentication',
         type: REHYDRATE,
-        payload: {
-          authentication: {
-            accessToken: '1234',
-            refreshTimeoutId: 99,
-          },
-        },
+        payload: { authentication: stubbedResponse },
       }
       const reducedState = reducer(undefined, action)
-      expect(reducedState).to.have.property('refreshTimeoutId', null)
-      expect(reducedState).to.have.property('accessToken', '1234')
+      const newDate = new Date((stubbedResponse.createdAt + stubbedResponse.expiresIn) * 1000)
+      expect(reducedState).to.deep.equal({
+        ...stubbedResponse,
+        expirationDate: newDate,
+      })
     })
   })
 })
