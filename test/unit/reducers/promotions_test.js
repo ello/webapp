@@ -1,5 +1,5 @@
 import { stubAuthPromotion } from '../../support/stubs'
-import { promotions as reducer } from '../../../src/reducers/promotions'
+import reducer from '../../../src/reducers/promotions'
 import { PROMOTIONS } from '../../../src/constants/action_types'
 
 
