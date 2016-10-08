@@ -11,7 +11,6 @@ import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectColumnCount,
   selectHasLaunchedSignupModal,
-  selectHistory,
   selectInnerHeight,
   selectInnerWidth,
   selectIsGridMode,
@@ -38,7 +37,6 @@ export function makeMapStateToProps() {
       ...streamProps,
       columnCount: selectColumnCount(state),
       hasLaunchedSignupModal: selectHasLaunchedSignupModal(state),
-      history: selectHistory(state),
       innerHeight: selectInnerHeight(state),
       innerWidth: selectInnerWidth(state),
       isLoggedIn: selectIsLoggedIn(state),
