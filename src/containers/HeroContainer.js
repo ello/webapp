@@ -9,7 +9,7 @@ import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en'
 import { getLinkObject } from '../helpers/json_helper'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
-  selectCoverDPI,
+  selectDPI,
   selectLastDiscoverBeaconVersion,
   selectLastFollowingBeaconVersion,
   selectLastStarredBeaconVersion,
@@ -83,7 +83,7 @@ function mapStateToProps(state, props) {
     authPromotionals: selectAuthPromotionals(state),
     broadcast: selectBroadcast(state),
     categoryData,
-    dpi: selectCoverDPI(state),
+    dpi: selectDPI(state),
     isAuthentication,
     isCategoryPromotion,
     isLoggedIn: selectIsLoggedIn(state),
