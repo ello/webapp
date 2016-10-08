@@ -14,7 +14,6 @@ function createPropsForStream(ownProps = {}) {
     action: {},
     currentUser: stub('user', { id: 'currentUser' }),
     dispatch: () => { /**/ },
-    history: {},
     json: {
       pages: {
         what: { ids: [], pagination: {}, type: 'what' },
@@ -33,7 +32,6 @@ function createPropsForStream(ownProps = {}) {
 
 function createStateForStream(ownState = {}) {
   const defaultProps = {
-    history: {},
     json: {
       pages: {
         '/discover': {
@@ -59,12 +57,6 @@ function createStateForStream(ownState = {}) {
       },
     },
     gui: {
-      history: {
-        a1b2c3: {
-          key: 'a1b2c3',
-          scrolltop: 666,
-        },
-      },
       isGridMode: false,
       modes: [
         { label: 'discover', mode: 'list', regex: /\/discover|\/explore/ },
@@ -89,19 +81,6 @@ describe('StreamContainer', () => {
   })
 
   describe('#mapStateToProps', () => {
-    context('history', () => {
-      it('sets history', () => {
-        state = createStateForStream()
-        props = createPropsForStream()
-        expect(mapStateToProps(state, props).history).to.deep.equal({
-          a1b2c3: {
-            key: 'a1b2c3',
-            scrolltop: 666,
-          },
-        })
-      })
-    })
-
     context('json', () => {
       it('sets json', () => {
         state = createStateForStream()

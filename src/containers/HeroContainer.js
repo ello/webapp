@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en.js'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
-  selectCoverDPI,
+  selectDPI,
   selectLastDiscoverBeaconVersion,
   selectLastFollowingBeaconVersion,
   selectLastStarredBeaconVersion,
@@ -61,7 +61,7 @@ function mapStateToProps(state, props) {
   const user = selectUserFromUsername(state, props)
   return {
     broadcast: selectBroadcast(state),
-    dpi: selectCoverDPI(state),
+    dpi: selectDPI(state),
     isAuthenticationLayout: selectIsAuthenticationLayout(state),
     isBackgroundCycleLayout: selectIsBackgroundCycleLayout(state),
     isLoggedIn: selectIsLoggedIn(state),

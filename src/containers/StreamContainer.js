@@ -9,7 +9,6 @@ import { runningFetches } from '../sagas/requester'
 import * as ACTION_TYPES from '../constants/action_types'
 import {
   selectColumnCount,
-  selectHistory,
   selectInnerHeight,
   selectInnerWidth,
   selectIsGridMode,
@@ -34,7 +33,6 @@ export function makeMapStateToProps() {
     return {
       ...streamProps,
       columnCount: selectColumnCount(state),
-      history: selectHistory(state),
       innerHeight: selectInnerHeight(state),
       innerWidth: selectInnerWidth(state),
       json: state.json,

@@ -127,10 +127,6 @@ describe('gui actions', () => {
   context('#setViewportSizeAttributes', () => {
     const action = subject.setViewportSizeAttributes({
       columnCount: 4,
-      columnWidth: 320,
-      contentWidth: 1280,
-      coverDPI: 'xhdpi',
-      deviceSize: 'desktop',
       innerHeight: 768,
       innerWidth: 1360,
     })
@@ -146,10 +142,6 @@ describe('gui actions', () => {
     it('has a payload with the correct keys', () => {
       expect(action.payload).to.have.keys(
         'columnCount',
-        'columnWidth',
-        'contentWidth',
-        'coverDPI',
-        'deviceSize',
         'innerHeight',
         'innerWidth',
       )
@@ -157,10 +149,6 @@ describe('gui actions', () => {
 
     it('sets the appropriate payload', () => {
       expect(action.payload.columnCount).to.equal(4)
-      expect(action.payload.columnWidth).to.equal(320)
-      expect(action.payload.contentWidth).to.equal(1280)
-      expect(action.payload.coverDPI).to.equal('xhdpi')
-      expect(action.payload.deviceSize).to.equal('desktop')
       expect(action.payload.innerHeight).to.equal(768)
       expect(action.payload.innerWidth).to.equal(1360)
     })

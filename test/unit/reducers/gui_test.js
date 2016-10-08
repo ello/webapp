@@ -22,13 +22,8 @@ describe('gui reducer', () => {
       'activeNotificationsType',
       'activeUserFollowingType',
       'columnCount',
-      'columnWidth',
-      'contentWidth',
-      'coverDPI',
       'currentStream',
-      'deviceSize',
       'discoverKeyType',
-      'history',
       'innerHeight',
       'innerWidth',
       'isAuthenticationView',
@@ -173,20 +168,12 @@ describe('gui reducer', () => {
     it('GUI.SET_VIEWPORT_SIZE_ATTRIBUTES', () => {
       const initialState = reducer(undefined, {})
       expect(initialState).to.have.property('columnCount', 2)
-      expect(initialState).to.have.property('columnWidth', 0)
-      expect(initialState).to.have.property('contentWidth', 0)
-      expect(initialState).to.have.property('coverDPI', 'xhdpi')
-      expect(initialState).to.have.property('deviceSize', 'tablet')
       expect(initialState).to.have.property('innerHeight', 0)
       expect(initialState).to.have.property('innerWidth', 0)
       const action = {
         type: GUI.SET_VIEWPORT_SIZE_ATTRIBUTES,
         payload: {
           columnCount: 4,
-          columnWidth: 320,
-          contentWidth: 1280,
-          coverDPI: 'optimized',
-          deviceSize: 'desktop',
           innerHeight: 768,
           innerWidth: 1360,
         },
@@ -194,10 +181,6 @@ describe('gui reducer', () => {
 
       const nextState = reducer(initialState, action)
       expect(nextState.columnCount).to.equal(4)
-      expect(nextState.columnWidth).to.equal(320)
-      expect(nextState.contentWidth).to.equal(1280)
-      expect(nextState.coverDPI).to.equal('optimized')
-      expect(nextState.deviceSize).to.equal('desktop')
       expect(nextState.innerHeight).to.equal(768)
       expect(nextState.innerWidth).to.equal(1360)
     })

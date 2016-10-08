@@ -68,20 +68,6 @@ const getIsGridMode = (modes) => {
   return mode.mode === 'grid'
 }
 
-const initialSizeState = {
-  columnCount: 2,
-  columnWidth: 0,
-  contentWidth: 0,
-  coverDPI: 'xhdpi',
-  deviceSize: 'tablet',
-  innerHeight: 0,
-  innerWidth: 0,
-}
-
-const initialScrollState = {
-  isNavbarHidden: false,
-}
-
 const initialNonPersistedState = {
   isCompleterActive: false,
   isNotificationsActive: false,
@@ -94,17 +80,18 @@ const initialNonPersistedState = {
 }
 
 export const initialState = {
-  ...initialSizeState,
-  ...initialScrollState,
   ...initialNonPersistedState,
   activeNotificationsType: 'all',
   activeUserFollowingType: 'friend',
+  columnCount: 2,
   currentStream: '/discover',
   discoverKeyType: null,
-  history: {},
+  innerHeight: 0,
+  innerWidth: 0,
   isAuthenticationView: false,
   isGridMode: true,
   isLayoutToolHidden: false,
+  isNavbarHidden: false,
   isNotificationsUnread: false,
   isOnboardingView: false,
   lastDiscoverBeaconVersion: '0',
@@ -201,20 +188,20 @@ export const gui = (state = initialState, action = { type: '' }) => {
       if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
           ...state,
-          ...initialScrollState,
           currentStream: pathname,
           isAuthenticationView,
           isLayoutToolHidden,
           isGridMode: getIsGridMode(state.modes),
+          isNavbarHidden: false,
           isOnboardingView,
         }
       }
       return {
         ...state,
-        ...initialScrollState,
         isAuthenticationView,
         isLayoutToolHidden,
         isGridMode: getIsGridMode(state.modes),
+        isNavbarHidden: false,
         isOnboardingView,
       }
     }
@@ -229,16 +216,16 @@ export const gui = (state = initialState, action = { type: '' }) => {
           ...state,
           ...action.payload.gui,
           ...initialNonPersistedState,
-          ...initialScrollState,
           isLayoutToolHidden: state.isLayoutToolHidden,
+          isNavbarHidden: false,
           isOnboardingView: state.isOnboardingView,
         }
       }
       return {
         ...state,
         ...initialNonPersistedState,
-        ...initialScrollState,
         isLayoutToolHidden: state.isLayoutToolHidden,
+        isNavbarHidden: false,
       }
     case SET_LAYOUT_MODE:
       mode = findLayoutMode(newState.modes)

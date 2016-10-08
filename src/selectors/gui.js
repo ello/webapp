@@ -6,13 +6,8 @@ import { selectParamsUsername } from './params'
 export const selectActiveUserFollowingType = state => get(state, 'gui.activeUserFollowingType')
 export const selectActiveNotificationsType = state => get(state, 'gui.activeNotificationsType')
 export const selectColumnCount = state => get(state, 'gui.columnCount')
-export const selectColumnWidth = state => get(state, 'gui.columnWidth')
-export const selectContentWidth = state => get(state, 'gui.contentWidth')
-export const selectCoverDPI = state => get(state, 'gui.coverDPI')
 export const selectCurrentStream = state => get(state, 'gui.currentStream')
-export const selectDeviceSize = state => get(state, 'gui.deviceSize')
 export const selectDiscoverKeyType = state => get(state, 'gui.discoverKeyType')
-export const selectHistory = state => get(state, 'gui.history')
 export const selectInnerHeight = state => get(state, 'gui.innerHeight')
 export const selectInnerWidth = state => get(state, 'gui.innerWidth')
 export const selectIsAuthenticationView = state => get(state, 'gui.isAuthenticationView')
@@ -35,9 +30,18 @@ export const selectTextToolsCoordinates = state => get(state, 'gui.textToolsCoor
 export const selectTextToolsStates = state => get(state, 'gui.textToolsStates')
 
 // Memoized selectors
-export const selectCommentOffset = createSelector(
-  [selectDeviceSize], deviceSize =>
-    (deviceSize === 'mobile' ? 40 : 60)
+
+// TODO: Add Test
+export const selectDeviceSize = createSelector(
+  [selectColumnCount, selectInnerWidth], (columnCount, innerWidth) => {
+    // deviceSize could be anything: baby, momma, poppa bear would work too.
+    if (columnCount >= 4) {
+      return 'desktop'
+    } else if (columnCount >= 2 && innerWidth >= 640) {
+      return 'tablet'
+    }
+    return 'mobile'
+  }
 )
 
 export const selectIsMobile = createSelector(
@@ -48,6 +52,45 @@ export const selectIsMobile = createSelector(
 export const selectIsMobileGridStream = createSelector(
   [selectDeviceSize, selectIsGridMode], (deviceSize, isGridMode) =>
     deviceSize === 'mobile' && isGridMode
+)
+
+// TODO: Add Test
+export const selectPaddingOffset = createSelector(
+  [selectDeviceSize, selectColumnCount], (deviceSize, columnCount) => {
+    if (deviceSize === 'mobile') { return 10 }
+    return columnCount >= 4 ? 40 : 20
+  }
+)
+
+export const selectCommentOffset = createSelector(
+  [selectDeviceSize], deviceSize =>
+    (deviceSize === 'mobile' ? 40 : 60)
+)
+
+// TODO: Add Test
+export const selectColumnWidth = createSelector(
+  [selectColumnCount, selectInnerWidth, selectPaddingOffset], (columnCount, innerWidth, padding) =>
+    Math.round((innerWidth - ((columnCount + 1) * padding)) / columnCount)
+)
+
+// TODO: Add Test
+export const selectContentWidth = createSelector(
+  [selectInnerWidth, selectPaddingOffset], (innerWidth, padding) =>
+    Math.round(innerWidth - (padding * 2))
+)
+
+// TODO: Add Test
+// This is very rudimentary. needs things like 1x, 2x calculating the set
+// Primarily used for background images in Heros
+export const selectDPI = createSelector(
+  [selectInnerWidth], (innerWidth) => {
+    if (innerWidth < 750) {
+      return 'hdpi'
+    } else if (innerWidth >= 750 && innerWidth < 1920) {
+      return 'xhdpi'
+    }
+    return 'optimized'
+  }
 )
 
 export const selectHasSaidHelloTo = createSelector(
