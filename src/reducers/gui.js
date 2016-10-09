@@ -8,7 +8,6 @@ import {
   HEAD_FAILURE,
   HEAD_SUCCESS,
   LOAD_STREAM_SUCCESS,
-  OMNIBAR,
   PROFILE,
   SET_LAYOUT_MODE,
   ZEROS,
@@ -43,7 +42,6 @@ const getIsGridMode = (modes) => {
 const initialNonPersistedState = {
   isCompleterActive: false,
   isNotificationsActive: false,
-  isOmnibarActive: false,
   isProfileMenuActive: false,
   isTextToolsActive: false,
   saidHelloTo: [],
@@ -162,9 +160,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
         isNavbarHidden: false,
       }
     }
-    case OMNIBAR.OPEN:
-    case OMNIBAR.CLOSE:
-      return { ...state, isOmnibarActive: action.payload.isActive }
     case PROFILE.DELETE_SUCCESS:
       return { ...initialState }
     case REHYDRATE:

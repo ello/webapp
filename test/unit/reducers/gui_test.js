@@ -6,7 +6,6 @@ import {
   HEAD_FAILURE,
   HEAD_SUCCESS,
   LOAD_STREAM_SUCCESS,
-  OMNIBAR,
   PROFILE,
   SET_LAYOUT_MODE,
   ZEROS,
@@ -31,7 +30,6 @@ describe('gui reducer', () => {
       'isNavbarHidden',
       'isNotificationsActive',
       'isNotificationsUnread',
-      'isOmnibarActive',
       'isProfileMenuActive',
       'isTextToolsActive',
       'lastDiscoverBeaconVersion',
@@ -237,21 +235,6 @@ describe('gui reducer', () => {
 
       const action2 = { type: LOCATION_CHANGE, payload: { pathname: '/starred' } }
       expect(reducer(undefined, action2)).to.have.property('isGridMode', false)
-    })
-  })
-
-  context('OMNIBAR', () => {
-    it('OMNIBAR.OPEN sets isOmnibarActive to true', () => {
-      expect(reducer(undefined, {})).to.have.property('isOmnibarActive', false)
-      const action = { type: OMNIBAR.OPEN, payload: { isActive: true } }
-      expect(reducer(reducer, action)).to.have.property('isOmnibarActive', true)
-    })
-
-    it('OMNIBAR.CLOSE sets isOmnibarActive to false', () => {
-      const testState = { ...reducer(undefined, {}), isOmnibarActive: true }
-      expect(testState).to.have.property('isOmnibarActive', true)
-      const action = { type: OMNIBAR.CLOSE, payload: { isActive: false } }
-      expect(reducer(testState, action)).to.have.property('isOmnibarActive', false)
     })
   })
 
