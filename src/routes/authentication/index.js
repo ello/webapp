@@ -6,10 +6,10 @@ export default (store) => {
   function onEnter(nextState, replace) {
     const {
       authentication: { isLoggedIn },
-      gui: { currentStream },
+      gui: { homeStream },
     } = store.getState()
     if (isLoggedIn) {
-      replace({ pathname: currentStream, state: nextState })
+      replace({ pathname: homeStream, state: nextState })
     } else if (/\/signup/.test(nextState.location.pathname)) {
       const pathname = nextState.params.invitationCode ? `/join/${nextState.params.invitationCode}` : '/join'
       replace({ pathname, state: nextState })

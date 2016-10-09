@@ -25,7 +25,7 @@ import NotificationsContainer from '../../containers/notifications/Notifications
 
 export const NavbarLoggedOut = ({
   categoryTabs,
-  currentStream,
+  homeStream,
   hasLoadMoreButton,
   isLoggedIn,
   onClickLoadMorePosts,
@@ -35,7 +35,7 @@ export const NavbarLoggedOut = ({
   <nav className="Navbar" role="navigation" >
     <div className="NavbarMain">
       <NavbarMark
-        currentStream={currentStream}
+        homeStream={homeStream}
         isLoggedIn={isLoggedIn}
         onClick={onClickNavbarMark}
       />
@@ -75,7 +75,7 @@ export const NavbarLoggedOut = ({
 
 NavbarLoggedOut.propTypes = {
   categoryTabs: PropTypes.array,
-  currentStream: PropTypes.string.isRequired,
+  homeStream: PropTypes.string.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   onClickLoadMorePosts: PropTypes.func.isRequired,
@@ -86,7 +86,7 @@ NavbarLoggedOut.propTypes = {
 export const NavbarLoggedIn = ({
   avatar,
   categoryTabs,
-  currentStream,
+  homeStream,
   deviceSize,
   hasLoadMoreButton,
   isGridMode,
@@ -113,7 +113,7 @@ export const NavbarLoggedIn = ({
   <nav className="Navbar" role="navigation" >
     <div className="NavbarMain">
       <NavbarMark
-        currentStream={currentStream}
+        homeStream={homeStream}
         isLoggedIn={isLoggedIn}
         onClick={onClickNavbarMark}
       />
@@ -189,7 +189,7 @@ export const NavbarLoggedIn = ({
 NavbarLoggedIn.propTypes = {
   avatar: PropTypes.object,
   categoryTabs: PropTypes.array,
-  currentStream: PropTypes.string.isRequired,
+  homeStream: PropTypes.string.isRequired,
   deviceSize: PropTypes.string.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
   isGridMode: PropTypes.bool,
