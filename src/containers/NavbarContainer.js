@@ -27,7 +27,7 @@ import { loadFriends, loadNoise } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/Navbar'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   const currentStream = selectCurrentStream(state)
   const isLoggedIn = selectIsLoggedIn(state)
   const pathname = selectPathname(state)
@@ -41,7 +41,7 @@ function mapStateToProps(state) {
       currentStream,
       hasLoadMoreButton,
       isGridMode: selectIsGridMode(state),
-      isLayoutToolHidden: selectIsLayoutToolHidden(state),
+      isLayoutToolHidden: selectIsLayoutToolHidden(state, props),
       isLoggedIn,
       isNotificationsActive: selectIsNotificationsActive(state),
       isNotificationsUnread: selectIsNotificationsUnread(state),

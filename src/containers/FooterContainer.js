@@ -7,11 +7,11 @@ import { scrollTo } from '../lib/jello'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/Footer'
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   const streamType = selectStreamType(state)
   return {
     isGridMode: selectIsGridMode(state),
-    isLayoutToolHidden: selectIsLayoutToolHidden(state),
+    isLayoutToolHidden: selectIsLayoutToolHidden(state, props),
     isPaginatoring: streamType === LOAD_NEXT_CONTENT_REQUEST,
   }
 }

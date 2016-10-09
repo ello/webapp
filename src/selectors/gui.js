@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { selectParamsUsername } from './params'
+import { selectPathname, selectPropsQueryType } from './routing'
 
 // state.gui.xxx
 export const selectActiveUserFollowingType = state => get(state, 'gui.activeUserFollowingType')
@@ -13,7 +14,7 @@ export const selectInnerWidth = state => get(state, 'gui.innerWidth')
 export const selectIsAuthenticationView = state => get(state, 'gui.isAuthenticationView')
 export const selectIsCompleterActive = state => get(state, 'gui.isCompleterActive')
 export const selectIsGridMode = state => get(state, 'gui.isGridMode')
-export const selectIsLayoutToolHidden = state => get(state, 'gui.isLayoutToolHidden')
+// export const selectIsLayoutToolHidden = state => get(state, 'gui.isLayoutToolHidden')
 export const selectIsNavbarHidden = state => get(state, 'gui.isNavbarHidden')
 export const selectIsNotificationsActive = state => get(state, 'gui.isNotificationsActive')
 export const selectIsNotificationsUnread = state => get(state, 'gui.isNotificationsUnread')
@@ -100,5 +101,24 @@ export const selectHasSaidHelloTo = createSelector(
 
 export const selectScrollOffset = createSelector(
   [selectInnerHeight], innerHeight => Math.round(innerHeight - 80)
+)
+
+// TODO: Move to routing constants
+const NO_LAYOUT_TOOLS = [
+  /^\/[\w\-]+\/post\/.+/,
+  /^\/discover\/all\b/,
+  /^\/notifications\b/,
+  /^\/settings\b/,
+  /^\/onboarding\b/,
+  /^\/[\w\-]+\/following\b/,
+  /^\/[\w\-]+\/followers\b/,
+]
+
+// TODO: Add Test
+export const selectIsLayoutToolHidden = createSelector(
+  [selectPathname, selectPropsQueryType], (pathname, queryType) => {
+    const isUserSearch = queryType === 'users' && /^\/search\b/.test(pathname)
+    return isUserSearch || NO_LAYOUT_TOOLS.some(pagex => pagex.test(pathname))
+  }
 )
 

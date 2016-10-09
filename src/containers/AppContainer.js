@@ -115,7 +115,7 @@ class AppContainer extends Component {
         <HeroContainer params={params} />
         {children}
         <NavbarContainer params={params} />
-        <FooterContainer />
+        <FooterContainer params={params} />
         {isLoggedIn ? <EditorToolsContainer /> : null}
         <ModalContainer />
         <DevTools />
