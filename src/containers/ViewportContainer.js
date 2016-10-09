@@ -7,7 +7,6 @@ import {
   selectHasLaunchedSignupModal,
   selectInnerHeight,
   selectInnerWidth,
-  selectIsAuthenticationView,
   selectIsNavbarHidden,
   selectIsNotificationsActive,
   selectIsOnboardingView,
@@ -26,6 +25,9 @@ import { addResizeObject, removeResizeObject } from '../components/viewport/Resi
 import { Viewport } from '../components/viewport/Viewport'
 
 const REFRESH_PERIOD = 30 * 60 * 1000 // 30 minutes in microseconds
+const selectIsAuthenticationView = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'authentication' || viewName === 'join',
+)
 
 export const selectUserDetailPathClassName = createSelector(
   [selectViewNameFromRoute, selectPathname], (viewName, pathname) => {
