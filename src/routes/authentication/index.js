@@ -6,10 +6,10 @@ export default (store) => {
   function onEnter(nextState, replace) {
     const {
       authentication: { isLoggedIn },
-      gui: { currentStream },
+      gui: { homeStream },
     } = store.getState()
     if (isLoggedIn) {
-      replace({ pathname: currentStream, state: nextState })
+      replace({ pathname: homeStream, state: nextState })
     }
   }
 

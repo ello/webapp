@@ -100,7 +100,7 @@ const getLogoModifier = (mods) => {
 }
 
 
-export const NavbarMark = ({ currentStream, isLoggedIn, onClick }) => {
+export const NavbarMark = ({ homeStream, isLoggedIn, onClick }) => {
   const list = ENV.LOGO_MARK ? ENV.LOGO_MARK.split('.') : ['normal']
   const mark = list[0]
   const mods = list.length > 1 ? list.slice(1).join(' ') : ''
@@ -109,7 +109,7 @@ export const NavbarMark = ({ currentStream, isLoggedIn, onClick }) => {
       className="NavbarMark"
       draggable
       onClick={onClick}
-      to={isLoggedIn ? currentStream : '/'}
+      to={isLoggedIn ? homeStream : '/'}
     >
       {getLogoModifier(mods)}
       {getLogoMark(mark)}
@@ -118,7 +118,7 @@ export const NavbarMark = ({ currentStream, isLoggedIn, onClick }) => {
 }
 
 NavbarMark.propTypes = {
-  currentStream: PropTypes.string.isRequired,
+  homeStream: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
 }
