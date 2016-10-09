@@ -117,6 +117,12 @@ describe('routing selectors', () => {
       state = { routing: { location: { pathname: '/notifications', change: true } } }
       expect(selectViewNameFromRoute(state)).to.equal('notifications')
 
+      state = { routing: { location: { pathname: '/onboarding', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('onboarding')
+
+      state = { routing: { location: { pathname: '/onboarding/settings', change: true } } }
+      expect(selectViewNameFromRoute(state)).to.equal('onboarding')
+
       state = { routing: { location: { pathname: '/mk/post/etlb9br06dh6tleztw4g', change: true } } }
       expect(selectViewNameFromRoute(state)).to.equal('postDetail')
 
@@ -147,7 +153,7 @@ describe('routing selectors', () => {
       state = { routing: { location: { pathname: '/signup', change: true } } }
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
-      expect(selectViewNameFromRoute.recomputations()).to.equal(19)
+      expect(selectViewNameFromRoute.recomputations()).to.equal(21)
       selectViewNameFromRoute.resetRecomputations()
     })
   })

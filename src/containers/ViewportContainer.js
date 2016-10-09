@@ -7,7 +7,6 @@ import {
   selectInnerWidth,
   selectIsNavbarHidden,
   selectIsNotificationsActive,
-  selectIsOnboardingView,
   selectIsProfileMenuActive,
   selectScrollOffset,
 } from '../selectors/gui'
@@ -19,6 +18,10 @@ import { Viewport } from '../components/viewport/Viewport'
 
 const selectIsAuthenticationView = createSelector(
   [selectViewNameFromRoute], viewName => viewName === 'authentication' || viewName === 'join'
+)
+
+const selectIsOnboardingView = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'onboarding'
 )
 
 export const selectUserDetailPathClassName = createSelector(

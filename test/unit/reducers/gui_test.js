@@ -32,7 +32,6 @@ describe('gui reducer', () => {
       'isNotificationsActive',
       'isNotificationsUnread',
       'isOmnibarActive',
-      'isOnboardingView',
       'isProfileMenuActive',
       'isTextToolsActive',
       'lastDiscoverBeaconVersion',
@@ -238,27 +237,6 @@ describe('gui reducer', () => {
 
       const action2 = { type: LOCATION_CHANGE, payload: { pathname: '/starred' } }
       expect(reducer(undefined, action2)).to.have.property('isGridMode', false)
-    })
-
-    it('LOCATION_CHANGE updates isOnboardingView', () => {
-      const root = { type: LOCATION_CHANGE, payload: { pathname: '/' } }
-      const onboarding = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding' } }
-      const communities = {
-        type: LOCATION_CHANGE, payload: { pathname: '/onboarding/communities' },
-      }
-      const people = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/people' } }
-      const header = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-header' } }
-      const avatar = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-avatar' } }
-      const bio = { type: LOCATION_CHANGE, payload: { pathname: '/onboarding/profile-bio' } }
-      const one = { type: LOCATION_CHANGE, payload: { pathname: '/onboardingone' } }
-      expect(reducer(undefined, onboarding)).to.have.property('isOnboardingView', true)
-      expect(reducer(undefined, root)).to.have.property('isOnboardingView', false)
-      expect(reducer(undefined, communities)).to.have.property('isOnboardingView', true)
-      expect(reducer(undefined, people)).to.have.property('isOnboardingView', true)
-      expect(reducer(undefined, header)).to.have.property('isOnboardingView', true)
-      expect(reducer(undefined, avatar)).to.have.property('isOnboardingView', true)
-      expect(reducer(undefined, bio)).to.have.property('isOnboardingView', true)
-      expect(reducer(undefined, one)).to.have.property('isOnboardingView', false)
     })
   })
 

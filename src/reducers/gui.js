@@ -18,10 +18,6 @@ let location = {}
 const oldDate = new Date()
 oldDate.setFullYear(oldDate.getFullYear() - 2)
 
-const ONBOARDING_WHITELIST = [
-  /^\/onboarding\b/,
-]
-
 const STREAMS_WHITELIST = [
   /^\/discover/,
   /^\/following$/,
@@ -67,7 +63,6 @@ export const initialState = {
   isGridMode: true,
   isNavbarHidden: false,
   isNotificationsUnread: false,
-  isOnboardingView: false,
   lastDiscoverBeaconVersion: '0',
   lastFollowingBeaconVersion: '0',
   lastNotificationCheck: oldDate.toUTCString(),
@@ -96,7 +91,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
   const newState = { ...state }
   let mode = null
   let pathname = null
-  let isOnboardingView = null
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
       return { ...state, discoverKeyType: null }
@@ -154,21 +148,18 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE: {
       location = action.payload
       pathname = location.pathname
-      isOnboardingView = ONBOARDING_WHITELIST.some(pagex => pagex.test(pathname))
       if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
           ...state,
           currentStream: pathname,
           isGridMode: getIsGridMode(state.modes),
           isNavbarHidden: false,
-          isOnboardingView,
         }
       }
       return {
         ...state,
         isGridMode: getIsGridMode(state.modes),
         isNavbarHidden: false,
-        isOnboardingView,
       }
     }
     case OMNIBAR.OPEN:
@@ -183,7 +174,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
           ...action.payload.gui,
           ...initialNonPersistedState,
           isNavbarHidden: false,
-          isOnboardingView: state.isOnboardingView,
         }
       }
       return {
