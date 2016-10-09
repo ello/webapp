@@ -5,7 +5,6 @@ import { createSelector } from 'reselect'
 import {
   selectInnerHeight,
   selectInnerWidth,
-  selectIsAuthenticationView,
   selectIsNavbarHidden,
   selectIsNotificationsActive,
   selectIsOnboardingView,
@@ -17,6 +16,10 @@ import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
+
+const selectIsAuthenticationView = createSelector(
+  [selectViewNameFromRoute], viewName => viewName === 'authentication' || viewName === 'join'
+)
 
 export const selectUserDetailPathClassName = createSelector(
   [selectViewNameFromRoute, selectPathname], (viewName, pathname) => {

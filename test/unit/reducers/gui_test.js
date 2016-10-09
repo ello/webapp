@@ -26,7 +26,6 @@ describe('gui reducer', () => {
       'discoverKeyType',
       'innerHeight',
       'innerWidth',
-      'isAuthenticationView',
       'isCompleterActive',
       'isGridMode',
       'isNavbarHidden',
@@ -239,21 +238,6 @@ describe('gui reducer', () => {
 
       const action2 = { type: LOCATION_CHANGE, payload: { pathname: '/starred' } }
       expect(reducer(undefined, action2)).to.have.property('isGridMode', false)
-    })
-
-    it('LOCATION_CHANGE updates isAuthenticationView', () => {
-      const root = { type: LOCATION_CHANGE, payload: { pathname: '/' } }
-      const enter = { type: LOCATION_CHANGE, payload: { pathname: '/enter' } }
-      const join = { type: LOCATION_CHANGE, payload: { pathname: '/join' } }
-      const password = { type: LOCATION_CHANGE, payload: { pathname: '/forgot-password' } }
-      const signup = { type: LOCATION_CHANGE, payload: { pathname: '/signup' } }
-      expect(reducer(undefined, enter)).to.have.property('isAuthenticationView', true)
-      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
-      expect(reducer(undefined, join)).to.have.property('isAuthenticationView', true)
-      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
-      expect(reducer(undefined, password)).to.have.property('isAuthenticationView', true)
-      expect(reducer(undefined, root)).to.have.property('isAuthenticationView', false)
-      expect(reducer(undefined, signup)).to.have.property('isAuthenticationView', true)
     })
 
     it('LOCATION_CHANGE updates isOnboardingView', () => {

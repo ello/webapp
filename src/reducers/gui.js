@@ -18,13 +18,6 @@ let location = {}
 const oldDate = new Date()
 oldDate.setFullYear(oldDate.getFullYear() - 2)
 
-const AUTHENTICATION_WHITELIST = [
-  /^\/enter\b/,
-  /^\/forgot-password\b/,
-  /^\/join\b/,
-  /^\/signup\b/,
-]
-
 const ONBOARDING_WHITELIST = [
   /^\/onboarding\b/,
 ]
@@ -71,7 +64,6 @@ export const initialState = {
   discoverKeyType: null,
   innerHeight: 0,
   innerWidth: 0,
-  isAuthenticationView: false,
   isGridMode: true,
   isNavbarHidden: false,
   isNotificationsUnread: false,
@@ -104,7 +96,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
   const newState = { ...state }
   let mode = null
   let pathname = null
-  let isAuthenticationView = null
   let isOnboardingView = null
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
@@ -163,13 +154,11 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE: {
       location = action.payload
       pathname = location.pathname
-      isAuthenticationView = AUTHENTICATION_WHITELIST.some(pagex => pagex.test(pathname))
       isOnboardingView = ONBOARDING_WHITELIST.some(pagex => pagex.test(pathname))
       if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
           ...state,
           currentStream: pathname,
-          isAuthenticationView,
           isGridMode: getIsGridMode(state.modes),
           isNavbarHidden: false,
           isOnboardingView,
@@ -177,7 +166,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
       }
       return {
         ...state,
-        isAuthenticationView,
         isGridMode: getIsGridMode(state.modes),
         isNavbarHidden: false,
         isOnboardingView,

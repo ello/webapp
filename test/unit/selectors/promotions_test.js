@@ -1,5 +1,6 @@
 import { stubPromotion, stubAuthPromotion } from '../../support/stubs'
 import {
+  selectIsAuthenticationView,
   selectPromotionsAuthentication,
   selectPromotionsLoggedIn,
   selectPromotionsLoggedOut,
@@ -64,9 +65,32 @@ describe('promotions selectors', () => {
     })
   })
 
+  context('#selectIsAuthenticationView', () => {
+    it('returns true for the /join page', () => {
+      const state = {
+        routing: { location: { pathname: '/join' } },
+      }
+      expect(selectIsAuthenticationView(state)).to.equal(true)
+    })
+
+    it('returns true for an auth template', () => {
+      const state = {
+        routing: { location: { pathname: '/enter' } },
+      }
+      expect(selectIsAuthenticationView(state)).to.equal(true)
+    })
+
+    it('returns false for discover', () => {
+      const state = {
+        routing: { location: { pathname: '/discover' } },
+      }
+      expect(selectIsAuthenticationView(state)).to.equal(false)
+    })
+  })
+
   context('#selectCurrentPromotions', () => {
     it('returns the promotions.loggedIn when logged in', () => {
-      const state = { authentication, promotions, gui: { isAuthenticationView: false } }
+      const state = { authentication, promotions, routing: { location: { pathname: '/discover' } } }
       expect(selectCurrentPromotions(state)).to.deep.equal(promotions.loggedIn)
       const nextState = { ...state, change: 1 }
       expect(selectCurrentPromotions(nextState)).to.deep.equal(promotions.loggedIn)
@@ -77,7 +101,7 @@ describe('promotions selectors', () => {
       const state = {
         authentication: { isLoggedIn: false },
         promotions,
-        gui: { isAuthenticationView: false },
+        routing: { location: { pathname: '/discover' } },
       }
       expect(selectCurrentPromotions(state)).to.deep.equal(promotions.loggedOut)
       const nextState = { ...state, change: 1 }
@@ -86,17 +110,30 @@ describe('promotions selectors', () => {
       expect(selectCurrentPromotions.recomputations()).to.equal(2)
     })
 
-    it('returns the promotions.loggedOut when logged out', () => {
+    it('returns the promotions.authentication when logged out on an auth page', () => {
       const state = {
         authentication: { isLoggedIn: false },
         promotions,
-        gui: { isAuthenticationView: true },
+        routing: { location: { pathname: '/enter' } },
       }
       expect(selectCurrentPromotions(state)).to.deep.equal(promotions.authentication)
       const nextState = { ...state, change: 1 }
       expect(selectCurrentPromotions(nextState)).to.deep.equal(promotions.authentication)
       // Scoped to 3 since recomputations are part of the context block
       expect(selectCurrentPromotions.recomputations()).to.equal(3)
+    })
+
+    it('returns the promotions.authentication when logged out on the join page', () => {
+      const state = {
+        authentication: { isLoggedIn: false },
+        promotions,
+        routing: { location: { pathname: '/join' } },
+      }
+      expect(selectCurrentPromotions(state)).to.deep.equal(promotions.authentication)
+      const nextState = { ...state, change: 1 }
+      expect(selectCurrentPromotions(nextState)).to.deep.equal(promotions.authentication)
+      // Scoped to 4 since recomputations are part of the context block
+      expect(selectCurrentPromotions.recomputations()).to.equal(4)
     })
   })
 })
