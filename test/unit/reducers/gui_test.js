@@ -22,8 +22,8 @@ describe('gui reducer', () => {
       'activeNotificationsType',
       'activeUserFollowingType',
       'columnCount',
-      'currentStream',
       'discoverKeyType',
+      'homeStream',
       'innerHeight',
       'innerWidth',
       'isCompleterActive',
@@ -226,9 +226,9 @@ describe('gui reducer', () => {
   })
 
   context('LOCATION_CHANGE', () => {
-    it('LOCATION_CHANGE updates relevant streams to currentStream', () => {
+    it('LOCATION_CHANGE updates relevant streams to homeStream', () => {
       const action = { type: LOCATION_CHANGE, payload: { pathname: '/discover/trending' } }
-      expect(reducer(undefined, action)).to.have.property('currentStream', '/discover/trending')
+      expect(reducer(undefined, action)).to.have.property('homeStream', '/discover/trending')
     })
 
     it('LOCATION_CHANGE updates the current grid mode', () => {

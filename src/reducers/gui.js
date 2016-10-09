@@ -56,8 +56,8 @@ export const initialState = {
   activeNotificationsType: 'all',
   activeUserFollowingType: 'friend',
   columnCount: 2,
-  currentStream: '/discover',
   discoverKeyType: null,
+  homeStream: '/discover',
   innerHeight: 0,
   innerWidth: 0,
   isGridMode: true,
@@ -151,7 +151,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
       if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
           ...state,
-          currentStream: pathname,
+          homeStream: pathname,
           isGridMode: getIsGridMode(state.modes),
           isNavbarHidden: false,
         }

@@ -64,7 +64,7 @@ const routes = (store, isServer = false) => {
     onEnter(nextState, replace, callback) {
       const {
         authentication: { isLoggedIn },
-        gui: { currentStream },
+        gui: { homeStream },
       } = store.getState()
 
       const fetchPromoAction = isLoggedIn ? fetchLoggedInPromos() : fetchLoggedOutPromos()
@@ -73,7 +73,7 @@ const routes = (store, isServer = false) => {
       store.dispatch(fetchPromoAction)
 
       if (isLoggedIn) {
-        replace({ pathname: currentStream, state: nextState })
+        replace({ pathname: homeStream, state: nextState })
       }
     },
   }

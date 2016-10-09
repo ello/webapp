@@ -7,7 +7,7 @@ import set from 'lodash/set'
 import { isAndroid, isElloAndroid } from '../lib/jello'
 import { ONBOARDING_VERSION } from '../constants/application_types'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
-import { selectCurrentStream } from '../selectors/gui'
+import { selectHomeStream } from '../selectors/gui'
 import {
   selectBuildVersion,
   selectBundleId,
@@ -29,7 +29,7 @@ import { MainView } from '../components/views/MainView'
 
 function mapStateToProps(state) {
   const obj = {
-    currentStream: selectCurrentStream(state),
+    homeStream: selectHomeStream(state),
     webOnboardingVersionSeen: selectWebOnboardingVersion(state),
   }
   if (isElloAndroid()) {
@@ -46,8 +46,8 @@ class EnterContainer extends Component {
   static propTypes = {
     buildVersion: PropTypes.string,
     bundleId: PropTypes.string,
-    currentStream: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    homeStream: PropTypes.string,
     marketingVersion: PropTypes.string,
     registrationId: PropTypes.string,
     webOnboardingVersionSeen: PropTypes.string,
@@ -70,12 +70,12 @@ class EnterContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
-      const { currentStream, dispatch } = this.props
+      const { dispatch, homeStream } = this.props
       if (!nextProps.webOnboardingVersionSeen) {
         dispatch(replace({ pathname: '/onboarding' }))
         dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
       } else {
-        dispatch(replace({ pathname: currentStream }))
+        dispatch(replace({ pathname: homeStream }))
       }
     }
   }

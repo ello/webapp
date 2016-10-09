@@ -7,7 +7,7 @@ import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_type
 import { SESSION_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
-  selectCurrentStream,
+  selectHomeStream,
   selectDeviceSize,
   selectIsGridMode,
   selectIsLayoutToolHidden,
@@ -28,7 +28,7 @@ import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/Navbar'
 import { getDiscoverAction } from '../containers/DiscoverContainer'
 
 function mapStateToProps(state, props) {
-  const currentStream = selectCurrentStream(state)
+  const homeStream = selectHomeStream(state)
   const isLoggedIn = selectIsLoggedIn(state)
   const pathname = selectPathname(state)
   const result = selectPage(state)
@@ -38,8 +38,8 @@ function mapStateToProps(state, props) {
     return {
       avatar: selectAvatar(state),
       deviceSize: selectDeviceSize(state),
-      currentStream,
       hasLoadMoreButton,
+      homeStream,
       isGridMode: selectIsGridMode(state),
       isLayoutToolHidden: selectIsLayoutToolHidden(state, props),
       isLoggedIn,
@@ -51,8 +51,8 @@ function mapStateToProps(state, props) {
     }
   }
   return {
-    currentStream,
     hasLoadMoreButton,
+    homeStream,
     isLoggedIn,
     pathname,
   }
@@ -61,8 +61,8 @@ function mapStateToProps(state, props) {
 class NavbarContainer extends Component {
 
   static propTypes = {
-    currentStream: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    homeStream: PropTypes.string.isRequired,
     isGridMode: PropTypes.bool,
     isProfileMenuActive: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
@@ -124,8 +124,8 @@ class NavbarContainer extends Component {
   }
 
   onClickNavbarMark = () => {
-    const { currentStream, dispatch, pathname, params } = this.props
-    if (currentStream === pathname) {
+    const { dispatch, homeStream, pathname, params } = this.props
+    if (homeStream === pathname) {
       if (/^\/discover/.test(pathname)) {
         if (params.type) {
           dispatch(getDiscoverAction(params.type))
