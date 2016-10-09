@@ -35,23 +35,6 @@ const STREAMS_WHITELIST = [
   /^\/starred$/,
 ]
 
-const NO_LAYOUT_TOOLS = [
-  /^\/[\w-]+\/post\/.+/,
-  /^\/discover\/all\b/,
-  /^\/notifications\b/,
-  /^\/settings\b/,
-  /^\/onboarding\b/,
-  /^\/[\w-]+\/following\b/,
-  /^\/[\w-]+\/followers\b/,
-]
-
-function getIsLayoutToolHidden() {
-  const pathname = location.pathname
-  const locationType = get(location, 'query.type')
-  const isUserSearch = locationType === 'users' && /^\/search\b/.test(pathname)
-  return isUserSearch || NO_LAYOUT_TOOLS.some(pagex => pagex.test(pathname))
-}
-
 export const findLayoutMode = modes =>
   modes.find((mode) => {
     const regex = new RegExp(mode.regex)
@@ -90,7 +73,6 @@ export const initialState = {
   innerWidth: 0,
   isAuthenticationView: false,
   isGridMode: true,
-  isLayoutToolHidden: false,
   isNavbarHidden: false,
   isNotificationsUnread: false,
   isOnboardingView: false,
@@ -122,7 +104,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
   const newState = { ...state }
   let mode = null
   let pathname = null
-  let isLayoutToolHidden = null
   let isAuthenticationView = null
   let isOnboardingView = null
   switch (action.type) {
@@ -185,14 +166,12 @@ export const gui = (state = initialState, action = { type: '' }) => {
       location = action.payload
       pathname = location.pathname
       isAuthenticationView = AUTHENTICATION_WHITELIST.some(pagex => pagex.test(pathname))
-      isLayoutToolHidden = getIsLayoutToolHidden(location)
       isOnboardingView = ONBOARDING_WHITELIST.some(pagex => pagex.test(pathname))
       if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
           ...state,
           currentStream: pathname,
           isAuthenticationView,
-          isLayoutToolHidden,
           isGridMode: getIsGridMode(state.modes),
           isNavbarHidden: false,
           isOnboardingView,
@@ -201,7 +180,6 @@ export const gui = (state = initialState, action = { type: '' }) => {
       return {
         ...state,
         isAuthenticationView,
-        isLayoutToolHidden,
         isGridMode: getIsGridMode(state.modes),
         isNavbarHidden: false,
         isOnboardingView,
