@@ -47,6 +47,9 @@ export const selectViewNameFromRoute = createSelector(
     if (/^\/notifications\b/.test(pathname)) {
       return 'notifications'
     }
+    if (/^\/onboarding\b/.test(pathname)) {
+      return 'onboarding'
+    }
     if (POST_DETAIL_EXPRESSION.test(pathname)) {
       return 'postDetail'
     }
