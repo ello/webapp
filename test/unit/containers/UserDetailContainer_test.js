@@ -39,7 +39,6 @@ describe('UserDetailContainer', () => {
       authentication: { isLoggedIn: true },
       gui: {
         activeUserFollowingType: 'friend',
-        isOmnibarActive: false,
         saidHelloTo: ['phillip', 'damian'],
       },
       json: { users: { 1: { ...user } } },
@@ -89,7 +88,6 @@ describe('UserDetailContainer', () => {
       authentication: { isLoggedIn: true },
       gui: {
         activeUserFollowingType: 'friend',
-        isOmnibarActive: true,
         saidHelloTo: ['phillip', 'damian'],
       },
       json: { users: { 1: { ...user } } },
