@@ -39,12 +39,11 @@ function handlePrerender(context) {
   })
   const isServer = true
   const routes = createRoutes(store, isServer)
-  const history = syncHistoryWithStore(memoryHistory, store)
-  // const history = syncHistoryWithStore(memoryHistory, store, {
-  //   selectLocationState(state) {
-  //     return state.get('routing').toJS()
-  //   },
-  // })
+  const history = syncHistoryWithStore(memoryHistory, store, {
+    selectLocationState(state) {
+      return state.get('routing').toJS()
+    },
+  })
   const sagaTask = store.runSaga(serverRoot)
 
   match({ history, routes, location: url }, (error, redirectLocation, renderProps) => {

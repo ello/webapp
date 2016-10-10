@@ -1,11 +1,15 @@
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import get from 'lodash/get'
 import { AUTHENTICATION, LOAD_STREAM_FAILURE, POST, PROFILE, USER } from '../constants/action_types'
 
 let should404 = false
 
-export function stream(state = {}, action = { type: '' }) {
+const initialState = Immutable.Map()
+
+export default (state = initialState, action = { type: '' }) => {
   if (action.type === AUTHENTICATION.LOGOUT || action.type === PROFILE.DELETE_SUCCESS) {
-    return {}
+    return initialState
   } else if (!(action.type === POST.DETAIL_SUCCESS || action.type === USER.DETAIL_SUCCESS ||
                action.type === POST.DETAIL_FAILURE || action.type === USER.DETAIL_FAILURE) &&
              !(action.type.indexOf('COMMENT.') === 0 && action.type.indexOf('SUCCESS') > -1) &&
@@ -38,17 +42,8 @@ export function stream(state = {}, action = { type: '' }) {
       default:
         break
     }
-    return {
-      ...state,
-      error: action.error,
-      meta: action.meta,
-      payload: action.payload,
-      should404,
-      type: action.type,
-    }
+    return state.merge(action).set('should404', should404)
   }
   return state
 }
-
-export default stream
 
