@@ -1,49 +1,39 @@
-import { fromJS } from 'immutable'
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import get from 'lodash/get'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../constants/action_types'
 import editorMethods from '../helpers/editor_helper'
 
-export const initialState = {
-  completions: {},
-}
-const map = fromJS(initialState)
+export const initialState = Immutable.Map({ completions: Immutable.Map() })
 
 export default (state = initialState, action) => {
   const editorId = get(action, 'payload.editorId')
-  const editor = map.get(editorId) || null
+  const editor = state.get(`${editorId}`)
+  let updatedState = null
   if (editorId) {
-    const editorObj = editorMethods.getEditorObject(editor, action)
-    // map.mergeDeep({ editorId:  })
-    // newState[editorId] = editorMethods.getEditorObject(newState[editorId], action)
+    updatedState = state.set(`${editorId}`, editorMethods.getEditorObject(editor, action))
     if (action.type === EDITOR.INITIALIZE) {
-      map.setIn([editorId, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
-      // newState[editorId].shouldPersist = get(action, 'payload.shouldPersist', false)
+      updatedState = state.setIn([editorId, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
     } else if (editor) {
-      map.setIn([editorId, 'hasContent'], editorMethods.hasContent(editor.toJS()))
-      // newState[editorId] = editorMethods.addHasContent(newState[editorId])
-      map.setIn([editorId, 'hasMedia'], editorMethods.hasMedia(editor.toJS()))
-      // newState[editorId] = editorMethods.addHasMedia(newState[editorId])
-      map.setIn([editorId, 'hasMention'], editorMethods.hasMention(editor.toJS()))
-      // newState[editorId] = editorMethods.addHasMention(newState[editorId])
-      map.setIn([editorId, 'isLoading'], editorMethods.isLoading(editor.toJS()))
-      // newState[editorId] = editorMethods.addIsLoading(newState[editorId])
+      updatedState = state.setIn([editorId, 'hasContent'], editorMethods.hasContent(editor))
+        .state.setIn([editorId, 'hasMedia'], editorMethods.hasMedia(editor))
+        .state.setIn([editorId, 'hasMention'], editorMethods.hasMention(editor))
+        .state.setIn([editorId, 'isLoading'], editorMethods.isLoading(editor))
     }
-    return map.toJS()
+    console.log('editor stuff', updatedState)
+    return updatedState
   }
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return initialState
     case EDITOR.CLEAR_AUTO_COMPLETERS:
-      return map.set('completions', null).toJS()
-      // delete newState.completions
-      // return newState
+      return state.set('completions', null)
     case EDITOR.EMOJI_COMPLETER_SUCCESS:
     case EDITOR.USER_COMPLETER_SUCCESS:
     case PROFILE.LOCATION_AUTOCOMPLETE_SUCCESS:
-      return map.set('completions', editorMethods.getCompletions(action)).toJS()
-      // return editorMethods.addCompletions(newState, action)
+      return state.set('completions', editorMethods.getCompletions(action))
     case REHYDRATE:
       if (action.payload.editor) {
         return editorMethods.rehydrateEditors(action.payload.editor)

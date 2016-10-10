@@ -1,6 +1,8 @@
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { modal as reducer } from '../../../src/reducers/modal'
+import { default as reducer } from '../../../src/reducers/modal'
 import { ALERT, AUTHENTICATION, MODAL, PROFILE } from '../../../src/constants/action_types'
 
 describe('modal reducer', () => {
@@ -65,65 +67,66 @@ describe('modal reducer', () => {
 
   context('ALERT', () => {
     it('ALERT.OPEN opens the alert', () => {
-      const result = reducer(reducer, openAlertAction)
-      expect(result).to.deep.equal(openAlertAction.payload)
+      const result = reducer(undefined, openAlertAction)
+      expect(result).to.deep.equal(Immutable.fromJS(openAlertAction.payload))
     })
 
     it('ALERT.CLOSE closes the alert', () => {
-      const result = reducer(reducer, closeAlertAction)
-      expect(result).to.deep.equal(closeAlertAction.payload)
+      const result = reducer(undefined, closeAlertAction)
+      expect(result).to.deep.equal(Immutable.fromJS(closeAlertAction.payload))
     })
   })
 
   context('MODAL', () => {
     it('MODAL.OPEN opens the modal', () => {
-      const result = reducer(reducer, openModalAction)
-      expect(result).to.deep.equal(openModalAction.payload)
+      const result = reducer(undefined, openModalAction)
+      expect(result).to.deep.equal(Immutable.fromJS(openModalAction.payload))
     })
 
     it('MODAL.CLOSE closes the modal', () => {
-      const result = reducer(reducer, closeModalAction)
-      expect(result).to.deep.equal(closeModalAction.payload)
+      const result = reducer(undefined, closeModalAction)
+      expect(result).to.deep.equal(Immutable.fromJS(closeModalAction.payload))
     })
   })
 
   context('AUTHENTICATION', () => {
     it('AUTHENTICATION.LOGOUT resets the initial state', () => {
-      const result = reducer(reducer, openModalAction)
-      expect(result).to.deep.equal(openModalAction.payload)
+      const result = reducer(undefined, openModalAction)
+      expect(result).to.deep.equal(Immutable.fromJS(openModalAction.payload))
       const action = { type: AUTHENTICATION.LOGOUT }
       const nextResult = reducer(result, action)
-      expect(nextResult).to.deep.equal(initialState)
+      expect(nextResult).to.equal(initialState)
     })
   })
 
   context('PROFILE', () => {
     it('PROFILE.DELETE_SUCCESS resets the initial state', () => {
-      const result = reducer(reducer, openModalAction)
-      expect(result).to.deep.equal(openModalAction.payload)
+      const result = reducer(undefined, openModalAction)
+      expect(result).to.deep.equal(Immutable.fromJS(openModalAction.payload))
       const action = { type: PROFILE.DELETE_SUCCESS }
       const nextResult = reducer(result, action)
-      expect(nextResult).to.deep.equal(initialState)
+      expect(nextResult).to.equal(initialState)
     })
   })
 
   context('LOCATION', () => {
     it('LOCATION_CHANGE resets the initial state if the modal is active', () => {
-      const result = reducer(reducer, openModalAction)
-      expect(result).to.deep.equal(openModalAction.payload)
+      const result = reducer(undefined, openModalAction)
+      expect(result).to.deep.equal(Immutable.fromJS(openModalAction.payload))
       const action = { type: LOCATION_CHANGE, payload: { pathname: '/discover/trending' } }
       const nextResult = reducer(result, action)
-      expect(nextResult).to.deep.equal(initialState)
+      expect(nextResult).to.equal(initialState)
     })
 
     it('LOCATION_CHANGE does not reset the initial state if the modal is active', () => {
-      const result = reducer(reducer, openAlertAction)
-      expect(result).to.deep.equal(openAlertAction.payload)
+      const result = reducer(undefined, openAlertAction)
+      expect(result).to.deep.equal(Immutable.fromJS(openAlertAction.payload))
       const nextResult = reducer(result, closeAlertAction)
-      expect(nextResult).to.deep.equal(closeAlertAction.payload)
+      expect(nextResult).to.deep.equal(Immutable.fromJS(closeAlertAction.payload))
       const action = { type: LOCATION_CHANGE, payload: { pathname: '/discover/trending' } }
       const lastResult = reducer(nextResult, action)
       expect(lastResult).to.deep.equal(nextResult)
+      expect(Immutable.is(lastResult, nextResult)).to.be.true
     })
   })
 })

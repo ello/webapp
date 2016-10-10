@@ -1,9 +1,10 @@
-import { fromJS } from 'immutable'
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 import Session from '../lib/session'
 
-export const initialState = {
+export const initialState = Immutable.Map({
   accessToken: null,
   createdAt: null,
   expirationDate: null,
@@ -11,8 +12,7 @@ export const initialState = {
   isLoggedIn: false,
   refreshToken: null,
   tokenType: null,
-}
-const map = fromJS(initialState)
+})
 
 export default (state = initialState, action) => {
   let auth
@@ -30,7 +30,7 @@ export default (state = initialState, action) => {
     case AUTHENTICATION.REFRESH_SUCCESS:
     case PROFILE.SIGNUP_SUCCESS:
       auth = action.payload.response
-      return map.merge({
+      return state.merge({
         ...auth,
         expirationDate: new Date((auth.createdAt + auth.expiresIn) * 1000),
         isLoggedIn: true,
@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
     case REHYDRATE:
       auth = action.payload.authentication
       if (auth) {
-        return map.merge({
+        return state.merge({
           ...auth,
           expirationDate: new Date((auth.createdAt + auth.expiresIn) * 1000),
         }).toJS()

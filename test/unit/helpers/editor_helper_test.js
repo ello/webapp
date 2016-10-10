@@ -574,9 +574,9 @@ describe('editor helper', () => {
     })
   })
 
-  describe.only('#appendUsernames', () => {
+  describe('#appendUsernames', () => {
     it('appends usernames to the last text block found', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -590,16 +590,14 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
+      })
       const usernames = [{ username: 'lana' }, { username: 'cyril' }]
       state = subject.methods.appendUsernames(newState, usernames)
-      expect(state.collection[0].data).to.equal(
-        '@lana @cyril ',
-      )
+      expect(state.getIn(['collection', '0', 'data'])).to.equal('@lana @cyril ')
     })
 
     it('does not append usernames if they are already there', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -613,12 +611,10 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1],
-      }
+      })
       const usernames = [{ username: 'lana' }, { username: 'cyril' }]
       state = subject.methods.appendUsernames(newState, usernames)
-      expect(state.collection[0].data).to.equal(
-        '@lana @cyril ',
-      )
+      expect(state.getIn(['collection', '0', 'data'])).to.equal('@lana @cyril ')
     })
   })
 
@@ -627,7 +623,7 @@ describe('editor helper', () => {
 
   describe('#updateBuyLink', () => {
     it('updates all blocks with a link_url', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -646,15 +642,15 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1, 2],
-      }
+      })
       state = subject.methods.updateBuyLink(newState, { payload: { link: 'word' } })
-      expect(state.collection[0].linkUrl).to.equal('word')
-      expect(state.collection[1].linkUrl).to.equal('word')
-      expect(state.collection[2].linkUrl).to.equal('word')
+      expect(state.getIn(['collection', '0', 'linkUrl'])).to.equal('word')
+      expect(state.getIn(['collection', '1', 'linkUrl'])).to.equal('word')
+      expect(state.getIn(['collection', '2', 'linkUrl'])).to.equal('word')
     })
 
     it('removes link_url from all blocks with an empty link', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -676,15 +672,15 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1, 2],
-      }
+      })
       state = subject.methods.updateBuyLink(newState, { payload: { link: '' } })
-      expect(state.collection[0].linkUrl).to.be.undefined
-      expect(state.collection[1].linkUrl).to.be.undefined
-      expect(state.collection[2].linkUrl).to.be.undefined
+      expect(state.getIn(['collection', '0', 'linkUrl'])).to.be.undefined
+      expect(state.getIn(['collection', '1', 'linkUrl'])).to.be.undefined
+      expect(state.getIn(['collection', '2', 'linkUrl'])).to.be.undefined
     })
 
     it('removes link_url from all blocks null link', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -706,11 +702,11 @@ describe('editor helper', () => {
           },
         },
         order: [0, 1, 2],
-      }
+      })
       state = subject.methods.updateBuyLink(newState, { payload: { link: null } })
-      expect(state.collection[0].linkUrl).to.be.undefined
-      expect(state.collection[1].linkUrl).to.be.undefined
-      expect(state.collection[2].linkUrl).to.be.undefined
+      expect(state.getIn(['collection', '0', 'linkUrl'])).to.be.undefined
+      expect(state.getIn(['collection', '1', 'linkUrl'])).to.be.undefined
+      expect(state.getIn(['collection', '2', 'linkUrl'])).to.be.undefined
     })
   })
 
@@ -737,7 +733,7 @@ describe('editor helper', () => {
         payload: { block: 'yo' },
       }
       state = subject.methods.getEditorObject(subject.initialState, action)
-      expect(state.dragBlock).to.equal('yo')
+      expect(state.get('dragBlock')).to.equal('yo')
     })
 
     it('calls #addEmptyTextBlock with EDITOR.ADD_EMPTY_TEXT_BLOCK', () => {
@@ -797,12 +793,12 @@ describe('editor helper', () => {
     })
 
     it('removes the dragBlock with EDITOR.REMOVE_DRAG_BLOCK', () => {
-      const newState = { dragBlock: 'yo' }
+      const newState = fromJS({ dragBlock: 'yo' })
       action = {
         type: EDITOR.REMOVE_DRAG_BLOCK,
       }
       state = subject.methods.getEditorObject(newState, action)
-      expect(state.dragBlock).to.be.undefined
+      expect(state.get('dragBlock')).to.be.undefined
     })
 
     it('calls #reorderBlocks with EDITOR.REORDER_BLOCKS', () => {
@@ -831,10 +827,10 @@ describe('editor helper', () => {
         POST.UPDATE_REQUEST,
       ]
       actionTypes.forEach((type) => {
-        const newState = { isPosting: false }
+        const newState = fromJS({ isPosting: false })
         action = { type }
         state = subject.methods.getEditorObject(newState, action)
-        expect(state.isPosting).to.be.true
+        expect(state.get('isPosting')).to.be.true
       })
     })
 
@@ -863,10 +859,10 @@ describe('editor helper', () => {
         POST.UPDATE_FAILURE,
       ]
       actionTypes.forEach((type) => {
-        const newState = { isPosting: true }
+        const newState = fromJS({ isPosting: true })
         action = { type }
         state = subject.methods.getEditorObject(newState, action)
-        expect(state.isPosting).to.be.false
+        expect(state.get('isPosting')).to.be.false
       })
     })
 
@@ -880,23 +876,23 @@ describe('editor helper', () => {
     })
 
     it('updates the dragBlock if one exists with EDITOR.SAVE_ASSET_SUCCESS', () => {
-      const newState = {
+      const newState = fromJS({
         dragBlock: {
           kind: 'image',
           data: { url: 'que' },
           uid: 0,
         },
-      }
+      })
       action = {
         type: EDITOR.SAVE_ASSET_SUCCESS,
         payload: { response: { url: 'blah' }, uid: 0 },
       }
       state = subject.methods.getEditorObject(newState, action)
-      expect(state.dragBlock.data.url).to.equal('blah')
+      expect(state.getIn(['dragBlock', 'data', 'url'])).to.equal('blah')
     })
 
     it('updates the existing image block with EDITOR.SAVE_ASSET_SUCCESS', () => {
-      const newState = {
+      const newState = fromJS({
         collection: {
           0: {
             kind: 'image',
@@ -904,17 +900,17 @@ describe('editor helper', () => {
             uid: 0,
           },
         },
-      }
+      })
       action = {
         type: EDITOR.SAVE_ASSET_SUCCESS,
         payload: { response: { url: 'blah' }, uid: 0 },
       }
       state = subject.methods.getEditorObject(newState, action)
-      expect(state.collection[0].data.url).to.equal('blah')
+      expect(state.getIn(['collection', '0', 'data', 'url'])).to.equal('blah')
     })
 
     it('updates the drag image block with EDITOR.SAVE_ASSET_SUCCESS', () => {
-      const newState = {
+      const newState = fromJS({
         dragBlock: {
           kind: 'image',
           data: { url: 'what' },
@@ -927,13 +923,13 @@ describe('editor helper', () => {
             uid: 1,
           },
         },
-      }
+      })
       action = {
         type: EDITOR.SAVE_ASSET_SUCCESS,
         payload: { response: { url: 'blah' }, uid: 0 },
       }
       state = subject.methods.getEditorObject(newState, action)
-      expect(state.dragBlock.data.url).to.equal('blah')
+      expect(state.getIn(['dragBlock', 'data', 'url'])).to.equal('blah')
     })
 
     it('calls #removeEmptyTextBlock and #add with EDITOR.TMP_IMAGE_CREATED', () => {
