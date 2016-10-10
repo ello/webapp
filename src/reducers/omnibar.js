@@ -1,22 +1,22 @@
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import { AUTHENTICATION, OMNIBAR, PROFILE } from '../constants/action_types'
 
-const initialState = {
+const initialState = Immutable.Map({
   classList: null,
   isActive: false,
-}
+})
 
-export function omnibar(state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
-      return { ...initialState }
+      return initialState
     case OMNIBAR.OPEN:
     case OMNIBAR.CLOSE:
-      return { ...state, ...action.payload }
+      return state.merge(action.payload)
     default:
       return state
   }
 }
-
-export default omnibar
 

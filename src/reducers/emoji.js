@@ -1,13 +1,15 @@
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import { EDITOR } from '../constants/action_types'
 
-export function emoji(state = {}, action) {
+export const initialState = Immutable.Map()
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case EDITOR.EMOJI_COMPLETER_SUCCESS:
-      return { ...action.payload.response }
+      return state.merge(Immutable.fromJS(action.payload.response))
     default:
       return state
   }
 }
-
-export default emoji
 

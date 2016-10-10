@@ -1,11 +1,12 @@
+/* eslint-disable new-cap */
 /* eslint-disable no-underscore-dangle */
 import createLogger from 'redux-logger'
+import Immutable from 'immutable'
 import { browserHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
-import { combineReducers, compose, createStore, applyMiddleware } from 'redux'
-// import { combineReducers } from 'redux-immutable'
+import { compose, createStore, applyMiddleware } from 'redux'
+import { combineReducers } from 'redux-immutable'
 import { autoRehydrate } from 'redux-persist'
-// import { fromJS } from 'immutable'
 import createSagaMiddleware, { END } from 'redux-saga'
 import * as reducers from './reducers'
 import rootSaga from './sagas'
@@ -31,8 +32,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       reduxRouterMiddleware,
       logger,
     ),
-  )(createStore)(reducer, initialState)
-  // )(createStore)(reducer, fromJS(initialState))
+  )(createStore)(reducer, Immutable.Map(initialState))
   store.close = () => store.dispatch(END)
 
   store.sagaTask = sagaMiddleware.run(rootSaga)
@@ -45,8 +45,7 @@ const createServerStore = (history, initialState = {}) => {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const store = compose(
     applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger),
-  )(createStore)(reducer, initialState)
-  // )(createStore)(reducer, fromJS(initialState))
+  )(createStore)(reducer, Immutable.Map(initialState))
 
   store.runSaga = sagaMiddleware.run
   store.close = () => store.dispatch(END)
