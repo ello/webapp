@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable'
+import Immutable from 'immutable'
 import * as subject from '../../../src/helpers/editor_helper'
 import { COMMENT, EDITOR, POST } from '../../../src/constants/action_types'
 
@@ -75,25 +75,25 @@ describe('editor helper', () => {
     })
 
     it('returns the original state if no firstBlock', () => {
-      const newState = fromJS({ collection: {}, order: [] })
+      const newState = Immutable.fromJS({ collection: {}, order: [] })
       hasContent = subject.methods.hasContent(newState)
       expect(hasContent).to.be.false
     })
 
     it('sets hasContent to true if order.length > 1', () => {
-      const newState = fromJS({ collection: { 1: { something: '' } }, order: [1, 2] })
+      const newState = Immutable.fromJS({ collection: { 1: { something: '' } }, order: [1, 2] })
       hasContent = subject.methods.hasContent(newState)
       expect(hasContent).to.be.true
     })
 
     it('sets hasContent to true if firstBlock.data.length and not a <br>', () => {
-      const newState = fromJS({ collection: { 0: { data: 'krieger' } }, order: [0] })
+      const newState = Immutable.fromJS({ collection: { 0: { data: 'krieger' } }, order: [0] })
       hasContent = subject.methods.hasContent(newState)
       expect(hasContent).to.be.true
     })
 
     it('sets hasContent to false if firstBlock.data is a <br>', () => {
-      const newState = fromJS({ collection: { 0: { data: '<br>' } }, order: [0] })
+      const newState = Immutable.fromJS({ collection: { 0: { data: '<br>' } }, order: [0] })
       hasContent = subject.methods.hasContent(newState)
       expect(hasContent).to.be.false
     })
@@ -106,7 +106,7 @@ describe('editor helper', () => {
     })
 
     it('sets hasMedia to false if no image/embed kind', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             data: 'archer Phrasing!?',
@@ -120,7 +120,7 @@ describe('editor helper', () => {
     })
 
     it('sets hasMedia to true if an image is present', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             data: 'path/to/image.png',
@@ -138,7 +138,7 @@ describe('editor helper', () => {
     })
 
     it('sets hasMedia to true if an embed is present', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             data: 'Stir Friday',
@@ -163,7 +163,7 @@ describe('editor helper', () => {
     })
 
     it('sets hasMention to false if no mention is present', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             data: 'archer Phrasing!?',
@@ -177,7 +177,7 @@ describe('editor helper', () => {
     })
 
     it('sets hasMention to true if a mention is present', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             data: '@archer That\'s how you get ants',
@@ -198,7 +198,7 @@ describe('editor helper', () => {
     })
 
     it('sets isLoading to false if no image is loading', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             data: '/path/to/avatar/archer.png',
@@ -218,7 +218,7 @@ describe('editor helper', () => {
     })
 
     it('sets isLoading to true if an image is loading', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             data: '/path/to/avatar/archer.png',
@@ -238,7 +238,7 @@ describe('editor helper', () => {
     })
 
     it('sets isLoading to true if the dragBlock image is loading', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         dragBlock: { isLoading: true },
         collection: {
           0: {
@@ -325,7 +325,7 @@ describe('editor helper', () => {
     })
 
     it('removes last empty text block if the second to last was a text block', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -359,7 +359,7 @@ describe('editor helper', () => {
     })
 
     it('adds an empty text block if the last item is not text', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -399,7 +399,7 @@ describe('editor helper', () => {
     })
 
     it('removes the block from the collection and calls #addEmptyTextBlock', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -424,7 +424,7 @@ describe('editor helper', () => {
     })
 
     it('removes the block from the collection', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -455,7 +455,7 @@ describe('editor helper', () => {
 
   describe('#removeEmptyTextBlock', () => {
     it('removes the last text block if it is empty', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -478,7 +478,7 @@ describe('editor helper', () => {
     })
 
     it('does not remove the last text block if it is not empty', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -503,7 +503,7 @@ describe('editor helper', () => {
 
   describe('#updateBlock', () => {
     it('updates the block with the new content', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: 'Woodhouse!',
         },
@@ -515,7 +515,7 @@ describe('editor helper', () => {
 
   describe('#reorderBlocks', () => {
     it('moves forward in the array when the delta is 1', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         order: [0, 1, 2],
       })
       state = subject.methods.reorderBlocks(newState, { payload: { delta: 1, uid: 0 } })
@@ -525,7 +525,7 @@ describe('editor helper', () => {
     })
 
     it('moves backwards in the array when the delta is -1', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         order: [0, 1, 2],
       })
       state = subject.methods.reorderBlocks(newState, { payload: { delta: -1, uid: 2 } })
@@ -537,7 +537,7 @@ describe('editor helper', () => {
 
   describe('#appendText', () => {
     it('appends text to the last text block found', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -559,7 +559,7 @@ describe('editor helper', () => {
     })
 
     it('does not append text if there is no text block', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           1: {
             kind: 'image',
@@ -576,7 +576,7 @@ describe('editor helper', () => {
 
   describe('#appendUsernames', () => {
     it('appends usernames to the last text block found', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -597,7 +597,7 @@ describe('editor helper', () => {
     })
 
     it('does not append usernames if they are already there', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -623,7 +623,7 @@ describe('editor helper', () => {
 
   describe('#updateBuyLink', () => {
     it('updates all blocks with a link_url', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -650,7 +650,7 @@ describe('editor helper', () => {
     })
 
     it('removes link_url from all blocks with an empty link', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -680,7 +680,7 @@ describe('editor helper', () => {
     })
 
     it('removes link_url from all blocks null link', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'text',
@@ -756,14 +756,14 @@ describe('editor helper', () => {
     })
 
     it('returns the original state with EDITOR.INITIALIZE on a persisted editor', () => {
-      const newState = { shouldPersist: true }
+      const newState = Immutable.fromJS({ shouldPersist: true })
       action = { type: EDITOR.INITIALIZE }
       state = subject.methods.getEditorObject(newState, action)
       expect(state).to.equal(newState)
     })
 
     it('returns the initialState with EDITOR.INITIALIZE on a not persisted editor', () => {
-      const newState = { shouldPersist: false }
+      const newState = Immutable.fromJS({ shouldPersist: false })
       action = { type: EDITOR.INITIALIZE }
       state = subject.methods.getEditorObject(newState, action)
       expect(state).to.equal(subject.initialState)
@@ -793,7 +793,7 @@ describe('editor helper', () => {
     })
 
     it('removes the dragBlock with EDITOR.REMOVE_DRAG_BLOCK', () => {
-      const newState = fromJS({ dragBlock: 'yo' })
+      const newState = Immutable.fromJS({ dragBlock: 'yo' })
       action = {
         type: EDITOR.REMOVE_DRAG_BLOCK,
       }
@@ -827,7 +827,7 @@ describe('editor helper', () => {
         POST.UPDATE_REQUEST,
       ]
       actionTypes.forEach((type) => {
-        const newState = fromJS({ isPosting: false })
+        const newState = Immutable.fromJS({ isPosting: false })
         action = { type }
         state = subject.methods.getEditorObject(newState, action)
         expect(state.get('isPosting')).to.be.true
@@ -859,7 +859,7 @@ describe('editor helper', () => {
         POST.UPDATE_FAILURE,
       ]
       actionTypes.forEach((type) => {
-        const newState = fromJS({ isPosting: true })
+        const newState = Immutable.fromJS({ isPosting: true })
         action = { type }
         state = subject.methods.getEditorObject(newState, action)
         expect(state.get('isPosting')).to.be.false
@@ -876,7 +876,7 @@ describe('editor helper', () => {
     })
 
     it('updates the dragBlock if one exists with EDITOR.SAVE_ASSET_SUCCESS', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         dragBlock: {
           kind: 'image',
           data: { url: 'que' },
@@ -892,7 +892,7 @@ describe('editor helper', () => {
     })
 
     it('updates the existing image block with EDITOR.SAVE_ASSET_SUCCESS', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         collection: {
           0: {
             kind: 'image',
@@ -910,7 +910,7 @@ describe('editor helper', () => {
     })
 
     it('updates the drag image block with EDITOR.SAVE_ASSET_SUCCESS', () => {
-      const newState = fromJS({
+      const newState = Immutable.fromJS({
         dragBlock: {
           kind: 'image',
           data: { url: 'what' },

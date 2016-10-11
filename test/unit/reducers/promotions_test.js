@@ -20,8 +20,8 @@ describe('promotions reducer', () => {
         type: PROMOTIONS.AUTHENTICATION_SUCCESS,
         payload: { response: authentication },
       }
-      const result = reducer(reducer, action)
-      expect(result.authentication).to.deep.equal(authentication)
+      const result = reducer(undefined, action)
+      expect(result.get('authentication')).to.equal(authentication)
     })
   })
 })

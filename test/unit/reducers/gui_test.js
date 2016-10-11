@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   AUTHENTICATION,
@@ -10,9 +12,14 @@ import {
   SET_LAYOUT_MODE,
   ZEROS,
 } from '../../../src/constants/action_types'
-import { gui as reducer, setLocation, findLayoutMode } from '../../../src/reducers/gui'
+import { default as reducer, setLocation, findLayoutMode } from '../../../src/reducers/gui'
 
 describe('gui reducer', () => {
+  let initialState = null
+  beforeEach(() => {
+    initialState = reducer(undefined, {})
+  })
+
   context('#initialState', () => {
     it('sets up a default initialState', () => {
       expect(
@@ -48,17 +55,16 @@ describe('gui reducer', () => {
   context('#findLayoutMode', () => {
     it('/', () => {
       setLocation({ pathname: '/' })
-      const initialState = reducer()
-      expect(findLayoutMode(initialState.modes).label).to.equal('root')
+      expect(findLayoutMode(initialState.get('modes'))).to.equal(0)
     })
   })
 
   context('AUTHENTICATION', () => {
     it('LOGOUT resets the discoverKeyType', () => {
-      const testState = { ...reducer(undefined, {}), discoverKeyType: 'wiketywhack' }
-      expect(reducer(testState, {})).to.have.property('discoverKeyType', 'wiketywhack')
+      const newState = reducer(initialState, { type: GUI.BIND_DISCOVER_KEY, payload: { type: 'wiketywhack' } })
+      expect(newState).to.have.property('discoverKeyType', 'wiketywhack')
       const action = { type: AUTHENTICATION.LOGOUT }
-      expect(reducer(reducer, action)).to.have.property('discoverKeyType', null)
+      expect(reducer(newState, action)).to.have.property('discoverKeyType', null)
     })
   })
 
@@ -67,7 +73,7 @@ describe('gui reducer', () => {
       expect(reducer(undefined, {})).to.have.property('isCompleterActive', false)
       const isCompleterActive = true
       const action = { type: EDITOR.SET_IS_COMPLETER_ACTIVE, payload: { isCompleterActive } }
-      expect(reducer(reducer, action)).to.have.property('isCompleterActive', true)
+      expect(reducer(undefined, action)).to.have.property('isCompleterActive', true)
     })
 
     it('EDITOR.SET_IS_TEXT_TOOLS_ACTIVE updates isTextToolsActive', () => {
@@ -79,65 +85,65 @@ describe('gui reducer', () => {
           textToolsStates: { isLinkActive: false, isBoldActive: true, isItalicActive: false },
         },
       }
-      const result = reducer(reducer, action)
+      const result = reducer(undefined, action)
       expect(result).to.have.property('isTextToolsActive', true)
-      expect(result.textToolsStates).to.have.property('isLinkActive', false)
-      expect(result.textToolsStates).to.have.property('isBoldActive', true)
-      expect(result.textToolsStates).to.have.property('isItalicActive', false)
+      expect(result.get('textToolsStates')).to.have.property('isLinkActive', false)
+      expect(result.get('textToolsStates')).to.have.property('isBoldActive', true)
+      expect(result.get('textToolsStates')).to.have.property('isItalicActive', false)
     })
 
     it('EDITOR.SET_TEXT_TOOLS_COORDINATES updates textToolsCoordinates', () => {
       const defaults = reducer(undefined, {})
-      expect(defaults.textToolsCoordinates).to.have.property('top', -200)
-      expect(defaults.textToolsCoordinates).to.have.property('left', -666)
+      expect(defaults.get('textToolsCoordinates')).to.have.property('top', -200)
+      expect(defaults.get('textToolsCoordinates')).to.have.property('left', -666)
       const action = {
         type: EDITOR.SET_TEXT_TOOLS_COORDINATES,
         payload: {
           textToolsCoordinates: { top: 0, left: 20 },
         },
       }
-      const result = reducer(reducer, action)
-      expect(result.textToolsCoordinates).to.have.property('top', 0)
-      expect(result.textToolsCoordinates).to.have.property('left', 20)
+      const result = reducer(defaults, action)
+      expect(result.get('textToolsCoordinates')).to.have.property('top', 0)
+      expect(result.get('textToolsCoordinates')).to.have.property('left', 20)
     })
   })
 
   context('GUI', () => {
     it('GUI.BIND_DISCOVER_KEY updates discoverKeyType', () => {
-      expect(reducer(undefined, {})).to.have.property('discoverKeyType', null)
+      expect(initialState).to.have.property('discoverKeyType', null)
       const action = { type: GUI.BIND_DISCOVER_KEY, payload: { type: 'radical' } }
-      expect(reducer(reducer, action)).to.have.property('discoverKeyType', 'radical')
+      expect(reducer(initialState, action)).to.have.property('discoverKeyType', 'radical')
     })
 
     it('GUI.NOTIFICATIONS_TAB updates activeNotificationsType', () => {
-      expect(reducer(undefined, {})).to.have.property('activeNotificationsType', 'all')
+      expect(initialState).to.have.property('activeNotificationsType', 'all')
       const action = { type: GUI.NOTIFICATIONS_TAB, payload: { activeTabType: 'comments' } }
-      expect(reducer(reducer, action)).to.have.property('activeNotificationsType', 'comments')
+      expect(reducer(initialState, action)).to.have.property('activeNotificationsType', 'comments')
     })
 
     it('GUI.SET_ACTIVE_USER_FOLLOWING_TYPE updates activeUserFollowingType', () => {
-      expect(reducer(undefined, {})).to.have.property('activeUserFollowingType', 'friend')
+      expect(initialState).to.have.property('activeUserFollowingType', 'friend')
       const action = { type: GUI.SET_ACTIVE_USER_FOLLOWING_TYPE, payload: { tab: 'noise' } }
-      expect(reducer(reducer, action)).to.have.property('activeUserFollowingType', 'noise')
+      expect(reducer(initialState, action)).to.have.property('activeUserFollowingType', 'noise')
     })
 
     it('GUI.SET_IS_PROFILE_MENU_ACTIVE updates isProfileMenuActive', () => {
-      expect(reducer(undefined, {})).to.have.property('isProfileMenuActive', false)
+      expect(initialState).to.have.property('isProfileMenuActive', false)
       const isProfileMenuActive = true
       const action = { type: GUI.SET_IS_PROFILE_MENU_ACTIVE, payload: { isProfileMenuActive } }
-      expect(reducer(reducer, action)).to.have.property('isProfileMenuActive', true)
+      expect(reducer(initialState, action)).to.have.property('isProfileMenuActive', true)
     })
 
     it('GUI.SET_LAST_DISCOVER_BEACON_VERSION updates the lastDiscoverBeaconVersion', () => {
-      expect(reducer(undefined, {})).to.have.property('lastDiscoverBeaconVersion', '0')
+      expect(initialState).to.have.property('lastDiscoverBeaconVersion', '0')
       const action = { type: GUI.SET_LAST_DISCOVER_BEACON_VERSION, payload: { version: '1' } }
-      expect(reducer(undefined, action)).to.have.property('lastDiscoverBeaconVersion', '1')
+      expect(reducer(initialState, action)).to.have.property('lastDiscoverBeaconVersion', '1')
     })
 
     it('GUI.SET_LAST_FOLLOWING_BEACON_VERSION updates lastFollowingBeaconVersion', () => {
-      expect(reducer(undefined, {})).to.have.property('lastFollowingBeaconVersion', '0')
+      expect(initialState).to.have.property('lastFollowingBeaconVersion', '0')
       const action = { type: GUI.SET_LAST_FOLLOWING_BEACON_VERSION, payload: { version: '666' } }
-      expect(reducer(undefined, action)).to.have.property('lastFollowingBeaconVersion', '666')
+      expect(reducer(initialState, action)).to.have.property('lastFollowingBeaconVersion', '666')
     })
 
     it('GUI.SET_SIGNUP_MODAL_LAUNCHED updates hasLaunchedSignupModal', () => {
@@ -150,13 +156,12 @@ describe('gui reducer', () => {
     })
 
     it('GUI.LAST_STARRED_BEACON_VERSION updates lastStarredBeaconVersion', () => {
-      expect(reducer(undefined, {})).to.have.property('lastStarredBeaconVersion', '0')
+      expect(initialState).to.have.property('lastStarredBeaconVersion', '0')
       const action = { type: GUI.SET_LAST_STARRED_BEACON_VERSION, payload: { version: '667' } }
-      expect(reducer(undefined, action)).to.have.property('lastStarredBeaconVersion', '667')
+      expect(reducer(initialState, action)).to.have.property('lastStarredBeaconVersion', '667')
     })
 
     it('GUI.SET_IS_NAVBAR_HIDDEN updates properties from the initialScrollState', () => {
-      const initialState = reducer(undefined, {})
       expect(initialState).to.have.property('isNavbarHidden', false)
 
       const action = {
@@ -171,7 +176,6 @@ describe('gui reducer', () => {
     })
 
     it('GUI.SET_VIEWPORT_SIZE_ATTRIBUTES', () => {
-      const initialState = reducer(undefined, {})
       expect(initialState).to.have.property('columnCount', 2)
       expect(initialState).to.have.property('innerHeight', 0)
       expect(initialState).to.have.property('innerWidth', 0)
@@ -185,51 +189,50 @@ describe('gui reducer', () => {
       }
 
       const nextState = reducer(initialState, action)
-      expect(nextState.columnCount).to.equal(4)
-      expect(nextState.innerHeight).to.equal(768)
-      expect(nextState.innerWidth).to.equal(1360)
+      expect(nextState.get('columnCount')).to.equal(4)
+      expect(nextState.get('innerHeight')).to.equal(768)
+      expect(nextState.get('innerWidth')).to.equal(1360)
     })
 
     it('GUI.TOGGLE_NOTIFICATIONS updates isNotificationsActive', () => {
-      expect(reducer(undefined, {})).to.have.property('isNotificationsActive', false)
+      expect(initialState).to.have.property('isNotificationsActive', false)
       const isNotificationsActive = true
       const action = { type: GUI.TOGGLE_NOTIFICATIONS, payload: { isNotificationsActive } }
-      expect(reducer(reducer, action)).to.have.property('isNotificationsActive', true)
+      expect(reducer(initialState, action)).to.have.property('isNotificationsActive', true)
     })
   })
 
   context('HEAD', () => {
     it('HEAD_FAILURE updates isNotificationsUnread', () => {
-      const testState = { ...reducer(undefined, {}), isNotificationsUnread: true }
-      expect(reducer(testState, {})).to.have.property('isNotificationsUnread', true)
+      const testState = initialState.set('isNotificationsUnread', true)
+      expect(testState).to.have.property('isNotificationsUnread', true)
       const action = { type: HEAD_FAILURE }
-      expect(reducer(reducer, action)).to.have.property('isNotificationsUnread', false)
+      expect(reducer(testState, action)).to.have.property('isNotificationsUnread', false)
     })
 
     it('HEAD_SUCCESS updates isNotificationsUnread', () => {
-      expect(reducer(undefined, {})).to.have.property('isNotificationsUnread', false)
+      expect(initialState).to.have.property('isNotificationsUnread', false)
       const action = { type: HEAD_SUCCESS, payload: { serverStatus: 204 } }
-      expect(reducer(reducer, action)).to.have.property('isNotificationsUnread', true)
+      expect(reducer(initialState, action)).to.have.property('isNotificationsUnread', true)
     })
   })
 
   context('LOAD_STREAM_SUCCESS', () => {
     it('LOAD_STREAM_SUCCESS updates lastNotificationCheck', () => {
       const action = { type: LOAD_STREAM_SUCCESS, meta: { resultKey: '/discover' } }
-      const initialState = reducer(undefined, {})
       const nextState = reducer(initialState, action)
       // faking a tick of the frame :)
-      const initialTime = new Date(initialState.lastNotificationCheck).getTime() - 60
-      const nextTime = new Date(nextState.lastNotificationCheck).getTime()
+      const initialTime = new Date(initialState.get('lastNotificationCheck')).getTime() - 60
+      const nextTime = new Date(nextState.get('lastNotificationCheck')).getTime()
       expect(initialTime).to.be.below(nextTime)
     })
 
     it('LOAD_STREAM_SUCCESS does not update red dot when stream is a notification', () => {
       const action = { type: LOAD_STREAM_SUCCESS, meta: { resultKey: '/notifications' } }
-      const initialState = { ...reducer(undefined, {}), isNotificationsUnread: true }
-      expect(initialState).to.have.property('isNotificationsUnread', true)
-      const nextState = reducer(initialState, action)
-      expect(nextState).to.have.property('isNotificationsUnread', false)
+      const nextState = reducer(initialState, {}).set('isNotificationsUnread', true)
+      expect(nextState).to.have.property('isNotificationsUnread', true)
+      const finalState = reducer(nextState, action)
+      expect(finalState).to.have.property('isNotificationsUnread', false)
     })
   })
 
@@ -250,12 +253,11 @@ describe('gui reducer', () => {
 
   context('PROFILE', () => {
     it('DELETE_SUCCESS resets to the initialState', () => {
-      const firstState = reducer(undefined, {})
-      const testState = { ...reducer(undefined, {}), isNotificationsUnread: true }
+      const testState = initialState.set('isNotificationsUnread', true)
       expect(reducer(testState, {})).to.have.property('isNotificationsUnread', true)
       const action = { type: PROFILE.DELETE_SUCCESS }
       const resetState = reducer(testState, action)
-      expect(resetState).to.deep.equal(firstState)
+      expect(resetState).to.deep.equal(initialState)
     })
   })
 
@@ -263,29 +265,26 @@ describe('gui reducer', () => {
     it('SET_LAYOUT_MODE updates the grid mode', () => {
       setLocation({ pathname: '/discover' })
       const listAction = { type: SET_LAYOUT_MODE, payload: { mode: 'list' } }
-      const initialState = reducer(undefined, {})
       expect(reducer(initialState, listAction)).to.have.property('isGridMode', false)
     })
 
     it('SET_LAYOUT_MODE aborts when the grid is the same', () => {
       setLocation({ pathname: '/discover' })
       const gridAction = { type: SET_LAYOUT_MODE, payload: { mode: 'grid' } }
-      const initialState = reducer(undefined, {})
       expect(reducer(initialState, gridAction)).to.have.property('isGridMode', true)
     })
   })
 
   context('ZEROS', () => {
     it('ZEROS.SAY_HELLO adds the username to saidHelloTo', () => {
-      const firstState = reducer(undefined, {})
-      expect(firstState).to.have.property('saidHelloTo')
-      expect(firstState.saidHelloTo.length).to.equal(0)
+      expect(initialState).to.have.property('saidHelloTo')
+      expect(initialState.get('saidHelloTo').size).to.equal(0)
       const action = { type: ZEROS.SAY_HELLO, payload: { username: 'timmy' } }
-      const nextState = reducer(firstState, action)
-      expect(nextState.saidHelloTo).to.deep.equal(['timmy'])
+      const nextState = reducer(initialState, action)
+      expect(nextState.get('saidHelloTo')).to.deep.equal(Immutable.List(['timmy']))
       const lastAction = { type: ZEROS.SAY_HELLO, payload: { username: 'tommy' } }
       const lastState = reducer(nextState, lastAction)
-      expect(lastState.saidHelloTo).to.deep.equal(['timmy', 'tommy'])
+      expect(lastState.get('saidHelloTo')).to.deep.equal(Immutable.List(['timmy', 'tommy']))
     })
   })
 })

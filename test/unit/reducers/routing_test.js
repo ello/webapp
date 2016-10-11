@@ -1,7 +1,9 @@
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { default as reducer } from '../../../src/reducers/routing'
 
-describe('promotions reducer', () => {
+describe.only('routing reducer', () => {
   context('#initialState', () => {
     it('sets up a default initialState', () => {
       expect(reducer(undefined, {})).to.have.keys(
@@ -13,7 +15,7 @@ describe('promotions reducer', () => {
 
   context('LOCATION', () => {
     const initialState = reducer(undefined, {})
-    const subject = {
+    const subject = Immutable.fromJS({
       location: {
         pathname: '/discover/trending',
         state: undefined,
@@ -22,12 +24,12 @@ describe('promotions reducer', () => {
         pathname: '/discover/trending',
       },
       previousPath: undefined,
-    }
+    })
 
     it('LOCATION_CHANGE updates the routing', () => {
       const action = { type: LOCATION_CHANGE, payload: { pathname: '/discover/trending' } }
       const result = reducer(initialState, action)
-      expect(result).to.deep.equal(subject)
+      expect(result).to.equal(subject)
     })
 
     it('A non LOCATION_CHANGE action type does not update the routing', () => {
@@ -35,7 +37,7 @@ describe('promotions reducer', () => {
       const result = reducer(initialState, action)
       expect(result).to.deep.equal(subject)
       const nextResult = reducer(result, { type: 'PHONY.ACTION_TYPE' })
-      expect(nextResult).to.deep.equal(subject)
+      expect(nextResult).to.equal(subject)
     })
   })
 })
