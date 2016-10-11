@@ -99,7 +99,6 @@ export const selectScrollOffset = createSelector(
   [selectInnerHeight], innerHeight => Math.round(innerHeight - 80)
 )
 
-// TODO: Move to routing constants
 const NO_LAYOUT_TOOLS = [
   /^\/[\w\-]+\/post\/.+/,
   /^\/discover\/all\b/,

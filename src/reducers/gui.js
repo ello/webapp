@@ -17,11 +17,16 @@ let location = {}
 const oldDate = new Date()
 oldDate.setFullYear(oldDate.getFullYear() - 2)
 
-const STREAMS_WHITELIST = [
+const HOME_STREAMS_WHITELIST = [
   /^\/discover/,
   /^\/following$/,
   /^\/starred$/,
 ]
+
+// this is used for testing in StreamContainer_test
+export const setLocation = (loc) => {
+  location = loc
+}
 
 export const findLayoutMode = (modes) => {
   for (const mode of modes) {
@@ -146,7 +151,7 @@ export const gui = (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE: {
       location = action.payload
       pathname = location.pathname
-      if (STREAMS_WHITELIST.some(re => re.test(pathname))) {
+      if (HOME_STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return {
           ...state,
           homeStream: pathname,
@@ -186,10 +191,5 @@ export const gui = (state = initialState, action = { type: '' }) => {
     default:
       return state
   }
-}
-
-// this is used for testing in StreamContainer_test
-export const setLocation = (loc) => {
-  location = loc
 }
 
