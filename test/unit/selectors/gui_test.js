@@ -1,6 +1,6 @@
 import * as selector from '../../../src/selectors/gui'
 
-describe.only('gui selectors', () => {
+describe('gui selectors', () => {
   context('#selectDeviceSize', () => {
     it('selects with memoization the device size string', () => {
       let state = { gui: { columnCount: 2, innerWidth: 375, change: false } }
