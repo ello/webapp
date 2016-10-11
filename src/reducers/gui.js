@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import get from 'lodash/get'
 import { LOCATION_CHANGE } from 'react-router-redux'
@@ -29,33 +31,29 @@ export const setLocation = (loc) => {
 }
 
 export const findLayoutMode = modes =>
-  modes.find((mode) => {
-    const regex = new RegExp(mode.regex)
-    if (regex.test(location.pathname)) {
-      return mode
-    }
-    return false
+  modes.findIndex((mode) => {
+    const regex = new RegExp(mode.get('regex'))
+    return regex.test(location.pathname)
   })
 
-const getIsGridMode = (modes) => {
-  const mode = findLayoutMode(modes)
-  if (!mode) { return null }
-  return mode.mode === 'grid'
+const getIsGridMode = (state) => {
+  const index = findLayoutMode(state.get('modes'))
+  if (index < 0) { return null }
+  return state.getIn(['modes', `${index}`, 'mode']) === 'grid'
 }
 
-const initialNonPersistedState = {
+const initialNonPersistedState = Immutable.Map({
   hasLaunchedSignupModal: false,
   isCompleterActive: false,
   isNotificationsActive: false,
   isProfileMenuActive: false,
   isTextToolsActive: false,
-  saidHelloTo: [],
-  textToolsCoordinates: { top: -200, left: -666 },
-  textToolsStates: {},
-}
+  saidHelloTo: Immutable.List(),
+  textToolsCoordinates: Immutable.Map({ top: -200, left: -666 }),
+  textToolsStates: Immutable.Map(),
+})
 
-export const initialState = {
-  ...initialNonPersistedState,
+const initialPersistedState = Immutable.Map({
   activeNotificationsType: 'all',
   activeUserFollowingType: 'friend',
   columnCount: 2,
@@ -71,129 +69,107 @@ export const initialState = {
   lastNotificationCheck: oldDate.toUTCString(),
   lastStarredBeaconVersion: '0',
   // order matters for matching routes
-  modes: [
-    { label: 'root', mode: 'grid', regex: '^/$' },
-    { label: 'discover', mode: 'grid', regex: '/discover|/explore' },
-    { label: 'following', mode: 'grid', regex: '/following' },
-    { label: 'invitations', mode: 'list', regex: '/invitations' },
-    { label: 'onboarding', mode: 'grid', regex: '/onboarding' },
-    { label: 'notifications', mode: 'list', regex: '/notifications' },
-    { label: 'search', mode: 'grid', regex: '/search|/find' },
-    { label: 'settings', mode: 'list', regex: '/settings' },
-    { label: 'starred', mode: 'list', regex: '/starred' },
-    { label: 'staff', mode: 'list', regex: '/staff' },
-    { label: 'posts', mode: 'list', regex: '/[\\w\\-]+/post/.+' },
-    { label: 'users/following', mode: 'grid', regex: '/[\\w\\-]+/following' },
-    { label: 'users/followers', mode: 'grid', regex: '/[\\w\\-]+/followers' },
-    { label: 'users/loves', mode: 'grid', regex: '/[\\w\\-]+/loves' },
-    { label: 'users', mode: 'grid', regex: '/[\\w\\-]+' },
-  ],
-}
+  modes: Immutable.List([
+    Immutable.Map({ label: 'root', mode: 'grid', regex: '^/$' }),
+    Immutable.Map({ label: 'discover', mode: 'grid', regex: '/discover|/explore' }),
+    Immutable.Map({ label: 'following', mode: 'grid', regex: '/following' }),
+    Immutable.Map({ label: 'invitations', mode: 'list', regex: '/invitations' }),
+    Immutable.Map({ label: 'onboarding', mode: 'grid', regex: '/onboarding' }),
+    Immutable.Map({ label: 'notifications', mode: 'list', regex: '/notifications' }),
+    Immutable.Map({ label: 'search', mode: 'grid', regex: '/search|/find' }),
+    Immutable.Map({ label: 'settings', mode: 'list', regex: '/settings' }),
+    Immutable.Map({ label: 'starred', mode: 'list', regex: '/starred' }),
+    Immutable.Map({ label: 'staff', mode: 'list', regex: '/staff' }),
+    Immutable.Map({ label: 'posts', mode: 'list', regex: '/[\\w\\-]+/post/.+' }),
+    Immutable.Map({ label: 'users/following', mode: 'grid', regex: '/[\\w\\-]+/following' }),
+    Immutable.Map({ label: 'users/followers', mode: 'grid', regex: '/[\\w\\-]+/followers' }),
+    Immutable.Map({ label: 'users/loves', mode: 'grid', regex: '/[\\w\\-]+/loves' }),
+    Immutable.Map({ label: 'users', mode: 'grid', regex: '/[\\w\\-]+' }),
+  ]),
+})
 
-export const gui = (state = initialState, action = { type: '' }) => {
-  const newState = { ...state }
-  let mode = null
-  let pathname = null
-  switch (action.type) {
+export const initialState = initialNonPersistedState.merge(initialPersistedState)
+
+export default (state = initialState, action = { type: '' }) => {
+  const { payload, type } = action
+  switch (type) {
     case AUTHENTICATION.LOGOUT:
-      return { ...state, discoverKeyType: null }
+      return state.set('discoverKeyType', null)
     case EDITOR.SET_IS_COMPLETER_ACTIVE:
-      return { ...state, isCompleterActive: action.payload.isCompleterActive }
+      return state.set('isCompleterActive', payload.isCompleterActive)
     case EDITOR.SET_IS_TEXT_TOOLS_ACTIVE:
-      return {
-        ...state,
-        isTextToolsActive: action.payload.isTextToolsActive,
-        textToolsStates: action.payload.textToolsStates,
-      }
+      return state.set('isTextToolsActive', payload.isTextToolsActive)
+        .set('textToolsStates', payload.textToolsStates)
     case EDITOR.SET_TEXT_TOOLS_COORDINATES:
-      return { ...state, textToolsCoordinates: action.payload.textToolsCoordinates }
+      return state.set('textToolsCoordinates', payload.textToolsCoordinates)
     case GUI.BIND_DISCOVER_KEY:
-      return { ...state, discoverKeyType: action.payload.type }
+      return state.set('discoverKeyType', payload.type)
     case GUI.NOTIFICATIONS_TAB:
-      return { ...state, activeNotificationsType: action.payload.activeTabType }
+      return state.set('activeNotificationsType', payload.activeTabType)
     case GUI.SET_ACTIVE_USER_FOLLOWING_TYPE:
-      return { ...state, activeUserFollowingType: action.payload.tab }
+      return state.set('activeUserFollowingType', payload.tab)
     case GUI.SET_IS_NAVBAR_HIDDEN:
-      return {
-        ...state,
-        isNavbarHidden: get(action.payload, 'isNavbarHidden', state.isNavbarHidden),
-      }
+      return state.set('isNavbarHidden', get(payload, 'isNavbarHidden', state.isNavbarHidden))
     case GUI.SET_IS_PROFILE_MENU_ACTIVE:
-      return { ...state, isProfileMenuActive: action.payload.isProfileMenuActive }
+      return state.set('isProfileMenuActive', payload.isProfileMenuActive)
     case GUI.SET_LAST_DISCOVER_BEACON_VERSION:
-      return { ...state, lastDiscoverBeaconVersion: action.payload.version }
+      return state.set('lastDiscoverBeaconVersion', payload.version)
     case GUI.SET_LAST_FOLLOWING_BEACON_VERSION:
-      return { ...state, lastFollowingBeaconVersion: action.payload.version }
+      return state.set('lastFollowingBeaconVersion', payload.version)
     case GUI.SET_LAST_STARRED_BEACON_VERSION:
-      return { ...state, lastStarredBeaconVersion: action.payload.version }
+      return state.set('lastStarredBeaconVersion', payload.version)
     case GUI.SET_SIGNUP_MODAL_LAUNCHED:
-      return { ...state, hasLaunchedSignupModal: action.payload.hasLaunchedSignupModal }
+      return state.set('hasLaunchedSignupModal', payload.hasLaunchedSignupModal)
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
-      return { ...state, ...action.payload }
+      return state.merge(payload)
     case GUI.TOGGLE_NOTIFICATIONS:
-      return { ...state, isNotificationsActive: action.payload.isNotificationsActive }
+      return state.set('isNotificationsActive', payload.isNotificationsActive)
     case HEAD_FAILURE:
-      return { ...state, isNotificationsUnread: false }
+      return state.set('isNotificationsUnread', false)
     case HEAD_SUCCESS:
-      if (action.payload.serverStatus === 304) {
-        return { ...state, isNotificationsUnread: false }
-      } else if (action.payload.serverStatus === 204) {
-        return { ...state, isNotificationsUnread: true }
+      if (payload.serverStatus === 304) {
+        return state.set('isNotificationsUnread', false)
+      } else if (payload.serverStatus === 204) {
+        return state.set('isNotificationsUnread', true)
       }
       return state
     case LOAD_STREAM_SUCCESS:
       if (action.meta && /\/notifications/.test(action.meta.resultKey)) {
-        return {
-          ...state,
-          isNotificationsUnread: false,
-          lastNotificationCheck: new Date().toUTCString(),
-        }
+        return state.set('isNotificationsUnread', false)
+          .set('lastNotificationCheck', new Date().toUTCString())
       }
       return state
     case LOCATION_CHANGE: {
-      location = action.payload
-      pathname = location.pathname
+      location = payload
+      const pathname = location.pathname
       if (HOME_STREAMS_WHITELIST.some(re => re.test(pathname))) {
-        return {
-          ...state,
-          homeStream: pathname,
-          isGridMode: getIsGridMode(state.modes),
-          isNavbarHidden: false,
-        }
+        return state.withMutations((s) => {
+          s.set('homeStream', pathname)
+            .set('isGridMode', getIsGridMode(state))
+            .set('isNavbarHidden', false)
+        })
       }
-      return {
-        ...state,
-        isGridMode: getIsGridMode(state.modes),
-        isNavbarHidden: false,
-      }
+      return state.withMutations((s) => {
+        s.set('isGridMode', getIsGridMode(state))
+          .set('isNavbarHidden', false)
+      })
     }
     case PROFILE.DELETE_SUCCESS:
-      return { ...initialState }
+      return initialState
     case REHYDRATE:
-      if (action.payload.gui) {
-        return {
-          ...state,
-          ...action.payload.gui,
-          ...initialNonPersistedState,
-          isGridMode: getIsGridMode(state.modes),
-          isLayoutToolHidden: state.isLayoutToolHidden,
-          isNavbarHidden: false,
-        }
-      }
-      return {
-        ...state,
-        ...initialNonPersistedState,
-        isGridMode: getIsGridMode(state.modes),
-        isLayoutToolHidden: state.isLayoutToolHidden,
-        isNavbarHidden: false,
-      }
-    case SET_LAYOUT_MODE:
-      mode = findLayoutMode(newState.modes)
-      if (!mode) { return state }
-      mode.mode = action.payload.mode
-      return { ...state, isGridMode: action.payload.mode === 'grid' }
+      return state.withMutations((s) => {
+        s.merge(payload.gui || {})
+          .merge(initialNonPersistedState)
+          .set('isNavbarHidden', false)
+      })
+    case SET_LAYOUT_MODE: {
+      const index = findLayoutMode(state.get('modes'))
+      if (index < 0) { return state }
+      return state.set('isGridMode', payload.mode === 'grid')
+        .setIn(['modes', `${index}`, 'mode'], payload.mode)
+    }
     case ZEROS.SAY_HELLO:
-      return { ...state, saidHelloTo: [...state.saidHelloTo, action.payload.username] }
+      return state.set('saidHelloTo', state.get('saidHelloTo').push(payload.username))
     default:
       return state
   }
