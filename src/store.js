@@ -32,7 +32,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       reduxRouterMiddleware,
       logger,
     ),
-  )(createStore)(reducer, Immutable.Map(initialState))
+  )(createStore)(reducer, Immutable.fromJS(initialState))
   store.close = () => store.dispatch(END)
 
   store.sagaTask = sagaMiddleware.run(rootSaga)
@@ -45,7 +45,7 @@ const createServerStore = (history, initialState = {}) => {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const store = compose(
     applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger),
-  )(createStore)(reducer, Immutable.Map(initialState))
+  )(createStore)(reducer, Immutable.fromJS(initialState))
 
   store.runSaga = sagaMiddleware.run
   store.close = () => store.dispatch(END)
@@ -54,8 +54,7 @@ const createServerStore = (history, initialState = {}) => {
 
 const createElloStore = (history, initialState = {}) => {
   if (typeof window !== 'undefined') return createBrowserStore(browserHistory, initialState)
-  return createServerStore(history, initialState)
-  // return createServerStore(history, fromJS(initialState))
+  return createServerStore(history, Immutable.fromJS(initialState))
 }
 
 export { createElloStore }

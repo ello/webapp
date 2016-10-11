@@ -5,7 +5,7 @@ import { default as reducer } from '../../../src/reducers/profile'
 import { AUTHENTICATION, INVITATIONS, PROFILE } from '../../../src/constants/action_types'
 
 
-describe.only('profile reducer', () => {
+describe('profile reducer', () => {
   context('#initialState', () => {
     it('sets up a default initialState', () => {
       expect(reducer({}, {})).to.deep.equal({})

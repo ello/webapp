@@ -9,6 +9,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import useScroll from 'react-router-scroll/lib/useScroll'
 import { persistStore } from 'redux-persist'
 import { asyncLocalStorage } from 'redux-persist/storages'
+// import { persistStore } from 'redux-persist-immutable'
 
 // import './main.sass'
 import './main.css'
@@ -56,7 +57,11 @@ const APP_VERSION = '3.0.21'
 
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState(state) {
-    return state.get('routing').toJS()
+    console.log('state', state)
+    if (typeof state.get === 'function') {
+      return state.get('routing').toJS()
+    }
+    return state
   },
 })
 const routes = createRoutes(store)
@@ -70,34 +75,38 @@ const element = (
   </Provider>
 )
 
-const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
+// const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 
 const launchApplication = (storage, hasLocalStorage = false) => {
   addFeatureDetection()
-  const persistor = persistStore(store, { storage, whitelist }, () => {
-    const root = document.getElementById('root')
-    ReactDOM.render(element, root)
-  })
+  // const persistor = persistStore(store, { storage, whitelist }, () => {
+  //   const root = document.getElementById('root')
+  //   ReactDOM.render(element, root)
+  // })
 
   // check and update current version and only kill off the persisted reducers
   // due to the async nature of the default storage we need to check against the
   // real localStorage to determine if we should purge to avoid a weird race condition
   if (hasLocalStorage) {
     if (localStorage.getItem('APP_VERSION') !== APP_VERSION) {
-      persistor.purge(['json'])
+      // persistor.purge(['json'])
       Session.clear()
       storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }
   } else {
     storage.getItem('APP_VERSION', (error, result) => {
       if (result && result !== APP_VERSION) {
-        persistor.purge(['json'])
+        // persistor.purge(['json'])
         Session.clear()
         storage.setItem('APP_VERSION', APP_VERSION, () => {})
       }
     })
   }
+
+  const root = document.getElementById('root')
+  ReactDOM.render(element, root)
 }
+
 
 // this will fail in a safari private window
 function isLocalStorageSupported() {

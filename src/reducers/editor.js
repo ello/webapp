@@ -9,19 +9,18 @@ export const initialState = Immutable.Map({ completions: Immutable.Map() })
 
 export default (state = initialState, action) => {
   const editorId = get(action, 'payload.editorId')
-  const editor = state.get(`${editorId}`)
   let updatedState = null
   if (editorId) {
-    updatedState = state.set(`${editorId}`, editorMethods.getEditorObject(editor, action))
+    const editor = editorMethods.getEditorObject(state.get(`${editorId}`), action)
+    updatedState = state.set(`${editorId}`, editor)
     if (action.type === EDITOR.INITIALIZE) {
-      updatedState = state.setIn([editorId, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
+      updatedState = state.setIn([`${editorId}`, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
     } else if (editor) {
-      updatedState = state.setIn([editorId, 'hasContent'], editorMethods.hasContent(editor))
-        .state.setIn([editorId, 'hasMedia'], editorMethods.hasMedia(editor))
-        .state.setIn([editorId, 'hasMention'], editorMethods.hasMention(editor))
-        .state.setIn([editorId, 'isLoading'], editorMethods.isLoading(editor))
+      updatedState = state.setIn([`${editorId}`, 'hasContent'], editorMethods.hasContent(editor))
+        .setIn([`${editorId}`, 'hasMedia'], editorMethods.hasMedia(editor))
+        .setIn([`${editorId}`, 'hasMention'], editorMethods.hasMention(editor))
+        .setIn([`${editorId}`, 'isLoading'], editorMethods.isLoading(editor))
     }
-    console.log('editor stuff', updatedState)
     return updatedState
   }
   switch (action.type) {
