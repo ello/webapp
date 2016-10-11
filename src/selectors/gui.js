@@ -27,8 +27,6 @@ export const selectTextToolsCoordinates = state => get(state, 'gui.textToolsCoor
 export const selectTextToolsStates = state => get(state, 'gui.textToolsStates')
 
 // Memoized selectors
-
-// TODO: Add Test
 export const selectDeviceSize = createSelector(
   [selectColumnCount, selectInnerWidth], (columnCount, innerWidth) => {
     // deviceSize could be anything: baby, momma, poppa bear would work too.
@@ -51,7 +49,6 @@ export const selectIsMobileGridStream = createSelector(
     deviceSize === 'mobile' && isGridMode
 )
 
-// TODO: Add Test
 export const selectPaddingOffset = createSelector(
   [selectDeviceSize, selectColumnCount], (deviceSize, columnCount) => {
     if (deviceSize === 'mobile') { return 10 }
@@ -64,19 +61,16 @@ export const selectCommentOffset = createSelector(
     (deviceSize === 'mobile' ? 40 : 60)
 )
 
-// TODO: Add Test
 export const selectColumnWidth = createSelector(
   [selectColumnCount, selectInnerWidth, selectPaddingOffset], (columnCount, innerWidth, padding) =>
     Math.round((innerWidth - ((columnCount + 1) * padding)) / columnCount)
 )
 
-// TODO: Add Test
 export const selectContentWidth = createSelector(
   [selectInnerWidth, selectPaddingOffset], (innerWidth, padding) =>
     Math.round(innerWidth - (padding * 2))
 )
 
-// TODO: Add Test
 // This is very rudimentary. needs things like 1x, 2x calculating the set
 // Primarily used for background images in Heros
 export const selectDPI = createSelector(
@@ -109,7 +103,6 @@ const NO_LAYOUT_TOOLS = [
   /^\/[\w\-]+\/followers\b/,
 ]
 
-// TODO: Add Test
 export const selectIsLayoutToolHidden = createSelector(
   [selectPathname, selectPropsQueryType], (pathname, queryType) => {
     const isUserSearch = queryType === 'users' && /^\/search\b/.test(pathname)
