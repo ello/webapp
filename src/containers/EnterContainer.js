@@ -71,7 +71,7 @@ class EnterContainer extends Component {
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
       const { currentStream, dispatch } = this.props
-      if (!nextProps.webOnboardingVersionSeen) {
+      if (!nextProps.webOnboardingVersionSeen || nextProps.webOnboardingVersionSeen === '0') {
         dispatch(replace({ pathname: '/onboarding' }))
         dispatch(saveProfile({ web_onboarding_version: ONBOARDING_VERSION }))
       } else {
