@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 import Immutable from 'immutable'
-import { default as reducer } from '../../../src/reducers/omnibar'
+import reducer from '../../../src/reducers/omnibar'
 import { AUTHENTICATION, OMNIBAR, PROFILE } from '../../../src/constants/action_types'
 
 describe('omnibar reducer', () => {

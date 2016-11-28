@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
-import { default as reducer, editorMethods, initialState } from '../../../src/reducers/editor'
+import reducer, { editorMethods, initialState } from '../../../src/reducers/editor'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../../../src/constants/action_types'
 
 describe('editor reducer', () => {

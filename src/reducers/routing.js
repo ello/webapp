@@ -10,7 +10,6 @@ const initialState = Immutable.fromJS({ previousPath })
 
 export default (state = initialState, { type, payload }) => {
   if (type === LOCATION_CHANGE) {
-    console.log('routing', state)
     return state.merge({
       location: {
         pathname: get(payload, 'locationBeforeTransitions.pathname'),

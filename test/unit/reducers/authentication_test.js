@@ -1,6 +1,6 @@
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../../../src/constants/action_types'
-import { default as reducer } from '../../../src/reducers/authentication'
+import reducer from '../../../src/reducers/authentication'
 
 describe('authentication reducer', () => {
   const initialState = reducer(undefined, {})

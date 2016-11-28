@@ -362,7 +362,9 @@ describe('json reducer', () => {
 
     context('with post actions', () => {
       it('calls #postMethods.addOrUpdatePost', () => {
+        console.log('POST METHODS', subject)
         methodCalledWithActions(subject.postMethods, 'addOrUpdatePost', [
+          ACTION_TYPES.POST.CREATE_FAILURE,
           ACTION_TYPES.POST.CREATE_SUCCESS,
           ACTION_TYPES.POST.UPDATE_SUCCESS,
         ])
