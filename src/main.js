@@ -7,8 +7,8 @@ import { Provider } from 'react-redux'
 import { applyRouterMiddleware, browserHistory, Router } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import useScroll from 'react-router-scroll/lib/useScroll'
-import { persistStore } from 'redux-persist'
 import { asyncLocalStorage } from 'redux-persist/storages'
+// import { persistStore } from 'redux-persist'
 // import { persistStore } from 'redux-persist-immutable'
 
 // import './main.sass'
@@ -57,7 +57,6 @@ const APP_VERSION = '3.0.21'
 
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState(state) {
-    console.log('state', state)
     if (typeof state.get === 'function') {
       return state.get('routing').toJS()
     }

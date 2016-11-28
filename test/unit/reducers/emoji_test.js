@@ -1,4 +1,4 @@
-import { default as reducer, initialState } from '../../../src/reducers/emoji'
+import reducer, { initialState } from '../../../src/reducers/emoji'
 import { EDITOR } from '../../../src/constants/action_types'
 
 describe('emoji reducer', () => {

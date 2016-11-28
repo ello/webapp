@@ -206,7 +206,6 @@ methods.updateBuyLink = (state, action) => {
 }
 
 methods.getEditorObject = (state = initialState, action) => {
-  console.log('state', typeof state)
   let updatedState = null
   switch (action.type) {
     case EDITOR.ADD_BLOCK:

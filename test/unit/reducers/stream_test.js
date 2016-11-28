@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { default as reducer } from '../../../src/reducers/stream'
+import reducer from '../../../src/reducers/stream'
 
 describe('stream.js', () => {
   it('returns the existing state if nothing is passed in', () => {
