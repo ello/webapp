@@ -2,7 +2,7 @@
 import Immutable from 'immutable'
 import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'
-import { default as reducer } from '../../../src/reducers/modal'
+import reducer from '../../../src/reducers/modal'
 import { ALERT, AUTHENTICATION, MODAL, PROFILE } from '../../../src/constants/action_types'
 
 describe('modal reducer', () => {

@@ -29,7 +29,7 @@ const selectIsAuthenticationView = createSelector(
 )
 
 const selectIsOnboardingView = createSelector(
-  [selectViewNameFromRoute], viewName => viewName === 'onboarding'
+  [selectViewNameFromRoute], viewName => viewName === 'onboarding',
 )
 
 export const selectUserDetailPathClassName = createSelector(

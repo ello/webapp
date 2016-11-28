@@ -12,7 +12,7 @@ import {
   SET_LAYOUT_MODE,
   ZEROS,
 } from '../../../src/constants/action_types'
-import { default as reducer, setLocation, findLayoutMode } from '../../../src/reducers/gui'
+import reducer, { setLocation, findLayoutMode } from '../../../src/reducers/gui'
 
 describe('gui reducer', () => {
   let initialState = null
