@@ -1,31 +1,30 @@
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
 import { selectParamsUsername } from './params'
 import { selectPathname, selectPropsQueryType } from './routing'
 
 // state.gui.xxx
-export const selectActiveUserFollowingType = state => get(state, 'gui.activeUserFollowingType')
-export const selectActiveNotificationsType = state => get(state, 'gui.activeNotificationsType')
-export const selectColumnCount = state => get(state, 'gui.columnCount')
-export const selectDiscoverKeyType = state => get(state, 'gui.discoverKeyType')
-export const selectHasLaunchedSignupModal = state => get(state, 'gui.hasLaunchedSignupModal')
-export const selectHomeStream = state => get(state, 'gui.homeStream')
-export const selectInnerHeight = state => get(state, 'gui.innerHeight')
-export const selectInnerWidth = state => get(state, 'gui.innerWidth')
-export const selectIsCompleterActive = state => get(state, 'gui.isCompleterActive')
-export const selectIsGridMode = state => get(state, 'gui.isGridMode')
-export const selectIsNavbarHidden = state => get(state, 'gui.isNavbarHidden')
-export const selectIsNotificationsActive = state => get(state, 'gui.isNotificationsActive')
-export const selectIsNotificationsUnread = state => get(state, 'gui.isNotificationsUnread')
-export const selectIsProfileMenuActive = state => get(state, 'gui.isProfileMenuActive')
-export const selectIsTextToolsActive = state => get(state, 'gui.isTextToolsActive')
-export const selectLastNotificationCheck = state => get(state, 'gui.lastNotificationCheck')
-export const selectLastDiscoverBeaconVersion = state => get(state, 'gui.lastDiscoverBeaconVersion') // eslint-disable-line
-export const selectLastFollowingBeaconVersion = state => get(state, 'gui.lastFollowingBeaconVersion') // eslint-disable-line
-export const selectLastStarredBeaconVersion = state => get(state, 'gui.lastStarredBeaconVersion')
-export const selectSaidHelloTo = state => get(state, 'gui.saidHelloTo')
-export const selectTextToolsCoordinates = state => get(state, 'gui.textToolsCoordinates')
-export const selectTextToolsStates = state => get(state, 'gui.textToolsStates')
+export const selectActiveUserFollowingType = state => state.getIn(['gui', 'activeUserFollowingType'])
+export const selectActiveNotificationsType = state => state.getIn(['gui', 'activeNotificationsType'])
+export const selectColumnCount = state => state.getIn(['gui', 'columnCount'])
+export const selectDiscoverKeyType = state => state.getIn(['gui', 'discoverKeyType'])
+export const selectHasLaunchedSignupModal = state => state.getIn(['gui', 'hasLaunchedSignupModal'])
+export const selectHomeStream = state => state.getIn(['gui', 'homeStream'])
+export const selectInnerHeight = state => state.getIn(['gui', 'innerHeight'])
+export const selectInnerWidth = state => state.getIn(['gui', 'innerWidth'])
+export const selectIsCompleterActive = state => state.getIn(['gui', 'isCompleterActive'])
+export const selectIsGridMode = state => state.getIn(['gui', 'isGridMode'])
+export const selectIsNavbarHidden = state => state.getIn(['gui', 'isNavbarHidden'])
+export const selectIsNotificationsActive = state => state.getIn(['gui', 'isNotificationsActive'])
+export const selectIsNotificationsUnread = state => state.getIn(['gui', 'isNotificationsUnread'])
+export const selectIsProfileMenuActive = state => state.getIn(['gui', 'isProfileMenuActive'])
+export const selectIsTextToolsActive = state => state.getIn(['gui', 'isTextToolsActive'])
+export const selectLastNotificationCheck = state => state.getIn(['gui', 'lastNotificationCheck'])
+export const selectLastDiscoverBeaconVersion = state => state.getIn(['gui', 'lastDiscoverBeaconVersion']) // eslint-disable-line
+export const selectLastFollowingBeaconVersion = state => state.getIn(['gui', 'lastFollowingBeaconVersion']) // eslint-disable-line
+export const selectLastStarredBeaconVersion = state => state.getIn(['gui', 'lastStarredBeaconVersion'])
+export const selectSaidHelloTo = state => state.getIn(['gui', 'saidHelloTo'])
+export const selectTextToolsCoordinates = state => state.getIn(['gui', 'textToolsCoordinates'])
+export const selectTextToolsStates = state => state.getIn(['gui', 'textToolsStates'])
 
 // Memoized selectors
 export const selectDeviceSize = createSelector(
@@ -87,7 +86,7 @@ export const selectDPI = createSelector(
 
 export const selectHasSaidHelloTo = createSelector(
   [selectSaidHelloTo, selectParamsUsername], (saidHelloTo, username) =>
-    saidHelloTo.indexOf(username) !== -1,
+    saidHelloTo.includes(username),
 )
 
 export const selectScrollOffset = createSelector(
