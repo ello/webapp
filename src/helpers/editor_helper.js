@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Immutable from 'immutable'
 import get from 'lodash/get'
 import reduce from 'lodash/reduce'

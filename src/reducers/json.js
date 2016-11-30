@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
+import Immutable from 'immutable'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
 import { camelize } from 'humps'
@@ -25,17 +26,12 @@ const methods = {}
 let path = '/'
 let hasLoadedFirstStream = false
 
-methods.updateUserCount = (newState, userId, prop, delta) => {
-  const count = newState[MAPPING_TYPES.USERS][userId][prop] || 0
-  if (count === '∞') { return newState }
+const initialState = Immutable.Map()
 
-  const obj = { id: userId }
-  obj[prop] = parseInt(count, 10) + delta
-  return methods.mergeModel(
-    newState,
-    MAPPING_TYPES.USERS,
-    obj,
-  )
+methods.updateUserCount = (state, userId, prop, delta) => {
+  const count = state.getIn([MAPPING_TYPES.USERS, userId, prop], 0)
+  if (count === '∞') { return state }
+  state.setIn([MAPPING_TYPES.USERS, userId, prop], parseInt(count, 10) + delta)
 }
 
 methods.updatePostCount = (newState, postId, prop, delta) => {
@@ -324,13 +320,10 @@ methods.updatePostDetail = (newState, action) => {
   )
 }
 
-methods.markAnnouncementRead = (state) => {
-  const newState = { ...state }
-  delete newState.announcements
-  return newState
-}
+methods.markAnnouncementRead = state =>
+  state.delete('announcements')
 
-export default function json(state = {}, action = { type: '' }) {
+export default function json(state = initialState, action = { type: '' }) {
   let newState = { ...state }
   if (!newState.pages) { newState.pages = {} }
   // whitelist actions

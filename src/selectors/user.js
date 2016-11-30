@@ -5,24 +5,24 @@ import { selectParamsUsername } from './params'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
 
-const selectJson = state => get(state, 'json')
+const selectJson = state => state.get('json')
 
 // props.user.xxx
 export const selectPropsUser = (state, props) => get(props, 'user')
-export const selectPropsUserId = (state, props) => get(props, 'userId') || get(props, 'user.id')
+export const selectPropsUserId = (state, props) => get(props, 'userId') || get(props, 'user').get('id')
 
 // state.json.users.xxx
-export const selectUsers = state => get(state, 'json.users')
+export const selectUsers = state => state.getIn(['json', 'users'])
 
 // Memoized selectors
 export const selectUser = createSelector(
   [selectUsers, selectPropsUserId], (users, userId) =>
-    users[userId],
+    users.get(`${userId}`),
 )
 
 export const selectUserFromPropsUserId = createSelector(
   [selectJson, selectPropsUserId], (json, userId) =>
-    (userId ? json[MAPPING_TYPES.USERS][userId] : null),
+    json.getIn([MAPPING_TYPES.USERS, userId], null),
 )
 
 export const selectUserFromUsername = createSelector(
@@ -31,12 +31,12 @@ export const selectUserFromUsername = createSelector(
 )
 
 export const selectRelationshipPriority = createSelector(
-  [selectUser], user => get(user, 'relationshipPriority'),
+  [selectUser], user => user.get('relationshipPriority'),
 )
 
 export const selectTruncatedShortBio = createSelector(
   [selectUserFromPropsUserId], user =>
-    trunc(user.formattedShortBio || '', 160, { sanitizer:
+    trunc(user.get('formattedShortBio') || '', 160, { sanitizer:
       { allowedAttributes: { img: ['align', 'alt', 'class', 'height', 'src', 'width'] } },
     }),
 )
@@ -44,28 +44,30 @@ export const selectTruncatedShortBio = createSelector(
 export const selectUserMetaDescription = createSelector(
   [selectUserFromUsername], (user) => {
     if (!user) { return null }
-    const nickname = user.name || `@${user.username}`
+    const nickname = user.get('name') || `@${user.get('username')}`
     const backupTitle = `See ${nickname}'s work on Ello.`
-    return user.formattedShortBio ? trunc(user.formattedShortBio, 160).text : backupTitle
+    return trunc(user.get('formattedShortBio') || backupTitle, 160).text
   },
 )
 
 export const selectUserMetaImage = createSelector(
   [selectUserFromUsername], user =>
-    get(user, 'coverImage.optimized.url', null),
+    user.getIn(['coverImage', 'optimized', 'url'], null),
 )
 
 export const selectUserMetaRobots = createSelector(
   [selectUserFromUsername], (user) => {
     if (!user) { return null }
-    return (user.badForSeo ? 'noindex, follow' : 'index, follow')
+    return (user.get('badForSeo') ? 'noindex, follow' : 'index, follow')
   },
 )
 
 export const selectUserMetaTitle = createSelector(
   [selectUserFromUsername], (user) => {
     if (!user) { return null }
-    return (user.name ? `${user.name} (@${user.username}) | Ello` : `@${user.username} | Ello`)
+    const name = user.get('name')
+    const username = user.get('username')
+    return (name ? `${name} (@${username}) | Ello` : `@${username} | Ello`)
   },
 )
 

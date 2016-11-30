@@ -40,11 +40,11 @@ export function makeMapStateToProps() {
       innerHeight: selectInnerHeight(state),
       innerWidth: selectInnerWidth(state),
       isLoggedIn: selectIsLoggedIn(state),
-      json: state.json,
+      json: state.get('json'),
       isGridMode: selectIsGridMode(state),
-      omnibar: state.omnibar,
-      routerState: state.routing.location.state || {},
-      stream: state.stream,
+      omnibar: state.get('omnibar'),
+      routerState: state.getIn(['routing', 'location', 'state'], {}),
+      stream: state.get('stream'),
     }
   }
   return mapStateToProps

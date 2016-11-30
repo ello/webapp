@@ -80,10 +80,19 @@ export default (state = initialState, action) => {
         .deleteIn(['avatar', 'tmp'])
         .deleteIn(['coverImage', 'tmp'])
     case PROFILE.SAVE_AVATAR_SUCCESS:
-    case PROFILE.SAVE_COVER_SUCCESS:
+    case PROFILE.SAVE_COVER_SUCCESS: {
+      const avatarTmp = state.getIn(['avatar', 'tmp'])
+      const avatar = avatarTmp ?
+        Immutable.fromJS({ ...action.payload.response.users.avatar }).set('tmp', avatarTmp) :
+        Immutable.fromJS(action.payload.response.users.avatar)
+      const coverImageTmp = state.getIn(['coverImage', 'tmp'])
+      const coverImage = coverImageTmp ?
+        Immutable.fromJS({ ...action.payload.response.users.coverImage }).set('tmp', coverImageTmp) :
+        Immutable.fromJS(action.payload.response.users.coverImage)
       return state.merge(action.payload.response.users)
-        .set('avatar', { ...action.payload.response.users.avatar, tmp: state.getIn(['avatar', 'tmp']) })
-        .set('coverImage', { ...action.payload.response.users.coverImage, tmp: state.getIn(['coverImage', 'tmp']) })
+        .set('avatar', avatar)
+        .set('coverImage', coverImage)
+    }
     case AUTHENTICATION.USER_SUCCESS:
     case AUTHENTICATION.REFRESH_SUCCESS:
     case PROFILE.SIGNUP_SUCCESS:

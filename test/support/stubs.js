@@ -1,12 +1,12 @@
+/* eslint-disable import/no-mutable-exports */
+import Immutable from 'immutable'
 import upperFirst from 'lodash/upperFirst'
 import * as MAPPING_TYPES from '../../src/constants/mapping_types'
 
-const json = {}
+let json = Immutable.Map()
 
 function clearJSON() {
-  Object.keys(json).forEach((key) => {
-    delete json[key]
-  })
+  json = Immutable.Map()
 }
 const commonProps = {
   id: '1',
@@ -16,21 +16,20 @@ const commonProps = {
 }
 
 function addToJSON(collection, model) {
-  if (!json[collection]) { json[collection] = {} }
-  json[collection][model.id] = model
+  json = json.setIn([`${collection}`, `${model.get('id')}`], model)
 }
 
 export function stubAuthenticationStore(isLoggedIn = true) {
-  return {
+  return Immutable.Map({
     accessToken: 'authenticationAccessToken',
     expirationDate: 'authenticationExpirationDate',
     isLoggedIn,
     refreshToken: 'authenticationRefreshToken',
-  }
+  })
 }
 
 export function stubAvatar(url = '') {
-  return {
+  return Immutable.fromJS({
     original: {
       url,
     },
@@ -46,11 +45,11 @@ export function stubAvatar(url = '') {
       url,
       metadata: null,
     },
-  }
+  })
 }
 
 export function stubCoverImage() {
-  return {
+  return Immutable.fromJS({
     original: {
       url: '',
     },
@@ -58,11 +57,11 @@ export function stubCoverImage() {
       url: '',
       metadata: null,
     },
-  }
+  })
 }
 
 function stubAuthPromotion(username = '666') {
-  return {
+  return Immutable.fromJS({
     avatar: { regular: `${username}-avatar.jpg` },
     coverImage: {
       hdpi: { url: `${username}-cover-hdpi.jpg` },
@@ -70,7 +69,7 @@ function stubAuthPromotion(username = '666') {
       optimized: { url: `${username}-cover-optimized.jpg` },
     },
     username,
-  }
+  })
 }
 
 function stubUser(properties) {
@@ -102,7 +101,7 @@ function stubUser(properties) {
     username: 'username',
     viewsAdultContent: true,
   }
-  const model = { ...commonProps, ...defaultProps, ...properties }
+  const model = Immutable.fromJS({ ...commonProps, ...defaultProps, ...properties })
   addToJSON(MAPPING_TYPES.USERS, model)
   return model
 }
@@ -118,7 +117,7 @@ export function stubEmbedRegion(properties) {
       url: 'service/service-url/embed-service-id',
     },
   }
-  return { ...defaultProps, ...properties }
+  return Immutable.fromJS({ ...defaultProps, ...properties })
 }
 
 export function stubImageRegion(properties) {
@@ -129,7 +128,7 @@ export function stubImageRegion(properties) {
       url: 'image-url',
     },
   }
-  return { ...defaultProps, ...properties }
+  return Immutable.fromJS({ ...defaultProps, ...properties })
 }
 
 function stubTextRegion(properties) {
@@ -137,7 +136,7 @@ function stubTextRegion(properties) {
     kind: 'text',
     data: '<p>Text Region</p>',
   }
-  return { ...defaultProps, ...properties }
+  return Immutable.fromJS({ ...defaultProps, ...properties })
 }
 
 function stubPost(properties) {
@@ -156,7 +155,7 @@ function stubPost(properties) {
     token: 'token',
     viewsCount: 0,
   }
-  const model = { ...commonProps, ...defaultProps, ...properties }
+  const model = Immutable.fromJS({ ...commonProps, ...defaultProps, ...properties })
   addToJSON(MAPPING_TYPES.POSTS, model)
   return model
 }
@@ -169,7 +168,7 @@ function stubComment(properties) {
     postId: '1',
     summary: [stubTextRegion()],
   }
-  const model = { ...commonProps, ...defaultProps, ...properties }
+  const model = Immutable.fromJS({ ...commonProps, ...defaultProps, ...properties })
   addToJSON(MAPPING_TYPES.COMMENTS, model)
   return model
 }
@@ -199,14 +198,14 @@ export function stubCategories(properties) {
         small: { url: `/tile_image/${index + 1}/small.png`, metadata: 'meta small' },
       },
     }
-    const model = { ...category, ...defaultProps, ...properties }
+    const model = Immutable.fromJS({ ...category, ...defaultProps, ...properties })
     addToJSON('categories', model)
   })
-  return json.categories
+  return json.get('categories')
 }
 
 function stubPage(path, properties = {}) {
-  const page = {
+  const page = Immutable.fromJS({
     ids: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     next: {
       ids: [],
@@ -216,9 +215,8 @@ function stubPage(path, properties = {}) {
     pagination: { next: '/next', totalCount: 1, totalPages: 3, totalPagesRemaining: 2 },
     type: 'posts',
     ...properties,
-  }
-  if (!json.pages) { json.pages = {} }
-  json.pages[path] = page
+  })
+  json.setIn(['pages', path], page)
   return page
 }
 

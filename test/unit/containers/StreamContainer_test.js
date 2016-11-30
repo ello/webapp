@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import { stub } from '../../support/stubs'
 import {
   makeMapStateToProps,
@@ -14,18 +15,18 @@ function createPropsForStream(ownProps = {}) {
     action: {},
     currentUser: stub('user', { id: 'currentUser' }),
     dispatch: () => { /**/ },
-    json: {
-      pages: {
-        what: { ids: [], pagination: {}, type: 'what' },
-      },
-    },
+    // json: {
+    //   pages: {
+    //     what: { ids: [], pagination: {}, type: 'what' },
+    //   },
+    // },
     isGridMode: true,
     renderObj: { data: [], nestedData: [] },
     result: {
       type: 'posts',
       ids: [],
     },
-    stream: { error: false },
+    // stream: { error: false },
   }
   return { ...defaultProps, ...ownProps }
 }
@@ -71,7 +72,7 @@ function createStateForStream(ownState = {}) {
     },
     stream: { error: false },
   }
-  return { ...defaultProps, ...ownState }
+  return Immutable.fromJS({ ...defaultProps, ...ownState })
 }
 
 describe('StreamContainer', () => {
@@ -85,11 +86,11 @@ describe('StreamContainer', () => {
       it('sets json', () => {
         state = createStateForStream()
         props = createPropsForStream()
-        expect(mapStateToProps(state, props).json.pages['/following']).to.deep.equal({
+        expect(mapStateToProps(state, props).json.getIn(['pages', '/following'])).to.deep.equal(Immutable.fromJS({
           ids: ['11', '12', '13'],
           pagination: {},
           type: MAPPING_TYPES.POSTS,
-        })
+        }))
       })
     })
 
@@ -111,30 +112,29 @@ describe('StreamContainer', () => {
       it('finds a result with a resultKey', () => {
         state = createStateForStream()
         props = createPropsForStream({ action: { meta: { resultKey: '/resultKey' } } })
-        expect(mapStateToProps(state, props).result).to.deep.equal({
+        expect(mapStateToProps(state, props).result).to.deep.equal(Immutable.fromJS({
           ids: ['31', '32', '33'],
           pagination: {},
           type: MAPPING_TYPES.POSTS,
-        })
+        }))
       })
 
       it('finds a result from the pathname', () => {
         state = createStateForStream({ routing: { location: { pathname: '/discover' } } })
         props = createPropsForStream()
-        expect(mapStateToProps(state, props).result).to.deep.equal({
+        expect(mapStateToProps(state, props).result).to.deep.equal(Immutable.fromJS({
           ids: ['1', '2', '3'],
           pagination: {},
           type: MAPPING_TYPES.POSTS,
-        })
+        }))
       })
 
       it('returns a default result if no data is present', () => {
         state = createStateForStream()
         props = createPropsForStream()
-        const defaultResult = {
+        expect(mapStateToProps(state, props).result).to.deep.equal(Immutable.fromJS({
           ids: [], pagination: { totalPages: 0, totalPagesRemaining: 0 },
-        }
-        expect(mapStateToProps(state, props).result).to.deep.equal(defaultResult)
+        }))
       })
     })
 
@@ -142,9 +142,9 @@ describe('StreamContainer', () => {
       it('sets stream', () => {
         state = createStateForStream()
         props = createPropsForStream()
-        expect(mapStateToProps(state, props).stream).to.deep.equal({
+        expect(mapStateToProps(state, props).stream).to.deep.equal(Immutable.fromJS({
           error: false,
-        })
+        }))
       })
     })
   })

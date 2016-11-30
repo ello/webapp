@@ -42,7 +42,7 @@ import {
   HeroPromotionPage,
 } from '../components/heros/HeroRenderables'
 
-const selectJson = state => get(state, 'json')
+const selectJson = state => state.get('json')
 export const selectIsAuthentication = createSelector(
   [selectViewNameFromRoute], viewName => viewName === 'authentication',
 )

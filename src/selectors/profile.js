@@ -17,7 +17,7 @@ export const selectExternalLinksList = state => get(state, 'profile.externalLink
 export const selectHasAutoWatchEnabled = state => get(state, 'profile.hasAutoWatchEnabled')
 export const selectHasAvatarPresent = state => get(state, 'profile.hasAvatarPresent', false)
 export const selectHasCoverImagePresent = state => get(state, 'profile.hasCoverImagePresent', false)
-export const selectId = state => get(state, 'profile.id')
+export const selectId = state => state.getIn(['profile', 'id'])
 export const selectIsPublic = state => get(state, 'profile.isPublic')
 export const selectLocation = state => get(state, 'profile.location', '')
 export const selectMarketingVersion = state => get(state, 'profile.marketingVersion')
