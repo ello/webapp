@@ -1,4 +1,5 @@
 import * as api from '../../../src/networking/api'
+import { stub } from '../../support/stubs'
 
 describe('api.js', () => {
   context('assets', () => {
@@ -102,17 +103,17 @@ describe('api.js', () => {
     })
 
     it('#deleteComment', () => {
-      expect(api.deleteComment({
+      expect(api.deleteComment(stub('comment', {
         id: '42',
         postId: '666',
-      }).path).to.match(/\/posts\/666\/comments\/42$/)
+      })).path).to.match(/\/posts\/666\/comments\/42$/)
     })
 
     it('#flagComment', () => {
-      expect(api.flagComment({
+      expect(api.flagComment(stub('comment', {
         id: '42',
         postId: '666',
-      }, 'ants').path).to.match(/\/posts\/666\/comments\/42\/flag\/ants$/)
+      }), 'ants').path).to.match(/\/posts\/666\/comments\/42\/flag\/ants$/)
     })
   })
 

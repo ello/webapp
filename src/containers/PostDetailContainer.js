@@ -35,7 +35,7 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
 export function mapStateToProps(state, props) {
   const post = selectPostFromToken(state, props)
   return {
-    author: post ? state.json[MAPPING_TYPES.USERS][post.authorId] : null,
+    author: state.getIn(['json', MAPPING_TYPES.USERS, post.get('authorId')], null),
     isLoggedIn: selectIsLoggedIn(state),
     paramsToken: selectParamsToken(state, props),
     paramsUsername: selectParamsUsername(state, props),

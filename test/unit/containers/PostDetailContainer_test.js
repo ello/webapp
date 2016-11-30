@@ -1,4 +1,4 @@
-import get from 'lodash/get'
+import Immutable from 'immutable'
 import { stubJSONStore } from '../../support/stubs'
 import { shouldContainerUpdate, mapStateToProps } from '../../../src/containers/PostDetailContainer'
 
@@ -32,7 +32,7 @@ describe('PostDetailContainer', () => {
       streamType: 'nextStreamType',
       notPicked: 'changed',
     }
-    const defaultState = { isStreamFailing: false }
+    const defaultState = Immutable.Map({ isStreamFailing: false })
     const shouldSameUpdate = shouldContainerUpdate(thisProps, sameProps, defaultState, defaultState)
     const shouldNextUpdate = shouldContainerUpdate(thisProps, nextProps, defaultState, defaultState)
     const shouldLastUpdate = shouldContainerUpdate(nextProps, lastProps, defaultState, defaultState)
@@ -62,13 +62,13 @@ describe('PostDetailContainer', () => {
 
   context('#mapStateToProps', () => {
     const json = stubJSONStore()
-    const user1 = get(json, 'users.1')
-    const post1 = get(json, 'posts.1')
-    const state = {
+    const user1 = json.getIn(['users', '1'])
+    const post1 = json.getIn(['posts', '1'])
+    const state = Immutable.fromJS({
       authentication: { isLoggedIn: true },
       json,
       stream: { error: {}, type: 'streamType' },
-    }
+    })
     const props = { params: { token: 'token1' } }
     const mapped = mapStateToProps(state, props)
 

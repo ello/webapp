@@ -1,23 +1,9 @@
 /* eslint-disable max-len */
 import { isValidResult } from '../../support/test_helpers'
-import { stub, json, clearJSON } from '../../support/stubs'
+import { clearJSON, json, stub, stubJSONStore } from '../../support/stubs'
 import * as subject from '../../../src/reducers/json'
 import * as ACTION_TYPES from '../../../src/constants/action_types'
 import * as MAPPING_TYPES from '../../../src/constants/mapping_types'
-
-function stubJSONStore() {
-  // add some users
-  stub('user', { id: '1', username: 'archer' })
-  stub('user', { id: '2', username: 'lana' })
-  stub('user', { id: '3', username: 'cyril' })
-  stub('user', { id: '4', username: 'pam' })
-  stub('user', { id: 'inf', followersCount: '∞', username: 'ello' })
-  // add some posts
-  stub('post', { id: '1', repostsCount: 1, token: 'token1', authorId: '1' })
-  stub('post', { id: '2', repostsCount: 1, token: 'token2', authorId: '2' })
-  stub('post', { id: '3', repostsCount: 1, token: 'token3', authorId: '3' })
-  stub('post', { id: '4', repostsCount: 1, token: 'token4', authorId: '4' })
-}
 
 describe('json reducer', () => {
   beforeEach(() => {

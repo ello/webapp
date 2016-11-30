@@ -26,7 +26,7 @@ export function deletePost(post) {
   return {
     type: POST.DELETE,
     payload: {
-      endpoint: api.deletePost(post.id),
+      endpoint: api.deletePost(post.get('id')),
       method: 'DELETE',
       model: post,
     },
@@ -38,7 +38,7 @@ export function flagPost(post, kind) {
   return {
     type: POST.FLAG,
     payload: {
-      endpoint: api.flagPost(post.id, kind),
+      endpoint: api.flagPost(post.get('id'), kind),
       method: 'POST',
     },
     meta: {},
@@ -48,7 +48,7 @@ export function flagPost(post, kind) {
 // commentsAsList needs the "parent post" so that the correct editor is referenced when replying to
 // a comment.
 export function loadComments(post, addUpdateKey = true) {
-  const postId = `${post.id}`
+  const postId = `${post.get('id')}`
   const obj = {
     type: LOAD_STREAM,
     payload: {
@@ -96,33 +96,35 @@ export function loadPostDetail(idOrToken, userIdOrToken) {
 }
 
 export function lovePost(post) {
+  const postId = post.get('id')
   return {
     type: POST.LOVE,
     payload: {
-      endpoint: api.lovePost(post.id),
+      endpoint: api.lovePost(postId),
       method: 'POST',
       model: post,
     },
     meta: {
       mappingType: MAPPING_TYPES.LOVES,
-      resultKey: `/posts/${post.id}/love`,
-      updateKey: `/posts/${post.id}/`,
+      resultKey: `/posts/${postId}/love`,
+      updateKey: `/posts/${postId}/`,
     },
   }
 }
 
 export function watchPost(post) {
+  const postId = post.get('id')
   return {
     type: POST.WATCH,
     payload: {
-      endpoint: api.watchPost(post.id),
+      endpoint: api.watchPost(postId),
       method: 'POST',
       model: post,
     },
     meta: {
       mappingType: MAPPING_TYPES.WATCHES,
-      resultKey: `/posts/${post.id}/watch`,
-      updateKey: `/posts/${post.id}/`,
+      resultKey: `/posts/${postId}/watch`,
+      updateKey: `/posts/${postId}/`,
     },
   }
 }
@@ -178,31 +180,33 @@ export function toggleReposting(post, isReposting) {
 }
 
 export function unlovePost(post) {
+  const postId = post.get('id')
   return {
     type: POST.LOVE,
     payload: {
-      endpoint: api.unlovePost(post.id),
+      endpoint: api.unlovePost(postId),
       method: 'DELETE',
       model: post,
     },
     meta: {
-      resultKey: `/posts/${post.id}/love`,
-      updateKey: `/posts/${post.id}/`,
+      resultKey: `/posts/${postId}/love`,
+      updateKey: `/posts/${postId}/`,
     },
   }
 }
 
 export function unwatchPost(post) {
+  const postId = post.get('id')
   return {
     type: POST.WATCH,
     payload: {
-      endpoint: api.unwatchPost(post.id),
+      endpoint: api.unwatchPost(postId),
       method: 'DELETE',
       model: post,
     },
     meta: {
-      resultKey: `/posts/${post.id}/watch`,
-      updateKey: `/posts/${post.id}/`,
+      resultKey: `/posts/${postId}/watch`,
+      updateKey: `/posts/${postId}/`,
     },
   }
 }
@@ -210,10 +214,11 @@ export function unwatchPost(post) {
 export function updatePost(post, body, editorId) {
   return {
     type: POST.UPDATE,
+
     payload: {
       body: { body },
       editorId,
-      endpoint: api.updatePost(post.id),
+      endpoint: api.updatePost(post.get('id')),
       method: 'PATCH',
       model: post,
     },

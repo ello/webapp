@@ -1,11 +1,10 @@
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
 
 // state.authentication.xxx
-export const selectAccessToken = state => get(state, 'authentication.accessToken')
-export const selectExpirationDate = state => get(state, 'authentication.expirationDate')
-export const selectIsLoggedIn = state => get(state, ['authentication', 'isLoggedIn'])
-export const selectRefreshToken = state => get(state, 'authentication.refreshToken')
+export const selectAccessToken = state => state.getIn(['authentication', 'accessToken'])
+export const selectExpirationDate = state => state.getIn(['authentication', 'expirationDate'])
+export const selectIsLoggedIn = state => state.getIn(['authentication', 'isLoggedIn'])
+export const selectRefreshToken = state => state.getIn(['authentication', 'refreshToken'])
 
 // Memoized selectors
 export const selectShouldUseAccessToken = createSelector(

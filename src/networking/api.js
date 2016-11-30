@@ -303,17 +303,17 @@ export function createComment(postId) {
 }
 export function editComment(comment) {
   return {
-    path: getAPIPath(`posts/${comment.postId}/comments/${comment.id}`),
+    path: getAPIPath(`posts/${comment.get('postId')}/comments/${comment.get('id')}`),
   }
 }
 export function deleteComment(comment) {
   return {
-    path: getAPIPath(`posts/${comment.postId}/comments/${comment.id}`),
+    path: getAPIPath(`posts/${comment.get('postId')}/comments/${comment.get('id')}`),
   }
 }
 export function flagComment(comment, kind) {
   return {
-    path: getAPIPath(`posts/${comment.postId}/comments/${comment.id}/flag/${kind}`),
+    path: getAPIPath(`posts/${comment.get('postId')}/comments/${comment.get('id')}/flag/${kind}`),
   }
 }
 // Users

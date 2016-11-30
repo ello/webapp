@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import { stubAuthenticationStore } from '../../support/stubs'
 import {
   selectAccessToken,
@@ -8,41 +9,36 @@ import {
   selectShouldUseRefreshToken,
 } from '../../../src/selectors/authentication'
 
-
-describe('authentication selectors', () => {
-  let authentication
+describe.only('authentication selectors', () => {
+  let state
   beforeEach(() => {
-    authentication = stubAuthenticationStore()
+    state = Immutable.Map({ authentication: stubAuthenticationStore() })
   })
 
   afterEach(() => {
-    authentication = {}
+    state = {}
   })
 
   context('#selectAccessToken', () => {
     it('returns the correct accessToken', () => {
-      const state = { authentication }
       expect(selectAccessToken(state)).to.equal('authenticationAccessToken')
     })
   })
 
   context('#selectExpirationDate', () => {
     it('returns the correct expirationDate', () => {
-      const state = { authentication }
       expect(selectExpirationDate(state)).to.equal('authenticationExpirationDate')
     })
   })
 
   context('#selectIsLoggedIn', () => {
     it('returns the correct isLoggedIn', () => {
-      const state = { authentication }
       expect(selectIsLoggedIn(state)).to.equal(true)
     })
   })
 
   context('#selectRefreshToken', () => {
     it('returns the correct refreshToken', () => {
-      const state = { authentication }
       expect(selectRefreshToken(state)).to.equal('authenticationRefreshToken')
     })
   })
@@ -53,13 +49,13 @@ describe('authentication selectors', () => {
     const future = new Date(n.getTime() + twentyfour)
     const past = new Date(n.getTime() - twentyfour)
     it('returns whether to use the access token or not', () => {
-      let state = { authentication: { ...authentication, expirationDate: future, change: false } }
+      state = state.set('expirationDate', future).set('change', false)
       expect(selectShouldUseAccessToken(state)).to.equal(true)
 
-      state = { authentication: { ...state, change: true } }
+      state = state.set('change', true)
       expect(selectShouldUseAccessToken.recomputations()).to.equal(1)
 
-      state = { authentication: { ...authentication, expirationDate: past, change: true } }
+      state = state.set('expirationDate', past).set('change', true)
       expect(selectShouldUseAccessToken(state)).to.equal(false)
       expect(selectShouldUseAccessToken.recomputations()).to.equal(2)
     })
@@ -71,13 +67,13 @@ describe('authentication selectors', () => {
     const future = new Date(n.getTime() + twentyfour)
     const past = new Date(n.getTime() - twentyfour)
     it('returns whether to use the refreshToken or not', () => {
-      let state = { authentication: { ...authentication, expirationDate: future, change: false } }
+      state = state.set('expirationDate', future).set('change', false)
       expect(selectShouldUseRefreshToken(state)).to.equal(false)
 
-      state = { authentication: { ...state, change: true } }
+      state = Immutable.fromJS({ authentication: { ...state, change: true } })
       expect(selectShouldUseRefreshToken.recomputations()).to.equal(1)
 
-      state = { authentication: { ...authentication, expirationDate: past, change: true } }
+      state = state.set('expirationDate', past).set('change', true)
       expect(selectShouldUseRefreshToken(state)).to.equal(true)
       expect(selectShouldUseRefreshToken.recomputations()).to.equal(2)
     })

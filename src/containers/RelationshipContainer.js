@@ -64,10 +64,10 @@ export function mapStateToProps(state, props) {
     onClickCallback,
     pathname: selectPathname(state),
     previousPath: selectPreviousPath(state),
-    relationshipPriority: user.relationshipPriority,
+    relationshipPriority: user.get('relationshipPriority'),
     shouldRenderBlockMute,
-    userId: user.id,
-    username: user.username,
+    userId: user.get('id'),
+    username: user.get('username'),
   }
 }
 
