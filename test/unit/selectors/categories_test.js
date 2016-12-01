@@ -1,50 +1,41 @@
-import { stubJSONStore } from '../../support/stubs'
+import Immutable from 'immutable'
+import { clearJSON, json, stubJSONStore } from '../../support/stubs'
 import {
   selectCategories,
   selectOnboardingCategories,
-  selectCategoryCollection,
   selectCategoryPageTitle,
   selectCategoryTabs,
   sortCategories,
 } from '../../../src/selectors/categories'
 
-
 describe('categories selectors', () => {
-  let json
   let params
   let location
+  let state
   beforeEach(() => {
-    json = stubJSONStore()
+    stubJSONStore()
     params = { token: 'paramsToken', type: 'paramsType' }
     location = { pathname: '/discover' }
+    state = Immutable.fromJS({ json })
   })
 
   afterEach(() => {
-    json = {}
+    clearJSON()
     params = {}
     location = {}
   })
 
-  context('#selectCategoryCollection', () => {
-    it('returns the category collection from state', () => {
-      const state = { json }
-      expect(selectCategoryCollection(state)).to.deep.equal(json.categories)
-    })
-  })
-
   context('#selectCategories', () => {
     it('returns the category object with memoization', () => {
-      const state = { json }
       const props = { params, location }
-      const categories = json.categories
-      const keys = Object.keys(categories)
+      const categories = state.getIn(['json', 'categories'])
+      const values = categories.valueSeq()
       let meta = []
       let primary = []
       let secondary = []
       let tertiary = []
-      keys.forEach((key) => {
-        const category = categories[key]
-        switch (category.level) {
+      values.forEach((category) => {
+        switch (category.get('level')) {
           case 'meta':
             meta.push(category)
             break
@@ -73,32 +64,15 @@ describe('categories selectors', () => {
 
   context('#selectOnboardingCategories', () => {
     it('the categories as a concatenated array', () => {
-      const state = { json }
       const cats = selectCategories(state)
       const categoryArray = cats.primary.concat(cats.secondary, cats.tertiary)
       expect(selectOnboardingCategories(state)).to.deep.equal(categoryArray)
     })
   })
 
-  context('#selectCategoryPageTitle', () => {
-    it('returns the page title related to the /discover page with memoization', () => {
-      const state = { json }
-      const props = { params: { token: 'paramsToken', type: 'arktip-x-ello' }, location }
-      expect(selectCategoryPageTitle(state, props)).to.equal('Arktip x Ello')
-      const nextProps = { ...props, blah: 1 }
-      expect(selectCategoryPageTitle(state, nextProps)).to.equal('Arktip x Ello')
-      expect(selectCategoryPageTitle.recomputations()).to.equal(1)
-      const nextNextProps = { ...nextProps, params: { token: 'paramsToken', type: 'all' } }
-      expect(selectCategoryPageTitle(state, nextNextProps)).to.be.null
-      const lastProps = { ...nextNextProps, params: { token: 'paramsToken', type: 'recommended' } }
-      expect(selectCategoryPageTitle(state, lastProps)).to.equal('Featured')
-    })
-  })
-
   context('#selectCategoryTabs', () => {
     it('returns the correct stream action for featured and recommended', () => {
-      const categories = json.categories
-      const tabs = selectCategoryTabs({ json: { categories, pages: { 'all-categories': { ids: ['1', '2', '3', '4', '5', '6', '7', '8', '9'] } } } })
+      const tabs = selectCategoryTabs(state)
       // meta
       expect(tabs[0]).to.have.property('children', 'Featured')
       expect(tabs[0]).to.have.property('to', '/discover')
@@ -123,6 +97,20 @@ describe('categories selectors', () => {
       expect(tabs[8]).to.have.property('to', '/discover/music')
       expect(tabs[9]).to.have.property('children', 'Development')
       expect(tabs[9]).to.have.property('to', '/discover/development')
+    })
+  })
+
+  context('#selectCategoryPageTitle', () => {
+    it('returns the page title related to the /discover page with memoization', () => {
+      const props = { params: { token: 'paramsToken', type: 'arktip-x-ello' }, location }
+      expect(selectCategoryPageTitle(state, props)).to.equal('Arktip x Ello')
+      const nextProps = { ...props, blah: 1 }
+      expect(selectCategoryPageTitle(state, nextProps)).to.equal('Arktip x Ello')
+      expect(selectCategoryPageTitle.recomputations()).to.equal(1)
+      const nextNextProps = { ...nextProps, params: { token: 'paramsToken', type: 'all' } }
+      expect(selectCategoryPageTitle(state, nextNextProps)).to.be.null
+      const lastProps = { ...nextNextProps, params: { token: 'paramsToken', type: 'recommended' } }
+      expect(selectCategoryPageTitle(state, lastProps)).to.equal('Featured')
     })
   })
 
