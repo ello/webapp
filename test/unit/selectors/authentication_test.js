@@ -9,7 +9,7 @@ import {
   selectShouldUseRefreshToken,
 } from '../../../src/selectors/authentication'
 
-describe.only('authentication selectors', () => {
+describe('authentication selectors', () => {
   let state
   beforeEach(() => {
     state = Immutable.Map({ authentication: stubAuthenticationStore() })
@@ -49,13 +49,13 @@ describe.only('authentication selectors', () => {
     const future = new Date(n.getTime() + twentyfour)
     const past = new Date(n.getTime() - twentyfour)
     it('returns whether to use the access token or not', () => {
-      state = state.set('expirationDate', future).set('change', false)
+      state = state.setIn(['authentication', 'expirationDate'], future).setIn(['authentication', 'change'], false)
       expect(selectShouldUseAccessToken(state)).to.equal(true)
 
-      state = state.set('change', true)
+      state = state.setIn(['authentication', 'change'], true)
       expect(selectShouldUseAccessToken.recomputations()).to.equal(1)
 
-      state = state.set('expirationDate', past).set('change', true)
+      state = state.setIn(['authentication', 'expirationDate'], past).setIn(['authentication', 'change'], true)
       expect(selectShouldUseAccessToken(state)).to.equal(false)
       expect(selectShouldUseAccessToken.recomputations()).to.equal(2)
     })
@@ -67,13 +67,13 @@ describe.only('authentication selectors', () => {
     const future = new Date(n.getTime() + twentyfour)
     const past = new Date(n.getTime() - twentyfour)
     it('returns whether to use the refreshToken or not', () => {
-      state = state.set('expirationDate', future).set('change', false)
+      state = state.setIn(['authentication', 'expirationDate'], future).setIn(['authentication', 'change'], false)
       expect(selectShouldUseRefreshToken(state)).to.equal(false)
 
-      state = Immutable.fromJS({ authentication: { ...state, change: true } })
+      state = state.setIn(['authentication', 'change'], true)
       expect(selectShouldUseRefreshToken.recomputations()).to.equal(1)
 
-      state = state.set('expirationDate', past).set('change', true)
+      state = state.setIn(['authentication', 'expirationDate'], past).setIn(['authentication', 'change'], true)
       expect(selectShouldUseRefreshToken(state)).to.equal(true)
       expect(selectShouldUseRefreshToken.recomputations()).to.equal(2)
     })

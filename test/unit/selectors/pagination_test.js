@@ -1,26 +1,23 @@
-import { stubJSONStore } from '../../support/stubs'
+import Immutable from 'immutable'
+import { clearJSON, json, stubJSONStore } from '../../support/stubs'
 import { selectPagination } from '../../../src/selectors/pagination'
 
 describe('pagination selectors', () => {
-  let json
-  let params
   beforeEach(() => {
-    json = stubJSONStore()
-    params = { token: 'paramsToken', type: 'paramsType' }
+    stubJSONStore()
   })
 
   afterEach(() => {
-    json = {}
-    params = {}
+    clearJSON()
   })
 
   context('#selectPagination', () => {
     it('returns the pagination object related to the /discover page with memoization', () => {
-      const state = { json, routing: { location: { pathname: '/discover' } } }
-      const props = { params }
-      expect(selectPagination(state, props)).to.deep.equal(json.pages['/discover'].pagination)
-      const nextState = { ...state, blah: 1 }
-      expect(selectPagination(nextState, props)).to.deep.equal(json.pages['/discover'].pagination)
+      let state = Immutable.fromJS({ json, routing: { location: { pathname: '/discover' } } })
+      const props = { token: 'paramsToken', type: 'paramsType' }
+      expect(selectPagination(state, props)).to.deep.equal(json.getIn(['pages', '/discover', 'pagination']))
+      state = state.set('blah', 1)
+      expect(selectPagination(state, props)).to.deep.equal(json.getIn(['pages', '/discover', 'pagination']))
       expect(selectPagination.recomputations()).to.equal(1)
     })
   })

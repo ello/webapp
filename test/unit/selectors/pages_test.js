@@ -1,48 +1,41 @@
-import { stubJSONStore } from '../../support/stubs'
+import Immutable from 'immutable'
+import { clearJSON, json, stubJSONStore } from '../../support/stubs'
 import { selectPages, selectPagesResult, selectPage } from '../../../src/selectors/pages'
 
 describe('pages selectors', () => {
-  let json
-  // let params
-  // let location
+  let state
   beforeEach(() => {
-    json = stubJSONStore()
-    // params = { token: 'paramsToken', type: 'paramsType' }
-    // location = { pathname: '/discover' }
+    stubJSONStore()
+    state = Immutable.fromJS({ json, routing: { location: { pathname: '/discover' } } })
   })
 
   afterEach(() => {
-    json = {}
-    // params = {}
-    // location = {}
+    clearJSON()
   })
 
   context('#selectPages', () => {
     it('returns the json.pages', () => {
-      const state = { json }
-      expect(selectPages(state)).to.deep.equal(json.pages)
+      expect(selectPages(state)).to.deep.equal(json.get('pages'))
     })
   })
 
   context('#selectPagesResult', () => {
     it('returns the pages results when the key is supplied', () => {
-      const state = { json }
       const props = { action: { meta: { resultKey: '/discover' } } }
-      expect(selectPagesResult(state, props)).to.deep.equal(json.pages['/discover'])
+      expect(selectPagesResult(state, props)).to.deep.equal(json.getIn(['pages', '/discover']))
     })
 
     it('returns the pages results when the key is not supplied', () => {
-      const state = { json, routing: { location: { pathname: '/discover' } } }
-      expect(selectPagesResult(state)).to.deep.equal(json.pages['/discover'])
+      expect(selectPagesResult(state)).to.deep.equal(json.getIn(['pages', '/discover']))
     })
   })
 
   context('#selectPage', () => {
     it('returns the page', () => {
-      let state = { json, routing: { location: { pathname: '/discover' } }, change: true }
-      expect(selectPage(state)).to.deep.equal(json.pages['/discover'])
-      state = { ...state, change: false }
-      expect(selectPage(state)).to.deep.equal(json.pages['/discover'])
+      state = state.set('change', true)
+      expect(selectPage(state)).to.deep.equal(json.getIn(['pages', '/discover']))
+      state = state.set('change', false)
+      expect(selectPage(state)).to.deep.equal(json.getIn(['pages', '/discover']))
       expect(selectPage.recomputations()).to.equal(1)
     })
   })

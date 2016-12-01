@@ -1,48 +1,48 @@
+import Immutable from 'immutable'
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
 import { selectPathname } from './routing'
 
 // state.profile.xxx
-export const selectAllowsAnalytics = state => get(state, 'profile.allowsAnalytics')
-export const selectAnalyticsId = state => get(state, 'profile.analyticsId')
-export const selectAvailability = state => get(state, 'profile.availability')
-export const selectAvatar = state => get(state, 'profile.avatar')
-export const selectBlockedCount = state => get(state, 'profile.blockedCount')
-export const selectBuildVersion = state => get(state, 'profile.buildVersion')
-export const selectBundleId = state => get(state, 'profile.bundleId')
-export const selectCoverImage = state => get(state, 'profile.coverImage')
-export const selectCreatedAt = state => get(state, 'profile.createdAt')
-export const selectEmail = state => get(state, 'profile.email')
-export const selectExternalLinksList = state => get(state, 'profile.externalLinksList', [])
-export const selectHasAutoWatchEnabled = state => get(state, 'profile.hasAutoWatchEnabled')
-export const selectHasAvatarPresent = state => get(state, 'profile.hasAvatarPresent', false)
-export const selectHasCoverImagePresent = state => get(state, 'profile.hasCoverImagePresent', false)
+export const selectAllowsAnalytics = state => state.getIn(['profile', 'allowsAnalytics'])
+export const selectAnalyticsId = state => state.getIn(['profile', 'analyticsId'])
+export const selectAvailability = state => state.getIn(['profile', 'availability'])
+export const selectAvatar = state => state.getIn(['profile', 'avatar'])
+export const selectBlockedCount = state => state.getIn(['profile', 'blockedCount'])
+export const selectBuildVersion = state => state.getIn(['profile', 'buildVersion'])
+export const selectBundleId = state => state.getIn(['profile', 'bundleId'])
+export const selectCoverImage = state => state.getIn(['profile', 'coverImage'])
+export const selectCreatedAt = state => state.getIn(['profile', 'createdAt'])
+export const selectEmail = state => state.getIn(['profile', 'email'])
+export const selectExternalLinksList = state => state.getIn(['profile', 'externalLinksList'], Immutable.List())
+export const selectHasAutoWatchEnabled = state => state.getIn(['profile', 'hasAutoWatchEnabled'])
+export const selectHasAvatarPresent = state => state.getIn(['profile', 'hasAvatarPresent'], false)
+export const selectHasCoverImagePresent = state => state.getIn(['profile', 'hasCoverImagePresent'], false)
 export const selectId = state => state.getIn(['profile', 'id'])
-export const selectIsPublic = state => get(state, 'profile.isPublic')
-export const selectLocation = state => get(state, 'profile.location', '')
-export const selectMarketingVersion = state => get(state, 'profile.marketingVersion')
-export const selectMutedCount = state => get(state, 'profile.mutedCount')
-export const selectName = state => get(state, 'profile.name', '')
-export const selectRegistrationId = state => get(state, 'profile.registrationId')
-export const selectShortBio = state => get(state, 'profile.shortBio', '')
-export const selectUsername = state => get(state, 'profile.username')
-export const selectViewsAdultContent = state => get(state, 'profile.viewsAdultContent')
-export const selectWebOnboardingVersion = state => get(state, 'profile.webOnboardingVersion')
+export const selectIsPublic = state => state.getIn(['profile', 'isPublic'])
+export const selectLocation = state => state.getIn(['profile', 'location'], '')
+export const selectMarketingVersion = state => state.getIn(['profile', 'marketingVersion'])
+export const selectMutedCount = state => state.getIn(['profile', 'mutedCount'])
+export const selectName = state => state.getIn(['profile', 'name'], '')
+export const selectRegistrationId = state => state.getIn(['profile', 'registrationId'])
+export const selectShortBio = state => state.getIn(['profile', 'shortBio'], '')
+export const selectUsername = state => state.getIn(['profile', 'username'])
+export const selectViewsAdultContent = state => state.getIn(['profile', 'viewsAdultContent'])
+export const selectWebOnboardingVersion = state => state.getIn(['profile', 'webOnboardingVersion'])
 
 // Memoized selectors
 export const selectIsAvatarBlank = createSelector(
   [selectHasAvatarPresent, selectAvatar], (hasAvatarPresent, avatar) => {
     // if we have a tmp we have an avatar locally
-    if (avatar && avatar.tmp) { return false }
-    return !hasAvatarPresent || !(avatar && (avatar.tmp || avatar.original))
+    if (avatar && avatar.get('tmp')) { return false }
+    return !hasAvatarPresent || !(avatar && (avatar.get('tmp') || avatar.get('original')))
   },
 )
 
 export const selectIsCoverImageBlank = createSelector(
   [selectHasCoverImagePresent, selectCoverImage], (hasCoverImagePresent, coverImage) => {
     // if we have a tmp we have a coverImage locally
-    if (coverImage && coverImage.tmp) { return false }
-    return !hasCoverImagePresent || !(coverImage && (coverImage.tmp || coverImage.original))
+    if (coverImage && coverImage.get('tmp')) { return false }
+    return !hasCoverImagePresent || !(coverImage && (coverImage.get('tmp') || coverImage.get('original')))
   },
 )
 
@@ -61,7 +61,7 @@ export const selectLinksAsText = createSelector(
     if (typeof links === 'string') {
       return links
     }
-    return links.map(link => link.text).join(', ')
+    return links.map(link => link.get('text')).join(', ')
   },
 )
 

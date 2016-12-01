@@ -216,7 +216,7 @@ function stubPage(path, properties = {}) {
     type: 'posts',
     ...properties,
   })
-  json.setIn(['pages', path], page)
+  json = json.setIn(['pages', path], page)
   return page
 }
 

@@ -1,14 +1,15 @@
+import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { selectId as selectProfileId } from './profile'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 
-const selectJson = state => get(state, 'json')
+const selectJson = state => state.get('json')
 
 // props.comment.xxx
-export const selectPropsComment = (state, props) => get(props, 'comment')
-export const selectPropsCommentId = (state, props) => get(props, 'comment.id')
-export const selectPropsCommentAuthorId = (state, props) => get(props, 'comment.authorId')
+export const selectPropsComment = (state, props) => get(props, 'comment', Immutable.Map())
+export const selectPropsCommentId = (state, props) => selectPropsComment(state, props).get('id')
+export const selectPropsCommentAuthorId = (state, props) => selectPropsComment(state, props).get('authorId')
 
 // Memoized selectors
 export const selectIsOwnComment = createSelector(
@@ -19,6 +20,6 @@ export const selectIsOwnComment = createSelector(
 
 export const selectCommentFromPropsCommentId = createSelector(
   [selectJson, selectPropsCommentId], (json, commentId) =>
-    (commentId ? json[MAPPING_TYPES.COMMENTS][commentId] : null),
+    json.getIn([MAPPING_TYPES.COMMENTS, commentId], null),
 )
 
