@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import {
   selectPropsPathname,
   selectPropsQueryTerms,
@@ -12,6 +13,7 @@ import {
 describe('routing selectors', () => {
   let routing
   let propsLocation
+  let state
 
   beforeEach(() => {
     routing = {
@@ -21,6 +23,7 @@ describe('routing selectors', () => {
       },
       previousPath: 'state.previousPath',
     }
+    state = Immutable.fromJS({ routing })
     propsLocation = {
       location: {
         pathname: '/props',
@@ -36,7 +39,6 @@ describe('routing selectors', () => {
 
   context('#selectPropsPathname', () => {
     it('returns the props.location.pathname', () => {
-      const state = { routing }
       const props = { ...propsLocation }
       expect(selectPropsPathname(state, props)).to.equal('/props')
     })
@@ -44,7 +46,6 @@ describe('routing selectors', () => {
 
   context('#selectPropsQueryTerms', () => {
     it('returns the props.location.query.terms', () => {
-      const state = { routing }
       const props = { ...propsLocation }
       expect(selectPropsQueryTerms(state, props)).to.equal('props.query.terms')
     })
@@ -52,7 +53,6 @@ describe('routing selectors', () => {
 
   context('#selectPropsQueryType', () => {
     it('returns the props.location.query.type', () => {
-      const state = { routing }
       const props = { ...propsLocation }
       expect(selectPropsQueryType(state, props)).to.equal('props.query.type')
     })
@@ -60,97 +60,94 @@ describe('routing selectors', () => {
 
   context('#selectLocation', () => {
     it('returns the state.routing.location', () => {
-      const state = { routing }
       const props = { ...propsLocation }
-      expect(selectLocation(state, props)).to.deep.equal(routing.location)
+      expect(selectLocation(state, props)).to.deep.equal(state.getIn(['routing', 'location']))
     })
   })
 
   context('#selectPreviousPath', () => {
     it('returns the state.routing.location', () => {
-      const state = { routing }
       const props = { ...propsLocation }
-      expect(selectPreviousPath(state, props)).to.deep.equal(routing.previousPath)
+      expect(selectPreviousPath(state, props)).to.deep.equal(state.getIn(['routing', 'previousPath']))
     })
   })
 
   context('#selectPathname', () => {
     it('returns the state.routing.location.pathname', () => {
-      const state = { routing }
       const props = { ...propsLocation }
-      expect(selectPathname(state, props)).to.deep.equal(routing.location.pathname)
+      expect(selectPathname(state, props)).to.deep.equal(state.getIn(['routing', 'location', 'pathname']))
     })
   })
 
   context('#selectViewNameFromRoute', () => {
     it('selects with memoization the view name identifier associated with a route', () => {
-      let state = { routing: { location: { pathname: '/following', change: false } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/following')
       const props = { params: { username: 'mk' } }
       selectViewNameFromRoute.resetRecomputations()
       expect(selectViewNameFromRoute(state)).to.equal('following')
 
-      state = { routing: { location: { pathname: '/following', change: true } } }
+      state = state.setIn(['routing', 'location', 'change'], true)
       expect(selectViewNameFromRoute(state)).to.equal('following')
       expect(selectViewNameFromRoute.recomputations()).to.equal(1)
 
-      state = { routing: { location: { pathname: '/starred', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/starred')
       expect(selectViewNameFromRoute(state)).to.equal('starred')
 
-      state = { routing: { location: { pathname: '/search', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/search')
       expect(selectViewNameFromRoute(state)).to.equal('search')
 
-      state = { routing: { location: { pathname: '/', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/')
       expect(selectViewNameFromRoute(state)).to.equal('discover')
 
-      state = { routing: { location: { pathname: '/discover', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/discover')
       expect(selectViewNameFromRoute(state)).to.equal('discover')
 
-      state = { routing: { location: { pathname: '/discover/stuff', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/discover/stuff')
       expect(selectViewNameFromRoute(state)).to.equal('discover')
 
-      state = { routing: { location: { pathname: '/invitations', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/invitations')
       expect(selectViewNameFromRoute(state)).to.equal('invitations')
 
-      state = { routing: { location: { pathname: '/settings', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/settings')
       expect(selectViewNameFromRoute(state)).to.equal('settings')
 
-      state = { routing: { location: { pathname: '/notifications', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/notifications')
       expect(selectViewNameFromRoute(state)).to.equal('notifications')
 
-      state = { routing: { location: { pathname: '/onboarding', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/onboarding')
       expect(selectViewNameFromRoute(state)).to.equal('onboarding')
 
-      state = { routing: { location: { pathname: '/onboarding/settings', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/onboarding/settings')
       expect(selectViewNameFromRoute(state)).to.equal('onboarding')
 
-      state = { routing: { location: { pathname: '/mk/post/etlb9br06dh6tleztw4g', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/mk/post/etlb9br06dh6tleztw4g')
       expect(selectViewNameFromRoute(state)).to.equal('postDetail')
 
-      state = { routing: { location: { pathname: '/mk', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/mk')
       expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
 
-      state = { routing: { location: { pathname: '/mk/loves', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/mk/loves')
       expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
 
-      state = { routing: { location: { pathname: '/mk/following', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/mk/following')
       expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
 
-      state = { routing: { location: { pathname: '/mk/followers', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/mk/followers')
       expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
 
-      state = { routing: { location: { pathname: '/mk/post/etlb9br06dh6tleztw4g', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/mk/post/etlb9br06dh6tleztw4g')
       expect(selectViewNameFromRoute(state, props)).not.to.equal('userDetail')
 
-      state = { routing: { location: { pathname: '/join', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/join')
       expect(selectViewNameFromRoute(state)).to.equal('join')
 
-      state = { routing: { location: { pathname: '/enter', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/enter')
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
-      state = { routing: { location: { pathname: '/forgot-password', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/forgot-password')
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
-      state = { routing: { location: { pathname: '/signup', change: true } } }
+      state = state.setIn(['routing', 'location', 'pathname'], '/signup')
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
       expect(selectViewNameFromRoute.recomputations()).to.equal(21)

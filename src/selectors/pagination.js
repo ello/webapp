@@ -1,13 +1,12 @@
 /* eslint-disable import/prefer-default-export */
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
 import { selectPages, selectPagesResult } from './pages'
 import { selectParamsToken } from './params'
 import { selectPropsPathname } from './routing'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
 
-const selectJson = state => get(state, 'json')
+const selectJson = state => state.get('json')
 
 const PAGING_BLACKLIST = [
   /^\/enter\b/,
@@ -34,10 +33,10 @@ export const selectPagination = createSelector(
           collection: MAPPING_TYPES.POSTS,
           findObj: { token: paramsToken },
         })
-        result = post ? pages[`/posts/${post.id}/comments`] : null
+        result = post ? pages.get(`/posts/${post.get('id')}/comments`) : null
       }
     }
-    return result && result.pagination
+    return result.get('pagination')
   },
 )
 

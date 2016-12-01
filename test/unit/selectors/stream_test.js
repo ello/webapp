@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import {
   selectStreamType,
   selectStreamMappingType,
@@ -6,36 +7,34 @@ import {
 } from '../../../src/selectors/stream'
 
 describe('stream selectors', () => {
-  let stream
+  let state
   beforeEach(() => {
-    stream = {
+    const stream = {
       meta: { mappingType: 'stream.meta.mappingType' },
       payload: { postIdOrToken: 'stream.payload.postIdOrToken' },
       type: 'stream.type',
     }
+    state = Immutable.fromJS({ stream })
   })
 
   afterEach(() => {
-    stream = {}
+    state = null
   })
 
   context('#selectStreamType', () => {
     it('returns the stream.type', () => {
-      const state = { stream }
       expect(selectStreamType(state)).to.equal('stream.type')
     })
   })
 
   context('#selectStreamMappingType', () => {
     it('returns the stream.meta.mappingType', () => {
-      const state = { stream }
       expect(selectStreamMappingType(state)).to.equal('stream.meta.mappingType')
     })
   })
 
   context('#selectStreamPostIdOrToken', () => {
     it('returns the stream.payload.postIdOrToken', () => {
-      const state = { stream }
       expect(selectStreamPostIdOrToken(state)).to.equal('stream.payload.postIdOrToken')
     })
   })

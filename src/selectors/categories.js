@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
 import startCase from 'lodash/startCase'
 import trunc from 'trunc-html'
 import { META } from '../constants/locales/en'
@@ -8,22 +7,22 @@ import { selectParamsType } from './params'
 import { selectCategoryData, selectPagePromotionals } from './promotions'
 
 export function sortCategories(a, b) {
-  if (a.order < b.order) {
+  if (a.get('order') < b.get('order')) {
     return -1
-  } else if (a.order > b.order) {
+  } else if (a.get('order') > b.get('order')) {
     return 1
   }
   return 0
 }
 
 // state.json.categories.xxx
-export const selectCategoryCollection = state => get(state, 'json.categories')
+export const selectCategoryCollection = state => state.getIn(['json', 'categories'])
 
 export const selectAllCategoriesAsArray = createSelector(
   [selectCategoryCollection, selectAllCategoriesPage],
   (categories, allCategoryPage) => {
     if (!categories || !allCategoryPage) { return [] }
-    return allCategoryPage.ids.map(key => categories[key])
+    return allCategoryPage.get('ids').map(key => categories.get(key))
   },
 )
 
@@ -33,7 +32,7 @@ export const selectCategories = createSelector(
     const cats = {}
     // add cats to the correct arrays
     allCats.forEach((cat) => {
-      const level = cat.level && cat.level.length ? cat.level : 'other'
+      const level = cat.get('level') ? cat.get('level') : 'other'
       if (!cats[level]) {
         cats[level] = []
       }
@@ -66,10 +65,10 @@ export const selectCategoryTabs = createSelector(
     [meta, primary, secondary, tertiary].filter(arr => arr).forEach((level, index) => {
       level.forEach((category) => {
         const tab = {
-          to: category.slug === 'featured' ? '/discover' : `/discover/${category.slug}`,
-          children: category.name,
+          to: category.get('slug') === 'featured' ? '/discover' : `/discover/${category.get('slug')}`,
+          children: category.get('name'),
         }
-        if (category.slug === 'featured') {
+        if (category.get('slug') === 'featured') {
           tab.activePattern = /^\/(?:discover(\/featured|\/recommended)?)?$/
         }
         tabs.push(tab)
@@ -89,9 +88,9 @@ export const selectCategoryPageTitle = createSelector(
       case 'recommended':
         return 'Featured'
       default: {
-        const key = categories &&
-          Object.keys(categories).find(k => categories[k].slug === paramsType)
-        return key ? categories[key].name : startCase(paramsType).replace(/\sX\s/, ' x ')
+        const cat = categories &&
+          categories.find(c => c.get('slug') === paramsType)
+        return cat ? cat.get('name') : startCase(paramsType).replace(/\sX\s/, ' x ')
       }
     }
   },
@@ -103,8 +102,8 @@ export const selectDiscoverMetaData = createSelector(
     const titlePrefix = pageTitle ? `${pageTitle} | ` : ''
     const title = `${titlePrefix}Ello`
     let description = ''
-    let image = pagePromotionals && pagePromotionals[Object.keys(pagePromotionals)[0]] ?
-      pagePromotionals[Object.keys(pagePromotionals)[0]].image.hdpi.url : META.IMAGE
+    let image = pagePromotionals && pagePromotionals.first() ?
+      pagePromotionals.first().getIn(['image', 'hdpi', 'url']) : META.IMAGE
     switch (type) {
       case undefined:
       case 'featured':
@@ -122,9 +121,9 @@ export const selectDiscoverMetaData = createSelector(
         break
       default: {
         const { category, promotionals } = categoryData
-        description = category && category.description ?
-          trunc(category.description, 160).text : META.DESCRIPTION
-        image = promotionals[0] ? promotionals[0].image.hdpi.url : META.IMAGE
+        description = category && category.get('description') ?
+          trunc(category.get('description'), 160).text : META.DESCRIPTION
+        image = promotionals.get(0) ? promotionals.get(0).image.hdpi.url : META.IMAGE
         break
       }
     }
