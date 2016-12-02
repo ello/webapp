@@ -147,6 +147,56 @@ methods.getResult = (response, state, action) => {
   return Immutable.fromJS(result)
 }
 
+methods.updateResult = (response, state, action) => {
+  let result = methods.getResult(response, state, action)
+  const { resultKey } = action.meta || {}
+  // the action payload pathname comes from before the fetch so that
+  // we can be sure that the result is being assigned to the proper page
+  const pathname = get(action, 'payload.pathname', path)
+  const resultPath = methods.pagesKey(action)
+  const existingResult = state.getIn(['pages', resultPath])
+  if (existingResult) {
+    // when a new page loads successfully add more ids to the existing result's next property
+    if (action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
+      // update the pagination of the existing result for infinite scroll
+      state = state.setIn(['pages', resultPath, 'pagination'], result.get('pagination'))
+      if (existingResult.get('next')) {
+        // TODO: this was using lodash `uniq` to filter out duplicate results
+        // since react would throw warnings if duplicates got added
+        // not sure that the uniq is necessary anymore
+        result = result.set('ids', result.get('ids').concat(existingResult.getIn(['next', 'ids'])))
+      }
+      return state.setIn(['pages', resultPath, 'next'], result)
+    // update existing result if we aren't a notification update
+    // need to check agianst the typeof the result ids since we hack this for
+    // notifications and `ids` is actually an array of notificaitons not model ids
+    } else if (typeof existingResult.getIn(['ids', 0]) === 'string') {
+      // reset the result if the new result doesn't overlap with the existing result
+      // this could happen if you had loaded a page and then didn't go back to it until
+      // an entire new page of content was created before the last post that was seen
+      if (!existingResult.get('ids').includes(result.get('ids').last())) {
+        return state.setIn(['pages', resultPath], result)
+      // only do this for top level streams, nested ones like lovers/reposters
+      // should just update with the new results
+      } else if (hasLoadedFirstStream && !resultKey && !pathname.match(/\/(find|search)/)) {
+        // add the result to the more posts of the existing result since they overlap
+        // this should only happen if you had the more posts button show up left the page
+        // and then came back to it and more results got loaded, so more posts should update
+        if (!existingResult.get('morePostIds', Immutable.List()).isEmpty()) {
+          return state.setIn(
+            ['pages', resultPath, 'morePostIds'],
+            existingResult.get('morePostIds').toSet().union(result.get('ids').toSet()).toList(),
+          )
+        // set more posts if there weren't any previously and existing and result don't match
+        } else if (existingResult.get('ids').first() !== result.get('ids').first()) {
+          state.setIn(['pages', resultPath, 'morePostIds'], result.get('ids'))
+        }
+      }
+    }
+  }
+  return state.setIn(['pages', resultPath], result)
+}
+
 methods.getCurrentUser = state =>
   state.get(MAPPING_TYPES.USERS).find(user =>
     user.get('relationshipPriority') === RELATIONSHIP_PRIORITY.SELF,
@@ -191,58 +241,6 @@ methods.setLayoutMode = (action, state) => {
 
 methods.pagesKey = action =>
   get(action, 'meta.resultKey', get(action, 'payload.pathname', path))
-
-// TODO: need to test the existingResult conditional logic!!!!
-methods.updateResult = (response, state, action) => {
-  const result = methods.getResult(response, state, action)
-  const { resultKey } = action.meta || {}
-  // the action payload pathname comes from before the fetch so that
-  // we can be sure that the result is being assigned to the proper page
-  const pathname = get(action, 'payload.pathname', path)
-  const resultPath = methods.pagesKey(action)
-  const existingResult = state.getIn(['pages', resultPath])
-  if (existingResult && action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
-    state = state.getIn(['pages', resultPath, 'pagination'], Immutable.fromJS(result.pagination))
-    if (existingResult.get('next')) {
-      // this was using lodash `uniq` to filter out duplicate results
-      // since react would throw warnings if duplicates got added
-      return state.setIn(
-        ['pages', resultPath, 'next', 'ids'],
-        existingResult.get('next', 'ids').concat(result.get('ids')),
-      )
-    }
-    return state.setIn(['pages', resultPath, 'next'], result)
-    // need to check agianst the typeof the result ids since we hack this for
-    // notifications and the ids is actually an array of notificaitons not ids
-  } else if (existingResult && typeof existingResult.getIn(['ids', 0]) === 'string') {
-    // only do this for top level streams, nested ones like lovers/reposters
-    // should just update with the new results
-    if (!existingResult.get('ids').includes(result.get('ids').last())) {
-      return state.setIn(['pages', resultPath], result)
-    } else if (hasLoadedFirstStream && !resultKey && !pathname.match(/\/(find|search)/)) {
-      if (existingResult.get('morePostIds') && existingResult.get('morePostIds').length) {
-        return state.setIn(
-          ['pages', resultPath, 'morePostIds'],
-          Immutable.Set([result.get('ids')]).union(existingResult.get('morePostIds')),
-        )
-      } else if (existingResult.ids[0] !== result.ids[0] && !existingResult.morePostIds) {
-        existingResult.morePostIds = result.ids
-      }
-    } else {
-      return state.setIn(['pages', resultPath], result)
-    }
-  } else if (existingResult && !Immutable.is(existingResult.get('pagination'), emptyPagination())) {
-    // make sure we don't have an empty pagination object
-    // which usually results from clearing out the search result
-    // keeping the existingResult pagination keeps
-    // the results correct when refreshing a page
-    return state.setIn(
-      ['pages', resultPath],
-      result.set('pagination', existingResult.get('pagination')).set('next', existingResult.get('next')),
-    )
-  }
-  return state.setIn(['pages', resultPath], result)
-}
 
 methods.deleteModel = (state, action, mappingType) => {
   const { model } = action.payload
