@@ -72,7 +72,7 @@ function stubAuthPromotion(username = '666') {
   })
 }
 
-function stubUser(properties) {
+function stubUser(properties, shouldAdd = true) {
   const defaultProps = {
     avatar: stubAvatar(),
     backgroundPosition: null,
@@ -102,7 +102,7 @@ function stubUser(properties) {
     viewsAdultContent: true,
   }
   const model = Immutable.fromJS({ ...commonProps, ...defaultProps, ...properties })
-  addToJSON(MAPPING_TYPES.USERS, model)
+  if (shouldAdd) { addToJSON(MAPPING_TYPES.USERS, model) }
   return model
 }
 
@@ -139,7 +139,7 @@ function stubTextRegion(properties) {
   return Immutable.fromJS({ ...defaultProps, ...properties })
 }
 
-function stubPost(properties) {
+function stubPost(properties, shouldAdd = true) {
   const defaultProps = {
     authorId: 'authorId',
     body: [],
@@ -156,11 +156,11 @@ function stubPost(properties) {
     viewsCount: 0,
   }
   const model = Immutable.fromJS({ ...commonProps, ...defaultProps, ...properties })
-  addToJSON(MAPPING_TYPES.POSTS, model)
+  if (shouldAdd) { addToJSON(MAPPING_TYPES.POSTS, model) }
   return model
 }
 
-function stubComment(properties) {
+function stubComment(properties, shouldAdd = true) {
   const defaultProps = {
     authorId: 'authorId',
     body: [],
@@ -169,7 +169,7 @@ function stubComment(properties) {
     summary: [stubTextRegion()],
   }
   const model = Immutable.fromJS({ ...commonProps, ...defaultProps, ...properties })
-  addToJSON(MAPPING_TYPES.COMMENTS, model)
+  if (shouldAdd) { addToJSON(MAPPING_TYPES.COMMENTS, model) }
   return model
 }
 
@@ -228,6 +228,19 @@ export function stub(model, properties) {
       return stubPost(properties)
     case 'user':
       return stubUser(properties)
+    default:
+      return null
+  }
+}
+
+export function stubJS(model, properties) {
+  switch (model.toLowerCase()) {
+    case 'comment':
+      return stubComment(properties, false).toJS()
+    case 'post':
+      return stubPost(properties, false).toJS()
+    case 'user':
+      return stubUser(properties, false).toJS()
     default:
       return null
   }
