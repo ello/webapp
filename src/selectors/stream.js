@@ -3,7 +3,7 @@ import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { selectPathname } from './routing'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-import { emptyPagination } from '../components/streams/Paginator'
+import { emptyPagination } from '../reducers/json'
 
 const selectJson = state => state.get('json')
 
@@ -22,7 +22,7 @@ export const selectStreamPostIdOrToken = state => state.getIn(['stream', 'payloa
 const selectStreamResult = (state, props) => {
   const meta = selectMeta(state, props)
   const resultPath = meta.resultKey || selectPathname(state)
-  return state.getIn(['json', 'pages', resultPath], Immutable.fromJS({ ids: [], pagination: emptyPagination() }))
+  return state.getIn(['json', 'pages', resultPath], Immutable.Map({ ids: Immutable.List(), pagination: emptyPagination() }))
 }
 
 const selectStreamResultPath = (state, props) => {

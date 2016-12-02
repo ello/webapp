@@ -76,8 +76,8 @@ function isValidResultKey(key) {
 
 export function isValidResult(result) {
   return (
-    typeof result.type !== 'undefined' &&
-    Object.keys(result).every(isValidResultKey)
+    typeof result.get('type') !== 'undefined' &&
+    result.keySeq().every(isValidResultKey)
   )
 }
 
