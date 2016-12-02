@@ -1,176 +1,177 @@
 /* eslint-disable max-len */
+import Immutable from 'immutable'
 import { isValidResult } from '../../support/test_helpers'
-import { clearJSON, json, stub, stubJSONStore } from '../../support/stubs'
+import { clearJSON, json, stubJS, stubJSONStore } from '../../support/stubs'
 import * as subject from '../../../src/reducers/json'
 import * as ACTION_TYPES from '../../../src/constants/action_types'
 import * as MAPPING_TYPES from '../../../src/constants/mapping_types'
 
-describe('json reducer', () => {
+describe.only('json reducer', () => {
+  let state
   beforeEach(() => {
     stubJSONStore()
-    json.pages = {}
+    state = json
   })
 
   afterEach(() => {
     clearJSON()
-    delete json.pages
+  })
+
+  describe('#addNewIdsToResult', () => {
+    it('returns the original state if no result.morePostIds', () => {
+      state = Immutable.fromJS({ yo: 'yo', mama: 'mama' })
+      json.setIn(['pages', 'sweetpath'], Immutable.Map())
+      expect(subject.methods.addNewIdsToResult(state, json)).to.equal(state)
+    })
+
+    it('concats the existing result ids to the morePostIds and deletes the old morePostIds', () => {
+      state = json.set('pages', Immutable.fromJS({ sweetpath: { morePostIds: ['1', '2', '3'], ids: ['2', '10', '20', '30'] } }))
+      subject.setPath('sweetpath')
+      state = subject.methods.addNewIdsToResult(state)
+      expect(state.getIn(['pages', 'sweetpath', 'morePostIds'])).to.be.undefined
+      expect(state.getIn(['pages', 'sweetpath', 'ids'])).to.deep.equal(Immutable.List(['1', '2', '3', '10', '20', '30']))
+    })
   })
 
   describe('#updateUserCount', () => {
     it('should update the count', () => {
-      subject.methods.updateUserCount(json, '1', 'followersCount', 1)
-      expect(json.users['1'].followersCount).to.equal(1)
-      subject.methods.updateUserCount(json, '1', 'followersCount', 1)
-      expect(json.users['1'].followersCount).to.equal(2)
+      state = subject.methods.updateUserCount(state, '1', 'followersCount', 1)
+      expect(state.getIn(['users', '1', 'followersCount'])).to.equal(1)
+      state = subject.methods.updateUserCount(state, '1', 'followersCount', 1)
+      expect(state.getIn(['users', '1', 'followersCount'])).to.equal(2)
     })
     it('should set the count', () => {
-      subject.methods.updateUserCount(json, '1', 'undefinedCount', 1)
-      expect(json.users['1'].undefinedCount).to.equal(1)
+      state = subject.methods.updateUserCount(state, '1', 'undefinedCount', 1)
+      expect(state.getIn(['users', '1', 'undefinedCount'])).to.equal(1)
     })
     it('should ignore ∞', () => {
-      subject.methods.updateUserCount(json, 'inf', 'followersCount', 1)
-      expect(json.users.inf.followersCount).to.equal('∞')
+      state = subject.methods.updateUserCount(state, 'inf', 'followersCount', 1)
+      expect(state.getIn(['users', 'inf', 'followersCount'])).to.equal('∞')
     })
   })
 
   describe('#updatePostCount', () => {
     it('should update the count', () => {
-      subject.methods.updatePostCount(json, '1', 'repostsCount', 1)
-      expect(json.posts['1'].repostsCount).to.equal(2)
-      subject.methods.updatePostCount(json, '1', 'repostsCount', 1)
-      expect(json.posts['1'].repostsCount).to.equal(3)
+      state = subject.methods.updatePostCount(state, '1', 'repostsCount', 1)
+      expect(state.getIn(['posts', '1', 'repostsCount'])).to.equal(2)
+      state = subject.methods.updatePostCount(state, '1', 'repostsCount', 1)
+      expect(state.getIn(['posts', '1', 'repostsCount'])).to.equal(3)
     })
     it('should set the count', () => {
-      subject.methods.updatePostCount(json, '1', 'undefinedCount', 1)
-      expect(json.posts['1'].undefinedCount).to.equal(1)
+      state = subject.methods.updatePostCount(state, '1', 'undefinedCount', 1)
+      expect(state.getIn(['posts', '1', 'undefinedCount'])).to.equal(1)
     })
   })
 
   describe('#appendPageId', () => {
     it('should add the id to null', () => {
-      const store = {}
-      subject.methods.appendPageId(store, '/page', 'users', 'foo')
-      expect(store.pages['/page'].ids.indexOf('foo')).not.to.equal(-1)
+      state = subject.methods.appendPageId(state, '/page', 'users', 'foo')
+      expect(state.getIn(['pages', '/page', 'ids']).includes('foo')).to.be.true
     })
     it('should add the type to null', () => {
-      const store = {}
-      subject.methods.appendPageId(store, '/page', 'users', 'foo')
-      expect(store.pages['/page'].type).to.equal('users')
+      state = subject.methods.appendPageId(state, '/page', 'users', 'foo')
+      expect(state.getIn(['pages', '/page', 'type'])).to.equal('users')
     })
     it('should add the id to []', () => {
-      const store = { pages: { '/page': { ids: [] } } }
-      subject.methods.appendPageId(store, '/page', 'users', 'foo')
-      expect(store.pages['/page'].ids.indexOf('foo')).not.to.equal(-1)
+      state = Immutable.fromJS({ pages: { '/page': { ids: [] } } })
+      state = subject.methods.appendPageId(state, '/page', 'users', 'foo')
+      expect(state.getIn(['pages', '/page', 'ids']).includes('foo')).to.be.true
     })
     it('should add the id to [1,2,3]', () => {
-      const store = { pages: { '/page': { ids: [1, 2, 3] } } }
-      subject.methods.appendPageId(store, '/page', 'users', 'foo')
-      expect(store.pages['/page'].ids.indexOf('foo')).not.to.equal(-1)
-      expect(store.pages['/page'].ids.indexOf(1)).not.to.equal(-1)
-      expect(store.pages['/page'].ids.indexOf(2)).not.to.equal(-1)
-      expect(store.pages['/page'].ids.indexOf(3)).not.to.equal(-1)
-      expect(store.pages['/page'].ids.indexOf(4)).to.equal(-1)
+      state = Immutable.fromJS({ pages: { '/page': { ids: [1, 2, 3] } } })
+      state = subject.methods.appendPageId(state, '/page', 'users', 'foo')
+      expect(state.getIn(['pages', '/page', 'ids']).includes('foo')).to.be.true
+      expect(state.getIn(['pages', '/page', 'ids']).includes(1)).to.be.true
+      expect(state.getIn(['pages', '/page', 'ids']).includes(2)).to.be.true
+      expect(state.getIn(['pages', '/page', 'ids']).includes(3)).to.be.true
+      expect(state.getIn(['pages', '/page', 'ids']).includes(4)).to.be.false
     })
   })
   describe('#removePageId', () => {
     it('should do nothing to null', () => {
-      const store = {}
-      subject.methods.removePageId(store, '/page', 'foo')
-      expect(store.pages).to.be.undefined
+      expect(subject.methods.removePageId(state, '/page', 'foo')).to.equal(state)
     })
     it('should do nothing to []', () => {
-      const store = { pages: { '/page': { ids: [] } } }
-      subject.methods.removePageId(store, '/page', 'foo')
-      expect(store.pages['/page'].ids.length).to.equal(0)
+      state = Immutable.fromJS({ pages: { '/page': { ids: [] } } })
+      state = subject.methods.removePageId(state, '/page', 'foo')
+      expect(state.getIn(['pages', '/page', 'ids'])).to.be.empty
     })
     it('should remove the id from [foo]', () => {
-      const store = { pages: { '/page': { ids: [1, 'foo', 2, 3] } } }
-      subject.methods.removePageId(store, '/page', 'foo')
-      expect(store.pages['/page'].ids.indexOf('foo')).to.equal(-1)
-      expect(store.pages['/page'].ids.indexOf(1)).not.to.equal(-1)
-      expect(store.pages['/page'].ids.indexOf(2)).not.to.equal(-1)
-      expect(store.pages['/page'].ids.indexOf(3)).not.to.equal(-1)
-      expect(store.pages['/page'].ids.indexOf(4)).to.equal(-1)
+      state = Immutable.fromJS({ pages: { '/page': { ids: [1, 'foo', 2, 3] } } })
+      state = subject.methods.removePageId(state, '/page', 'foo')
+      expect(state.getIn(['pages', '/page', 'ids']).includes('foo')).to.be.false
+      expect(state.getIn(['pages', '/page', 'ids']).includes(1)).to.be.true
+      expect(state.getIn(['pages', '/page', 'ids']).includes(2)).to.be.true
+      expect(state.getIn(['pages', '/page', 'ids']).includes(3)).to.be.true
+      expect(state.getIn(['pages', '/page', 'ids']).includes(4)).to.be.false
     })
   })
 
   describe('#mergeModel', () => {
     it('does not modify state if there is no id in params', () => {
-      subject.methods.mergeModel(json, MAPPING_TYPES.USERS, { username: 'new' })
-      expect(json.users['1'].username).to.equal('archer')
+      state = subject.methods.mergeModel(state, MAPPING_TYPES.USERS, { username: 'new' })
+      expect(state.getIn(['users', '1', 'username'])).to.equal('archer')
     })
 
     it('modifies state if there is an id in params', () => {
-      subject.methods.mergeModel(json, MAPPING_TYPES.USERS, { id: '1', username: 'new' })
-      expect(json.users['1'].username).to.equal('new')
+      state = subject.methods.mergeModel(state, MAPPING_TYPES.USERS, { id: '1', username: 'new' })
+      expect(state.getIn(['users', '1', 'username'])).to.equal('new')
     })
   })
 
   describe('#addModels', () => {
     it('creates a new type on state if it does not exist', () => {
-      expect(json.assets).to.be.undefined
-      const ids = subject.methods.addModels(json, MAPPING_TYPES.ASSETS, {})
-      expect(json.assets).not.to.be.null
-      expect(ids).to.be.empty
+      expect(state.get('assets')).to.be.undefined
+      const result = subject.methods.addModels(state, MAPPING_TYPES.ASSETS, {})
+      expect(result.state.get('assets')).not.to.be.null
+      expect(result.ids).to.be.empty
     })
 
+    it('should test categories')
+    it('should test page promotionals')
+    it('should test settings')
+
     it('adds arrays of models', () => {
-      expect(json.users['5']).to.be.undefined
-      expect(json.users['6']).to.be.undefined
+      expect(state.getIn(['users', '5'])).to.be.undefined
+      expect(state.getIn(['users', '6'])).to.be.undefined
       const data = {}
       data.users = []
-      data.users.push(stub('user', { id: '5', username: 'carol' }))
-      data.users.push(stub('user', { id: '6', username: 'malory' }))
-      const ids = subject.methods.addModels(json, MAPPING_TYPES.USERS, data)
-      expect(json.users['5'].username).to.equal('carol')
-      expect(json.users['6'].username).to.equal('malory')
-      expect(ids).to.deep.equal(['5', '6'])
+      data.users.push(stubJS('user', { id: '5', username: 'carol' }))
+      data.users.push(stubJS('user', { id: '6', username: 'malory' }))
+      const result = subject.methods.addModels(json, MAPPING_TYPES.USERS, data)
+      expect(result.state.getIn(['users', '5', 'username'])).to.equal('carol')
+      expect(result.state.getIn(['users', '6', 'username'])).to.equal('malory')
+      expect(result.ids).to.deep.equal(Immutable.List(['5', '6']))
     })
 
     it('adds a single model object to the state', () => {
-      expect(json.users['123']).to.be.undefined
+      expect(state.getIn(['users', '123'])).to.be.undefined
       const data = {}
-      data.users = stub('user', { id: '123', username: 'carol' })
-      const ids = subject.methods.addModels(json, MAPPING_TYPES.USERS, data)
-      expect(json.users['123'].username).to.equal('carol')
-      expect(ids).to.deep.equal(['123'])
+      data.users = stubJS('user', { id: '123', username: 'carol' })
+      const result = subject.methods.addModels(json, MAPPING_TYPES.USERS, data)
+      expect(result.state.getIn(['users', '123', 'username'])).to.equal('carol')
+      expect(result.ids).to.deep.equal(Immutable.List(['123']))
     })
   })
 
-
-  describe('#addNewIdsToResult', () => {
-    it('returns the original state if no result.morePostIds', () => {
-      const state = { yo: 'yo', mama: 'mama' }
-      json.pages = { sweetpath: { } }
-      expect(subject.methods.addNewIdsToResult(state, json)).to.equal(state)
-    })
-
-    it('concats the existing result ids to the morePostIds and deletes the old morePostIds', () => {
-      json.pages = { sweetpath: { morePostIds: ['1', '2', '3'], ids: ['10', '20', '30'] } }
-      subject.setPath('sweetpath')
-      subject.methods.addNewIdsToResult({}, json)
-      expect(json.pages.sweetpath.morePostIds).to.be.undefined
-      expect(json.pages.sweetpath.ids).to.deep.equal(['1', '2', '3', '10', '20', '30'])
-    })
-  })
 
   describe('#parseLinked', () => {
     it('does nothing if linked is not defined', () => {
-      expect(subject.methods.parseLinked()).to.be.undefined
+      expect(subject.methods.parseLinked(null, state)).to.equal(state)
     })
 
     it('parses linked node', () => {
       const linked = {}
       linked.assets = [{ id: 'sup' }, { id: 'dawg' }]
       linked.users = [{ id: 'yo', username: 'yo' }, { id: 'mama', username: 'mama' }]
-      expect(json.assets).to.be.undefined
-      expect(json.users.yo).to.be.undefined
-      expect(json.users.mama).to.be.undefined
-      subject.methods.parseLinked(linked, json)
-      expect(json.assets.sup).not.to.be.null
-      expect(json.assets.dawg).not.to.be.null
-      expect(json.users.yo.username).to.equal('yo')
-      expect(json.users.mama.username).to.equal('mama')
+      expect(state.get('assets')).to.be.undefined
+      expect(state.getIn(['users', 'yo'])).to.be.undefined
+      expect(state.getIn(['users', 'mama'])).to.be.undefined
+      state = subject.methods.parseLinked(linked, json)
+      expect(state.getIn(['assets', 'sup'])).not.to.be.null
+      expect(state.getIn(['assets', 'dawg'])).not.to.be.null
+      expect(state.getIn(['users', 'yo', 'username'])).to.equal('yo')
+      expect(state.getIn(['users', 'mama', 'username'])).to.equal('mama')
     })
   })
 
@@ -185,7 +186,7 @@ describe('json reducer', () => {
         return stuff
       }
       const result = subject.methods.getResult(response, json, action)
-      expect(result).to.deep.equal({ usernames: ['yo', 'mama'], pagination: '' })
+      expect(result).to.deep.equal(Immutable.fromJS({ usernames: ['yo', 'mama'], pagination: '' }))
     })
 
     it('returns the correct result', () => {
@@ -195,7 +196,7 @@ describe('json reducer', () => {
       action.payload = { pagination: '' }
       const result = subject.methods.getResult(response, json, action)
       expect(isValidResult(result)).to.be.true
-      expect(result).to.deep.equal({ ids: ['yo', 'mama'], type: MAPPING_TYPES.USERS, pagination: '' })
+      expect(result).to.deep.equal(Immutable.fromJS({ ids: ['yo', 'mama'], type: MAPPING_TYPES.USERS, pagination: '' }))
     })
   })
 
@@ -348,7 +349,6 @@ describe('json reducer', () => {
 
     context('with post actions', () => {
       it('calls #postMethods.addOrUpdatePost', () => {
-        console.log('POST METHODS', subject)
         methodCalledWithActions(subject.postMethods, 'addOrUpdatePost', [
           ACTION_TYPES.POST.CREATE_FAILURE,
           ACTION_TYPES.POST.CREATE_SUCCESS,

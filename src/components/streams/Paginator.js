@@ -2,13 +2,6 @@ import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import { ElloMark } from '../assets/Icons'
 
-export function emptyPagination() {
-  return {
-    totalPages: 0,
-    totalPagesRemaining: 0,
-  }
-}
-
 function getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRemaining }) {
   if (totalPagesRemaining === 0) {
     return ''
@@ -51,4 +44,6 @@ Paginator.propTypes = {
   totalPages: PropTypes.number.isRequired,
   totalPagesRemaining: PropTypes.number.isRequired,
 }
+
+export default Paginator
 

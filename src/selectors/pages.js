@@ -1,8 +1,8 @@
 import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
+import { emptyPagination } from '../reducers/json'
 import { selectPathname } from './routing'
-import { emptyPagination } from '../components/streams/Paginator'
 
 const selectMeta = (state, props) => get(props, 'action.meta', {})
 
@@ -14,7 +14,7 @@ export const selectPagesResult = createSelector(
   [selectMeta, selectPathname, selectPages], (meta, pathname, pages) =>
     pages.get(
       meta.resultKey || pathname,
-      Immutable.fromJS({ ids: [], pagination: emptyPagination() }),
+      Immutable.Map({ ids: Immutable.List(), pagination: emptyPagination() }),
     ),
 )
 
