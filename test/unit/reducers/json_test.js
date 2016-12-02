@@ -181,11 +181,9 @@ describe.only('json reducer', () => {
       const action = { meta: {} }
       action.meta.mappingType = MAPPING_TYPES.USERS
       action.payload = { pagination: '' }
-      action.meta.resultFilter = (users) => {
-        const stuff = { usernames: users.map(user => user.username) }
-        return stuff
-      }
-      const result = subject.methods.getResult(response, json, action)
+      action.meta.resultFilter = users =>
+        ({ usernames: users.map(user => user.username) })
+      const result = subject.methods.getResult(response, state, action)
       expect(result).to.deep.equal(Immutable.fromJS({ usernames: ['yo', 'mama'], pagination: '' }))
     })
 
@@ -194,112 +192,149 @@ describe.only('json reducer', () => {
       const action = { meta: {} }
       action.meta.mappingType = MAPPING_TYPES.USERS
       action.payload = { pagination: '' }
-      const result = subject.methods.getResult(response, json, action)
+      const result = subject.methods.getResult(response, state, action)
       expect(isValidResult(result)).to.be.true
       expect(result).to.deep.equal(Immutable.fromJS({ ids: ['yo', 'mama'], type: MAPPING_TYPES.USERS, pagination: '' }))
     })
   })
 
-  describe('#updateResult', () => {
+  describe.only('#updateResult', () => {
+    let action
     afterEach(() => {
       subject.methods.getResult.restore()
+      action = {}
     })
 
-    context('action.type === LOAD_STREAM_SUCCESS', () => {
-      it('sets the result when it does not exist', () => {
-        const result = { pagination: 'sweet' }
-        sinon.stub(subject.methods, 'getResult', () => result)
-        const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
-        action.meta.mappingType = MAPPING_TYPES.USERS
-        subject.setPath('sweetness')
-        expect(json.pages.sweetness).to.be.undefined
-        subject.methods.updateResult({}, json, action)
-        expect(json.pages.sweetness).to.equal(result)
-      })
-
-      context('with an existingResult and existingResult.ids[0] !== result.ids[0]', () => {
-        it('adds morePostIds if hasLoadedFirstStream && it is not a nested result && the index is greater than 0', () => {
-          const result = { pagination: 'sweet' }
-          sinon.stub(subject.methods, 'getResult', () => result)
-          // json.pages = { sweetness: { ids: ['1', '2'], next: { ids: ['1', '2'] } } }
-          // const result = { pagination: 'sweet', ids: ['3'] }
-          // sinon.stub(subject.methods, 'getResult', () => { return result })
-          // const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
-          // subject.setPath('sweetness')
-          // subject.methods.updateResult({}, json, action)
-          // expect(json.pages.sweetness).to.deep.equal({ next: { ids: ['1', '2'] }, ...result })
+    context('with an existingResult', () => {
+      context('and action.type === LOAD_NEXT_CONTENT_SUCCESS', () => {
+        beforeEach(() => {
+          state = state.setIn(['pages', 'sweetness'], Immutable.Map())
+          action = {
+            meta: { resultKey: 'sweetness' },
+            type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS,
+          }
+          sinon.stub(subject.methods, 'getResult', () =>
+            Immutable.fromJS({
+              ids: ['6', '5', '3'],
+              pagination: 'sweet',
+            }),
+          )
         })
 
-        it('overrides the existing result if the above condition is not met', () => {
-          const result = { pagination: 'sweet' }
-          sinon.stub(subject.methods, 'getResult', () => result)
+        it('sets the pagination to the result', () => {
+          expect(state.getIn(['pages', 'sweetness', 'pagination'])).to.be.undefined
+          state = subject.methods.updateResult({}, state, action)
+          expect(state.getIn(['pages', 'sweetness', 'pagination'])).to.equal('sweet')
         })
-      })
 
-      it('overlays the result with the existingResult when existingResult and resultKey', () => {
-        const result = { pagination: 'sweet' }
-        sinon.stub(subject.methods, 'getResult', () => result)
-      })
+        it('updates the result ids if the existingResult had a next', () => {
+          state = state.setIn(['pages', 'sweetness', 'next'], Immutable.fromJS({ ids: ['2', '1'] }))
+          state = subject.methods.updateResult({}, state, action)
+          expect(state.getIn(['pages', 'sweetness', 'next', 'ids'])).to.deep.equal(Immutable.List(['6', '5', '3', '2', '1']))
+        })
 
-      it('resets the result', () => {
-        const result = { pagination: 'sweet' }
-        sinon.stub(subject.methods, 'getResult', () => result)
-      })
-
-      it('uses the resultKey to update the storage location within json.pages', () => {
-        const result = { pagination: 'sweet' }
-        sinon.stub(subject.methods, 'getResult', () => result)
-        const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { resultKey: 'yo' } }
-        action.meta.mappingType = MAPPING_TYPES.USERS
-        subject.setPath('sweetness')
-        expect(json.pages.yo).to.be.undefined
-        subject.methods.updateResult({}, json, action)
-        expect(json.pages.yo).to.equal(result)
+        it('sets the result on next', () => {
+          expect(state.getIn(['pages', 'sweetness', 'next'])).to.be.undefined
+          state = subject.methods.updateResult({}, state, action)
+          expect(state.getIn(['pages', 'sweetness', 'next', 'pagination'])).to.equal('sweet')
+        })
       })
     })
+    // context('action.type === LOAD_NEXT_CONTENT_SUCCESS', () => {
+    //   it('sets the next property of result when it does not exist', () => {
+    //     json.pages = { sweetness: { pagination: 'cool' } }
+    //     const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
+    //     sinon.stub(subject.methods, 'getResult', () => result)
+    //     const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
+    //     subject.setPath('sweetness')
+    //     expect(json.pages.sweetness.next).to.be.undefined
+    //     expect(json.pages.sweetness.pagination).to.equal('cool')
+    //     subject.methods.updateResult({}, json, action)
+    //     expect(json.pages.sweetness.next).to.equal(result)
+    //     expect(json.pages.sweetness.pagination).to.equal('sweet')
+    //   })
 
-    context('action.type === LOAD_NEXT_CONTENT_SUCCESS', () => {
-      it('sets the next property of result when it does not exist', () => {
-        json.pages = { sweetness: { pagination: 'cool' } }
-        const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
-        sinon.stub(subject.methods, 'getResult', () => result)
-        const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
-        subject.setPath('sweetness')
-        expect(json.pages.sweetness.next).to.be.undefined
-        expect(json.pages.sweetness.pagination).to.equal('cool')
-        subject.methods.updateResult({}, json, action)
-        expect(json.pages.sweetness.next).to.equal(result)
-        expect(json.pages.sweetness.pagination).to.equal('sweet')
-      })
+    //   it('updates the next property of result when it exists', () => {
+    //     json.pages = { sweetness: { next: { ids: ['1', '2'] }, pagination: 'cool' } }
+    //     sinon.stub(subject.methods, 'getResult', () => {
+    //       const stuff = { pagination: 'sweet', ids: ['2', '3', '4'] }
+    //       return stuff
+    //     })
+    //     const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
+    //     subject.setPath('sweetness')
+    //     expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2'] })
+    //     expect(json.pages.sweetness.pagination).to.equal('cool')
+    //     subject.methods.updateResult({}, json, action)
+    //     expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2', '3', '4'] })
+    //     expect(json.pages.sweetness.pagination).to.equal('sweet')
+    //   })
 
-      it('updates the next property of result when it exists', () => {
-        json.pages = { sweetness: { next: { ids: ['1', '2'] }, pagination: 'cool' } }
-        sinon.stub(subject.methods, 'getResult', () => {
-          const stuff = { pagination: 'sweet', ids: ['2', '3', '4'] }
-          return stuff
-        })
-        const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
-        subject.setPath('sweetness')
-        expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2'] })
-        expect(json.pages.sweetness.pagination).to.equal('cool')
-        subject.methods.updateResult({}, json, action)
-        expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2', '3', '4'] })
-        expect(json.pages.sweetness.pagination).to.equal('sweet')
-      })
+    //   it('uses the resultKey to update the storage location within json.pages', () => {
+    //     json.pages = { yo: { pagination: 'cool' } }
+    //     const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
+    //     sinon.stub(subject.methods, 'getResult', () => result)
+    //     const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: { resultKey: 'yo' } }
+    //     subject.setPath('sweetness')
+    //     expect(json.pages.yo.next).to.be.undefined
+    //     expect(json.pages.yo.pagination).to.equal('cool')
+    //     subject.methods.updateResult({}, json, action)
+    //     expect(json.pages.yo.next).to.deep.equal({ ids: ['2', '3', '4'], pagination: 'sweet' })
+    //     expect(json.pages.yo.pagination).to.equal('sweet')
+    //   })
+    // })
 
-      it('uses the resultKey to update the storage location within json.pages', () => {
-        json.pages = { yo: { pagination: 'cool' } }
-        const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
-        sinon.stub(subject.methods, 'getResult', () => result)
-        const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: { resultKey: 'yo' } }
-        subject.setPath('sweetness')
-        expect(json.pages.yo.next).to.be.undefined
-        expect(json.pages.yo.pagination).to.equal('cool')
-        subject.methods.updateResult({}, json, action)
-        expect(json.pages.yo.next).to.deep.equal({ ids: ['2', '3', '4'], pagination: 'sweet' })
-        expect(json.pages.yo.pagination).to.equal('sweet')
-      })
-    })
+    // context('action.type === LOAD_STREAM_SUCCESS', () => {
+    //   it('sets the result when it does not exist', () => {
+    //     const result = Immutable.fromJS({ pagination: 'sweet' })
+    //     sinon.stub(subject.methods, 'getResult', () => result)
+    //     const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
+    //     action.meta.mappingType = MAPPING_TYPES.USERS
+    //     subject.setPath('sweetness')
+    //     expect(state.getIn(['pages', 'sweetness'])).to.be.undefined
+    //     state = subject.methods.updateResult({}, json, action)
+    //     expect(state.getIn(['pages', 'sweetness'])).to.deep.equal(result)
+    //   })
+
+    //   context('with an existingResult and existingResult.ids[0] !== result.ids[0]', () => {
+    //     it('adds morePostIds if hasLoadedFirstStream && it is not a nested result && the index is greater than 0', () => {
+    //       const result = { pagination: 'sweet' }
+    //       sinon.stub(subject.methods, 'getResult', () => result)
+    //       // json.pages = { sweetness: { ids: ['1', '2'], next: { ids: ['1', '2'] } } }
+    //       // const result = { pagination: 'sweet', ids: ['3'] }
+    //       // sinon.stub(subject.methods, 'getResult', () => { return result })
+    //       // const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
+    //       // subject.setPath('sweetness')
+    //       // subject.methods.updateResult({}, json, action)
+    //       // expect(json.pages.sweetness).to.deep.equal({ next: { ids: ['1', '2'] }, ...result })
+    //     })
+
+    //     it('overrides the existing result if the above condition is not met', () => {
+    //       const result = { pagination: 'sweet' }
+    //       sinon.stub(subject.methods, 'getResult', () => result)
+    //     })
+    //   })
+
+    //   it('overlays the result with the existingResult when existingResult and resultKey', () => {
+    //     const result = { pagination: 'sweet' }
+    //     sinon.stub(subject.methods, 'getResult', () => result)
+    //   })
+
+    //   it('resets the result', () => {
+    //     const result = { pagination: 'sweet' }
+    //     sinon.stub(subject.methods, 'getResult', () => result)
+    //   })
+
+    //   it('uses the resultKey to update the storage location within json.pages', () => {
+    //     const result = { pagination: 'sweet' }
+    //     sinon.stub(subject.methods, 'getResult', () => result)
+    //     const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { resultKey: 'yo' } }
+    //     action.meta.mappingType = MAPPING_TYPES.USERS
+    //     subject.setPath('sweetness')
+    //     expect(json.pages.yo).to.be.undefined
+    //     subject.methods.updateResult({}, json, action)
+    //     expect(json.pages.yo).to.equal(result)
+    //   })
+    // })
   })
 
   describe('#deleteModel', () => {
