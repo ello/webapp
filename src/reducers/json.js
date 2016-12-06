@@ -52,19 +52,17 @@ methods.updatePostCount = (state, postId, prop, delta) => {
   return state.setIn([MAPPING_TYPES.POSTS, postId, prop], parseInt(count, 10) + delta)
 }
 
-methods.appendPageId = (state, pageName, mappingType, id, addNewResult = true) => {
+methods.appendPageId = (state, pageName, mappingType, id) => {
   const page = state.getIn(['pages', pageName])
   if (page) {
     const ids = page.get('ids', Immutable.List())
     if (!ids.includes(`${id}`)) {
       return state.setIn(['pages', pageName, 'ids'], ids.unshift(`${id}`))
     }
-  } else if (addNewResult) {
-    return state.setIn(['pages', pageName], Immutable.fromJS({
-      ids: [`${id}`], type: mappingType, pagination: emptyPagination(),
-    }))
   }
-  return state
+  return state.setIn(['pages', pageName], Immutable.fromJS({
+    ids: [`${id}`], type: mappingType, pagination: emptyPagination(),
+  }))
 }
 
 methods.removePageId = (state, pageName, id) => {

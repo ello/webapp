@@ -1,16 +1,16 @@
 /* eslint-disable no-param-reassign */
-import setWith from 'lodash/setWith'
+import Immutable from 'immutable'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
 
 const methods = {}
 
-methods.updatePostLoves = (state, newState, action) => {
+methods.updatePostLoves = (state, action) => {
   const { method, model } = action.payload
 
   const newPost = {
-    id: model ? model.id : '',
+    id: model ? model.get('id') : '',
   }
 
   let delta = 0
@@ -53,36 +53,24 @@ methods.updatePostLoves = (state, newState, action) => {
   // During LOVE_REQUEST, model.lovesCount is incremented.
   // In LOVE_SUCCESS, model.lovesCount is the *old* value, so just ignore it.
   if (delta !== 0) {
-    newPost.lovesCount = Number(model.lovesCount) + delta
+    newPost.lovesCount = Number(model.get('lovesCount')) + delta
   }
 
   const resultPath = jsonReducer.methods.pagesKey(action)
-  const currentUser = jsonReducer.methods.getCurrentUser(newState)
+  const currentUser = jsonReducer.methods.getCurrentUser(state)
   if (currentUser) {
-    if (idAdded) {
-      jsonReducer.methods.appendPageId(
-        newState, resultPath,
-        MAPPING_TYPES.USERS, currentUser.id)
-    } else {
-      jsonReducer.methods.removePageId(
-        newState, resultPath,
-        currentUser.id)
-    }
+    state = idAdded ?
+      jsonReducer.methods.appendPageId(state, resultPath, MAPPING_TYPES.USERS, currentUser.get('id')) :
+      jsonReducer.methods.removePageId(state, resultPath, currentUser.get('id'))
   }
 
-  if (currentUser.id === model.authorId) {
-    jsonReducer.methods.updateUserCount(newState, model.authorId, 'lovesCount', delta)
+  if (currentUser.get('id') === model.get('authorId')) {
+    state = jsonReducer.methods.updateUserCount(state, model.get('authorId'), 'lovesCount', delta)
   }
-  jsonReducer.methods.mergeModel(
-    newState,
-    MAPPING_TYPES.POSTS,
-    newPost,
-  )
-
-  return newState
+  return jsonReducer.methods.mergeModel(state, MAPPING_TYPES.POSTS, newPost)
 }
 
-methods.updatePostWatch = (newState, action) => {
+methods.updatePostWatch = (state, action) => {
   const { method, model, hasAutoWatchEnabled } = action.payload
   let isWatching = false
 
@@ -91,115 +79,113 @@ methods.updatePostWatch = (newState, action) => {
   }
 
   const newPost = {
-    id: model ? model.id : '',
+    id: model ? model.get('id') : '',
     watching: isWatching,
   }
   if (action.type === ACTION_TYPES.POST.WATCH_FAILURE) {
-    if (method === 'POST') {
-      newPost.watching = false
-    } else {
-      newPost.watching = true
-    }
+    newPost.watching = !method === 'POST'
   }
-  jsonReducer.methods.mergeModel(
-    newState,
-    MAPPING_TYPES.POSTS,
-    newPost,
-  )
-  return newState
+  return jsonReducer.methods.mergeModel(state, MAPPING_TYPES.POSTS, newPost)
 }
 
-methods.addOrUpdatePost = (newState, action) => {
+methods.addOrUpdatePost = (state, action) => {
   const { model, response } = action.payload
   const user = model ?
-    newState[MAPPING_TYPES.USERS][model.authorId] :
-    jsonReducer.methods.getCurrentUser(newState)
+    state.getIn([MAPPING_TYPES.USERS, model.get('authorId')]) :
+    jsonReducer.methods.getCurrentUser(state)
   switch (action.type) {
     case ACTION_TYPES.POST.CREATE_SUCCESS:
     case ACTION_TYPES.POST.UPDATE_SUCCESS:
-      setWith(newState,
-                [MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id],
-                response[MAPPING_TYPES.POSTS],
-                Object)
-      if (action.type === ACTION_TYPES.POST.UPDATE_SUCCESS) { return newState }
-      jsonReducer.methods.appendPageId(
-        newState, '/following',
-        MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id, true)
+      state = state.setIn(
+        [MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id],
+        Immutable.fromJS(response[MAPPING_TYPES.POSTS]),
+      )
+      if (action.type === ACTION_TYPES.POST.UPDATE_SUCCESS) { return state }
+      state = jsonReducer.methods.appendPageId(
+        state,
+        '/following',
+        MAPPING_TYPES.POSTS,
+        response[MAPPING_TYPES.POSTS].id,
+      )
 
       if (action.meta.repostId) {
-        jsonReducer.methods.updatePostCount(newState, action.meta.repostId, 'repostsCount', 1)
-        jsonReducer.methods.appendPageId(
-          newState, `/posts/${action.meta.repostId}/repost`,
-          MAPPING_TYPES.USERS, user.id)
-        jsonReducer.methods.mergeModel(
-          newState,
+        state = jsonReducer.methods.updatePostCount(state, action.meta.repostId, 'repostsCount', 1)
+        state = jsonReducer.methods.appendPageId(
+          state,
+          `/posts/${action.meta.repostId}/repost`,
+          MAPPING_TYPES.USERS,
+          user.get('id'),
+        )
+        state = jsonReducer.methods.mergeModel(
+          state,
           MAPPING_TYPES.POSTS,
           { id: action.meta.repostId, reposted: true },
         )
       }
       if (action.meta.repostedFromId) {
-        jsonReducer.methods.updatePostCount(newState, action.meta.repostedFromId, 'repostsCount', 1)
-        jsonReducer.methods.appendPageId(
-          newState, `/posts/${action.meta.repostedFromId}/repost`,
-          MAPPING_TYPES.USERS, user.id)
-        jsonReducer.methods.mergeModel(
-          newState,
+        state = jsonReducer.methods.updatePostCount(state, action.meta.repostedFromId, 'repostsCount', 1)
+        state = jsonReducer.methods.appendPageId(
+          state,
+          `/posts/${action.meta.repostedFromId}/repost`,
+          MAPPING_TYPES.USERS,
+          user.get('id'),
+        )
+        state = jsonReducer.methods.mergeModel(
+          state,
           MAPPING_TYPES.POSTS,
           { id: action.meta.repostedFromId, reposted: true },
         )
       }
       if (user) {
-        jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', 1)
-        jsonReducer.methods.appendPageId(
-          newState, `/${user.username}`,
-          MAPPING_TYPES.POSTS, response[MAPPING_TYPES.POSTS].id, true)
+        state = jsonReducer.methods.updateUserCount(state, user.get('id'), 'postsCount', 1)
+        state = jsonReducer.methods.appendPageId(
+          state,
+          `/${user.username}`,
+          MAPPING_TYPES.POSTS,
+          response[MAPPING_TYPES.POSTS].id,
+        )
       }
-      return newState
+      return state
     case ACTION_TYPES.POST.DELETE_SUCCESS:
       if (user) {
-        jsonReducer.methods.removePageId(newState, '/following', model.id)
-        jsonReducer.methods.removePageId(newState, `/${user.username}`, model.id)
-        jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', -1)
+        state = jsonReducer.methods.removePageId(state, '/following', model.get('id'))
+        state = jsonReducer.methods.removePageId(state, `/${user.get('username')}`, model.get('id'))
+        state = jsonReducer.methods.updateUserCount(state, user.get('id'), 'postsCount', -1)
       }
-      return newState
+      return state
     case ACTION_TYPES.POST.CREATE_FAILURE:
       if (user) {
-        jsonReducer.methods.updateUserCount(newState, user.id, 'postsCount', -1)
+        state = jsonReducer.methods.updateUserCount(state, user.get('id'), 'postsCount', -1)
       }
-      return newState
+      return state
     default:
-      return newState
+      return state
   }
 }
 
-methods.toggleComments = (newState, action) => {
+methods.toggleComments = (state, action) => {
   const { model, showComments } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].showComments = showComments
-  return newState
+  return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'showComments'], showComments)
 }
 
-methods.toggleEditing = (newState, action) => {
+methods.toggleEditing = (state, action) => {
   const { model, isEditing } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].isEditing = isEditing
-  return newState
+  return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'isEditing'], isEditing)
 }
 
-methods.toggleLovers = (newState, action) => {
+methods.toggleLovers = (state, action) => {
   const { model, showLovers } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].showLovers = showLovers
-  return newState
+  return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'showLovers'], showLovers)
 }
 
-methods.toggleReposting = (newState, action) => {
+methods.toggleReposting = (state, action) => {
   const { model, isReposting } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].isReposting = isReposting
-  return newState
+  return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'isReposting'], isReposting)
 }
 
-methods.toggleReposters = (newState, action) => {
+methods.toggleReposters = (state, action) => {
   const { model, showReposters } = action.payload
-  newState[MAPPING_TYPES.POSTS][model.id].showReposters = showReposters
-  return newState
+  return state.setIn([MAPPING_TYPES.POSTS, model.get('id'), 'showReposters'], showReposters)
 }
 
 export default methods
