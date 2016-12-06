@@ -1,23 +1,14 @@
-import { clearJSON, json, stub } from '../../../support/stubs'
+import Immutable from 'immutable'
+import { clearJSON, json, stub, stubJSONStore } from '../../../support/stubs'
 import subject from '../../../../src/reducers/experience_updates/posts'
 import * as ACTION_TYPES from '../../../../src/constants/action_types'
 
-function stubJSONStore() {
-  // add some users
-  stub('user', { id: '1', username: 'archer' })
-  stub('user', { id: '2', username: 'lana', relationshipPriority: 'friend' })
-  stub('user', { id: '3', username: 'cyril' })
-  stub('user', { id: '4', username: 'pam' })
-  // add some posts
-  stub('post', { id: '1', token: 'token1', authorId: '1' })
-  stub('post', { id: '2', token: 'token2', authorId: '2' })
-  stub('post', { id: '3', token: 'token3', authorId: '3' })
-  stub('post', { id: '4', token: 'token4', authorId: '4' })
-}
-
-describe('posts experience update', () => {
+describe.only('posts experience update', () => {
+  let state
   beforeEach(() => {
     stubJSONStore()
+    stub('user', { id: 'abc', relationshipPriority: 'self' })
+    state = json.setIn(['pages', 'love', 'ids'], Immutable.List(['test']))
   })
 
   afterEach(() => {
@@ -27,111 +18,127 @@ describe('posts experience update', () => {
   describe('#updatePostLoves', () => {
     it('returns original state if action is not love success or fail', () => {
       expect(subject.updatePostLoves(
-        { state: 'yo' },
-        json,
+        state,
         { payload: {} },
-      )).to.deep.equal({ state: 'yo' })
+      )).to.equal(state)
     })
 
     context('on love request', () => {
-      it('handles POST', () => {
-        const post = json.posts['1']
-        expect(post.lovesCount).to.equal(0)
-        expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_REQUEST }
-        action.payload = { method: 'POST', model: post }
-        action.meta = { resultKey: 'love', updateKey: 'post' }
+      let action
+      beforeEach(() => {
+        const post = state.getIn(['posts', '1'])
+        expect(post.get('lovesCount')).to.equal(0)
+        expect(post.get('loved')).to.be.false
+        action = {
+          meta: { resultKey: 'love', updateKey: 'post' },
+          payload: { model: post },
+          type: ACTION_TYPES.POST.LOVE_REQUEST,
+        }
+      })
 
-        stub('user', { id: 'abc', relationshipPriority: 'self' })
-        json.pages = { love: { ids: ['test'] } }
-        subject.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.lovesCount).to.equal(1)
-        expect(updatedPost.loved).to.be.true
-        expect(json.pages.love.ids).to.deep.equal(['test'])
+      it('handles POST', () => {
+        action.payload.method = 'POST'
+        state = subject.updatePostLoves(state, action)
+        const updatedPost = state.getIn(['posts', '1'])
+        expect(updatedPost.get('lovesCount')).to.equal(1)
+        expect(updatedPost.get('loved')).to.be.true
+        expect(state.getIn(['pages', 'love', 'ids'])).to.deep.equal(Immutable.List(['test']))
       })
 
       it('handles DELETE', () => {
-        const post = json.posts['1']
-        expect(post.lovesCount).to.equal(0)
-        expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_REQUEST }
-        action.payload = { method: 'DELETE', model: post }
-        action.meta = { resultKey: 'love', updateKey: 'post' }
-
-        stub('user', { id: 'abc', relationshipPriority: 'self' })
-        json.pages = { love: { ids: ['test'] } }
-        subject.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.lovesCount).to.equal(-1)
-        expect(updatedPost.loved).to.be.false
+        action.payload.method = 'DELETE'
+        state = subject.updatePostLoves(state, action)
+        const updatedPost = state.getIn(['posts', '1'])
+        expect(updatedPost.get('lovesCount')).to.equal(-1)
+        expect(updatedPost.get('loved')).to.be.false
       })
     })
 
     context('on love success', () => {
-      it('handles POST', () => {
-        const post = json.posts['1']
-        expect(post.showLovers).to.be.undefined
-        const action = { type: ACTION_TYPES.POST.LOVE_SUCCESS }
-        action.payload = { method: 'POST', model: post }
-        action.meta = { resultKey: 'love', updateKey: 'post' }
+      let action
+      beforeEach(() => {
+        const post = state.getIn(['posts', '1'])
+        expect(post.get('showLovers')).to.be.undefined
+        action = {
+          meta: { resultKey: 'love', updateKey: 'post' },
+          payload: { model: post },
+          type: ACTION_TYPES.POST.LOVE_SUCCESS,
+        }
+      })
 
-        stub('user', { id: 'abc', relationshipPriority: 'self' })
-        json.pages = { love: { ids: ['test'] } }
-        subject.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.showLovers).to.be.true
-        expect(json.pages.love.ids).to.deep.equal(['abc', 'test'])
+      it('handles POST', () => {
+        action.payload.method = 'POST'
+        state = subject.updatePostLoves(state, action)
+        const updatedPost = state.getIn(['posts', '1'])
+        expect(updatedPost.get('showLovers')).to.be.true
+        expect(state.getIn(['pages', 'love', 'ids'])).to.deep.equal(Immutable.List(['abc', 'test']))
       })
 
       it('handles DELETE', () => {
-        const post = json.posts['1']
-        expect(post.showLovers).to.be.undefined
-        const action = { type: ACTION_TYPES.POST.LOVE_SUCCESS }
-        action.payload = { method: 'DELETE', model: post }
-        action.meta = { resultKey: 'love', updateKey: 'post' }
-
-        stub('user', { id: 'abc', relationshipPriority: 'self' })
-        json.pages = { love: { ids: ['test'] } }
-        subject.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.showLovers).to.be.false
+        action.payload.method = 'DELETE'
+        state = subject.updatePostLoves(state, action)
+        const updatedPost = state.getIn(['posts', '1'])
+        expect(updatedPost.get('showLovers')).to.be.false
       })
     })
 
     context('on love failure', () => {
-      it('handles POST', () => {
-        const post = json.posts['1']
-        expect(post.lovesCount).to.equal(0)
-        expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_FAILURE }
-        action.payload = { method: 'POST', model: post }
-        action.meta = { resultKey: 'love', updateKey: 'post' }
+      let action
+      beforeEach(() => {
+        const post = state.getIn(['posts', '1'])
+        expect(post.get('lovesCount')).to.equal(0)
+        expect(post.get('loved')).to.be.false
+        action = {
+          meta: { resultKey: 'love', updateKey: 'post' },
+          payload: { model: post },
+          type: ACTION_TYPES.POST.LOVE_FAILURE,
+        }
+      })
 
-        stub('user', { id: 'abc', relationshipPriority: 'self' })
-        json.pages = { love: { ids: ['test'] } }
-        subject.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.lovesCount).to.equal(-1)
-        expect(updatedPost.loved).to.be.false
+      it('handles POST', () => {
+        action.payload.method = 'POST'
+        state = subject.updatePostLoves(state, action)
+        const updatedPost = state.getIn(['posts', '1'])
+        expect(updatedPost.get('lovesCount')).to.equal(-1)
+        expect(updatedPost.get('loved')).to.be.false
       })
 
       it('handles DELETE', () => {
-        const post = json.posts['1']
-        expect(post.lovesCount).to.equal(0)
-        expect(post.loved).to.be.false
-        const action = { type: ACTION_TYPES.POST.LOVE_FAILURE }
-        action.payload = { method: 'DELETE', model: post }
-        action.meta = { resultKey: 'love', updateKey: 'post' }
-
-        stub('user', { id: 'abc', relationshipPriority: 'self' })
-        json.pages = { love: { ids: ['test'] } }
-        subject.updatePostLoves({ state: 'yo' }, json, action)
-        const updatedPost = json.posts['1']
-        expect(updatedPost.lovesCount).to.equal(1)
-        expect(updatedPost.loved).to.be.true
+        action.payload.method = 'DELETE'
+        state = subject.updatePostLoves(state, action)
+        const updatedPost = state.getIn(['posts', '1'])
+        expect(updatedPost.get('lovesCount')).to.equal(1)
+        expect(updatedPost.get('loved')).to.be.true
       })
     })
+  })
+
+  describe('#updatePostWatch', () => {
+    it('should be tested')
+  })
+
+  describe('#addOrUpdatePost', () => {
+    it('should be tested')
+  })
+
+  describe('#toggleComments', () => {
+    it('should be tested')
+  })
+
+  describe('#toggleEditing', () => {
+    it('should be tested')
+  })
+
+  describe('#toggleLovers', () => {
+    it('should be tested')
+  })
+
+  describe('#toggleReposting', () => {
+    it('should be tested')
+  })
+
+  describe('#toggleReposters', () => {
+    it('should be tested')
   })
 })
 
