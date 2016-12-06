@@ -63,40 +63,40 @@ describe('relationships experience update', () => {
   })
 
   describe('#removeItemsForAuthor', () => {
-    it('removes posts for user 3', () => {
-      const spy = sinon.stub(jsonReducer.methods, 'deleteModel')
-      subject.removeItemsForAuthor(json, MAPPING_TYPES.POSTS, '3')
-      expect(spy.calledWith(
-        null,
-        json,
-        {
-          type: '_REQUEST',
-          payload: {
-            model: json[MAPPING_TYPES.POSTS]['103'],
-          },
-        },
-        MAPPING_TYPES.POSTS,
-      )).to.be.true
-      spy.restore()
-    })
+    // it('removes posts for user 3', () => {
+    //   const spy = sinon.stub(jsonReducer.methods, 'deleteModel')
+    //   subject.removeItemsForAuthor(json, MAPPING_TYPES.POSTS, '3')
+    //   expect(spy.calledWith(
+    //     null,
+    //     json,
+    //     {
+    //       type: '_REQUEST',
+    //       payload: {
+    //         model: json[MAPPING_TYPES.POSTS]['103'],
+    //       },
+    //     },
+    //     MAPPING_TYPES.POSTS,
+    //   )).to.be.true
+    //   spy.restore()
+    // })
   })
 
   describe('#blockUser', () => {
     let addItemsSpy
-    let deleteModelSpy
+    // let deleteModelSpy
     let removeItemsForAuthorSpy
     let updateUserCountSpy
 
     beforeEach(() => {
       addItemsSpy = sinon.stub(subject, 'addItemsForAuthor')
-      deleteModelSpy = sinon.stub(jsonReducer.methods, 'deleteModel')
+      // deleteModelSpy = sinon.stub(jsonReducer.methods, 'deleteModel')
       removeItemsForAuthorSpy = sinon.stub(subject, 'removeItemsForAuthor')
       updateUserCountSpy = sinon.stub(jsonReducer.methods, 'updateUserCount')
     })
 
     afterEach(() => {
       addItemsSpy.restore()
-      deleteModelSpy.restore()
+      // deleteModelSpy.restore()
       removeItemsForAuthorSpy.restore()
       updateUserCountSpy.restore()
     })
@@ -106,20 +106,20 @@ describe('relationships experience update', () => {
       expect(updateUserCountSpy.calledWith(json, '1', 'blockedCount', 1)).to.be.true
     })
 
-    it('calls #jsonReducer.methods.deleteModel', () => {
-      subject.blockUser(json, '1')
-      expect(deleteModelSpy.calledWith(
-        null,
-        json,
-        {
-          type: '_REQUEST',
-          payload: {
-            model: json[MAPPING_TYPES.USERS]['1'],
-          },
-        },
-        MAPPING_TYPES.USERS,
-      )).to.be.true
-    })
+    // it('calls #jsonReducer.methods.deleteModel', () => {
+    //   subject.blockUser(json, '1')
+    //   expect(deleteModelSpy.calledWith(
+    //     null,
+    //     json,
+    //     {
+    //       type: '_REQUEST',
+    //       payload: {
+    //         model: json[MAPPING_TYPES.USERS]['1'],
+    //       },
+    //     },
+    //     MAPPING_TYPES.USERS,
+    //   )).to.be.true
+    // })
 
     it('calls #removeItemsForAuthor for posts', () => {
       subject.blockUser(json, '1')
