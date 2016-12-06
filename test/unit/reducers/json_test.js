@@ -1,16 +1,16 @@
 /* eslint-disable max-len */
+
 import Immutable from 'immutable'
 import { isValidResult } from '../../support/test_helpers'
-import { clearJSON, json, stubJS, stubJSONStore } from '../../support/stubs'
+import { clearJSON, stubJS, stubJSONStore } from '../../support/stubs'
 import * as subject from '../../../src/reducers/json'
 import * as ACTION_TYPES from '../../../src/constants/action_types'
 import * as MAPPING_TYPES from '../../../src/constants/mapping_types'
 
-describe.only('json reducer', () => {
+describe('json reducer', () => {
   let state
   beforeEach(() => {
-    stubJSONStore()
-    state = json
+    state = stubJSONStore()
   })
 
   afterEach(() => {
@@ -20,12 +20,11 @@ describe.only('json reducer', () => {
   describe('#addNewIdsToResult', () => {
     it('returns the original state if no result.morePostIds', () => {
       state = Immutable.fromJS({ yo: 'yo', mama: 'mama' })
-      json.setIn(['pages', 'sweetpath'], Immutable.Map())
-      expect(subject.methods.addNewIdsToResult(state, json)).to.equal(state)
+      expect(subject.methods.addNewIdsToResult(state)).to.equal(state)
     })
 
     it('concats the existing result ids to the morePostIds and deletes the old morePostIds', () => {
-      state = json.set('pages', Immutable.fromJS({ sweetpath: { morePostIds: ['1', '2', '3'], ids: ['2', '10', '20', '30'] } }))
+      state = state.set('pages', Immutable.fromJS({ sweetpath: { morePostIds: ['1', '2', '3'], ids: ['2', '10', '20', '30'] } }))
       subject.setPath('sweetpath')
       state = subject.methods.addNewIdsToResult(state)
       expect(state.getIn(['pages', 'sweetpath', 'morePostIds'])).to.be.undefined
@@ -138,7 +137,7 @@ describe.only('json reducer', () => {
       data.users = []
       data.users.push(stubJS('user', { id: '5', username: 'carol' }))
       data.users.push(stubJS('user', { id: '6', username: 'malory' }))
-      const result = subject.methods.addModels(json, MAPPING_TYPES.USERS, data)
+      const result = subject.methods.addModels(state, MAPPING_TYPES.USERS, data)
       expect(result.state.getIn(['users', '5', 'username'])).to.equal('carol')
       expect(result.state.getIn(['users', '6', 'username'])).to.equal('malory')
       expect(result.ids).to.deep.equal(Immutable.List(['5', '6']))
@@ -148,7 +147,7 @@ describe.only('json reducer', () => {
       expect(state.getIn(['users', '123'])).to.be.undefined
       const data = {}
       data.users = stubJS('user', { id: '123', username: 'carol' })
-      const result = subject.methods.addModels(json, MAPPING_TYPES.USERS, data)
+      const result = subject.methods.addModels(state, MAPPING_TYPES.USERS, data)
       expect(result.state.getIn(['users', '123', 'username'])).to.equal('carol')
       expect(result.ids).to.deep.equal(Immutable.List(['123']))
     })
@@ -167,7 +166,7 @@ describe.only('json reducer', () => {
       expect(state.get('assets')).to.be.undefined
       expect(state.getIn(['users', 'yo'])).to.be.undefined
       expect(state.getIn(['users', 'mama'])).to.be.undefined
-      state = subject.methods.parseLinked(linked, json)
+      state = subject.methods.parseLinked(linked, state)
       expect(state.getIn(['assets', 'sup'])).not.to.be.null
       expect(state.getIn(['assets', 'dawg'])).not.to.be.null
       expect(state.getIn(['users', 'yo', 'username'])).to.equal('yo')
@@ -198,15 +197,58 @@ describe.only('json reducer', () => {
     })
   })
 
-  describe.only('#updateResult', () => {
+  describe('#getCurrentUser', () => {
+    it('should return the current user if one exists')
+    it('should return null if no current user exists')
+  })
+
+  describe('#findPostFromIdOrToken', () => {
+    it('returns the correct post with an id')
+    it('returns the correct post with a token')
+    it('returns null if no post was found')
+  })
+
+  describe('#addParentPostIdToComments', () => {
+    it('adds the correct post id to the comments response')
+    it('returns null if no post was found')
+  })
+
+  describe('#setLayoutMode', () => {
+    it('returns the state if no result')
+    it('returns the state if mode didn\'t change')
+    it('sets the mode if there is a result and it doesn\'t match')
+  })
+
+  describe('#pagesKey', () => {
+    it('returns the resultKey on the action if one exists')
+    it('returns the payload\'s pathname if no resultKey and one exists')
+    it('returns the path from a location change if no payload.pathname and no resultKey')
+  })
+
+  describe('#updateResult', () => {
     let action
     afterEach(() => {
       subject.methods.getResult.restore()
       action = {}
     })
 
+    context('without an existingResult', () => {
+      it('sets the result', () => {
+        const result = Immutable.fromJS({
+          ids: ['3', '2', '1'],
+          pagination: 'sweet',
+        })
+        action = { meta: { resultKey: 'sweetness' } }
+        sinon.stub(subject.methods, 'getResult', () => result)
+        expect(state.getIn(['pages', 'sweetness'])).to.be.undefined
+        state = subject.methods.updateResult({}, state, action)
+        expect(state.getIn(['pages', 'sweetness'])).to.equal(result)
+      })
+    })
+
     context('with an existingResult', () => {
-      context('and action.type === LOAD_NEXT_CONTENT_SUCCESS', () => {
+      // when a new page loads successfully add more ids to the existing result's next property
+      context('and we are infinite scrolling', () => {
         beforeEach(() => {
           state = state.setIn(['pages', 'sweetness'], Immutable.Map())
           action = {
@@ -221,149 +263,156 @@ describe.only('json reducer', () => {
           )
         })
 
+        // update the pagination of the existing result for infinite scroll
+        // to work with updated pagination properties from new result
         it('sets the pagination to the result', () => {
           expect(state.getIn(['pages', 'sweetness', 'pagination'])).to.be.undefined
           state = subject.methods.updateResult({}, state, action)
           expect(state.getIn(['pages', 'sweetness', 'pagination'])).to.equal('sweet')
         })
 
+        // this should happen once we have loaded at least 3 pages of content
+        // 1st page is in the result
+        // 2nd page is in the result.next
+        // 3rd page gets added to result.next
         it('updates the result ids if the existingResult had a next', () => {
           state = state.setIn(['pages', 'sweetness', 'next'], Immutable.fromJS({ ids: ['2', '1'] }))
           state = subject.methods.updateResult({}, state, action)
           expect(state.getIn(['pages', 'sweetness', 'next', 'ids'])).to.deep.equal(Immutable.List(['6', '5', '3', '2', '1']))
         })
 
+        // add this result to the next param for subsequent page loads
         it('sets the result on next', () => {
           expect(state.getIn(['pages', 'sweetness', 'next'])).to.be.undefined
           state = subject.methods.updateResult({}, state, action)
           expect(state.getIn(['pages', 'sweetness', 'next', 'pagination'])).to.equal('sweet')
         })
       })
+
+      // update existing result if we aren't a notification update
+      // need to check agianst the typeof the result ids since we hack this for
+      // notifications and `ids` is actually an array of notificaitons not model ids
+      context('and the result is not for notifications', () => {
+        beforeEach(() => {
+          state = state.setIn(['pages', 'sweetness'], Immutable.Map())
+          action = {
+            payload: { pathname: '/sweetness' },
+          }
+          sinon.stub(subject.methods, 'getResult', () =>
+            Immutable.fromJS({
+              ids: ['10', '9', '8'],
+              pagination: 'sweet',
+            }),
+          )
+          subject.setHasLoadedFirstStream(true)
+        })
+
+        // reset the result if the new result doesn't overlap with the existing result
+        // this could happen if you had loaded a page and then didn't go back to it until
+        // an entire new page of content was created before the last post that was seen
+        it('resets the result if no morePostIds and no overlap in data', () => {
+          state = state.setIn(['pages', '/sweetness', 'ids'], Immutable.List(['5', '4', '3']))
+          state = subject.methods.updateResult({}, state, action)
+          expect(state.getIn(['pages', '/sweetness', 'ids'])).to.deep.equal(Immutable.List(['10', '9', '8']))
+        })
+
+        it('resets the result morePostIds don\'t overlap in data', () => {
+          state = state.setIn(['pages', '/sweetness'], Immutable.fromJS({ ids: ['5', '4', '3'], morePostIds: ['7', '6'] }))
+          state = subject.methods.updateResult({}, state, action)
+          expect(state.getIn(['pages', '/sweetness', 'ids'])).to.deep.equal(Immutable.List(['10', '9', '8']))
+          expect(state.getIn(['pages', '/sweetness', 'morePostIds'])).to.be.undefined
+        })
+
+        // update the more posts button data if this is a stream that infinite scrolls
+        // and not a nested stream like lovers/reposters or a non infinite scroll like all-categories
+        context('and the page infinite scrolls', () => {
+          // add the result to the more posts of the existing result since they overlap
+          // this should only happen if you had the more posts button show up left the page
+          // and then came back to it and more results got loaded, so more posts should update
+          it('adds the union of ids to the existing morePostIds array', () => {
+            state = state.setIn(['pages', '/sweetness'], Immutable.fromJS({ ids: ['5', '4', '3'], morePostIds: ['8', '7', '6'] }))
+            state = subject.methods.updateResult({}, state, action)
+            expect(state.getIn(['pages', '/sweetness', 'morePostIds'])).to.deep.equal(Immutable.List(['10', '9', '8', '7', '6']))
+          })
+
+          // set more posts if there weren't any previously and existing and result don't match
+          it('adds morePostIds if the result doesn\'t match and no previous morePostIds', () => {
+            state = state.setIn(['pages', '/sweetness'], Immutable.fromJS({ ids: ['8', '7', '6'] }))
+            state = subject.methods.updateResult({}, state, action)
+            expect(state.getIn(['pages', '/sweetness', 'morePostIds'])).to.deep.equal(Immutable.List(['10', '9', '8']))
+          })
+
+          it('does nothing if the results are the same', () => {
+            state = state.setIn(['pages', '/sweetness'], Immutable.fromJS({ ids: ['10', '9', '8'] }))
+            state = subject.methods.updateResult({}, state, action)
+            expect(state.getIn(['pages', '/sweetness', 'ids'])).to.deep.equal(Immutable.List(['10', '9', '8']))
+          })
+        })
+      })
     })
-    // context('action.type === LOAD_NEXT_CONTENT_SUCCESS', () => {
-    //   it('sets the next property of result when it does not exist', () => {
-    //     json.pages = { sweetness: { pagination: 'cool' } }
-    //     const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
-    //     sinon.stub(subject.methods, 'getResult', () => result)
-    //     const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
-    //     subject.setPath('sweetness')
-    //     expect(json.pages.sweetness.next).to.be.undefined
-    //     expect(json.pages.sweetness.pagination).to.equal('cool')
-    //     subject.methods.updateResult({}, json, action)
-    //     expect(json.pages.sweetness.next).to.equal(result)
-    //     expect(json.pages.sweetness.pagination).to.equal('sweet')
-    //   })
-
-    //   it('updates the next property of result when it exists', () => {
-    //     json.pages = { sweetness: { next: { ids: ['1', '2'] }, pagination: 'cool' } }
-    //     sinon.stub(subject.methods, 'getResult', () => {
-    //       const stuff = { pagination: 'sweet', ids: ['2', '3', '4'] }
-    //       return stuff
-    //     })
-    //     const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: {} }
-    //     subject.setPath('sweetness')
-    //     expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2'] })
-    //     expect(json.pages.sweetness.pagination).to.equal('cool')
-    //     subject.methods.updateResult({}, json, action)
-    //     expect(json.pages.sweetness.next).to.deep.equal({ ids: ['1', '2', '3', '4'] })
-    //     expect(json.pages.sweetness.pagination).to.equal('sweet')
-    //   })
-
-    //   it('uses the resultKey to update the storage location within json.pages', () => {
-    //     json.pages = { yo: { pagination: 'cool' } }
-    //     const result = { pagination: 'sweet', ids: ['2', '3', '4'] }
-    //     sinon.stub(subject.methods, 'getResult', () => result)
-    //     const action = { type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS, meta: { resultKey: 'yo' } }
-    //     subject.setPath('sweetness')
-    //     expect(json.pages.yo.next).to.be.undefined
-    //     expect(json.pages.yo.pagination).to.equal('cool')
-    //     subject.methods.updateResult({}, json, action)
-    //     expect(json.pages.yo.next).to.deep.equal({ ids: ['2', '3', '4'], pagination: 'sweet' })
-    //     expect(json.pages.yo.pagination).to.equal('sweet')
-    //   })
-    // })
-
-    // context('action.type === LOAD_STREAM_SUCCESS', () => {
-    //   it('sets the result when it does not exist', () => {
-    //     const result = Immutable.fromJS({ pagination: 'sweet' })
-    //     sinon.stub(subject.methods, 'getResult', () => result)
-    //     const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
-    //     action.meta.mappingType = MAPPING_TYPES.USERS
-    //     subject.setPath('sweetness')
-    //     expect(state.getIn(['pages', 'sweetness'])).to.be.undefined
-    //     state = subject.methods.updateResult({}, json, action)
-    //     expect(state.getIn(['pages', 'sweetness'])).to.deep.equal(result)
-    //   })
-
-    //   context('with an existingResult and existingResult.ids[0] !== result.ids[0]', () => {
-    //     it('adds morePostIds if hasLoadedFirstStream && it is not a nested result && the index is greater than 0', () => {
-    //       const result = { pagination: 'sweet' }
-    //       sinon.stub(subject.methods, 'getResult', () => result)
-    //       // json.pages = { sweetness: { ids: ['1', '2'], next: { ids: ['1', '2'] } } }
-    //       // const result = { pagination: 'sweet', ids: ['3'] }
-    //       // sinon.stub(subject.methods, 'getResult', () => { return result })
-    //       // const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: {} }
-    //       // subject.setPath('sweetness')
-    //       // subject.methods.updateResult({}, json, action)
-    //       // expect(json.pages.sweetness).to.deep.equal({ next: { ids: ['1', '2'] }, ...result })
-    //     })
-
-    //     it('overrides the existing result if the above condition is not met', () => {
-    //       const result = { pagination: 'sweet' }
-    //       sinon.stub(subject.methods, 'getResult', () => result)
-    //     })
-    //   })
-
-    //   it('overlays the result with the existingResult when existingResult and resultKey', () => {
-    //     const result = { pagination: 'sweet' }
-    //     sinon.stub(subject.methods, 'getResult', () => result)
-    //   })
-
-    //   it('resets the result', () => {
-    //     const result = { pagination: 'sweet' }
-    //     sinon.stub(subject.methods, 'getResult', () => result)
-    //   })
-
-    //   it('uses the resultKey to update the storage location within json.pages', () => {
-    //     const result = { pagination: 'sweet' }
-    //     sinon.stub(subject.methods, 'getResult', () => result)
-    //     const action = { type: ACTION_TYPES.LOAD_STREAM_SUCCESS, meta: { resultKey: 'yo' } }
-    //     action.meta.mappingType = MAPPING_TYPES.USERS
-    //     subject.setPath('sweetness')
-    //     expect(json.pages.yo).to.be.undefined
-    //     subject.methods.updateResult({}, json, action)
-    //     expect(json.pages.yo).to.equal(result)
-    //   })
-    // })
   })
 
   describe('#deleteModel', () => {
+    it('calls commentMethods.addOrUpdateComment on comment delete success')
+    it('calls postMethods.addOrUpdatePost on post delete success')
+    it('adds the deleted model\'s id to the correct deleted array')
+
     it('restores a post on failure', () => {
-      const post = json.posts['1']
+      const post = state.getIn(['posts', '1'])
       expect(post).not.to.be.undefined
-      const action = { type: ACTION_TYPES.POST.DELETE_FAILURE }
-      action.payload = { model: post }
-      subject.methods.deleteModel({ state: 'yo' }, json, action, MAPPING_TYPES.POSTS)
-      expect(json.posts['1']).not.to.be.undefined
+      const action = { payload: { model: post }, type: ACTION_TYPES.POST.DELETE_FAILURE }
+      state = subject.methods.deleteModel(state, action, MAPPING_TYPES.POSTS)
+      expect(state.getIn(['posts', '1'])).not.to.be.undefined
     })
 
     it('returns a passed in state if type is not supported', () => {
-      const post = json.posts['1']
+      const post = state.getIn(['posts', '1'])
       expect(post).not.to.be.undefined
       const action = { type: 'blah' }
       action.payload = { model: post }
-      expect(subject.methods.deleteModel({ state: 'yo' }, json, action, MAPPING_TYPES.POSTS)).to.deep.equal({ state: 'yo' })
+      expect(subject.methods.deleteModel(state, action, MAPPING_TYPES.POSTS)).to.deep.equal(state)
     })
+  })
+
+  describe('#updateCurrentUser', () => {
+    it('updates the current users\' avatar with a tmp version')
+    it('updates the current users\' coverImage with a tmp version')
+  })
+
+  describe('#updateCurrentUserTmpAsset', () => {
+    it('merges the tmp asset onto the current user')
+  })
+
+  describe('#updatePostDetail', () => {
+    it('calls parseLinked')
+    it('calls addModels')
+    it('calls mergeModel')
   })
 
   describe('#json', () => {
     function methodCalledWithActions(methods, method, actions) {
       const spy = sinon.stub(methods, method)
       actions.forEach((action) => {
-        subject.json(json, { type: action })
+        subject.json(state, { type: action })
         expect(spy.called).to.be.true
       })
       spy.restore()
+    }
+
+    function methodsCalledWithActions(methodsArr, methodArr, actions) {
+      const spyArr = []
+      methodsArr.forEach((methods, index) => {
+        spyArr.push(sinon.stub(methods, methodArr[index]))
+      })
+      actions.forEach((action) => {
+        subject.json(state, { type: action, payload: {}, meta: {} })
+        spyArr.forEach((spy) => {
+          expect(spy.called).to.be.true
+        })
+      })
+      spyArr.forEach((spy) => {
+        spy.restore()
+      })
     }
 
     it('calls #methods.addNewIdsToResult', () => {
@@ -373,6 +422,19 @@ describe.only('json reducer', () => {
     })
 
     context('with comment actions', () => {
+      it('calls #parseLinked and #addOrUpdateComment', () => {
+        methodsCalledWithActions(
+          [subject.methods, subject.commentMethods],
+          ['parseLinked', 'addOrUpdateComment'],
+          [
+            ACTION_TYPES.COMMENT.CREATE_FAILURE,
+            ACTION_TYPES.COMMENT.CREATE_REQUEST,
+            ACTION_TYPES.COMMENT.CREATE_SUCCESS,
+            ACTION_TYPES.COMMENT.UPDATE_SUCCESS,
+          ],
+        )
+      })
+
       it('calls #methods.deleteModel', () => {
         methodCalledWithActions(subject.methods, 'deleteModel', [
           ACTION_TYPES.COMMENT.DELETE_REQUEST,
@@ -380,29 +442,140 @@ describe.only('json reducer', () => {
           ACTION_TYPES.COMMENT.DELETE_FAILURE,
         ])
       })
+
+      it('calls #commentMethods.toggleEditing', () => {
+        methodCalledWithActions(subject.commentMethods, 'toggleEditing', [
+          ACTION_TYPES.COMMENT.TOGGLE_EDITING,
+        ])
+      })
+    })
+
+    context('with fallthrough actions', () => {
+      it('returns state if there is no response')
+      context('and it should not update the result', () => {
+        it('calls #parseLinked and #addModels')
+          // // TODO: need to figure out how to pass an action through the method
+          // methodsCalledWithActions(
+          //   [subject.methods, subject.methods],
+          //   ['parseLinked', 'addModels'],
+          //   [
+          //     ACTION_TYPES.COMMENT.EDITABLE_SUCCESS,
+          //     ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS,
+          //     ACTION_TYPES.LOAD_STREAM_SUCCESS,
+          //     ACTION_TYPES.POST.EDITABLE_SUCCESS,
+          //     ACTION_TYPES.USER.DETAIL_SUCCESS,
+          //   ],
+          // )
+      })
+
+      context('and it should update the result', () => {
+        it('calls #parseLinked, #addParentPostIdToComments, and #updateResult')
+          // methodsCalledWithActions(
+          //   [subject.methods, subject.methods, subject.methods],
+          //   ['parseLinked', 'addParentPostIdToComments', 'updateResult'],
+          //   [
+          //     ACTION_TYPES.COMMENT.EDITABLE_SUCCESS,
+          //     ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS,
+          //     ACTION_TYPES.LOAD_STREAM_SUCCESS,
+          //     ACTION_TYPES.POST.EDITABLE_SUCCESS,
+          //     ACTION_TYPES.USER.DETAIL_SUCCESS,
+          //   ],
+          // )
+      })
     })
 
     context('with post actions', () => {
       it('calls #postMethods.addOrUpdatePost', () => {
-        methodCalledWithActions(subject.postMethods, 'addOrUpdatePost', [
-          ACTION_TYPES.POST.CREATE_FAILURE,
-          ACTION_TYPES.POST.CREATE_SUCCESS,
-          ACTION_TYPES.POST.UPDATE_SUCCESS,
+        methodsCalledWithActions(
+          [subject.methods, subject.postMethods],
+          ['parseLinked', 'addOrUpdatePost'],
+          [
+            ACTION_TYPES.POST.CREATE_FAILURE,
+            ACTION_TYPES.POST.CREATE_SUCCESS,
+            ACTION_TYPES.POST.UPDATE_SUCCESS,
+          ],
+        )
+      })
+
+      it('calls #methods.updatePostDetail', () => {
+        methodCalledWithActions(subject.methods, 'updatePostDetail', [
+          ACTION_TYPES.POST.DETAIL_SUCCESS,
         ])
       })
 
       it('calls #methods.deleteModel', () => {
         methodCalledWithActions(subject.methods, 'deleteModel', [
+          ACTION_TYPES.POST.DELETE_FAILURE,
           ACTION_TYPES.POST.DELETE_REQUEST,
           ACTION_TYPES.POST.DELETE_SUCCESS,
-          ACTION_TYPES.POST.DELETE_FAILURE,
         ])
       })
 
       it('calls #postMethods.updatePostLoves', () => {
         methodCalledWithActions(subject.postMethods, 'updatePostLoves', [
-          ACTION_TYPES.POST.LOVE_SUCCESS,
           ACTION_TYPES.POST.LOVE_FAILURE,
+          ACTION_TYPES.POST.LOVE_REQUEST,
+          ACTION_TYPES.POST.LOVE_SUCCESS,
+        ])
+      })
+
+      it('calls #postMethods.updatePostWatch', () => {
+        methodCalledWithActions(subject.postMethods, 'updatePostWatch', [
+          ACTION_TYPES.POST.WATCH_FAILURE,
+          ACTION_TYPES.POST.WATCH_REQUEST,
+          ACTION_TYPES.POST.WATCH_SUCCESS,
+        ])
+      })
+
+      it('calls #postMethods.toggleComments', () => {
+        methodCalledWithActions(subject.postMethods, 'toggleComments', [
+          ACTION_TYPES.POST.TOGGLE_COMMENTS,
+        ])
+      })
+
+      it('calls #postMethods.toggleEditing', () => {
+        methodCalledWithActions(subject.postMethods, 'toggleEditing', [
+          ACTION_TYPES.POST.TOGGLE_EDITING,
+        ])
+      })
+
+      it('calls #postMethods.toggleLovers', () => {
+        methodCalledWithActions(subject.postMethods, 'toggleLovers', [
+          ACTION_TYPES.POST.TOGGLE_LOVERS,
+        ])
+      })
+
+      it('calls #postMethods.toggleReposters', () => {
+        methodCalledWithActions(subject.postMethods, 'toggleReposters', [
+          ACTION_TYPES.POST.TOGGLE_REPOSTERS,
+        ])
+      })
+
+      it('calls #postMethods.toggleReposting', () => {
+        methodCalledWithActions(subject.postMethods, 'toggleReposting', [
+          ACTION_TYPES.POST.TOGGLE_REPOSTING,
+        ])
+      })
+    })
+
+    context('with profile actions', () => {
+      it('calls #parseLinked and #updateCurrentUser for load and save actions', () => {
+        methodsCalledWithActions(
+          [subject.methods, subject.methods],
+          ['parseLinked', 'updateCurrentUser'],
+          [
+            ACTION_TYPES.PROFILE.LOAD_SUCCESS,
+            ACTION_TYPES.PROFILE.SAVE_AVATAR_SUCCESS,
+            ACTION_TYPES.PROFILE.SAVE_COVER_SUCCESS,
+            ACTION_TYPES.PROFILE.SAVE_SUCCESS,
+          ],
+        )
+      })
+
+      it('calls #updateCurrentUserTmpAsset with profile tmp actions', () => {
+        methodCalledWithActions(subject.methods, 'updateCurrentUserTmpAsset', [
+          ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED,
+          ACTION_TYPES.PROFILE.TMP_COVER_CREATED,
         ])
       })
     })
@@ -419,28 +592,31 @@ describe.only('json reducer', () => {
           ACTION_TYPES.RELATIONSHIPS.UPDATE_INTERNAL,
           ACTION_TYPES.RELATIONSHIPS.UPDATE_REQUEST,
           ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS,
-          ACTION_TYPES.RELATIONSHIPS.UPDATE_FAILURE,
         ])
       })
     })
 
+    it('rehydrates properly')
+
+    it('handles location change properly')
+
     it('returns the original state if the type is not LOAD_NEXT_CONTENT_SUCCESS or LOAD_STREAM_SUCCESS', () => {
-      const newState = subject.json(json, {})
-      expect(newState).to.equal(json)
+      const newState = subject.json(state, {})
+      expect(newState).to.equal(state)
     })
 
     it('returns the original state if there is no response', () => {
-      const newState = subject.json(json, { payload: {}, type: ACTION_TYPES.LOAD_STREAM_SUCCESS })
-      expect(newState).to.equal(json)
+      const newState = subject.json(state, { payload: {}, type: ACTION_TYPES.LOAD_STREAM_SUCCESS })
+      expect(newState).to.equal(state)
     })
 
     it('modifies the state if the action.type === LOAD_NEXT_CONTENT_SUCCESS', () => {
       const parseLinkedSpy = sinon.stub(subject.methods, 'parseLinked')
       const updateResultSpy = sinon.stub(subject.methods, 'updateResult')
-      const newState = subject.json(json, { payload: { response: true }, type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS })
+      const newState = subject.json(state, { payload: { response: true }, type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS })
       expect(parseLinkedSpy.called).to.be.true
       expect(updateResultSpy.called).to.be.true
-      expect(newState).not.to.equal(json)
+      expect(newState).not.to.equal(state)
       subject.methods.parseLinked.restore()
       subject.methods.updateResult.restore()
     })
