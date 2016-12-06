@@ -17,7 +17,6 @@ describe('gui selectors', () => {
       expect(selector.selectDeviceSize.recomputations()).to.equal(2)
 
       state = state.setIn(['gui', 'columnCount'], 4).setIn(['gui', 'innerWidth'], 1280)
-      console.log('state', state)
       expect(selector.selectDeviceSize(state)).to.equal('desktop')
       expect(selector.selectDeviceSize.recomputations()).to.equal(3)
 

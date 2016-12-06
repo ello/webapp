@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import Immutable from 'immutable'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
@@ -6,99 +7,97 @@ import * as jsonReducer from '../../reducers/json'
 
 const methods = {}
 
-methods.removeIdFromDeletedArray = (newState, type, id) => {
-  const delArr = newState[`deleted_${type}`]
-  if (delArr) {
+methods.removeIdFromDeletedArray = (state, type, id) => {
+  const delArr = state.get(`deleted_${type}`)
+  if (!delArr.isEmpty()) {
     const index = delArr.indexOf(`${id}`)
     if (index > -1) {
-      delArr.splice(index, 1)
+      return state.set(`deleted_${type}`, delArr.splice(index, 1))
     }
   }
-  return newState
+  return state
 }
 
-methods.relationshipUpdateSuccess = (newState, action) => {
+methods.relationshipUpdateSuccess = (state, action) => {
   const { response } = action.payload
   const { owner, subject } = response
-  if (owner) { newState[MAPPING_TYPES.USERS][owner.id] = owner }
-  if (subject) { newState[MAPPING_TYPES.USERS][subject.id] = subject }
-  return newState
+  if (owner) { state = state.setIn([MAPPING_TYPES.USERS, owner.id], Immutable.fromJS(owner)) }
+  if (subject) { state = state.setIn([MAPPING_TYPES.USERS, subject.id], Immutable.fromJS(subject)) }
+  return state
 }
 
-methods.addItemsForAuthor = (newState, mappingType, authorId) => {
-  Object.keys(newState[mappingType] || {}).forEach((itemId) => {
-    const item = newState[mappingType][itemId]
-    if ({}.hasOwnProperty.call(item, 'authorId') && item.authorId === authorId) {
-      methods.removeIdFromDeletedArray(newState, mappingType, itemId)
+methods.addItemsForAuthor = (state, mappingType, authorId) => {
+  state.get(mappingType, Immutable.Map()).valueSeq().forEach((model) => {
+    if (model.get('authorId') === authorId) {
+      state = methods.removeIdFromDeletedArray(state, mappingType, model.get('id'))
     }
   })
-  return newState
+  return state
 }
 
-methods.removeItemsForAuthor = (newState, mappingType, authorId) => {
-  Object.keys(newState[mappingType] || {}).forEach((itemId) => {
-    const item = newState[mappingType][itemId]
-    if ({}.hasOwnProperty.call(item, 'authorId') && item.authorId === authorId) {
+methods.removeItemsForAuthor = (state, mappingType, authorId) => {
+  state.get(mappingType, Immutable.Map()).valueSeq().forEach((model) => {
+    if (model.get('authorId') === authorId) {
       const action = {
         type: '_REQUEST',
         payload: {
-          model: newState[mappingType][itemId],
+          model: state.getIn([mappingType, model.get('id')]),
         },
       }
-      jsonReducer.methods.deleteModel(null, newState, action, mappingType)
+      state = jsonReducer.methods.deleteModel(state, action, mappingType)
     }
   })
-  return newState
+  return state
 }
 
-methods.blockUser = (newState, userId) => {
+methods.blockUser = (state, userId) => {
   // update blockedCount
-  jsonReducer.methods.updateUserCount(newState, userId, 'blockedCount', 1)
+  state = jsonReducer.methods.updateUserCount(state, userId, 'blockedCount', 1)
   // delete the user
   const userAction = {
     type: '_REQUEST',
     payload: {
-      model: newState[MAPPING_TYPES.USERS][userId],
+      model: state.getIn([MAPPING_TYPES.USERS, userId]),
     },
   }
-  jsonReducer.methods.deleteModel(null, newState, userAction, MAPPING_TYPES.USERS)
+  state = jsonReducer.methods.deleteModel(state, userAction, MAPPING_TYPES.USERS)
   // delete all of their posts
-  methods.removeItemsForAuthor(newState, MAPPING_TYPES.POSTS, userId)
+  state = methods.removeItemsForAuthor(state, MAPPING_TYPES.POSTS, userId)
   // delete all of their comments
-  methods.removeItemsForAuthor(newState, MAPPING_TYPES.COMMENTS, userId)
+  return methods.removeItemsForAuthor(state, MAPPING_TYPES.COMMENTS, userId)
 }
 
-methods.unblockUser = (newState, userId) => {
+methods.unblockUser = (state, userId) => {
   // update blockedCount
-  jsonReducer.methods.updateUserCount(newState, userId, 'blockedCount', -1)
+  state = jsonReducer.methods.updateUserCount(state, userId, 'blockedCount', -1)
   // remove the user from the deleted user ids array
-  methods.removeIdFromDeletedArray(newState, MAPPING_TYPES.USERS, userId)
+  state = methods.removeIdFromDeletedArray(state, MAPPING_TYPES.USERS, userId)
   // add back all of their posts
-  methods.addItemsForAuthor(newState, MAPPING_TYPES.POSTS, userId)
+  state = methods.addItemsForAuthor(state, MAPPING_TYPES.POSTS, userId)
   // add back all of their comments
-  methods.addItemsForAuthor(newState, MAPPING_TYPES.COMMENTS, userId)
+  return methods.addItemsForAuthor(state, MAPPING_TYPES.COMMENTS, userId)
 }
 
-methods.updateRelationship = (newState, action) => {
+methods.updateRelationship = (state, action) => {
   // on success just return the owner subject mapped back on users
   if (action.type === ACTION_TYPES.RELATIONSHIPS.UPDATE_SUCCESS) {
-    return methods.relationshipUpdateSuccess(newState, action)
+    return methods.relationshipUpdateSuccess(state, action)
   }
   const { userId, priority } = action.payload
-  const user = newState[MAPPING_TYPES.USERS][userId]
-  const prevPriority = user.relationshipPriority
+  const user = state.getIn([MAPPING_TYPES.USERS, userId])
+  const prevPriority = user.get('relationshipPriority')
   switch (prevPriority) {
     case RELATIONSHIP_PRIORITY.BLOCK:
-      methods.unblockUser(newState, userId)
+      state = methods.unblockUser(state, userId)
       break
     case RELATIONSHIP_PRIORITY.MUTE:
-      jsonReducer.methods.updateUserCount(newState, userId, 'mutedCount', -1)
+      state = jsonReducer.methods.updateUserCount(state, userId, 'mutedCount', -1)
       break
     case RELATIONSHIP_PRIORITY.FRIEND:
     case RELATIONSHIP_PRIORITY.NOISE:
       if (priority !== RELATIONSHIP_PRIORITY.FRIEND &&
           priority !== RELATIONSHIP_PRIORITY.NOISE) {
-        jsonReducer.methods.updateUserCount(newState, userId, 'followersCount', -1)
+        state = jsonReducer.methods.updateUserCount(state, userId, 'followersCount', -1)
       }
       break
     default:
@@ -109,35 +108,34 @@ methods.updateRelationship = (newState, action) => {
     case RELATIONSHIP_PRIORITY.NOISE:
       if (prevPriority !== RELATIONSHIP_PRIORITY.FRIEND &&
           prevPriority !== RELATIONSHIP_PRIORITY.NOISE) {
-        jsonReducer.methods.updateUserCount(newState, userId, 'followersCount', 1)
+        state = jsonReducer.methods.updateUserCount(state, userId, 'followersCount', 1)
       }
       break
     case RELATIONSHIP_PRIORITY.BLOCK:
-      methods.blockUser(newState, userId)
+      state = methods.blockUser(state, userId)
       break
     case RELATIONSHIP_PRIORITY.MUTE:
-      jsonReducer.methods.updateUserCount(newState, userId, 'mutedCount', 1)
+      state = jsonReducer.methods.updateUserCount(state, userId, 'mutedCount', 1)
       break
     default:
       break
   }
   // update local user
-  jsonReducer.methods.mergeModel(
-    newState,
+  return jsonReducer.methods.mergeModel(
+    state,
     MAPPING_TYPES.USERS,
     {
       id: userId,
       relationshipPriority: priority,
     },
   )
-  return newState
 }
 
-methods.batchUpdateRelationship = (newState, action) => {
+methods.batchUpdateRelationship = (state, action) => {
   const { priority, userIds } = action.payload
   userIds.forEach((id) => {
-    jsonReducer.methods.mergeModel(
-      newState,
+    state = jsonReducer.methods.mergeModel(
+      state,
       MAPPING_TYPES.USERS,
       {
         id,
@@ -145,7 +143,7 @@ methods.batchUpdateRelationship = (newState, action) => {
       },
     )
   })
-  return newState
+  return state
 }
 
 export { methods as default, jsonReducer }
