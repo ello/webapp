@@ -116,7 +116,6 @@ describe('user selectors', () => {
       expect(selector.selectUserMetaRobots.recomputations()).to.equal(1)
 
       state = state.setIn(['json', 'users', '1', 'badForSeo'], true)
-      console.log('state', state.getIn(['json', 'users', '1', 'badForSeo']))
       expect(selector.selectUserMetaRobots(state, props)).to.deep.equal('noindex, follow')
       expect(selector.selectUserMetaRobots.recomputations()).to.equal(2)
     })
