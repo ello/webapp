@@ -3,7 +3,7 @@ import { clearJSON, json, stub, stubJSONStore } from '../../../support/stubs'
 import subject from '../../../../src/reducers/experience_updates/posts'
 import * as ACTION_TYPES from '../../../../src/constants/action_types'
 
-describe.only('posts experience update', () => {
+describe('posts experience update', () => {
   let state
   beforeEach(() => {
     stubJSONStore()
