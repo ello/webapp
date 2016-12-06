@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import setWith from 'lodash/setWith'
+import Immutable from 'immutable'
 import * as ACTION_TYPES from '../../constants/action_types'
 import * as MAPPING_TYPES from '../../constants/mapping_types'
 import * as jsonReducer from '../../reducers/json'
@@ -7,71 +7,73 @@ import postMethods from './posts'
 
 const methods = {}
 
-methods.updateCommentsCount = (newState, postId, delta) => {
-  const commentCount = newState[MAPPING_TYPES.POSTS][postId].commentsCount
-  jsonReducer.methods.mergeModel(
-    newState,
+methods.updateCommentsCount = (state, postId, delta) => {
+  const commentCount = state.getIn([MAPPING_TYPES.POSTS, postId, 'commentsCount'])
+  return jsonReducer.methods.mergeModel(
+    state,
     MAPPING_TYPES.POSTS,
     {
       id: postId,
       commentsCount: Number(commentCount) + delta,
     },
   )
-  return newState
 }
 
-methods.addOrUpdateComment = (newState, action) => {
+methods.addOrUpdateComment = (state, action) => {
   const { hasAutoWatchEnabled, model, postId, response } = action.payload
-  const post = newState[MAPPING_TYPES.POSTS][postId]
+  const post = state.getIn([MAPPING_TYPES.POSTS, postId])
   let index = null
   switch (action.type) {
     case ACTION_TYPES.COMMENT.CREATE_REQUEST:
-      return postMethods.updatePostWatch(newState, {
+      return postMethods.updatePostWatch(state, {
         payload: { method: 'POST', model: post, hasAutoWatchEnabled },
       })
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
     case ACTION_TYPES.COMMENT.UPDATE_SUCCESS:
-      setWith(newState,
-                [MAPPING_TYPES.COMMENTS, response[MAPPING_TYPES.COMMENTS].id],
-                response[MAPPING_TYPES.COMMENTS],
-                Object)
-      if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return newState }
+      state = state.setIn(
+        [MAPPING_TYPES.COMMENTS, response[MAPPING_TYPES.COMMENTS].id],
+        Immutable.fromJS(response[MAPPING_TYPES.COMMENTS]),
+      )
+      if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return state }
       // update post watching prop
-      newState = postMethods.updatePostWatch(newState, {
-        payload: { method: 'POST', model: post },
-      })
+      state = postMethods.updatePostWatch(state, { payload: { method: 'POST', model: post } })
       // add the comment to the linked array
-      if (post.links && post.links.comments) {
-        post.links.comments.ids.unshift(`${response[MAPPING_TYPES.COMMENTS].id}`)
+      if (!post.getIn(['links', 'comments']).isEmpty()) {
+        state = state.setIn(
+          [MAPPING_TYPES.POSTS, postId, 'links', 'comments', 'ids'],
+          post.getIn(['links', 'comments', 'ids']).unshift(`${response[MAPPING_TYPES.COMMENTS].id}`),
+        )
       }
-      jsonReducer.methods.appendPageId(
-        newState, `/posts/${postId}/comments`,
+      state = jsonReducer.methods.appendPageId(
+        state, `/posts/${postId}/comments`,
         MAPPING_TYPES.COMMENTS, response[MAPPING_TYPES.COMMENTS].id)
-      return methods.updateCommentsCount(newState, postId, 1)
+      return methods.updateCommentsCount(state, postId, 1)
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
-      // add the comment to the linked array
-      if (post.links && post.links.comments) {
-        index = post.links.comments.ids.indexOf(`${model.id}`)
+      // delete the comment from the linked array
+      if (!post.getIn(['links', 'comments']).isEmpty()) {
+        index = post.links.comments.ids.indexOf(`${model.get('id')}`)
         if (index > -1) {
-          post.links.comments.ids.splice(index, 1)
+          state = state.setIn(
+            [MAPPING_TYPES.POSTS, postId, 'links', 'comments', 'ids'],
+            post.getIn(['links', 'comments', 'ids']).splice(index, 1),
+          )
         }
       }
-      jsonReducer.methods.removePageId(newState, `/posts/${postId}/comments`, model.id)
-      return methods.updateCommentsCount(newState, postId, -1)
+      state = jsonReducer.methods.removePageId(state, `/posts/${postId}/comments`, model.get('id'))
+      return methods.updateCommentsCount(state, postId, -1)
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
-      postMethods.updatePostWatch(newState, {
+      state = postMethods.updatePostWatch(state, {
         payload: { method: 'DELETE', model: post },
       })
-      return methods.updateCommentsCount(newState, postId, -1)
+      return methods.updateCommentsCount(state, postId, -1)
     default:
-      return newState
+      return state
   }
 }
 
-methods.toggleEditing = (newState, action) => {
+methods.toggleEditing = (state, action) => {
   const { model, isEditing } = action.payload
-  newState[MAPPING_TYPES.COMMENTS][model.id].isEditing = isEditing
-  return newState
+  return state.setIn([MAPPING_TYPES.COMMENTS, model.get('id'), 'isEditing'], isEditing)
 }
 
 export default methods
