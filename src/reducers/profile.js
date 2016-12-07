@@ -72,13 +72,13 @@ export default (state = initialState, action) => {
       obj[key] = key
       return state.merge(obj)
     }
-    case REHYDRATE:
-      if (!action.payload.profile) { return state }
-      return state.merge(action.payload.profile)
-        .set('availability', null)
-        .set('dataExport', null)
-        .deleteIn(['avatar', 'tmp'])
-        .deleteIn(['coverImage', 'tmp'])
+    // case REHYDRATE:
+    //   if (!action.payload.profile) { return state }
+    //   return state.merge(action.payload.profile)
+    //     .set('availability', null)
+    //     .set('dataExport', null)
+    //     .deleteIn(['avatar', 'tmp'])
+    //     .deleteIn(['coverImage', 'tmp'])
     case PROFILE.SAVE_AVATAR_SUCCESS:
     case PROFILE.SAVE_COVER_SUCCESS: {
       const avatarTmp = state.getIn(['avatar', 'tmp'])

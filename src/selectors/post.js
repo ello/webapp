@@ -44,8 +44,10 @@ export const selectAuthorFromPost = createSelector(
 )
 
 export const selectPostBlocks = createSelector(
-  [selectPostFromToken], post =>
-    (post.get('repostContent') || post.get('content')) || post.get('summary'),
+  [selectPostFromToken], (post) => {
+    console.log('post', post)
+    return (post.get('repostContent') || post.get('content')) || post.get('summary')
+  },
 )
 
 export const selectPostEmbedContent = createSelector(

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
-import sample from 'lodash/sample'
+import random from 'lodash/random'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en'
@@ -99,10 +99,10 @@ function mapStateToProps(state, props) {
     json: selectJson(state),
     pathname: selectPathname(state),
     promotions,
-    useGif: user && (selectViewsAdultContent(state) || !user.postsAdultContent),
-    userCoverImage: user && user.coverImage,
-    userId: user && `${user.id}`,
-    username: user && user.username,
+    useGif: selectViewsAdultContent(state) || !user.get('postsAdultContent'),
+    userCoverImage: user.get('coverImage'),
+    userId: `${user.get('id')}`,
+    username: user.get('username'),
     viewName: selectViewNameFromRoute(state, props),
   }
 }
@@ -146,11 +146,11 @@ class HeroContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const { broadcast, isPagePromotion, pathname } = nextProps
     const hasPathChanged = this.props.pathname !== pathname
-
+    const randomIndex = nextProps.promotions.size > 0 ? random(nextProps.promotions.size - 1) : 0
     if ((hasPathChanged && isPagePromotion) || !this.state.promotion) {
-      this.setState({ promotion: sample(nextProps.promotions) })
+      this.setState({ promotion: nextProps.promotions.get(randomIndex) })
     } else if (hasPathChanged || !this.state.promotion) {
-      this.setState({ promotion: sample(nextProps.promotions) })
+      this.setState({ promotion: nextProps.promotions.get(randomIndex) })
     }
 
     if (broadcast !== this.state.broadcast) {
@@ -200,15 +200,15 @@ class HeroContainer extends Component {
     const { categoryData, dpi, isLoggedIn, isMobile, json } = this.props
     const { category } = categoryData
     const { promotion } = this.state
-    const name = get(category, 'name', '')
-    const description = get(category, 'description', '')
-    const isSponsored = get(category, 'isSponsored', '')
-    const ctaCaption = get(category, 'ctaCaption')
-    const ctaHref = get(category, 'ctaHref')
-    const sources = get(promotion, 'image')
+    const name = category.get('name', '')
+    const description = category.get('description', '')
+    const isSponsored = category.get('isSponsored', '')
+    const ctaCaption = category.get('ctaCaption')
+    const ctaHref = category.get('ctaHref')
+    const sources = promotion.get('image')
     const user = getLinkObject(promotion, 'user', json)
-    const creditSources = get(user, 'avatar', null)
-    const creditUsername = get(user, 'username', null)
+    const creditSources = user.get('avatar', null)
+    const creditUsername = user.get('username', null)
     const creditLabel = isSponsored ? 'Sponsored by' : 'Posted by'
     const props = {
       creditLabel,
@@ -229,14 +229,15 @@ class HeroContainer extends Component {
   getHeroPromotionPage() {
     const { dpi, isLoggedIn, isMobile, json } = this.props
     const { promotion } = this.state
-    const header = get(promotion, 'header', '')
-    const subheader = get(promotion, 'subheader', '')
+    console.log('promotion', promotion)
+    const header = promotion.get('header', '')
+    const subheader = promotion.get('subheader', '')
     const user = getLinkObject(promotion, 'user', json)
-    const creditSources = get(user, 'avatar', null)
-    const creditUsername = get(user, 'username', null)
-    const ctaCaption = get(promotion, 'ctaCaption')
-    const ctaHref = get(promotion, 'ctaHref')
-    const sources = get(promotion, 'image', null)
+    const creditSources = user.get('avatar', null)
+    const creditUsername = user.get('username', null)
+    const ctaCaption = promotion.get('ctaCaption')
+    const ctaHref = promotion.get('ctaHref')
+    const sources = promotion.get('image', null)
     const props = { creditSources, creditUsername, dpi, header, sources, subheader }
     const ctaProps = { ctaCaption, ctaHref, isLoggedIn, isMobile }
     return <HeroPromotionPage key="HeroPromotionPage" {...props} {...ctaProps} />

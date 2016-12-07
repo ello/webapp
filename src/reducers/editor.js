@@ -34,9 +34,9 @@ export default (state = initialState, action) => {
     case PROFILE.LOCATION_AUTOCOMPLETE_SUCCESS:
       return state.set('completions', editorMethods.getCompletions(action))
     case REHYDRATE:
-      if (action.payload.editor) {
-        return editorMethods.rehydrateEditors(action.payload.editor)
-      }
+      // if (action.payload.editor) {
+      //   return editorMethods.rehydrateEditors(action.payload.editor)
+      // }
       return state
     default:
       return state
