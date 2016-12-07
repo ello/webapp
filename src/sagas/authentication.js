@@ -87,6 +87,7 @@ function* refreshSchedulerSaga() {
    rehydration, then exits. */
 function* rehydrateSaga() {
   const { payload } = yield take(REHYDRATE)
+  console.log('rehydrateSaga', payload)
   if (payload.authentication) {
     const { createdAt, expiresIn, refreshToken } = payload.authentication
 

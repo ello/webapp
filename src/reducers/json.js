@@ -368,21 +368,21 @@ export default function json(state = initialState, action = { type: '' }) {
       // only keep the items that have been deleted
       // so we can still filter them out if needed
       const keepers = Immutable.Map()
-      if (action.payload.json) {
-        action.payload.json.keySeq().forEach((collection) => {
-          if (/(deleted_)/.test(collection)) {
-            keepers.set(collection, action.payload.json.get(collection))
-          }
-        })
-      }
-      if (action.payload.profile) {
-        const curUser = action.payload.profile
-        if (curUser) {
-          curUser.deleteIn(['avatar', 'tmp'])
-          curUser.deleteIn(['coverImage', 'tmp'])
-          keepers.setIn([MAPPING_TYPES.USERS, curUser.get('id')], curUser)
-        }
-      }
+      // if (action.payload.json) {
+      //   action.payload.json.keySeq().forEach((collection) => {
+      //     if (/(deleted_)/.test(collection)) {
+      //       keepers.set(collection, action.payload.json.get(collection))
+      //     }
+      //   })
+      // }
+      // if (action.payload.profile) {
+      //   const curUser = action.payload.profile
+      //   if (curUser) {
+      //     curUser.deleteIn(['avatar', 'tmp'])
+      //     curUser.deleteIn(['coverImage', 'tmp'])
+      //     keepers.setIn([MAPPING_TYPES.USERS, curUser.get('id')], curUser)
+      //   }
+      // }
       return keepers
     }
     case LOCATION_CHANGE:
@@ -423,5 +423,5 @@ export function setHasLoadedFirstStream(bool) {
   hasLoadedFirstStream = bool
 }
 
-export { json, methods, commentMethods, postMethods, relationshipMethods }
+export { methods, commentMethods, postMethods, relationshipMethods }
 

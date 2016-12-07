@@ -1,3 +1,4 @@
+// import Immutable from 'immutable'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 
@@ -8,7 +9,6 @@ import { applyRouterMiddleware, browserHistory, Router } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import useScroll from 'react-router-scroll/lib/useScroll'
 import { asyncLocalStorage } from 'redux-persist/storages'
-// import { persistStore } from 'redux-persist'
 // import { persistStore } from 'redux-persist-immutable'
 
 // import './main.sass'
@@ -55,13 +55,20 @@ updateTimeAgoStrings({ about: '' })
 
 const APP_VERSION = '3.0.21'
 
-const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState(state) {
-    if (typeof state.get === 'function') {
-      return state.get('routing').toJS()
+const createSelectLocationState = () => {
+  let prevRoutingState
+  let prevRoutingStateJS
+  return (state) => {
+    const routingState = state.get('routing')
+    if (typeof prevRoutingState === 'undefined' || prevRoutingState !== routingState) {
+      prevRoutingState = routingState
+      prevRoutingStateJS = routingState.toJS()
     }
-    return state
-  },
+    return prevRoutingStateJS
+  }
+}
+const history = syncHistoryWithStore(browserHistory, store, {
+  selectLocationState: createSelectLocationState,
 })
 const routes = createRoutes(store)
 const element = (
@@ -103,6 +110,7 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   }
 
   const root = document.getElementById('root')
+  console.log('launchApplication', root)
   ReactDOM.render(element, root)
 }
 

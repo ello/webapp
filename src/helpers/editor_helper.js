@@ -37,21 +37,21 @@ methods.getCompletions = (action) => {
 
 // TODO: make sure this still works
 methods.rehydrateEditors = (persistedEditors = {}) => {
-  const editors = {}
-  Object.keys(persistedEditors).forEach((item) => {
-    const pe = persistedEditors[item]
-    if (pe && pe.shouldPersist) {
+  const editors = Immutable.Map()
+  persistedEditors.keySeq().forEach((key) => {
+    const pe = persistedEditors.get(key)
+    if (pe && pe.get('shouldPersist')) {
       // clear out the blobs
-      Object.keys(pe.collection).forEach((uid) => {
-        const block = pe.collection[uid]
-        if (/image/.test(block.kind)) {
-          delete block.blob
-          pe.collection[uid] = block
+      pe.keySeq().forEach((uid) => {
+        const block = pe.get(uid)
+        if (/image/.test(block.get('kind'))) {
+          block.delete('blob')
+          pe.setIn(['collection', uid], block)
         }
       })
-      pe.isLoading = false
-      pe.isPosting = false
-      editors[item] = pe
+      pe.set('isLoading', false)
+      pe.set('isPosting', false)
+      editors.set(key, pe)
     }
   })
   return editors
