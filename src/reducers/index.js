@@ -1,7 +1,7 @@
 export { default as authentication } from './authentication'
 export { default as emoji } from './emoji'
 export { default as gui } from './gui'
-// export { json } from './json'
+export { default as json } from './json'
 export { default as modal } from './modal'
 export { default as editor } from './editor'
 export { default as omnibar } from './omnibar'

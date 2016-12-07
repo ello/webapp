@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import trunc from 'trunc-html'
@@ -17,7 +18,7 @@ export const selectUsers = state => state.getIn(['json', 'users'])
 // Memoized selectors
 export const selectUser = createSelector(
   [selectUsers, selectPropsUserId], (users, userId) =>
-    users.get(`${userId}`),
+    users.get(`${userId}`, Immutable.Map()),
 )
 
 export const selectUserFromPropsUserId = createSelector(

@@ -16,14 +16,24 @@ const reducer = combineReducers({
 })
 
 const createBrowserStore = (history, passedInitialState = {}) => {
-  const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
+  const logger = createLogger({
+    collapsed: true,
+    predicate: () => ENV.APP_DEBUG,
+    stateTransformer: (state) => {
+      const newState = {}
+      state.keySeq().forEach((key) => {
+        newState[key] = state.get(key).toJS()
+      })
+      return newState
+    },
+  })
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()
   const initialState = window.__INITIAL_STATE__ || passedInitialState
   // react-router-redux doesn't know how to serialize
   // query params from server-side rendering, so we just kill it
   // and let the browser reconstruct the router state
-  initialState.routing = {}
+  initialState.routing = Immutable.Map()
 
   const store = compose(
     autoRehydrate(),
@@ -54,7 +64,7 @@ const createServerStore = (history, initialState = {}) => {
 
 const createElloStore = (history, initialState = {}) => {
   if (typeof window !== 'undefined') return createBrowserStore(browserHistory, initialState)
-  return createServerStore(history, Immutable.fromJS(initialState))
+  return createServerStore(history, initialState)
 }
 
 export { createElloStore }

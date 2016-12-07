@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
-import get from 'lodash/get'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { trackEvent, trackInitialPage } from '../actions/analytics'
 import { getCategories, getPagePromotionals } from '../actions/discover'
@@ -61,7 +60,7 @@ class AppContainer extends Component {
 
   static preRender = (store) => {
     const state = store.getState()
-    if (state.authentication && state.authentication.isLoggedIn) {
+    if (state.getIn(['authentication', 'isLoggedIn'])) {
       return Promise.all([
         store.dispatch(loadProfile()),
         store.dispatch(getCategories()),
@@ -142,7 +141,7 @@ class AppContainer extends Component {
     const { dispatch, categoryData, isCategoryPromotion, isPagePromotion } = this.props
     let label = ''
     if (isCategoryPromotion && categoryData) {
-      label = categoryData.category.slug
+      label = categoryData.category.get('slug')
     } else if (isPagePromotion) {
       label = 'general'
     } else {
@@ -153,7 +152,7 @@ class AppContainer extends Component {
 
   onClickTrackCTA = () => {
     const { dispatch, categoryData } = this.props
-    dispatch(trackEvent('promoCTA_clicked', { name: get(categoryData, 'category.slug', 'general') }))
+    dispatch(trackEvent('promoCTA_clicked', { name: categoryData.category.get('slug', 'general') }))
   }
 
   render() {

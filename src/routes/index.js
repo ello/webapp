@@ -32,7 +32,6 @@ const routes = (store) => {
       return {
         ...route,
         onEnter(nextState, replace) {
-          // const { authentication: { isLoggedIn } } = store.getState()
           const isLoggedIn = store.getState().getIn(['authentication', 'isLoggedIn'])
           if (!isLoggedIn) {
             replace({ pathname: '/enter', state: nextState })
@@ -44,7 +43,6 @@ const routes = (store) => {
     return {
       ...route,
       onEnter(nextState, replace) {
-        // const { authentication: { isLoggedIn } } = store.getState()
         const isLoggedIn = store.getState().getIn(['authentication', 'isLoggedIn'])
         if (!isLoggedIn) {
           replace({ pathname: '/enter', state: nextState })
@@ -62,6 +60,7 @@ const routes = (store) => {
       const homeStream = store.getState().getIn(['gui', 'homeStream'])
 
       if (isLoggedIn) {
+        console.log('replace path')
         replace({ pathname: homeStream, state: nextState })
       }
     },
