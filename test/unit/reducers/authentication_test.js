@@ -1,18 +1,28 @@
+import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../../../src/constants/action_types'
-import reducer from '../../../src/reducers/authentication'
+import reducer, { initialState } from '../../../src/reducers/authentication'
 
 describe('authentication reducer', () => {
-  const initialState = reducer(undefined, {})
-  const stubbedResponse = {
-    accessToken: '1234',
-    createdAt: 1468968055,
-    expiresIn: 7200,
-    isLoggedIn: false,
-    refreshToken: '5678',
-    scope: 'public scoped_refresh_token',
-    tokenType: 'bearer',
-  }
+  let state
+  let stubbedResponse
+  beforeEach(() => {
+    state = initialState
+    stubbedResponse = {
+      accessToken: '1234',
+      createdAt: 1468968055,
+      expiresIn: 7200,
+      isLoggedIn: false,
+      refreshToken: '5678',
+      scope: 'public scoped_refresh_token',
+      tokenType: 'bearer',
+    }
+  })
+
+  afterEach(() => {
+    state = Immutable.Map()
+    stubbedResponse = {}
+  })
 
   context('initial state', () => {
     it('sets up a default initialState', () => {
@@ -33,17 +43,17 @@ describe('authentication reducer', () => {
   context('AUTHENTICATION', () => {
     it('AUTHENTICATION.CLEAR_STORE resets to initialState', () => {
       const clearAction = { type: AUTHENTICATION.CLEAR_STORE }
-      expect(reducer({ archer: 'phrasing' }, clearAction)).to.deep.equal(initialState)
+      expect(reducer(state, clearAction)).to.deep.equal(state)
     })
 
     it('AUTHENTICATION.LOGOUT_SUCCESS resets to initialState', () => {
       const clearAction = { type: AUTHENTICATION.LOGOUT_SUCCESS }
-      expect(reducer({ archer: 'phrasing' }, clearAction)).to.deep.equal(initialState)
+      expect(reducer(state, clearAction)).to.deep.equal(state)
     })
 
     it('AUTHENTICATION.LOGOUT_FAILURE resets to initialState', () => {
       const clearAction = { type: AUTHENTICATION.LOGOUT_FAILURE }
-      expect(reducer({ archer: 'phrasing' }, clearAction)).to.deep.equal(initialState)
+      expect(reducer(state, clearAction)).to.deep.equal(state)
     })
 
     it('AUTHENTICATION.USER_SUCCESS updates with response items', () => {
@@ -51,13 +61,10 @@ describe('authentication reducer', () => {
         type: AUTHENTICATION.USER_SUCCESS,
         payload: { response: stubbedResponse },
       }
-      const reducedState = reducer(undefined, action)
       const newDate = new Date((stubbedResponse.createdAt + stubbedResponse.expiresIn) * 1000)
-      expect(reducedState).to.deep.equal({
-        ...stubbedResponse,
-        isLoggedIn: true,
-        expirationDate: newDate,
-      })
+      state = reducer(state, action)
+      expect(state.get('expirationDate').getTime()).to.equal(newDate.getTime())
+      expect(state.get('isLoggedIn')).to.be.true
     })
 
     it('AUTHENTICATION.REFRESH_SUCCESS updates with response items', () => {
@@ -65,20 +72,17 @@ describe('authentication reducer', () => {
         type: AUTHENTICATION.REFRESH_SUCCESS,
         payload: { response: stubbedResponse },
       }
-      const reducedState = reducer(undefined, action)
       const newDate = new Date((stubbedResponse.createdAt + stubbedResponse.expiresIn) * 1000)
-      expect(reducedState).to.deep.equal({
-        ...stubbedResponse,
-        isLoggedIn: true,
-        expirationDate: newDate,
-      })
+      state = reducer(state, action)
+      expect(state.get('expirationDate').getTime()).to.equal(newDate.getTime())
+      expect(state.get('isLoggedIn')).to.be.true
     })
   })
 
   context('PROFILE', () => {
     it('PROFILE.DELETE_SUCCESS resets to initialState', () => {
       const clearAction = { type: PROFILE.DELETE_SUCCESS }
-      expect(reducer({ archer: 'phrasing' }, clearAction)).to.deep.equal(initialState)
+      expect(reducer(state, clearAction)).to.deep.equal(state)
     })
 
     it('PROFILE.SIGNUP_SUCCESS updates with response items', () => {
@@ -86,13 +90,10 @@ describe('authentication reducer', () => {
         type: PROFILE.SIGNUP_SUCCESS,
         payload: { response: stubbedResponse },
       }
-      const reducedState = reducer(undefined, action)
       const newDate = new Date((stubbedResponse.createdAt + stubbedResponse.expiresIn) * 1000)
-      expect(reducedState).to.deep.equal({
-        ...stubbedResponse,
-        isLoggedIn: true,
-        expirationDate: newDate,
-      })
+      state = reducer(state, action)
+      expect(state.get('expirationDate').getTime()).to.equal(newDate.getTime())
+      expect(state.get('isLoggedIn')).to.be.true
     })
   })
 
@@ -102,12 +103,9 @@ describe('authentication reducer', () => {
         type: REHYDRATE,
         payload: { authentication: stubbedResponse },
       }
-      const reducedState = reducer(undefined, action)
       const newDate = new Date((stubbedResponse.createdAt + stubbedResponse.expiresIn) * 1000)
-      expect(reducedState).to.deep.equal({
-        ...stubbedResponse,
-        expirationDate: newDate,
-      })
+      state = reducer(state, action)
+      expect(state.get('expirationDate').getTime()).to.equal(newDate.getTime())
     })
   })
 })

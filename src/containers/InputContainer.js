@@ -164,7 +164,7 @@ class InputContainer extends Component {
   render() {
     const { completions, deviceSize, isCompleterActive } = this.props
     const { isTextToolsActive, textToolsStates, textToolsCoordinates } = this.props
-    const onCompletion = completions && completions.type === 'location' ?
+    const onCompletion = completions && completions.get('type') === 'location' ?
       this.onLocationCompletion : this.onCompletion
     return (
       <div className="InputContainer">

@@ -32,7 +32,7 @@ function mapStateToProps(state, props) {
   return {
     discoverMetaData: selectDiscoverMetaData(state, props),
     metaPageType: selectMetaPageType(state, props),
-    nextPage: pagination ? pagination.next : null,
+    nextPage: pagination ? pagination.get('next') : null,
     pathname: selectPathname(state),
     postMetaCanonicalUrl: selectPostMetaCanonicalUrl(state, props),
     postMetaDescription: selectPostMetaDescription(state, props),

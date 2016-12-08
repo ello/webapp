@@ -2,6 +2,7 @@ import Immutable from 'immutable'
 
 // TODO: test these as they are data related
 export function findBy(params, collection, json) {
+  // console.log('findBy', params, collection, json)
   const models = json.get(collection)
   if (!models) { return Immutable.Map() }
   return models.find(model =>
