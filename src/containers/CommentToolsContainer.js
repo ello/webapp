@@ -20,8 +20,8 @@ export function mapStateToProps(state, props) {
   const isOwnComment = selectIsOwnComment(state, props)
   const isOwnPost = selectIsOwnPost(state, props)
   let canDeleteComment = isOwnPost
-  if (post.repostId) {
-    canDeleteComment = isOwnPost && comment.originalPostId === post.id
+  if (post.get('repostId')) {
+    canDeleteComment = isOwnPost && comment.get('originalPostId') === post.get('id')
   }
   return {
     canDeleteComment,
@@ -64,7 +64,7 @@ class CommentToolsContainer extends Component {
       type: ACTION_TYPES.EDITOR.APPEND_TEXT,
       payload: {
         editorId,
-        text: `@${author.username} `,
+        text: `@${author.get('username')} `,
       },
     })
     scrollToLastTextBlock(editorId, isNavbarHidden)

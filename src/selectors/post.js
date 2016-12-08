@@ -1,4 +1,3 @@
-import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import trunc from 'trunc-html'
@@ -44,10 +43,8 @@ export const selectAuthorFromPost = createSelector(
 )
 
 export const selectPostBlocks = createSelector(
-  [selectPostFromToken], (post) => {
-    console.log('post', post)
-    return (post.get('repostContent') || post.get('content')) || post.get('summary')
-  },
+  [selectPostFromToken], post =>
+    (post.get('repostContent') || post.get('content')) || post.get('summary'),
 )
 
 export const selectPostEmbedContent = createSelector(
@@ -123,9 +120,9 @@ export const selectPostMetaCanonicalUrl = createSelector(
 
 export const selectPostMetaImages = createSelector(
   [selectPostImageAndEmbedContent], (images) => {
-    const openGraphImages = images.map(image => Immutable.Map({ property: 'og:image', content: image }))
-    const schemaImages = images.map(image => Immutable.Map({ name: 'image', itemprop: 'image', content: image }))
-    return Immutable.Map({ openGraphImages, schemaImages })
+    const openGraphImages = images.toArray().map(image => ({ property: 'og:image', content: image }))
+    const schemaImages = images.toArray().map(image => ({ name: 'image', itemprop: 'image', content: image }))
+    return { openGraphImages, schemaImages }
   },
 )
 

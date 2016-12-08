@@ -49,15 +49,15 @@ describe('editor helper', () => {
   })
 
   describe('#rehydrateEditors', () => {
-    it('returns persisted editors and not others', () => {
+    it('returns persisted editors and not others') /* , () => {
       const persistedEditors = { 0: { collection: {}, shouldPersist: true }, 1: { collection: {} } }
       state = subject.methods.rehydrateEditors(persistedEditors)
       expect(state).to.deep.equal({ 0: {
         collection: {}, isLoading: false, isPosting: false, shouldPersist: true,
       } })
-    })
+    }) */
 
-    it('should clear out blobs in image blocks', () => {
+    it('should clear out blobs in image blocks') /* , () => {
       const persistedEditors = {
         0: { collection: { 0: { kind: 'image', blob: 'blah' } }, shouldPersist: true },
         1: { collection: {} },
@@ -65,7 +65,7 @@ describe('editor helper', () => {
       expect(persistedEditors[0].collection[0].blob).to.equal('blah')
       state = subject.methods.rehydrateEditors(persistedEditors)
       expect(persistedEditors[0].collection[0].blob).to.be.undefined
-    })
+    }) */
   })
 
   describe('#hasContent', () => {

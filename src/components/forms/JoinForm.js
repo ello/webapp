@@ -62,7 +62,7 @@ class JoinForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (!availability) { return }
-    if ({}.hasOwnProperty.call(availability, 'username')) {
+    if (availability.get('username')) {
       this.validateUsernameResponse(availability)
     }
   }

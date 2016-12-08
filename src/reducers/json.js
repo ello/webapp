@@ -423,5 +423,5 @@ export function setHasLoadedFirstStream(bool) {
   hasLoadedFirstStream = bool
 }
 
-export { methods, commentMethods, postMethods, relationshipMethods }
+export { json, methods, commentMethods, postMethods, relationshipMethods }
 

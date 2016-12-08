@@ -8,7 +8,7 @@ describe('post selectors', () => {
   beforeEach(() => {
     stub('post', { authorId: 'statePost' })
     propsPost = stub('post', { authorId: 'propPost', id: '666', links: { repostAuthor: { id: '9' } } })
-    state = Immutable.Map({ json })
+    state = Immutable.fromJS({ json })
   })
 
   afterEach(() => {
@@ -382,7 +382,7 @@ describe('post selectors', () => {
       const i2 = stubImageRegion({ data: { alt: 'image-alt-2', url: 'image-url-2' } })
 
       const regions = Immutable.List([i0, e0, t1, i1, e1, t2, i2])
-      let result = Immutable.fromJS({
+      let result = {
         openGraphImages: [
           { property: 'og:image', content: 'image-url-0' },
           { property: 'og:image', content: 'image-url-1' },
@@ -397,11 +397,12 @@ describe('post selectors', () => {
           { name: 'image', itemprop: 'image', content: 'embed-thumb-0' },
           { name: 'image', itemprop: 'image', content: 'embed-thumb-1' },
         ],
-      })
+      }
 
       stub('post', { content: regions, id: '1', summary: [i0, i1] })
       const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
       state = Immutable.fromJS({ json })
+      console.log(state)
 
       expect(selector.selectPostMetaImages(state, props)).to.deep.equal(result)
 
@@ -409,7 +410,7 @@ describe('post selectors', () => {
       expect(selector.selectPostMetaImages(state, props)).to.deep.equal(result)
       expect(selector.selectPostMetaImages.recomputations()).to.equal(1)
 
-      result = Immutable.fromJS({
+      result = {
         openGraphImages: [
           { property: 'og:image', content: 'image-url-0' },
           { property: 'og:image', content: 'image-url-1' },
@@ -418,7 +419,7 @@ describe('post selectors', () => {
           { name: 'image', itemprop: 'image', content: 'image-url-0' },
           { name: 'image', itemprop: 'image', content: 'image-url-1' },
         ],
-      })
+      }
       state = state.setIn(['json', 'posts', '1', 'content'], null)
       expect(selector.selectPostMetaImages(state, props)).to.deep.equal(result)
       expect(selector.selectPostMetaImages.recomputations()).to.equal(2)

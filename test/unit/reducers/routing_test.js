@@ -7,6 +7,7 @@ describe('routing reducer', () => {
   context('#initialState', () => {
     it('sets up a default initialState', () => {
       expect(reducer(undefined, {})).to.have.keys(
+        'locationBeforeTransitions',
         'previousPath',
       )
     })
@@ -19,21 +20,22 @@ describe('routing reducer', () => {
         pathname: '/discover/trending',
         state: undefined,
       },
+      locationBeforeTransitions: { pathname: '/discover/trending' },
       previousPath: undefined,
     })
 
     it('LOCATION_CHANGE updates the routing', () => {
       const action = { type: LOCATION_CHANGE, payload: { locationBeforeTransitions: { pathname: '/discover/trending' } } }
-      const result = reducer(initialState, action)
-      expect(result).to.equal(subject)
+      const state = reducer(initialState, action)
+      expect(state).to.equal(subject)
     })
 
     it('A non LOCATION_CHANGE action type does not update the routing', () => {
       const action = { type: LOCATION_CHANGE, payload: { locationBeforeTransitions: { pathname: '/discover/trending' } } }
-      const result = reducer(initialState, action)
-      expect(result).to.deep.equal(subject)
-      const nextResult = reducer(result, { type: 'PHONY.ACTION_TYPE' })
-      expect(nextResult).to.equal(subject)
+      let state = reducer(initialState, action)
+      expect(state).to.deep.equal(subject)
+      state = reducer(state, { type: 'PHONY.ACTION_TYPE' })
+      expect(state).to.equal(subject)
     })
   })
 })
