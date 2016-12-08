@@ -108,7 +108,6 @@ class InvitationFormContainer extends Component {
       </div>
     )
   }
-
 }
 
 export default connect(mapStateToProps)(InvitationFormContainer)

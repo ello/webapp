@@ -4,7 +4,7 @@ import trunc from 'trunc-html'
 import { META } from '../constants/locales/en'
 import { selectAllCategoriesPage } from './pages'
 import { selectParamsType } from './params'
-import { selectCategoryData, selectPagePromotionals } from './promotions'
+import { selectCategoryData } from './promotions'
 
 export function sortCategories(a, b) {
   if (a.get('order') < b.get('order')) {
@@ -97,13 +97,13 @@ export const selectCategoryPageTitle = createSelector(
 )
 
 export const selectDiscoverMetaData = createSelector(
-  [selectParamsType, selectPagePromotionals, selectCategoryData, selectCategoryPageTitle],
-  (type, pagePromotionals, categoryData, pageTitle) => {
+  [selectParamsType, selectCategoryData, selectCategoryPageTitle],
+  (type, categoryData, pageTitle) => {
     const titlePrefix = pageTitle ? `${pageTitle} | ` : ''
     const title = `${titlePrefix}Ello`
+    const { category, promotionals } = categoryData
+    const image = promotionals.getIn([0, 'image', 'hdpi', 'url'], META.IMAGE)
     let description = ''
-    let image = pagePromotionals && pagePromotionals.first() ?
-      pagePromotionals.first().getIn(['image', 'hdpi', 'url']) : META.IMAGE
     switch (type) {
       case undefined:
       case 'featured':
@@ -120,10 +120,8 @@ export const selectDiscoverMetaData = createSelector(
         description = META.ALL_PAGE_DESCRIPTION
         break
       default: {
-        const { category, promotionals } = categoryData
         description = category && category.get('description') ?
           trunc(category.get('description'), 160).text : META.DESCRIPTION
-        image = promotionals.get(0) ? promotionals.get(0).image.hdpi.url : META.IMAGE
         break
       }
     }

@@ -88,13 +88,13 @@ class JoinContainer extends Component {
       })
     }
     if (!availability) { return }
-    if ({}.hasOwnProperty.call(availability, 'username')) {
+    if (availability.get('username')) {
       this.validateUsernameResponse(availability)
     }
-    if ({}.hasOwnProperty.call(availability, 'email')) {
+    if (availability.get('email')) {
       this.validateEmailResponse(availability)
     }
-    if ({}.hasOwnProperty.call(availability, 'invitationCode')) {
+    if (availability.get('invitationCode')) {
       this.validateInvitationCodeResponse(availability)
     }
   }
