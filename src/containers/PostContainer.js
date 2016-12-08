@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import shallowCompare from 'react-addons-shallow-compare'
-import get from 'lodash/get'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
@@ -14,6 +13,7 @@ import {
   selectIsGridMode,
 } from '../selectors/gui'
 import { selectPostFromPropsPostId } from '../selectors/post'
+import { selectPathname } from '../selectors/routing'
 import { getLinkObject } from '../helpers/json_helper'
 import { trackEvent } from '../actions/analytics'
 import { watchPost, unwatchPost } from '../actions/posts'
@@ -31,34 +31,35 @@ import {
 import { WatchTool } from '../components/posts/PostTools'
 
 export function mapStateToProps(state, props) {
-  const { json, routing: { location: { pathname } } } = state
+  const json = state.get('json')
+  const pathname = selectPathname(state)
   const post = selectPostFromPropsPostId(state, props)
-  const author = json[MAPPING_TYPES.USERS][post.authorId]
-  const assets = json.assets
-  const categories = post.links.categories
-  const category = get(json, ['categories', categories ? categories[0] : null])
+  const author = json.getIn([MAPPING_TYPES.USERS, post.get('authorId')])
+  const assets = json.get('assets')
+  const categories = post.getIn(['links', 'categories'])
+  const category = json.getIn(['categories', categories ? categories[0] : null])
   const isLoggedIn = selectIsLoggedIn(state)
   const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
-  const isRepost = !!(post.repostContent && post.repostContent.length)
-  const isEditing = post.isEditing || false
-  const isReposting = post.isReposting || false
-  const postBody = post.body
+  const isRepost = !!(post.get('repostContent') && post.get('repostContent').length)
+  const isEditing = post.get('isEditing', false)
+  const isReposting = post.get('isReposting', false)
+  const postBody = post.get('body')
   const showEditor = !!((isEditing || isReposting) && postBody)
-  const lovesCount = post.lovesCount
-  const repostsCount = post.repostsCount
-  const showCommentEditor = !showEditor && !props.isPostDetail && post.showComments
-  const showComments = showCommentEditor && post.commentsCount > 0
+  const lovesCount = post.get('lovesCount')
+  const repostsCount = post.get('repostsCount')
+  const showCommentEditor = !showEditor && !props.isPostDetail && post.get('showComments')
+  const showComments = showCommentEditor && post.get('commentsCount') > 0
   const isGridMode = props.isPostDetail ? false : selectIsGridMode(state)
 
-  let newProps = {
+  const newProps = {
     assets,
     author,
-    categoryName: category ? category.name : null,
-    categoryPath: category ? `/discover/${category.slug}` : null,
+    categoryName: category ? category.get('name') : null,
+    categoryPath: category ? `/discover/${category.get('slug')}` : null,
     columnWidth: selectColumnWidth(state),
     commentOffset: selectCommentOffset(state),
-    commentsCount: post.commentsCount,
-    contentWarning: post.contentWarning,
+    commentsCount: post.get('commentsCount'),
+    contentWarning: post.get('contentWarning'),
     contentWidth: selectContentWidth(state),
     innerHeight: selectInnerHeight(state),
     isGridMode,
@@ -73,15 +74,12 @@ export function mapStateToProps(state, props) {
     showCommentEditor,
     showComments,
     showEditor,
-    showLovers: !showEditor && !isGridMode && post.showLovers && lovesCount > 0,
-    showReposters: !showEditor && !isGridMode && post.showReposters && repostsCount > 0,
+    showLovers: !showEditor && !isGridMode && post.get('showLovers') && lovesCount > 0,
+    showReposters: !showEditor && !isGridMode && post.get('showReposters') && repostsCount > 0,
   }
 
   if (isRepost) {
-    newProps = {
-      ...newProps,
-      authorLinkObject: post.repostAuthor || getLinkObject(post, 'repostAuthor', json) || author,
-    }
+    newProps.authorLinkObject = post.get('repostAuthor') || getLinkObject(post, 'repostAuthor', json) || author
   }
 
   return newProps

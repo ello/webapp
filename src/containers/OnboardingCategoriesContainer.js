@@ -13,7 +13,7 @@ const CATEGORIES_NEEDED = 3
 
 function mapStateToProps(state) {
   let categories = selectOnboardingCategories(state)
-  categories = categories.filter(cat => cat.allowInOnboarding)
+  categories = categories.filter(cat => cat.get('allowInOnboarding'))
   return {
     categories,
   }

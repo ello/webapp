@@ -32,8 +32,8 @@ function mapStateToProps(state, props) {
   const homeStream = selectHomeStream(state)
   const isLoggedIn = selectIsLoggedIn(state)
   const pathname = selectPathname(state)
-  const result = selectPage(state)
-  const hasLoadMoreButton = !!(result && result.morePostIds)
+  const pageResult = selectPage(state)
+  const hasLoadMoreButton = !!(pageResult && pageResult.get('morePostIds'))
   const viewName = selectViewNameFromRoute(state)
   const categoryTabs = viewName === 'discover' ? selectCategoryTabs(state) : null
 

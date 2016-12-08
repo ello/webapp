@@ -44,9 +44,9 @@ export function getNextBlockMutePriority(currentPriority, requestedPriority) {
       return RELATIONSHIP_PRIORITY.INACTIVE
     default:
       switch (requestedPriority) {
-        case 'block':
+        case RELATIONSHIP_PRIORITY.BLOCK:
           return RELATIONSHIP_PRIORITY.BLOCK
-        case 'mute':
+        case RELATIONSHIP_PRIORITY.MUTE:
           return RELATIONSHIP_PRIORITY.MUTE
         default:
           return RELATIONSHIP_PRIORITY.INACTIVE
@@ -107,7 +107,7 @@ class RelationshipContainer extends Component {
     const { dispatch, previousPath, relationshipPriority, userId } = this.props
     this.onRelationshipUpdate({
       userId,
-      priority: getNextBlockMutePriority(relationshipPriority, 'block'),
+      priority: getNextBlockMutePriority(relationshipPriority, RELATIONSHIP_PRIORITY.BLOCK),
       existing: relationshipPriority,
     })
     this.onCloseModal()
@@ -131,7 +131,7 @@ class RelationshipContainer extends Component {
     const { relationshipPriority, userId } = this.props
     this.onRelationshipUpdate({
       userId,
-      priority: getNextBlockMutePriority(relationshipPriority, 'mute'),
+      priority: getNextBlockMutePriority(relationshipPriority, RELATIONSHIP_PRIORITY.MUTE),
       existing: relationshipPriority,
     })
     this.onCloseModal()

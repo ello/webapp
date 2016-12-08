@@ -32,9 +32,8 @@ import { reloadPlayers } from '../components/editor/EmbedBlock'
 export function makeMapStateToProps() {
   const getStreamProps = makeSelectStreamProps()
   const mapStateToProps = (state, props) => {
-    const streamProps = getStreamProps(state, props)
+    const { renderObj, result, resultPath } = getStreamProps(state, props)
     return {
-      ...streamProps,
       columnCount: selectColumnCount(state),
       hasLaunchedSignupModal: selectHasLaunchedSignupModal(state),
       innerHeight: selectInnerHeight(state),
@@ -43,7 +42,9 @@ export function makeMapStateToProps() {
       json: state.get('json'),
       isGridMode: selectIsGridMode(state),
       omnibar: state.get('omnibar'),
-      routerState: state.getIn(['routing', 'location', 'state'], {}),
+      renderObj,
+      result,
+      resultPath,
       stream: state.get('stream'),
     }
   }
@@ -115,7 +116,7 @@ class StreamContainer extends Component {
       addScrollTarget(this.scrollObject)
     }
     if (!action) { return }
-    if (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
+    if (stream.get('type') === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.setState({ hidePaginator: true })
     }
   }
@@ -124,7 +125,7 @@ class StreamContainer extends Component {
     const { stream } = nextProps
     const { action } = nextState
     const updateKey = get(action, 'meta.updateKey')
-    const streamPath = get(stream, 'payload.endpoint.path', '')
+    const streamPath = stream.getIn(['payload', 'endpoint', 'path', ''])
     // this prevents nested stream components from clobbering parents
     if (updateKey && !streamPath.match(updateKey)) {
       return false
@@ -140,8 +141,8 @@ class StreamContainer extends Component {
       // allow page loads to fall through and also allow stream
       // load requests to fall through to show the loader
       // on an initial page load when endpoints don't match
-    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.type) &&
-              stream.type !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
+    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.get('type')) &&
+              stream.get('type') !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
               streamPath !== get(action, 'payload.endpoint.path')) {
       return false
     }
@@ -154,7 +155,7 @@ class StreamContainer extends Component {
       window.embetter.reloadPlayers()
     }
     const { omnibar } = this.props
-    this.wasOmnibarActive = omnibar.isActive
+    this.wasOmnibarActive = omnibar.get('isActive')
   }
 
   componentWillUnmount() {
@@ -193,11 +194,6 @@ class StreamContainer extends Component {
     this.loadPage('next')
   }
 
-  setAction(action) {
-    this.setState({ action })
-    this.props.dispatch(action)
-  }
-
   setScroll() {
     const path = get(this.state, 'action.payload.endpoint.path')
     if (!path) { return }
@@ -217,18 +213,18 @@ class StreamContainer extends Component {
     const { action } = this.state
     if (!action) { return }
     const { meta } = action
-    const { pagination } = result
-    if (!action.payload.endpoint || !pagination[rel] ||
-        parseInt(pagination.totalPagesRemaining, 10) === 0 || !action ||
-        (stream.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
-         get(stream, 'payload.serverStatus', 0) === 204)) { return }
+    const pagination = result.get('pagination')
+    if (!action.payload.endpoint || !pagination.get(rel) ||
+        Number(pagination.get('totalPagesRemaining')) === 0 || !action ||
+        (stream.get('type') === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS &&
+         stream.getIn(['payload', 'serverStatus']) === 204)) { return }
     if (runningFetches[pagination[rel]]) { return }
     this.setState({ hidePaginator: false })
     const infiniteAction = {
       ...action,
       type: ACTION_TYPES.LOAD_NEXT_CONTENT,
       payload: {
-        endpoint: { path: pagination[rel] },
+        endpoint: { path: pagination.get(rel) },
       },
       meta: {
         mappingType: action.payload.endpoint.pagingPath || meta.mappingType,
@@ -307,7 +303,7 @@ class StreamContainer extends Component {
     }
     const { meta } = action
     const renderMethod = isGridMode ? 'asGrid' : 'asList'
-    const pagination = result.pagination
+    const pagination = result.get('pagination')
     return (
       <section className={classNames('StreamContainer', className)}>
         {meta.renderStream[renderMethod](renderObj, columnCount, isPostHeaderHidden)}
@@ -319,8 +315,8 @@ class StreamContainer extends Component {
           isHidden={hidePaginator}
           loadNextPage={this.onLoadNextPage}
           messageText={paginatorText}
-          totalPages={parseInt(pagination.totalPages, 10)}
-          totalPagesRemaining={parseInt(pagination.totalPagesRemaining, 10)}
+          totalPages={Number(pagination.get('totalPages'))}
+          totalPagesRemaining={Number(pagination.get('totalPagesRemaining'))}
         />
       </section>
     )
