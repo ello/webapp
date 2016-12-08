@@ -45,9 +45,9 @@ export const selectTruncatedShortBio = createSelector(
 export const selectUserMetaDescription = createSelector(
   [selectUserFromUsername], (user) => {
     if (!user) { return null }
-    const nickname = user.get('name') || `@${user.get('username')}`
+    const nickname = user.get('name', `@${user.get('username')}`)
     const backupTitle = `See ${nickname}'s work on Ello.`
-    return trunc(user.get('formattedShortBio') || backupTitle, 160).text
+    return trunc(user.get('formattedShortBio', backupTitle), 160).text
   },
 )
 

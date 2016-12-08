@@ -51,14 +51,14 @@ export function getUsernameStateFromServer({ availability, currentStatus }) {
   if (!availability && currentStatus !== STATUS.FAILURE) {
     return { status: STATUS.FAILURE, suggestions: null, message: ERROR.USERNAME.INVALID }
   }
-  const { username, suggestions } = availability
+  const username = availability.get('username')
+  const suggestions = availability.get('suggestions')
   if (username) {
     return { status: STATUS.SUCCESS, suggestions: null, message: ERROR.NONE }
   } else if (!username && currentStatus !== STATUS.FAILURE) {
-    const list = suggestions.username && suggestions.username.length ? suggestions.username : null
     return {
       status: STATUS.FAILURE,
-      suggestions: list,
+      suggestions: suggestions.get('username', null),
       message: ERROR.USERNAME.EXISTS,
     }
   }
@@ -99,7 +99,7 @@ export function getInvitationCodeStateFromServer({ availability, currentStatus }
     return { status: STATUS.FAILURE, message: ERROR.INVITATION_CODE.INVALID }
   }
 
-  const { invitationCode } = availability
+  const invitationCode = availability.get('invitationCode')
   if (invitationCode) {
     return { status: STATUS.SUCCESS, message: '' }
   } else if (!invitationCode && currentStatus !== STATUS.FAILURE) {
@@ -113,10 +113,9 @@ export function getEmailStateFromServer({ availability, currentStatus }) {
   if (!availability && currentStatus !== STATUS.FAILURE) {
     return { status: STATUS.FAILURE, message: ERROR.EMAIL.INVALID }
   }
-  const { email, suggestions } = availability
-  const full = suggestions.email && suggestions.email.full && suggestions.email.full.length ?
-    suggestions.email.full :
-    null
+  const email = availability.get('email')
+  const suggestions = availability.get('suggestions')
+  const full = suggestions.getIn(['email', 'full'], null)
   const message = full && full.length ? `Did you mean ${full}?` : null
   if (email && currentStatus !== STATUS.SUCCESS) {
     return { status: STATUS.SUCCESS, message }

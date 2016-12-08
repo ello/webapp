@@ -22,6 +22,8 @@ import {
   WatchOnRepostNotification,
 } from '../components/notifications/NotificationRenderables'
 
+const selectJson = state => state.get('json')
+
 const NOTIFICATION_KIND = {
   COMMENT: 'comment_notification',
   COMMENT_MENTION: 'comment_mention_notification',
@@ -51,7 +53,8 @@ const SUBJECT_TYPE = {
 
 function mapStateToProps(state, ownProps) {
   const { notification } = ownProps
-  const subject = getLinkObject(notification, 'subject', state.json)
+  const json = selectJson(state)
+  const subject = getLinkObject(notification, 'subject', json)
 
   // postActions are used for loves/watches
   let postActionPost = null
@@ -65,50 +68,50 @@ function mapStateToProps(state, ownProps) {
   let repostedSourceAuthor = null
   let parentPost = null
   let parentPostAuthor = null
+  const subjectType = notification.get('subjectType').toLowerCase()
 
   // subject is a post or comment
-  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.POST) {
-    postAuthor = getLinkObject(subject, 'author', state.json) ||
-      state.json[MAPPING_TYPES.USERS][subject.authorId]
+  if (subjectType === SUBJECT_TYPE.POST) {
+    postAuthor = getLinkObject(subject, 'author', json) ||
+      json.getIn([MAPPING_TYPES.USERS, subject.get('authorId')])
     // comment
-    if (subject.postId) {
-      parentPost = getLinkObject(subject, 'parentPost', state.json)
-      parentPostAuthor = getLinkObject(parentPost, 'author', state.json) ||
-        state.json[MAPPING_TYPES.USERS][parentPost.authorId]
+    if (subject.get('postId')) {
+      parentPost = getLinkObject(subject, 'parentPost', json)
+      parentPostAuthor = getLinkObject(parentPost, 'author', json) ||
+        json.getIn([MAPPING_TYPES.USERS, parentPost.get('authorId')])
     }
     // repost
-    if (parentPost && parentPost.repostId) {
+    if (parentPost.get('repostId')) {
       repost = parentPost
-      repostAuthor = getLinkObject(repost, 'author', state.json) ||
-        state.json[MAPPING_TYPES.USERS][repost.authorId]
-      repostedSource = getLinkObject(repost, 'repostedSource', state.json)
-      repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json) ||
-        state.json[MAPPING_TYPES.USERS][repostedSource.authorId]
+      repostAuthor = getLinkObject(repost, 'author', json) ||
+        json.getIn([MAPPING_TYPES.USERS, repost.get('authorId')])
+      repostedSource = getLinkObject(repost, 'repostedSource', json)
+      repostedSourceAuthor = getLinkObject(repostedSource, 'author', json) ||
+        json.getIn([MAPPING_TYPES.USERS, repostedSource.get('authorId')])
     }
   }
   // subject is a love or a watch
-  if (notification.subjectType.toLowerCase() === SUBJECT_TYPE.LOVE ||
-      notification.subjectType.toLowerCase() === SUBJECT_TYPE.WATCH) {
-    postActionUser = getLinkObject(subject, 'user', state.json)
-    postActionPost = getLinkObject(subject, 'post', state.json)
-    postActionAuthor = getLinkObject(postActionPost, 'author', state.json) ||
-      state.json[MAPPING_TYPES.USERS][postActionPost.authorId]
+  if (subjectType === SUBJECT_TYPE.LOVE || subjectType === SUBJECT_TYPE.WATCH) {
+    postActionUser = getLinkObject(subject, 'user', json)
+    postActionPost = getLinkObject(subject, 'post', json)
+    postActionAuthor = getLinkObject(postActionPost, 'author', json) ||
+      json.getIn([MAPPING_TYPES.USERS, postActionPost.get('authorId')])
     // repost
-    if (postActionPost.repostId) {
+    if (postActionPost.get('repostId')) {
       repost = postActionPost
-      repostAuthor = getLinkObject(repost, 'author', state.json)
-      repostedSource = getLinkObject(repost, 'repostedSource', state.json)
-      repostedSourceAuthor = getLinkObject(repostedSource, 'author', state.json) ||
-        state.json[MAPPING_TYPES.USERS][repostedSource.authorId]
+      repostAuthor = getLinkObject(repost, 'author', json)
+      repostedSource = getLinkObject(repost, 'repostedSource', json)
+      repostedSourceAuthor = getLinkObject(repostedSource, 'author', json) ||
+        json.getIn([MAPPING_TYPES.USERS, repostedSource.get('authorId')])
     }
   }
   // subject can be a user as well but we don't
   // need to add any additional properties
 
   return {
-    assets: state.json.assets,
-    createdAt: notification.createdAt,
-    kind: notification.kind,
+    assets: json.get('assets'),
+    createdAt: notification.get('createdAt'),
+    kind: notification.get('kind'),
     parentPost,
     parentPostAuthor,
     postActionAuthor,

@@ -50,7 +50,7 @@ export function mapStateToProps(state, props) {
   const activeUserFollowingType = selectActiveUserFollowingType(state)
   const isLoggedIn = selectIsLoggedIn(state)
   const isPostHeaderHidden = type !== 'loves'
-  const isSelf = isLoggedIn && user ? user.get('relationshipPriority') === 'self' : false
+  const isSelf = isLoggedIn && user.get('relationshipPriority') === 'self'
   const hasSaidHelloTo = user ? !isSelf && selectHasSaidHelloTo(state, props) : false
   const keyPostfix = isSelf && activeUserFollowingType ? `/${activeUserFollowingType}` : ''
   const streamAction = selectUserDetailStreamAction(state, props)
@@ -60,8 +60,8 @@ export function mapStateToProps(state, props) {
     isLoggedIn,
     isPostHeaderHidden,
     isSelf,
-    hasZeroFollowers: parseInt(user.get('followersCount'), 10) < 1 || false,
-    hasZeroPosts: parseInt(user.get('postsCount'), 10) < 1 || false,
+    hasZeroFollowers: Number(user.get('followersCount')) < 1 || false,
+    hasZeroPosts: Number(user.get('postsCount')) < 1 || false,
     hasSaidHelloTo,
     paramsUsername: username,
     streamAction,
