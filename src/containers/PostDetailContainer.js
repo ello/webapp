@@ -63,8 +63,8 @@ class PostDetailContainer extends Component {
   componentWillMount() {
     const { dispatch, paramsToken, paramsUsername, post } = this.props
     if (post) {
-      this.lovesWasOpen = post.showLovers
-      this.repostsWasOpen = post.showReposters
+      this.lovesWasOpen = post.get('showLovers')
+      this.repostsWasOpen = post.get('showReposters')
     }
     this.state = { isStreamFailing: false }
     dispatch(loadPostDetail(`~${paramsToken}`, `~${paramsUsername}`))
@@ -110,10 +110,10 @@ class PostDetailContainer extends Component {
     }
     const props = {
       author,
-      hasEditor: author && author.hasCommentingEnabled && !(post.isReposting || post.isEditing),
+      hasEditor: author && author.get('hasCommentingEnabled') && !(post.get('isReposting') || post.get('isEditing')),
       key: `postDetail_${paramsToken}`,
       post,
-      streamAction: author && author.hasCommentingEnabled ? loadComments(post, false) : null,
+      streamAction: author && author.get('hasCommentingEnabled') ? loadComments(post, false) : null,
     }
     return <PostDetail {...props} />
   }

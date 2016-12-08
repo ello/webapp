@@ -41,6 +41,16 @@ function mapStateToProps(state, props) {
   }
 }
 
+function mapStateToProps(state, props) {
+  const category = get(props, 'params.category', 'all')
+  return {
+    category,
+    pathname: selectPropsPathname(state, props),
+    streamAction: loadNotifications({ category }),
+    streamType: selectStreamType(state),
+  }
+}
+
 class Notifications extends Component {
 
   static propTypes = {

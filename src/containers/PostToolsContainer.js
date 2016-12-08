@@ -43,24 +43,24 @@ export function mapStateToProps(state, props) {
                                (`${streamPostIdOrToken}` === `${propsPostId}` ||
                                 `${streamPostIdOrToken}` === `${propsPostToken}`)
   return {
-    detailLink: `/${props.author.username}/post/${post.token}`,
+    detailLink: `/${props.author.get('username')}/post/${post.token}`,
     deviceSize,
     isCommentsRequesting,
     isLoggedIn,
     isMobile: deviceSize === 'mobile',
     isOwnOriginalPost: selectIsOwnOriginalPost(state, props),
     isOwnPost: selectIsOwnPost(state, props),
-    isWatchingPost: isLoggedIn && post.watching,
+    isWatchingPost: isLoggedIn && post.get('watching'),
     pathname: selectPathname(state),
-    postCommentsCount: post.commentsCount,
-    postLoved: post.loved,
-    postLovesCount: post.lovesCount,
-    postReposted: post.reposted,
-    postRepostsCount: post.repostsCount,
-    postShowComments: post.showComments,
-    postShowLovers: post.showLovers,
-    postShowReposters: post.showReposters,
-    postViewsCountRounded: post.viewsCountRounded,
+    postCommentsCount: post.get('commentsCount'),
+    postLoved: post.get('loved'),
+    postLovesCount: post.get('lovesCount'),
+    postReposted: post.get('reposted'),
+    postRepostsCount: post.get('repostsCount'),
+    postShowComments: post.get('showComments'),
+    postShowLovers: post.get('showLovers'),
+    postShowReposters: post.get('showReposters'),
+    postViewsCountRounded: post.get('viewsCountRounded'),
     previousPath: selectPreviousPath(state),
   }
 }
@@ -192,7 +192,7 @@ class PostToolsContainer extends Component {
   onClickEditPost = () => {
     const { dispatch, post } = this.props
     dispatch(postActions.toggleEditing(post, true))
-    dispatch(postActions.loadEditablePost(post.id))
+    dispatch(postActions.loadEditablePost(post.get('id')))
   }
 
   onClickRepostPost = () => {
@@ -203,7 +203,7 @@ class PostToolsContainer extends Component {
     }
     if (!postReposted) {
       dispatch(postActions.toggleReposting(post, true))
-      dispatch(postActions.loadEditablePost(post.id))
+      dispatch(postActions.loadEditablePost(post.get('id')))
     }
   }
 
@@ -236,7 +236,7 @@ class PostToolsContainer extends Component {
     const { dispatch, pathname, post, previousPath } = this.props
     this.onCloseModal()
     const action = postActions.deletePost(post)
-    if (pathname.match(post.token)) {
+    if (pathname.match(post.get('token'))) {
       set(action, 'meta.successAction', replace(previousPath || '/'))
     }
     dispatch(action)
