@@ -63,7 +63,7 @@ export default class Completer extends Component {
     const { completions } = this.props
     let { selectedIndex } = this.state
     selectedIndex += 1
-    if (selectedIndex > completions.data.length - 1) selectedIndex = 0
+    if (selectedIndex > completions.get('data').size - 1) selectedIndex = 0
     this.setState({ selectedIndex })
   }
 
@@ -71,7 +71,7 @@ export default class Completer extends Component {
     const { completions } = this.props
     let { selectedIndex } = this.state
     selectedIndex -= 1
-    if (selectedIndex < 0) selectedIndex = completions.data.length - 1
+    if (selectedIndex < 0) selectedIndex = completions.get('data').size - 1
     this.setState({ selectedIndex })
   }
 
@@ -85,7 +85,7 @@ export default class Completer extends Component {
     const { completions, onCompletion } = this.props
     const { selectedIndex } = this.state
     return (
-      completions.data.map((completion, i) =>
+      completions.get('data').toArray().map((completion, i) =>
         <Completion
           className={i === selectedIndex ? 'isActive UserCompletion' : 'UserCompletion'}
           key={`completion_${i}`}

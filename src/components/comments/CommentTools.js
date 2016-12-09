@@ -83,9 +83,9 @@ export const CommentTools = (props) => {
   const { canDeleteComment, comment, isLoggedIn, isMoreToolActive, isOwnComment } = props
   const { onClickEditComment, onClickDeleteComment, onClickReplyToComment,
           onClickFlagComment, onClickMoreTool } = props
-  const cId = comment.id
+  const cId = comment.get('id')
   const cells = []
-  cells.push(<TimeAgoTool key={`TimeAgoTool_${cId}`} createdAt={comment.createdAt} />)
+  cells.push(<TimeAgoTool key={`TimeAgoTool_${cId}`} createdAt={comment.get('createdAt')} />)
   if (isLoggedIn) {
     if (isOwnComment) {
       cells.push(<EditTool key={`EditTool_${cId}`} onClickEditComment={onClickEditComment} />)

@@ -10,11 +10,11 @@ export function RegionItems(props) {
   if (!content) { return null }
   const cells = []
   content.forEach((region, i) => {
-    switch (region.kind) {
+    switch (region.get('kind')) {
       case 'text':
         cells.push(
           <TextRegion
-            content={region.data}
+            content={region.get('data')}
             isGridMode={isGridMode}
             key={`TextRegion_${i}`}
             postDetailPath={postDetailPath}
@@ -25,15 +25,15 @@ export function RegionItems(props) {
         cells.push(
           <ImageRegion
             assets={assets}
-            buyLinkURL={region.linkUrl}
+            buyLinkURL={region.get('linkUrl')}
             columnWidth={columnWidth}
             commentOffset={commentOffset}
-            content={region.data}
+            content={region.get('data')}
             contentWidth={contentWidth}
             innerHeight={innerHeight}
             isGridMode={isGridMode}
-            key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
-            links={region.links}
+            key={`ImageRegion_${i}_${JSON.stringify(region.get('data'))}`}
+            links={region.get('links')}
             postDetailPath={postDetailPath}
           />,
         )
@@ -66,11 +66,11 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
   const texts = []
 
   content.forEach((region, i) => {
-    switch (region.kind) {
+    switch (region.get('kind')) {
       case 'text':
         texts.push(
           <TextRegion
-            content={region.data}
+            content={region.get('data')}
             isGridMode={false}
             key={`TextRegion_${i}`}
             postDetailPath={postDetailPath}
@@ -80,13 +80,13 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
       case 'image':
         imageAssets.push(
           <ImageRegion
-            buyLinkURL={region.linkUrl}
+            buyLinkURL={region.get('linkUrl')}
             assets={assets}
-            content={region.data}
+            content={region.get('data')}
             isGridMode
             isNotification
-            key={`ImageRegion_${i}_${JSON.stringify(region.data)}`}
-            links={region.links}
+            key={`ImageRegion_${i}_${JSON.stringify(region.get('data'))}`}
+            links={region.get('links')}
             postDetailPath={postDetailPath}
           />,
         )

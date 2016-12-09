@@ -18,9 +18,9 @@ function getPostDetailPath(author, post) {
 
 export const PostLoversDrawer = ({ post }) =>
   <UserDrawer
-    endpoint={postLovers(post.id)}
+    endpoint={postLovers(post.get('id'))}
     icon={<HeartIcon />}
-    key={`userAvatarsLovers_${post.id}${post.lovesCount}`}
+    key={`userAvatarsLovers_${post.get('id')}${post.get('lovesCount')}`}
     post={post}
     resultType="love"
   />
@@ -31,9 +31,9 @@ PostLoversDrawer.propTypes = {
 
 export const PostRepostersDrawer = ({ post }) =>
   <UserDrawer
-    endpoint={postReposters(post.id)}
+    endpoint={postReposters(post.get('id'))}
     icon={<RepostIcon />}
-    key={`userAvatarsReposters_${post.id}${post.repostsCount}`}
+    key={`userAvatarsReposters_${post.get('id')}${post.get('repostsCount')}`}
     post={post}
     resultType="repost"
   />
@@ -49,10 +49,10 @@ export const CommentStream = ({ post, author }) =>
       action={loadComments(post)}
       ignoresScrollPosition
     >
-      {post.commentsCount > 10 ?
+      {post.get('commentsCount') > 10 ?
         <Link
           to={{
-            pathname: `/${author.username}/post/${post.token}`,
+            pathname: getPostDetailPath(author, post),
             state: { didComeFromSeeMoreCommentsLink: true },
           }}
           className="CommentsLink"
@@ -83,35 +83,35 @@ export const PostHeader = ({ post, author, isPostDetail = false }) => {
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
-    <header className="PostHeader" key={`PostHeader_${post.id}`}>
+    <header className="PostHeader" key={`PostHeader_${post.get('id')}`}>
       <div className="PostHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${author.username}`}>
+        <Link className="PostHeaderLink" to={`/${author.get('username')}`}>
           <Avatar
-            priority={author.relationshipPriority}
-            sources={author.avatar}
-            userId={`${author.id}`}
-            username={author.username}
+            priority={author.get('relationshipPriority')}
+            sources={author.get('avatar')}
+            userId={`${author.get('id')}`}
+            username={author.get('username')}
           />
           <span
             className="DraggableUsername"
-            data-priority={author.relationshipPriority || 'inactive'}
-            data-userid={author.id}
-            data-username={author.username}
+            data-priority={author.get('relationshipPriority') || 'inactive'}
+            data-userid={author.get('id')}
+            data-username={author.get('username')}
             draggable
           >
-            {isPostDetail && author.name ?
+            {isPostDetail && author.get('name') ?
               <span>
-                <span className="PostHeaderAuthorName">{author.name}</span>
-                <span className="PostHeaderAuthorUsername">@{author.username}</span>
+                <span className="PostHeaderAuthorName">{author.get('name')}</span>
+                <span className="PostHeaderAuthorUsername">@{author.get('username')}</span>
               </span>
               :
-              `@${author.username}`
+              `@${author.get('username')}`
             }
           </span>
         </Link>
       </div>
       <RelationshipContainer className="isInHeader" user={author} />
-      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
+      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.get('createdAt')} />
     </header>
   )
 }
@@ -126,23 +126,23 @@ export const CategoryHeader = ({ post, author, categoryName, categoryPath }) => 
   if (!post || !author) { return null }
   const postDetailPath = getPostDetailPath(author, post)
   return (
-    <header className="CategoryHeader" key={`CategoryHeader_${post.id}`}>
+    <header className="CategoryHeader" key={`CategoryHeader_${post.get('id')}`}>
       <div className="CategoryHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${author.username}`}>
+        <Link className="PostHeaderLink" to={`/${author.get('username')}`}>
           <Avatar
-            priority={author.relationshipPriority}
-            sources={author.avatar}
-            userId={`${author.id}`}
-            username={author.username}
+            priority={author.get('relationshipPriority')}
+            sources={author.get('avatar')}
+            userId={`${author.get('id')}`}
+            username={author.get('username')}
           />
           <span
             className="DraggableUsername"
-            data-priority={author.relationshipPriority || 'inactive'}
-            data-userid={author.id}
-            data-username={author.username}
+            data-priority={author.get('relationshipPriority') || 'inactive'}
+            data-userid={author.get('id')}
+            data-username={author.get('username')}
             draggable
           >
-            {`@${author.username}`}
+            {`@${author.get('username')}`}
           </span>
         </Link>
       </div>
@@ -153,7 +153,7 @@ export const CategoryHeader = ({ post, author, categoryName, categoryPath }) => 
           <span className="CategoryHeaderCategoryName">{categoryName}</span>
         </Link>
       </div>
-      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
+      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.get('createdAt')} />
     </header>
   )
 }
@@ -169,42 +169,42 @@ export const RepostHeader = ({ post, repostAuthor, repostedBy, inUserDetail }) =
   if (!post || !repostedBy) { return null }
   const postDetailPath = getPostDetailPath(repostedBy, post)
   return (
-    <header className={classNames('RepostHeader', { inUserDetail })} key={`RepostHeader_${post.id}`}>
+    <header className={classNames('RepostHeader', { inUserDetail })} key={`RepostHeader_${post.get('id')}`}>
       <div className="RepostHeaderAuthor">
-        <Link className="PostHeaderLink" to={`/${repostAuthor.username}`}>
+        <Link className="PostHeaderLink" to={`/${repostAuthor.get('username')}`}>
           <Avatar
-            priority={repostAuthor.relationshipPriority}
-            sources={repostAuthor.avatar}
-            userId={`${repostAuthor.id}`}
-            username={repostAuthor.username}
+            priority={repostAuthor.get('relationshipPriority')}
+            sources={repostAuthor.get('avatar')}
+            userId={`${repostAuthor.get('id')}`}
+            username={repostAuthor.get('username')}
           />
           <span
             className="DraggableUsername"
-            data-priority={repostAuthor.relationshipPriority || 'inactive'}
-            data-userid={repostAuthor.id}
-            data-username={repostAuthor.username}
+            data-priority={repostAuthor.get('relationshipPriority') || 'inactive'}
+            data-userid={repostAuthor.get('id')}
+            data-username={repostAuthor.get('username')}
             draggable
           >
-            {`@${repostAuthor.username}`}
+            {`@${repostAuthor.get('username')}`}
           </span>
         </Link>
       </div>
       <RelationshipContainer className="isInHeader" user={repostAuthor} />
       <div className="RepostHeaderReposter">
-        <Link className="PostHeaderLink" to={`/${repostedBy.username}`}>
+        <Link className="PostHeaderLink" to={`/${repostedBy.get('username')}`}>
           <RepostIcon />
           <span
             className="DraggableUsername"
-            data-priority={repostedBy.relationshipPriority || 'inactive'}
-            data-userid={repostedBy.id}
-            data-username={repostedBy.username}
+            data-priority={repostedBy.get('relationshipPriority') || 'inactive'}
+            data-userid={repostedBy.get('id')}
+            data-username={repostedBy.get('username')}
             draggable
           >
-            {` by @${repostedBy.username}`}
+            {` by @${repostedBy.get('username')}`}
           </span>
         </Link>
       </div>
-      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.createdAt} />
+      <PostHeaderTimeAgoLink to={postDetailPath} createdAt={post.get('createdAt')} />
     </header>
   )
 }
@@ -224,7 +224,7 @@ export const PostBody = (props) => {
   const postDetailPath = getPostDetailPath(author, post)
 
   if (contentWarning) {
-    cells.push(<ContentWarningButton key={`contentWarning_${post.id}`} post={post} />)
+    cells.push(<ContentWarningButton key={`contentWarning_${post.get('id')}`} post={post} />)
   }
 
   const regionProps = {
@@ -236,25 +236,25 @@ export const PostBody = (props) => {
     isGridMode,
     postDetailPath,
   }
-  if (post.repostContent && post.repostContent.length) {
+  if (post.get('repostContent') && post.get('repostContent').size) {
     // this is weird, but the post summary is
     // actually the repost summary on reposts
     if (isGridMode) {
-      regionProps.content = post.summary
-      cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
+      regionProps.content = post.get('summary')
+      cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.get('id')}`} />)
     } else {
-      regionProps.content = post.repostContent
-      cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
-      if (post.content && post.content.length) {
+      regionProps.content = post.get('repostContent')
+      cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.get('id')}`} />)
+      if (post.get('content') && post.get('content').size) {
         regionProps.content = post.content
         cells.push(
-          <div className="PostBody RepostedBody" key={`RepostedBody_${post.id}`}>
+          <div className="PostBody RepostedBody" key={`RepostedBody_${post.get('id')}`}>
             <Avatar
-              priority={author.relationshipPriority}
-              sources={author.avatar}
-              to={`/${author.username}`}
-              userId={`${author.id}`}
-              username={author.username}
+              priority={author.get('relationshipPriority')}
+              sources={author.get('avatar')}
+              to={`/${author.get('username')}`}
+              userId={`${author.get('id')}`}
+              username={author.get('username')}
             />
             <RegionItems {...regionProps} />
           </div>,
@@ -262,12 +262,11 @@ export const PostBody = (props) => {
       }
     }
   } else {
-    const content = isGridMode ? post.summary : post.content
-    regionProps.content = content
-    cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.id}`} />)
+    regionProps.content = isGridMode ? post.get('summary') : post.get('content')
+    cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.get('id')}`} />)
   }
   return (
-    <div className="PostBody" key={`PostBody_${post.id}`}>
+    <div className="PostBody" key={`PostBody_${post.get('id')}`}>
       {cells}
     </div>
   )
@@ -293,7 +292,7 @@ export const PostFooter = ({ post, author, isGridMode, isRepostAnimating }) => {
       post={post}
       isGridMode={isGridMode}
       isRepostAnimating={isRepostAnimating}
-      key={`PostTools_${post.id}`}
+      key={`PostTools_${post.get('id')}`}
     />
   )
 }
