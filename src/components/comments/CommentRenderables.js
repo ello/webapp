@@ -11,19 +11,19 @@ export const CommentHeader = ({ comment, author }) => {
       <div className="CommentHeaderAuthor">
         <Link className="CommentHeaderLink" to={`/${author.username}`}>
           <Avatar
-            priority={author.relationshipPriority}
-            sources={author.avatar}
-            userId={`${author.id}`}
-            username={author.username}
+            priority={author.get('relationshipPriority')}
+            sources={author.get('avatar')}
+            userId={`${author.get('id')}`}
+            username={author.get('username')}
           />
           <span
             className="CommentUsername DraggableUsername"
-            data-priority={author.relationshipPriority || 'inactive'}
-            data-userid={author.id}
-            data-username={author.username}
+            data-priority={author.get('relationshipPriority', 'inactive')}
+            data-userid={author.get('id')}
+            data-username={author.get('username')}
             draggable
           >
-            {`@${author.username}`}
+            {`@${author.get('username')}`}
           </span>
         </Link>
       </div>
@@ -37,10 +37,10 @@ CommentHeader.propTypes = {
 }
 
 export const CommentBody = ({ assets, comment, isGridMode = true }) =>
-  <div className="CommentBody" key={`CommentBody${comment.id}`} >
+  <div className="CommentBody" key={`CommentBody${comment.get('id')}`} >
     <RegionItems
       assets={assets}
-      content={comment.content}
+      content={comment.get('content')}
       isGridMode={isGridMode}
     />
   </div>

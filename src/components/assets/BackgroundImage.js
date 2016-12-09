@@ -16,12 +16,12 @@ export function getSource(props) {
   const { dpi, sources, useGif } = props
   if (!sources) {
     return ''
-  } else if (sources.tmp && sources.tmp.url) {
-    return sources.tmp.url
-  } else if (useGif && isGif(sources.original.url)) {
-    return sources.original.url
+  } else if (sources.getIn(['tmp', 'url'])) {
+    return sources.getIn(['tmp', 'url'])
+  } else if (useGif && isGif(sources.getIn(['original', 'url']))) {
+    return sources.getIn(['original', 'url'])
   }
-  return sources[dpi] ? sources[dpi].url : null
+  return sources.getIn([dpi, 'url'], null)
 }
 
 export default class BackgroundImage extends Component {

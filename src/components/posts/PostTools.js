@@ -33,7 +33,7 @@ ViewsTool.propTypes = {
 const TimeAgoTool = ({ detailLink, post }) =>
   <span className="PostTool TimeAgoTool">
     <Link to={detailLink}>
-      <span className="PostToolValue">{new Date(post.createdAt).timeAgoInWords()}</span>
+      <span className="PostToolValue">{new Date(post.get('createdAt')).timeAgoInWords()}</span>
       <Hint>Visit</Hint>
     </Link>
   </span>
@@ -208,7 +208,7 @@ export const PostTools = (props) => {
     postRepostsCount,
     post,
   } = props
-  const postId = post.id
+  const postId = post.get('id')
   const cells = []
   cells.push(<ViewsTool key={`ViewsTool_${postId}`} {...props} />)
   cells.push(<TimeAgoTool key={`TimeAgoTool_${postId}`} {...props} />)

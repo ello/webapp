@@ -31,7 +31,7 @@ export default class ContentWarningButton extends Component {
     return (
       <button className={classes} onClick={this.onClickToggle}>
         <span className="ContentWarningButtonMessage">
-          {post.contentWarning}
+          {post.get('contentWarning')}
         </span>
         <span className="ContentWarningButtonStateLabel">
           {isOpen ? 'Hide' : 'View'}
