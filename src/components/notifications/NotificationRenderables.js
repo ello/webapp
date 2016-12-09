@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import { Link } from 'react-router'
@@ -9,17 +10,17 @@ import { Notification } from './Notification'
 // HELPERS
 function getActivityPath(user, post) {
   if (!user) { return '/' }
-  if (!post) { return `/${user.username}` }
-  return `/${user.username}/post/${post.token}`
+  if (!post) { return `/${user.get('username')}` }
+  return `/${user.get('username')}/post/${post.get('token')}`
 }
 
 function parseSummary(post, path, assets) {
-  return regionItemsForNotifications(post.summary, path, assets)
+  return regionItemsForNotifications(post.get('summary'), path, assets)
 }
 
 function parseSummaryForCommentNotification(post, comment, path, assets) {
-  const postContent = post && post.summary ? post.summary : []
-  const commentContent = comment && comment.summary ? comment.summary : []
+  const postContent = post.get('summary', Immutable.List())
+  const commentContent = comment.get('summary', Immutable.List())
   const divider = [{ kind: 'rule' }]
   const combined = postContent.concat(divider, commentContent)
   return regionItemsForNotifications(combined, path, assets)
@@ -29,7 +30,7 @@ const UserTextLink = ({ user }) => {
   if (!user) { return null }
   return (
     <Link to={getActivityPath(user)}>
-      {`@${user.username}`}
+      {`@${user.get('username')}`}
     </Link>
   )
 }
@@ -251,7 +252,6 @@ InvitationAcceptedNotification.propTypes = {
   user: PropTypes.object,
 }
 
-
 // LOVES
 export const LoveNotification = ({ assets, author, createdAt, post, user }) => {
   const activityPath = getActivityPath(author, post)
@@ -316,7 +316,6 @@ LoveOnOriginalPostNotification.propTypes = {
   repostedSourceAuthor: PropTypes.object,
   user: PropTypes.object,
 }
-
 
 export const LoveOnRepostNotification = ({ assets, createdAt, repost, repostAuthor, user }) => {
   const activityPath = getActivityPath(repostAuthor, repost)
@@ -532,7 +531,6 @@ WatchOnOriginalPostNotification.propTypes = {
   repostedSourceAuthor: PropTypes.object,
   user: PropTypes.object,
 }
-
 
 export const WatchOnRepostNotification = ({ assets, createdAt, repost, repostAuthor, user }) => {
   const activityPath = getActivityPath(repostAuthor, repost)

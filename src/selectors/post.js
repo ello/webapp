@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import trunc from 'trunc-html'
@@ -49,7 +50,7 @@ export const selectPostBlocks = createSelector(
 
 export const selectPostEmbedContent = createSelector(
   [selectPostBlocks], (blocks) => {
-    if (!blocks) { return [] }
+    if (!blocks) { return Immutable.List() }
     return blocks.filter(block => /embed/.test(block.get('kind')) && block.getIn(['data', 'thumbnailLargeUrl']))
       .map(block => block.getIn(['data', 'thumbnailLargeUrl']))
   },
@@ -57,7 +58,7 @@ export const selectPostEmbedContent = createSelector(
 
 export const selectPostImageContent = createSelector(
   [selectPostBlocks], (blocks) => {
-    if (!blocks) { return [] }
+    if (!blocks) { return Immutable.List() }
     return blocks.filter(block => /image/.test(block.get('kind')) && block.getIn(['data', 'url']))
       .map(block => block.getIn(['data', 'url']))
   },
@@ -120,6 +121,7 @@ export const selectPostMetaCanonicalUrl = createSelector(
 
 export const selectPostMetaImages = createSelector(
   [selectPostImageAndEmbedContent], (images) => {
+    console.log('images', images)
     const openGraphImages = images.toArray().map(image => ({ property: 'og:image', content: image }))
     const schemaImages = images.toArray().map(image => ({ name: 'image', itemprop: 'image', content: image }))
     return { openGraphImages, schemaImages }

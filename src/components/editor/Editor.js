@@ -28,9 +28,9 @@ export function getEditorId(post, comment, isComment, isZero) {
   const prefix = isComment ? 'commentEditor' : 'postEditor'
   let modelId = ''
   if (post) {
-    modelId = post.id
+    modelId = post.get('id')
   } else if (comment) {
-    modelId = `${comment.postId}_${comment.id}`
+    modelId = `${comment.get('postId')}_${comment.get('id')}`
   } else if (isZero) {
     modelId = 'Zero'
   } else {
@@ -97,11 +97,11 @@ class Editor extends Component {
   submit = (data) => {
     const { allowsAutoWatch, comment, dispatch, isComment, isOwnPage, onSubmit, post } = this.props
     if (isComment) {
-      if (comment && comment.isEditing) {
+      if (comment.get('isEditing')) {
         dispatch(toggleCommentEditing(comment, false))
         dispatch(updateComment(comment, data, this.getEditorIdentifier()))
       } else {
-        dispatch(createComment(allowsAutoWatch, data, this.getEditorIdentifier(), post.id))
+        dispatch(createComment(allowsAutoWatch, data, this.getEditorIdentifier(), post.get('id')))
       }
     } else if (!post) {
       dispatch(closeOmnibar())
@@ -111,8 +111,8 @@ class Editor extends Component {
       dispatch(updatePost(post, data, this.getEditorIdentifier()))
     } else if (post.isReposting) {
       dispatch(toggleReposting(post, false))
-      const repostId = post.repostId || post.id
-      const repostedFromId = post.repostId ? post.id : null
+      const repostId = post.get('repostId') || post.get('id')
+      const repostedFromId = post.get('repostId') ? post.get('id') : null
       dispatch(createPost(data, this.getEditorIdentifier(),
         repostId, repostedFromId),
       )
@@ -128,16 +128,16 @@ class Editor extends Component {
   cancel = () => {
     const { comment, isComment, post } = this.props
     if (isComment) {
-      if (comment && comment.isEditing) {
+      if (comment.get('isEditing')) {
         this.launchCancelConfirm('edit')
       } else {
         this.launchCancelConfirm('comment')
       }
     } else if (!post) {
       this.launchCancelConfirm('post')
-    } else if (post.isEditing) {
+    } else if (post.get('isEditing')) {
       this.launchCancelConfirm('edit')
-    } else if (post.isReposting) {
+    } else if (post.get('isReposting')) {
       this.launchCancelConfirm('repost')
     }
   }
@@ -184,39 +184,39 @@ class Editor extends Component {
       shouldPersist,
     } = this.props
     if (!isLoggedIn) { return null }
-    let blocks = []
-    let repostContent = []
+    let blocks
+    let repostContent
     let submitText
     if (autoPopulate && !shouldPersist) {
       blocks = [{ kind: 'text', data: autoPopulate }]
       submitText = 'Post'
     } else if (isComment) {
-      if (comment && comment.isEditing) {
+      if (comment && comment.get('isEditing')) {
         submitText = 'Update'
-        blocks = comment.body
+        blocks = comment.get('body')
       } else {
         submitText = 'Comment'
       }
     } else if (!post) {
       submitText = 'Post'
-    } else if (post.isReposting) {
+    } else if (post.get('isReposting')) {
       submitText = 'Repost'
-      if (post.repostId) {
-        repostContent = post.repostContent
+      if (post.get('repostId')) {
+        repostContent = post.get('repostContent')
       } else {
-        repostContent = post.content
+        repostContent = post.get('content')
       }
-    } else if (post.isEditing) {
+    } else if (post.get('isEditing')) {
       submitText = 'Update'
-      if (post.repostContent && post.repostContent.length) {
-        repostContent = post.repostContent
+      if (post.get('repostContent') && post.get('repostContent').size) {
+        repostContent = post.get('repostContent')
       }
-      if (post.body) {
-        blocks = post.body
+      if (post.get('body')) {
+        blocks = post.get('body')
       }
     }
     const editorId = this.getEditorIdentifier()
-    const key = `${editorId}_${blocks.length + repostContent.length}`
+    const key = `${editorId}_${blocks.size + repostContent.size}`
     return (
       <BlockCollection
         blocks={blocks}

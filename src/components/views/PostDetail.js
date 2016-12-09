@@ -7,7 +7,7 @@ import { MainView } from '../views/MainView'
 export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
   <MainView className="PostDetail">
     <div className="PostDetails Posts asList">
-      <article className="PostList" id={`Post_${post ? post.id : '_'}`}>
+      <article className="PostList" id={`Post_${post.get('id', '_')}`}>
         <div className="StreamContainer">
           {author && post ? <PostContainer isPostDetail post={post} /> : null}
           {hasEditor && post ? <Editor post={post} isComment isPostDetail /> : null}

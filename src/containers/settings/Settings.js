@@ -204,10 +204,9 @@ class Settings extends Component {
   }
 
   onClickDeleteAccountModal = () => {
-    const { dispatch, profile } = this.props
+    const { dispatch } = this.props
     dispatch(openModal(
       <DeleteAccountDialog
-        user={profile}
         onConfirm={this.onConfirmAccountWasDeleted}
         onDismiss={this.closeModal}
       />

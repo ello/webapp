@@ -8,11 +8,11 @@ function renderHeader({ notifier }) {
   return (
     <header className="NotificationHeader">
       <Avatar
-        priority={notifier.relationshipPriority}
-        sources={notifier.avatar}
-        to={`/${notifier.username}`}
-        userId={`${notifier.id}`}
-        username={notifier.username}
+        priority={notifier.get('relationshipPriority')}
+        sources={notifier.get('avatar')}
+        to={`/${notifier.get('username')}`}
+        userId={`${notifier.get('id')}`}
+        username={notifier.get('username')}
       />
     </header>
   )

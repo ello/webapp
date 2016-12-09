@@ -3,7 +3,6 @@
 import React, { Component, PropTypes } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import { Link } from 'react-router'
-import get from 'lodash/get'
 import classNames from 'classnames'
 import ImageAsset from '../assets/ImageAsset'
 import { ElloBuyButton } from '../editor/ElloBuyButton'
@@ -41,11 +40,11 @@ class ImageRegion extends Component {
   componentWillMount() {
     const { assets, content, innerHeight } = this.props
     let scale = null
-    const assetMatch = content.url && content.url.match(/asset\/attachment\/(\d+)\//)
+    const assetMatch = content.get('url') && content.get('url').match(/asset\/attachment\/(\d+)\//)
     if (assetMatch && assets) {
       const assetId = assetMatch[1]
-      const asset = this.props.assets[assetId] || this.props.assets[parseInt(assetId, 10)]
-      const imageHeight = parseInt(get(asset, 'attachment.original.metadata.height'), 10)
+      const asset = this.props.assets.get(assetId) || this.props.assets.get(Number(assetId))
+      const imageHeight = Number(asset.getIn(['attachment', 'original', 'metadata', 'height']))
       scale = innerHeight / imageHeight
     }
 
@@ -177,8 +176,8 @@ class ImageRegion extends Component {
     // notifications don't supply the linked assets in a response
     // so we need to see if the asset actually exists here so we
     // can fall back to using just the url
-    if (!assets || (assets && links && links.assets && !assets[links.assets])) { return true }
-    return !(links && links.assets && assets[links.assets] && assets[links.assets].attachment)
+    if (!assets || (assets && links && links.get('assets') && !assets.get(links.get('assets')))) { return true }
+    return !(links && links.get('assets') && assets.get(links.get('assets') && assets.getIn([links.get('assets'), 'attachment'])))
   }
 
   isGif() {
@@ -194,7 +193,7 @@ class ImageRegion extends Component {
     const dimensions = this.getImageDimensions()
     return (
       <ImageAsset
-        alt={content.alt ? content.alt.replace('.gif', '') : null}
+        alt={content.get('alt') ? content.get('alt').replace('.gif', '') : null}
         className="ImageAttachment"
         height={isNotification ? 'auto' : dimensions.height}
         onLoadFailure={this.onLoadFailure}
@@ -212,14 +211,14 @@ class ImageRegion extends Component {
     const dimensions = this.getImageDimensions()
     return (
       <ImageAsset
-        alt={content.alt ? content.alt.replace('.jpg', '') : null}
+        alt={content.get('alt') ? content.get('alt').replace('.jpg', '') : null}
         className="ImageAttachment"
         height={isNotification ? 'auto' : dimensions.height}
         onLoadFailure={this.onLoadFailure}
         onLoadSuccess={this.onLoadSuccess}
         role="presentation"
         srcSet={srcset}
-        src={this.attachment.hdpi.url}
+        src={this.attachment.getIn(['hdpi', 'url'])}
         width={dimensions.width}
       />
     )
@@ -227,7 +226,7 @@ class ImageRegion extends Component {
 
   renderLegacyImageAttachment() {
     const { content, isNotification } = this.props
-    const attrs = { src: content.url }
+    const attrs = { src: content.get('url') }
     const { width, height } = this.state
     const stateDimensions = width ? { width, height } : {}
     if (isNotification) {
@@ -235,7 +234,7 @@ class ImageRegion extends Component {
     }
     return (
       <ImageAsset
-        alt={content.alt ? content.alt.replace('.jpg', '') : null}
+        alt={content.get('alt') ? content.get('alt').replace('.jpg', '') : null}
         className="ImageAttachment"
         onLoadFailure={this.onLoadFailure}
         onLoadSuccess={this.onLoadSuccess}
@@ -249,7 +248,7 @@ class ImageRegion extends Component {
   renderAttachment() {
     const { assets, links } = this.props
     if (!this.isBasicAttachment()) {
-      this.attachment = assets[links.assets].attachment
+      this.attachment = assets.getIn([links.get('assets'), 'attachment'])
       return this.isGif() ? this.renderGifAttachment() : this.renderImageAttachment()
     }
     return this.renderLegacyImageAttachment()
