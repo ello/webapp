@@ -1,5 +1,4 @@
 import * as MAPPING_TYPES from '../../constants/mapping_types'
-import { sortCategories } from '../../selectors/categories'
 
 // the export methods need to return an object like:
 // { type: posts, ids: [1, 2, 3] }
@@ -33,6 +32,15 @@ export function postsFromLoves(loves) {
 
 export function notificationsFromActivities(activities) {
   return { type: MAPPING_TYPES.NOTIFICATIONS, ids: activities }
+}
+
+function sortCategories(a, b) {
+  if (a.order < b.order) {
+    return -1
+  } else if (a.order > b.order) {
+    return 1
+  }
+  return 0
 }
 
 // TODO: move this into a selector?

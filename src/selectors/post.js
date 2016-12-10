@@ -30,7 +30,7 @@ export const selectIsOwnPost = createSelector(
 
 export const selectPostFromPropsPostId = createSelector(
   [selectJson, selectPropsPostId], (json, postId) =>
-    json.getIn([MAPPING_TYPES.POSTS, postId], null),
+    json.getIn([MAPPING_TYPES.POSTS, postId], Immutable.Map()),
 )
 
 export const selectPostFromToken = createSelector(
@@ -40,12 +40,14 @@ export const selectPostFromToken = createSelector(
 
 export const selectAuthorFromPost = createSelector(
   [selectJson, selectPostFromToken], (json, post) =>
-    json.getIn([MAPPING_TYPES.USERS, post.get('authorId')], null),
+    (post ? json.getIn([MAPPING_TYPES.USERS, post.get('authorId')], Immutable.Map()) : null),
 )
 
 export const selectPostBlocks = createSelector(
-  [selectPostFromToken], post =>
-    (post.get('repostContent') || post.get('content')) || post.get('summary'),
+  [selectPostFromToken], (post) => {
+    if (!post) { return null }
+    return (post.get('repostContent') || post.get('content')) || post.get('summary')
+  },
 )
 
 export const selectPostEmbedContent = createSelector(

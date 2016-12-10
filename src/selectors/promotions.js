@@ -12,13 +12,10 @@ export const selectPagePromotionals = state => state.getIn(['json', 'pagePromoti
 export const selectCategoryData = createSelector(
   [selectPathname, selectJson, selectCats], (pathname, json, categories) => {
     const slug = pathname.replace('/discover/', '')
-    let cat = Immutable.Map()
-    categories.valueSeq().forEach((category) => {
-      if (category.get('slug') === slug) { cat = category }
-    })
+    const cat = categories.valueSeq().find(category => category.get('slug') === slug) || Immutable.Map()
     return {
       category: cat,
-      promotionals: getLinkArray(cat, 'promotionals', json),
+      promotionals: getLinkArray(cat, 'promotionals', json) || Immutable.List(),
     }
   },
 )
@@ -38,7 +35,8 @@ export const selectIsCategoryPromotion = createSelector(
 )
 
 export const selectRandomAuthPromotion = createSelector(
-  [selectAuthPromotionals], authPromos =>
-    sample(authPromos.toArray()),
+  [selectAuthPromotionals], (authPromos) => {
+    sample(authPromos)
+  },
 )
 
