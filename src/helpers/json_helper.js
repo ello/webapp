@@ -31,12 +31,14 @@ export function getLinkObject(model, identifier, json) {
 
 export function getLinkArray(model, identifier, json) {
   const link = model.getIn(['links', identifier])
-  if (!link) { return Immutable.List() }
+  console.log('link', link, identifier)
+  if (!link) { return null }
   const keys = link.get('ids', link)
   const mappingType = link.get('type', identifier)
+  console.log('mappingType', mappingType)
   const collection = json.get(mappingType)
   const deletedCollection = json.get(`deleted_${mappingType}`)
-  if (keys.length && collection) {
+  if (keys.size && collection) {
     // filter they keys so that models that don't exist
     // aren't added to the link object mainly used for
     // when a model gets deleted ie: post or comment
@@ -45,6 +47,6 @@ export function getLinkArray(model, identifier, json) {
     )
     return filteredKeys.map(key => collection.get(key))
   }
-  return Immutable.List()
+  return null
 }
 

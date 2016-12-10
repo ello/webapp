@@ -28,7 +28,7 @@ export const selectUserFromPropsUserId = createSelector(
 
 export const selectUserFromUsername = createSelector(
   [selectJson, selectParamsUsername], (json, username) =>
-    findModel(json, { collection: MAPPING_TYPES.USERS, findObj: { username } }),
+    findModel(json, { collection: MAPPING_TYPES.USERS, findObj: { username } }) || Immutable.Map(),
 )
 
 export const selectRelationshipPriority = createSelector(

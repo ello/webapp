@@ -138,11 +138,11 @@ methods.parseLinked = (linked, state) => {
 // pull out the ids as this is the main payload
 methods.getResult = (response, state, action) => {
   const { mappingType, resultFilter } = action.meta
-  const ids = methods.addModels(state, mappingType, response).ids
+  const { ids, state: newState } = methods.addModels(state, mappingType, response)
   // set the result to the resultFilter if it exists
   const result = (typeof resultFilter === 'function') ? resultFilter(response[mappingType]) : { type: mappingType, ids }
   result.pagination = action.payload.pagination
-  return Immutable.fromJS(result)
+  return { newState, result: Immutable.fromJS(result) }
 }
 
 methods.getCurrentUser = state =>
@@ -178,7 +178,7 @@ methods.addParentPostIdToComments = (state, action) => {
       })
     }
   }
-  return null
+  return response
 }
 
 methods.setLayoutMode = (action, state) => {
@@ -192,7 +192,8 @@ methods.pagesKey = action =>
 
 // look at json_test to see more documentation for what happens in here
 methods.updateResult = (response, state, action) => {
-  let result = methods.getResult(response, state, action)
+  let { newState, result } = methods.getResult(response, state, action) // eslint-disable-line
+  state = newState
   const { resultKey } = action.meta || {}
   const resultPath = methods.pagesKey(action)
   const existingResult = state.getIn(['pages', resultPath])
@@ -408,7 +409,7 @@ export default function json(state = initialState, action = { type: '' }) {
     const { mappingType } = action.meta
     state = methods.addModels(state, mappingType, response)
   } else {
-    state = methods.addParentPostIdToComments(state, action)
+    methods.addParentPostIdToComments(state, action)
     state = methods.updateResult(response, state, action)
   }
   hasLoadedFirstStream = true
