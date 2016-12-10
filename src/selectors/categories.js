@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import startCase from 'lodash/startCase'
 import trunc from 'trunc-html'
@@ -21,7 +22,7 @@ export const selectCategoryCollection = state => state.getIn(['json', 'categorie
 export const selectAllCategoriesAsArray = createSelector(
   [selectCategoryCollection, selectAllCategoriesPage],
   (categories, allCategoryPage) => {
-    if (!categories || !allCategoryPage) { return [] }
+    if (!categories || !allCategoryPage) { return Immutable.List() }
     return allCategoryPage.get('ids').map(key => categories.get(key))
   },
 )

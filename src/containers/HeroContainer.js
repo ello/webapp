@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
@@ -84,6 +85,7 @@ function mapStateToProps(state, props) {
   } else if (isCategoryPromotion) {
     promotions = categoryData.promotionals
   }
+  console.log('promotions', promotions)
   return {
     authPromotionals: selectAuthPromotionals(state),
     broadcast: selectBroadcast(state),
@@ -144,15 +146,14 @@ class HeroContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { broadcast, isPagePromotion, pathname } = nextProps
+    const { broadcast, pathname } = nextProps
     const hasPathChanged = this.props.pathname !== pathname
     const randomIndex = nextProps.promotions.size > 0 ? random(nextProps.promotions.size - 1) : 0
-    if ((hasPathChanged && isPagePromotion) || !this.state.promotion) {
-      this.setState({ promotion: nextProps.promotions.get(randomIndex) })
-    } else if (hasPathChanged || !this.state.promotion) {
-      this.setState({ promotion: nextProps.promotions.get(randomIndex) })
+    console.log('randomIndex', randomIndex)
+    if (hasPathChanged || !this.state.promotion) {
+      this.setState({ promotion: nextProps.promotions.first() || Immutable.Map() })
+      console.log('this.state.promotion', this.state.promotion)
     }
-
     if (broadcast !== this.state.broadcast) {
       this.setState({ broadcast })
     }
