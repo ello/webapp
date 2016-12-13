@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import shallowCompare from 'react-addons-shallow-compare'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
@@ -121,8 +120,8 @@ class PostContainer extends Component {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   onClickWatchPost = () => {

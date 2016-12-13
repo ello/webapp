@@ -1,5 +1,4 @@
 import { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectAllowsAnalytics, selectAnalyticsId, selectCreatedAt } from '../selectors/profile'
@@ -75,8 +74,8 @@ class AnalyticsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   render() {

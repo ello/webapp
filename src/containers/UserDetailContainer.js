@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
-import shallowCompare from 'react-addons-shallow-compare'
 import { USER } from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectActiveUserFollowingType, selectHasSaidHelloTo } from '../selectors/gui'
@@ -123,7 +122,7 @@ class UserDetailContainer extends Component {
     } else if (!nextProps.user) {
       return false
     }
-    return shallowCompare(this, nextProps, nextState)
+    return true
   }
 
   render() {

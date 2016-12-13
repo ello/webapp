@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectCommentFromPropsCommentId } from '../selectors/comment'
 import { selectIsGridMode } from '../selectors/gui'
@@ -42,9 +41,9 @@ class CommentContainer extends Component {
     post: PropTypes.object,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (!nextProps.comment) { return false }
-    return shallowCompare(this, nextProps, nextState)
+    return true
   }
 
   render() {

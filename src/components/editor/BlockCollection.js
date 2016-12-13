@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
@@ -91,9 +90,9 @@ class BlockCollection extends Component {
     addInputObject(this)
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (!nextProps.collection || !nextProps.order) { return false }
-    return shallowCompare(this, nextProps, nextState)
+    return true
   }
 
   componentDidUpdate(prevProps) {

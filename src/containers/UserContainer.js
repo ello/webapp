@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
-import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
 import { selectViewsAdultContent } from '../selectors/profile'
@@ -93,8 +92,8 @@ class UserContainer extends Component {
     useGif: false,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   onClickOpenBio = () => {

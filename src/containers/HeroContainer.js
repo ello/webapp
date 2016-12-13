@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
 import sample from 'lodash/sample'
-import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en'
 import { getLinkObject } from '../helpers/json_helper'
@@ -153,8 +152,8 @@ class HeroContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   onClickShareProfile = () => {

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { trackEvent, trackInitialPage } from '../actions/analytics'
@@ -113,8 +112,8 @@ class AppContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   componentWillUnmount() {
@@ -180,21 +179,6 @@ class AppContainer extends Component {
     )
   }
 }
-
-      // <section className={appClasses}>
-      //   <MetaContainer params={params} />
-      //   <ViewportContainer params={params} />
-      //   {isLoggedIn ? <OmnibarContainer /> : null}
-      //   <HeroContainer params={params} />
-      //   {children}
-      //   <NavbarContainer params={params} />
-      //   <FooterContainer params={params} />
-      //   {isLoggedIn ? <InputContainer /> : null}
-      //   <ModalContainer />
-      //   <DevTools />
-      //   <KeyboardContainer />
-      //   <AnalyticsContainer />
-      // </section>
 
 export default connect(mapStateToProps)(AppContainer)
 
