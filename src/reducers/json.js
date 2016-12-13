@@ -121,6 +121,7 @@ methods.addModels = (state, type, data) => {
     state = methods.mergeModel(state, camelType, model)
     ids = ids.push(`${model.id}`)
   }
+  console.log('ids', type, ids, state)
   return { ids, state }
 }
 
@@ -201,7 +202,7 @@ methods.updateResult = (response, state, action) => {
     if (action.type === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       state = state.setIn(['pages', resultPath, 'pagination'], result.get('pagination'))
       if (existingResult.get('next')) {
-        result = result.set('ids', result.get('ids').concat(existingResult.getIn(['next', 'ids'])))
+        result = result.set('ids', existingResult.getIn(['next', 'ids']).concat(result.get('ids')))
       }
       return state.setIn(['pages', resultPath, 'next'], result)
     } else if (typeof existingResult.getIn(['ids', 0]) === 'string') {
@@ -403,7 +404,7 @@ export default function json(state = initialState, action = { type: '' }) {
   // posts/following/followers/loves
   if (action && action.meta && action.meta.updateResult === false) {
     const { mappingType } = action.meta
-    state = methods.addModels(state, mappingType, response)
+    state = methods.addModels(state, mappingType, response).state
   } else {
     methods.addParentPostIdToComments(state, action)
     state = methods.updateResult(response, state, action)
