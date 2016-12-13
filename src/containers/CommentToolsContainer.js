@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import * as ACTION_TYPES from '../constants/action_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectIsOwnComment } from '../selectors/comment'
@@ -50,7 +49,7 @@ class CommentToolsContainer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.isMoreToolActive !== nextState.isMoreToolActive) { return true }
-    return shallowCompare(this, nextProps, nextState)
+    return true
   }
 
   onClickMoreTool = () => {

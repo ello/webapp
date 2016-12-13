@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push, replace } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import set from 'lodash/set'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -108,8 +107,8 @@ class PostToolsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   onClickToggleComments = () => {

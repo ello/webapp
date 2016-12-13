@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Mousetrap from 'mousetrap'
-import shallowCompare from 'react-addons-shallow-compare'
 import { SHORTCUT_KEYS } from '../../constants/application_types'
 
 function toggleContainerColors() {
@@ -37,8 +36,8 @@ class DevTools extends Component {
     })
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   componentWillUnmount() {

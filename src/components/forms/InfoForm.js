@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import debounce from 'lodash/debounce'
 import { hideSoftKeyboard } from '../../lib/jello'
@@ -91,8 +90,8 @@ class InfoForm extends Component {
     })
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   componentWillUnmount() {

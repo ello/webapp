@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsGridMode, selectIsLayoutToolHidden } from '../selectors/gui'
 import { selectStreamType } from '../selectors/stream'
 import { scrollTo } from '../lib/jello'
@@ -25,8 +24,8 @@ class FooterContainer extends Component {
     isPaginatoring: PropTypes.bool,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   onClickScrollToTop = () => {

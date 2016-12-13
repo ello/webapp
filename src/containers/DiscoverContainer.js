@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsType } from '../selectors/params'
 import { selectPropsPathname } from '../selectors/routing'
@@ -65,8 +64,8 @@ class DiscoverContainer extends Component {
     dispatch(bindDiscoverKey(paramsType))
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   componentDidUpdate(prevProps) {
