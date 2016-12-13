@@ -125,7 +125,8 @@ class StreamContainer extends Component {
     const { stream } = nextProps
     const { action } = nextState
     const updateKey = get(action, 'meta.updateKey')
-    const streamPath = stream.getIn(['payload', 'endpoint', 'path', ''])
+    const streamPath = stream.getIn(['payload', 'endpoint', 'path'], '')
+    const streamType = stream.get('type')
     // this prevents nested stream components from clobbering parents
     if (updateKey && !streamPath.match(updateKey)) {
       return false
@@ -141,8 +142,8 @@ class StreamContainer extends Component {
       // allow page loads to fall through and also allow stream
       // load requests to fall through to show the loader
       // on an initial page load when endpoints don't match
-    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(stream.get('type')) &&
-              stream.get('type') !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
+    } else if (!/LOAD_NEXT_CONTENT|POST\.|COMMENT\./.test(streamType) &&
+              streamType !== ACTION_TYPES.LOAD_STREAM_REQUEST &&
               streamPath !== get(action, 'payload.endpoint.path')) {
       return false
     }
@@ -287,13 +288,17 @@ class StreamContainer extends Component {
     if (model) {
       renderObj.data.push(model)
     } else if (!renderObj.data.length) {
-      switch (stream.type) {
+      console.log('stream.type', stream.get('type'))
+      switch (stream.get('type')) {
         case ACTION_TYPES.LOAD_STREAM_SUCCESS:
+          console.log('zero')
           return this.renderZeroState()
         case ACTION_TYPES.LOAD_STREAM_REQUEST:
+          console.log('loading')
           return this.renderLoading()
         case ACTION_TYPES.LOAD_STREAM_FAILURE:
           if (stream.error) {
+            console.log('error')
             return this.renderError()
           }
           return null
@@ -304,6 +309,7 @@ class StreamContainer extends Component {
     const { meta } = action
     const renderMethod = isGridMode ? 'asGrid' : 'asList'
     const pagination = result.get('pagination')
+    console.log('render', get(action, 'payload.endpoint.path'), renderObj.data)
     return (
       <section className={classNames('StreamContainer', className)}>
         {meta.renderStream[renderMethod](renderObj, columnCount, isPostHeaderHidden)}
