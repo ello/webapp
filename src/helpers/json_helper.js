@@ -1,7 +1,5 @@
 // TODO: test these as they are data related
 export function findBy(params, collection, json) {
-  // console.log('findBy', params, collection, json)
-  console.log('json', json)
   const models = json ? json.get(collection) : null
   if (!models) { return null }
   return models.find(model =>
@@ -34,8 +32,6 @@ export function getLinkArray(model, identifier, json) {
   if (!link) { return null }
   const keys = link.get('ids', link)
   const mappingType = link.get('type', identifier)
-  console.log('mappingType', keys, json)
-  console.trace()
   const collection = json.get(mappingType)
   const deletedCollection = json.get(`deleted_${mappingType}`)
   if (keys.size && collection) {

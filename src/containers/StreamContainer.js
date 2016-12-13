@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
 import classNames from 'classnames'
@@ -45,6 +44,7 @@ export function makeMapStateToProps() {
       renderObj,
       result,
       resultPath,
+      routerState: state.getIn(['routing', 'location', 'state'], {}),
       stream: state.get('stream'),
     }
   }
@@ -147,7 +147,7 @@ class StreamContainer extends Component {
               streamPath !== get(action, 'payload.endpoint.path')) {
       return false
     }
-    return shallowCompare(this, nextProps, nextState)
+    return true
   }
 
 

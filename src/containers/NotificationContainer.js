@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { getLinkObject } from '../helpers/json_helper'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import {
@@ -144,8 +143,8 @@ class NotificationParser extends Component {
     subject: PropTypes.object.isRequired,
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   render() {

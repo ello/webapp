@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { trackEvent } from '../actions/analytics'
 import { saveAvatar, saveCover } from '../actions/profile'
 import {
@@ -71,8 +70,8 @@ class OnboardingSettingsContainer extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   onDoneClick = () => {

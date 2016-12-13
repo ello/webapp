@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
 import { closeModal, closeAlert } from '../actions/modals'
@@ -28,8 +27,8 @@ class ModalContainer extends Component {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
+  shouldComponentUpdate() {
+    return true
   }
 
   componentDidUpdate() {
