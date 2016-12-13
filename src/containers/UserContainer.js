@@ -24,7 +24,7 @@ import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../lib/jello'
 import { getLinkArray } from '../helpers/json_helper'
 
-const selectJson = state => state.json || {}
+const selectJson = state => state.get('json', Immutable.Map())
 
 const selectUserCategories = createSelector(
   [selectUserFromPropsUserId, selectJson], (user, json) =>
@@ -34,6 +34,7 @@ const selectUserCategories = createSelector(
 export function mapStateToProps(state, props) {
   const user = selectUserFromPropsUserId(state, props) || Immutable.Map()
   const categories = selectUserCategories(state, props)
+  console.log('categories', categories.size)
   const truncatedShortBio = selectTruncatedShortBio(state, props)
   const deviceSize = selectDeviceSize(state)
   return {

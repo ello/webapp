@@ -279,9 +279,9 @@ describe('json reducer', () => {
         // 2nd page is in the result.next
         // 3rd page gets added to result.next
         it('updates the result ids if the existingResult had a next', () => {
-          state = state.setIn(['pages', 'sweetness', 'next'], Immutable.fromJS({ ids: ['2', '1'] }))
+          state = state.setIn(['pages', 'sweetness', 'next'], Immutable.fromJS({ ids: ['10', '8'] }))
           state = subject.methods.updateResult({}, state, action)
-          expect(state.getIn(['pages', 'sweetness', 'next', 'ids'])).to.deep.equal(Immutable.List(['6', '5', '3', '2', '1']))
+          expect(state.getIn(['pages', 'sweetness', 'next', 'ids'])).to.deep.equal(Immutable.List(['10', '8', '6', '5', '3']))
         })
 
         // add this result to the next param for subsequent page loads
