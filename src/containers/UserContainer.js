@@ -32,7 +32,7 @@ const selectUserCategories = createSelector(
 )
 
 export function mapStateToProps(state, props) {
-  const user = selectUserFromPropsUserId(state, props)
+  const user = selectUserFromPropsUserId(state, props) || Immutable.Map()
   const categories = selectUserCategories(state, props)
   const truncatedShortBio = selectTruncatedShortBio(state, props)
   const deviceSize = selectDeviceSize(state)

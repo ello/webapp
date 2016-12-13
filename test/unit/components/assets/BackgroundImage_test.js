@@ -1,28 +1,29 @@
+import Immutable from 'immutable'
 import { getSource } from '../../../../src/components/assets/BackgroundImage'
 
 function tmpCover() {
-  return {
+  return Immutable.fromJS({
     tmp: { url: 'cover-tmp.jpg', metadata: 'temporary' },
     optimized: { url: 'cover-optimized.jpg', metadata: 'optimized' },
     original: { url: 'cover-original.jpg', metadata: 'original' },
     xhdpi: { url: 'cover-xhdpi.jpg', metadata: 'xhdpi' },
-  }
+  })
 }
 
 function jpgCover() {
-  return {
+  return Immutable.fromJS({
     optimized: { url: 'cover-optimized.jpg', metadata: 'optimized' },
     original: { url: 'cover-original.jpg', metadata: 'original' },
     xhdpi: { url: 'cover-xhdpi.jpg', metadata: 'xhdpi' },
-  }
+  })
 }
 
 function gifCover() {
-  return {
+  return Immutable.fromJS({
     optimized: { url: 'cover-optimized.gif', metadata: 'optimized' },
     original: { url: 'cover-original.gif', metadata: 'original' },
     xhdpi: { url: 'cover-xhdpi.gif', metadata: 'xhdpi' },
-  }
+  })
 }
 
 describe('BackgroundImage', () => {

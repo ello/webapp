@@ -19,13 +19,13 @@ const createBrowserStore = (history, passedInitialState = {}) => {
   const logger = createLogger({
     collapsed: true,
     predicate: () => ENV.APP_DEBUG,
-    // stateTransformer: (state) => {
-    //   const newState = {}
-    //   state.keySeq().forEach((key) => {
-    //     newState[key] = state.get(key).toJS()
-    //   })
-    //   return newState
-    // },
+    stateTransformer: (state) => {
+      const newState = {}
+      state.keySeq().forEach((key) => {
+        newState[key] = state.get(key).toJS()
+      })
+      return newState
+    },
   })
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()

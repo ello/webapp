@@ -2,8 +2,7 @@ import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
-import get from 'lodash/get'
-import random from 'lodash/random'
+import sample from 'lodash/sample'
 import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en'
@@ -66,8 +65,7 @@ export const selectBroadcast = createSelector(
       return lastFollowingBeaconVersion !== FOLLOWING.BEACON_VERSION ? FOLLOWING.BEACON_TEXT : null
     } else if (viewName === 'starred') {
       return lastStarredBeaconVersion !== STARRED.BEACON_VERSION ? STARRED.BEACON_TEXT : null
-    }
-    return null
+    } return null
   },
 )
 
@@ -77,7 +75,7 @@ function mapStateToProps(state, props) {
   const isAuthentication = selectIsAuthentication(state)
   const isPagePromotion = selectIsPagePromotion(state)
   const isCategoryPromotion = selectIsCategoryPromotion(state)
-  let promotions
+  let promotions = Immutable.Map()
   if (isAuthentication) {
     promotions = selectAuthPromotionals(state)
   } else if (isPagePromotion) {
@@ -85,7 +83,6 @@ function mapStateToProps(state, props) {
   } else if (isCategoryPromotion) {
     promotions = categoryData.promotionals
   }
-  console.log('promotions', promotions)
   return {
     authPromotionals: selectAuthPromotionals(state),
     broadcast: selectBroadcast(state),
@@ -101,10 +98,10 @@ function mapStateToProps(state, props) {
     json: selectJson(state),
     pathname: selectPathname(state),
     promotions,
-    useGif: selectViewsAdultContent(state) || !user.get('postsAdultContent'),
-    userCoverImage: user.get('coverImage'),
-    userId: `${user.get('id')}`,
-    username: user.get('username'),
+    useGif: user && (selectViewsAdultContent(state) || !user.get('postsAdultContent')),
+    userCoverImage: user && user.get('coverImage'),
+    userId: user && `${user.get('id')}`,
+    username: user && user.get('username'),
     viewName: selectViewNameFromRoute(state, props),
   }
 }
@@ -146,13 +143,17 @@ class HeroContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { broadcast, pathname } = nextProps
+    const { broadcast, pathname, promotions } = nextProps
     const hasPathChanged = this.props.pathname !== pathname
-    const randomIndex = nextProps.promotions.size > 0 ? random(nextProps.promotions.size - 1) : 0
-    console.log('randomIndex', randomIndex)
     if (hasPathChanged || !this.state.promotion) {
-      this.setState({ promotion: nextProps.promotions.first() || Immutable.Map() })
-      console.log('this.state.promotion', this.state.promotion)
+      const keyArr = []
+      promotions.keySeq().forEach((key) => {
+        keyArr.push(key)
+      })
+      const randomKey = sample(keyArr)
+      console.log('keyArr', keyArr)
+      console.log('promotion randomKey', randomKey)
+      this.setState({ promotion: promotions.get(randomKey) || Immutable.Map() })
     }
     if (broadcast !== this.state.broadcast) {
       this.setState({ broadcast })
@@ -189,10 +190,10 @@ class HeroContainer extends Component {
 
   getHeroPromotionAuth() {
     const { dpi } = this.props
-    const { promotion } = this.state
-    const creditSources = get(promotion, 'avatar', null)
-    const creditUsername = get(promotion, 'username', null)
-    const sources = get(promotion, 'coverImage', null)
+    const { promotion } = this.state.promotion || Immutable.Map()
+    const creditSources = promotion.get('avatar', null)
+    const creditUsername = promotion.get('username', null)
+    const sources = promotion.get('coverImage', null)
     const props = { creditSources, creditUsername, dpi, sources }
     return <HeroPromotionAuth key="HeroPromotionAuth" {...props} />
   }
@@ -200,14 +201,14 @@ class HeroContainer extends Component {
   getHeroPromotionCategory() {
     const { categoryData, dpi, isLoggedIn, isMobile, json } = this.props
     const { category } = categoryData
-    const { promotion } = this.state
     const name = category.get('name', '')
     const description = category.get('description', '')
     const isSponsored = category.get('isSponsored', '')
     const ctaCaption = category.get('ctaCaption')
     const ctaHref = category.get('ctaHref')
+    const promotion = this.state.promotion || Immutable.Map()
     const sources = promotion.get('image')
-    const user = getLinkObject(promotion, 'user', json)
+    const user = getLinkObject(promotion, 'user', json) || Immutable.Map()
     const creditSources = user.get('avatar', null)
     const creditUsername = user.get('username', null)
     const creditLabel = isSponsored ? 'Sponsored by' : 'Posted by'
@@ -229,11 +230,10 @@ class HeroContainer extends Component {
 
   getHeroPromotionPage() {
     const { dpi, isLoggedIn, isMobile, json } = this.props
-    const { promotion } = this.state
-    console.log('promotion', promotion)
+    const promotion = this.state.promotion || Immutable.Map()
     const header = promotion.get('header', '')
     const subheader = promotion.get('subheader', '')
-    const user = getLinkObject(promotion, 'user', json)
+    const user = getLinkObject(promotion, 'user', json) || Immutable.Map()
     const creditSources = user.get('avatar', null)
     const creditUsername = user.get('username', null)
     const ctaCaption = promotion.get('ctaCaption')

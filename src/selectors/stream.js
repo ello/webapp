@@ -71,7 +71,7 @@ export const makeSelectStreamProps = () =>
         // don't filter out blocked ids if we are in settings
         // since you can unblock/unmute them from here
         result.get('ids').forEach((id) => {
-          const model = json.getIn([result.type, id])
+          const model = json.getIn([result.get('type'), id])
           if (model && (path === '/settings' || (!delTypes || delTypes.includes(id)))) {
             renderObj.data.push(model)
           }

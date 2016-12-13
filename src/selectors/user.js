@@ -22,8 +22,10 @@ export const selectUser = createSelector(
 )
 
 export const selectUserFromPropsUserId = createSelector(
-  [selectJson, selectPropsUserId], (json, userId) =>
-    json.getIn([MAPPING_TYPES.USERS, userId], null),
+  [selectJson, selectPropsUserId], (json, userId) => {
+    console.log('userId', userId)
+    return json.getIn([MAPPING_TYPES.USERS, userId], null)
+  },
 )
 
 export const selectUserFromUsername = createSelector(
@@ -36,10 +38,12 @@ export const selectRelationshipPriority = createSelector(
 )
 
 export const selectTruncatedShortBio = createSelector(
-  [selectUserFromPropsUserId], user =>
-    trunc(user.get('formattedShortBio') || '', 160, { sanitizer:
+  [selectUserFromPropsUserId], (user) => {
+    if (!user) { return '' }
+    return trunc(user.get('formattedShortBio') || '', 160, { sanitizer:
       { allowedAttributes: { img: ['align', 'alt', 'class', 'height', 'src', 'width'] } },
-    }),
+    })
+  },
 )
 
 export const selectUserMetaDescription = createSelector(
