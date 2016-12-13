@@ -68,7 +68,7 @@ const createSelectLocationState = () => {
   }
 }
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: createSelectLocationState,
+  selectLocationState: createSelectLocationState(),
 })
 const routes = createRoutes(store)
 const element = (
@@ -110,7 +110,6 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   }
 
   const root = document.getElementById('root')
-  console.log('launchApplication', root)
   ReactDOM.render(element, root)
 }
 

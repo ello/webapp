@@ -123,7 +123,6 @@ export const selectPostMetaCanonicalUrl = createSelector(
 
 export const selectPostMetaImages = createSelector(
   [selectPostImageAndEmbedContent], (images) => {
-    console.log('images', images)
     const openGraphImages = images.toArray().map(image => ({ property: 'og:image', content: image }))
     const schemaImages = images.toArray().map(image => ({ name: 'image', itemprop: 'image', content: image }))
     return { openGraphImages, schemaImages }

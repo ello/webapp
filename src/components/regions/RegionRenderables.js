@@ -53,7 +53,7 @@ RegionItems.propTypes = {
   assets: PropTypes.object,
   columnWidth: PropTypes.number,
   commentOffset: PropTypes.number,
-  content: PropTypes.array,
+  content: PropTypes.object,
   contentWidth: PropTypes.number,
   innerHeight: PropTypes.number,
   isGridMode: PropTypes.bool,

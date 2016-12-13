@@ -22,10 +22,8 @@ export const selectUser = createSelector(
 )
 
 export const selectUserFromPropsUserId = createSelector(
-  [selectJson, selectPropsUserId], (json, userId) => {
-    console.log('userId', userId)
-    return json.getIn([MAPPING_TYPES.USERS, userId], null)
-  },
+  [selectJson, selectPropsUserId], (json, userId) =>
+    json.getIn([MAPPING_TYPES.USERS, userId], null),
 )
 
 export const selectUserFromUsername = createSelector(
