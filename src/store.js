@@ -19,16 +19,15 @@ const createBrowserStore = (history, passedInitialState = {}) => {
   const logger = createLogger({
     collapsed: true,
     predicate: () => ENV.APP_DEBUG,
-    // stateTransformer: (state) => {
-    //   const newState = {}
-    //   state.keySeq().forEach((key) => {
-    //     if (key === 'emoji') {
-    //       console.log('key', key, state.get(key))
-    //     }
-    //     newState[key] = state.get(key).toJS()
-    //   })
-    //   return newState
-    // },
+    stateTransformer: (state) => {
+      const newState = {}
+      state.keySeq().forEach((key) => {
+        if (['json'].includes(key)) {
+          newState[key] = state.get(key).toJS()
+        }
+      })
+      return newState
+    },
   })
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()

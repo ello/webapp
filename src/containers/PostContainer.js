@@ -108,7 +108,7 @@ class PostContainer extends Component {
     isReposting: PropTypes.bool,
     isWatchingPost: PropTypes.bool,
     post: PropTypes.object,
-    postBody: PropTypes.array,
+    postBody: PropTypes.object,
     showCommentEditor: PropTypes.bool,
     showComments: PropTypes.bool,
     showEditor: PropTypes.bool,

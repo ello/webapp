@@ -60,7 +60,6 @@ const routes = (store) => {
       const homeStream = store.getState().getIn(['gui', 'homeStream'])
 
       if (isLoggedIn) {
-        console.log('replace path')
         replace({ pathname: homeStream, state: nextState })
       }
     },

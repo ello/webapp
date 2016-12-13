@@ -402,7 +402,6 @@ describe('post selectors', () => {
       stub('post', { content: regions, id: '1', summary: [i0, i1] })
       const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
       state = Immutable.fromJS({ json })
-      console.log(state)
 
       expect(selector.selectPostMetaImages(state, props)).to.deep.equal(result)
 
