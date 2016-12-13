@@ -1,10 +1,8 @@
-import Immutable from 'immutable'
-
 // TODO: test these as they are data related
 export function findBy(params, collection, json) {
   // console.log('findBy', params, collection, json)
   const models = json.get(collection)
-  if (!models) { return Immutable.Map() }
+  if (!models) { return null }
   return models.find(model =>
     Object.keys(params).every(key => model.get(key) === params[key]),
   )
@@ -12,30 +10,29 @@ export function findBy(params, collection, json) {
 
 export function findModel(json, initModel) {
   if (!initModel || !initModel.findObj || !initModel.collection) {
-    return Immutable.Map()
+    return null
   }
   return findBy(initModel.findObj, initModel.collection, json)
 }
 
 export function getLinkObject(model, identifier, json) {
   const link = model.getIn(['links', identifier])
-  if (!link) { return Immutable.Map() }
+  if (!link) { return null }
   const key = link.get('id', link)
   const mappingType = link.get('type', identifier)
   const deletedCollection = json[`deleted_${mappingType}`]
   if (!deletedCollection || deletedCollection.indexOf(key) === -1) {
     return json.getIn([mappingType, key])
   }
-  return Immutable.Map()
+  return null
 }
 
 export function getLinkArray(model, identifier, json) {
+  if (!model) { return null }
   const link = model.getIn(['links', identifier])
-  console.log('link', link, identifier)
   if (!link) { return null }
   const keys = link.get('ids', link)
   const mappingType = link.get('type', identifier)
-  console.log('mappingType', mappingType)
   const collection = json.get(mappingType)
   const deletedCollection = json.get(`deleted_${mappingType}`)
   if (keys.size && collection) {

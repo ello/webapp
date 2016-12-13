@@ -183,7 +183,7 @@ describe('json reducer', () => {
       action.meta.resultFilter = users =>
         ({ usernames: users.map(user => user.username) })
       const result = subject.methods.getResult(response, state, action)
-      expect(result).to.deep.equal(Immutable.fromJS({ usernames: ['yo', 'mama'], pagination: '' }))
+      expect(result.result).to.deep.equal(Immutable.fromJS({ usernames: ['yo', 'mama'], pagination: '' }))
     })
 
     it('returns the correct result', () => {
@@ -192,8 +192,8 @@ describe('json reducer', () => {
       action.meta.mappingType = MAPPING_TYPES.USERS
       action.payload = { pagination: '' }
       const result = subject.methods.getResult(response, state, action)
-      expect(isValidResult(result)).to.be.true
-      expect(result).to.deep.equal(Immutable.fromJS({ ids: ['yo', 'mama'], type: MAPPING_TYPES.USERS, pagination: '' }))
+      expect(isValidResult(result.result)).to.be.true
+      expect(result.result).to.deep.equal(Immutable.fromJS({ ids: ['yo', 'mama'], type: MAPPING_TYPES.USERS, pagination: '' }))
     })
   })
 
@@ -239,7 +239,7 @@ describe('json reducer', () => {
           pagination: 'sweet',
         })
         action = { meta: { resultKey: 'sweetness' } }
-        sinon.stub(subject.methods, 'getResult', () => result)
+        sinon.stub(subject.methods, 'getResult', () => ({ result, newState: state }))
         expect(state.getIn(['pages', 'sweetness'])).to.be.undefined
         state = subject.methods.updateResult({}, state, action)
         expect(state.getIn(['pages', 'sweetness'])).to.equal(result)
@@ -256,9 +256,12 @@ describe('json reducer', () => {
             type: ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS,
           }
           sinon.stub(subject.methods, 'getResult', () =>
-            Immutable.fromJS({
-              ids: ['6', '5', '3'],
-              pagination: 'sweet',
+            ({
+              newState: state,
+              result: Immutable.fromJS({
+                ids: ['6', '5', '3'],
+                pagination: 'sweet',
+              }),
             }),
           )
         })
@@ -299,9 +302,12 @@ describe('json reducer', () => {
             payload: { pathname: '/sweetness' },
           }
           sinon.stub(subject.methods, 'getResult', () =>
-            Immutable.fromJS({
-              ids: ['10', '9', '8'],
-              pagination: 'sweet',
+            ({
+              newState: state,
+              result: Immutable.fromJS({
+                ids: ['10', '9', '8'],
+                pagination: 'sweet',
+              }),
             }),
           )
           subject.setHasLoadedFirstStream(true)

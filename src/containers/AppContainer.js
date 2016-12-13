@@ -181,5 +181,20 @@ class AppContainer extends Component {
   }
 }
 
+      // <section className={appClasses}>
+      //   <MetaContainer params={params} />
+      //   <ViewportContainer params={params} />
+      //   {isLoggedIn ? <OmnibarContainer /> : null}
+      //   <HeroContainer params={params} />
+      //   {children}
+      //   <NavbarContainer params={params} />
+      //   <FooterContainer params={params} />
+      //   {isLoggedIn ? <InputContainer /> : null}
+      //   <ModalContainer />
+      //   <DevTools />
+      //   <KeyboardContainer />
+      //   <AnalyticsContainer />
+      // </section>
+
 export default connect(mapStateToProps)(AppContainer)
 
