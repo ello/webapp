@@ -83,7 +83,6 @@ function mapStateToProps(state, props) {
     promotions = categoryData.promotionals
   }
   return {
-    authPromotionals: selectAuthPromotionals(state),
     broadcast: selectBroadcast(state),
     categoryData,
     dpi: selectDPI(state),
@@ -150,8 +149,6 @@ class HeroContainer extends Component {
         keyArr.push(key)
       })
       const randomKey = sample(keyArr)
-      console.log('keyArr', keyArr)
-      console.log('promotion randomKey', randomKey)
       this.setState({ promotion: promotions.get(randomKey) || Immutable.Map() })
     }
     if (broadcast !== this.state.broadcast) {

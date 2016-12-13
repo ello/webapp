@@ -121,7 +121,6 @@ methods.addModels = (state, type, data) => {
     state = methods.mergeModel(state, camelType, model)
     ids = ids.push(`${model.id}`)
   }
-  console.log('ids', type, ids, state)
   return { ids, state }
 }
 
