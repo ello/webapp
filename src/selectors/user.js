@@ -18,7 +18,7 @@ export const selectUsers = state => state.getIn(['json', 'users'])
 // Memoized selectors
 export const selectUser = createSelector(
   [selectUsers, selectPropsUserId], (users, userId) =>
-    users.get(`${userId}`, Immutable.Map()),
+    (users ? users.get(`${userId}`, Immutable.Map()) : Immutable.Map()),
 )
 
 export const selectUserFromPropsUserId = createSelector(
@@ -38,12 +38,10 @@ export const selectRelationshipPriority = createSelector(
 )
 
 export const selectTruncatedShortBio = createSelector(
-  [selectUserFromPropsUserId], (user) => {
-    if (!user) { return '' }
-    return trunc(user.get('formattedShortBio') || '', 160, { sanitizer:
+  [selectUserFromPropsUserId], user =>
+    trunc(user ? user.get('formattedShortBio') || '' : '', 160, { sanitizer:
       { allowedAttributes: { img: ['align', 'alt', 'class', 'height', 'src', 'width'] } },
-    })
-  },
+    }),
 )
 
 export const selectUserMetaDescription = createSelector(

@@ -12,10 +12,10 @@ export const selectAllCategoriesPage = state => state.getIn(['json', 'pages', 'a
 
 export const selectPagesResult = createSelector(
   [selectMeta, selectPathname, selectPages], (meta, pathname, pages) =>
-    pages.get(
+    (pages ? pages.get(
       meta.resultKey || pathname,
       Immutable.Map({ ids: Immutable.List(), pagination: emptyPagination() }),
-    ),
+    ) : Immutable.Map({ ids: Immutable.List(), pagination: emptyPagination() })),
 )
 
 // Memoized selectors
