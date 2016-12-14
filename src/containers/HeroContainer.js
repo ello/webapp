@@ -69,7 +69,7 @@ function mapStateToProps(state, props) {
   const isAuthentication = selectIsAuthentication(state)
   const isPagePromotion = selectIsPagePromotion(state)
   const isCategoryPromotion = selectIsCategoryPromotion(state)
-  let promotions = Immutable.Map()
+  let promotions
   if (isAuthentication) {
     promotions = selectAuthPromotionals(state)
   } else if (isPagePromotion) {
@@ -142,7 +142,7 @@ class HeroContainer extends Component {
         keyArr.push(key)
       })
       const randomKey = sample(keyArr)
-      this.setState({ promotion: promotions.get(randomKey) || Immutable.Map() })
+      this.setState({ promotion: promotions.get(randomKey) })
     }
     if (broadcast !== this.state.broadcast) {
       this.setState({ broadcast })

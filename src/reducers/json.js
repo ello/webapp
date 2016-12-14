@@ -84,7 +84,7 @@ methods.mergeModel = (state, type, params) => {
     params.id = `${params.id}`
     return state.setIn(
       [type, params.id],
-      state.getIn([type, params.id], Immutable.Map()).merge(params),
+      state.getIn([type, params.id], Immutable.Map()).mergeDeep(params),
     )
   }
   return state
@@ -99,7 +99,7 @@ methods.addModels = (state, type, data) => {
       const id = `${item.id}`
       state = state.setIn(
         [camelType, id],
-        state.getIn([camelType, id], Immutable.Map()).merge(item),
+        state.getIn([camelType, id], Immutable.Map()).mergeDeep(item),
       )
       ids = ids.push(id)
     })
@@ -256,7 +256,7 @@ methods.updateCurrentUser = (state, action) => {
   const { response } = action.payload
   const curUser = state.getIn([MAPPING_TYPES.USERS, `${response[MAPPING_TYPES.USERS].id}`])
   const newUser = curUser ?
-    curUser.merge(response[MAPPING_TYPES.USERS]) :
+    curUser.mergeDeep(response[MAPPING_TYPES.USERS]) :
     Immutable.fromJS(response[MAPPING_TYPES.USERS])
   const tmpAvatar = curUser.getIn(['avatar', 'tmp'])
   const tmpCoverImage = curUser.getIn(['coverImage', 'tmp'])
@@ -273,7 +273,7 @@ methods.updateCurrentUserTmpAsset = (state, action) => {
   const assetType = action.type === ACTION_TYPES.PROFILE.TMP_AVATAR_CREATED ? 'avatar' : 'coverImage'
   const currentUser = methods.getCurrentUser(state)
   return state.setIn([MAPPING_TYPES.USERS, currentUser.get('id')],
-    currentUser.set(assetType, currentUser.get(assetType).merge(action.payload)),
+    currentUser.set(assetType, currentUser.get(assetType).mergeDeep(action.payload)),
   )
 }
 
