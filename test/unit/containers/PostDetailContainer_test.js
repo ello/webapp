@@ -64,11 +64,11 @@ describe('PostDetailContainer', () => {
     const json = stubJSONStore()
     const user1 = json.getIn(['users', '1'])
     const post1 = json.getIn(['posts', '1'])
-    const state = Immutable.fromJS({
-      authentication: { isLoggedIn: true },
+    const state = {
+      authentication: Immutable.Map({ isLoggedIn: true }),
       json,
-      stream: { error: {}, type: 'streamType' },
-    })
+      stream: Immutable.Map({ error: {}, type: 'streamType' }),
+    }
     const props = { params: { token: 'token1' } }
     const mapped = mapStateToProps(state, props)
 

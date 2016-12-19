@@ -9,12 +9,12 @@ import {
 describe('stream selectors', () => {
   let state
   beforeEach(() => {
-    const stream = {
+    const stream = Immutable.fromJS({
       meta: { mappingType: 'stream.meta.mappingType' },
       payload: { postIdOrToken: 'stream.payload.postIdOrToken' },
       type: 'stream.type',
-    }
-    state = Immutable.fromJS({ stream })
+    })
+    state = { stream }
   })
 
   afterEach(() => {

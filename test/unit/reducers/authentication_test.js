@@ -101,7 +101,7 @@ describe('authentication reducer', () => {
     it('updates with authentication from persisted data', () => {
       const action = {
         type: REHYDRATE,
-        payload: { authentication: stubbedResponse },
+        payload: { authentication: Immutable.fromJS(stubbedResponse) },
       }
       const newDate = new Date((stubbedResponse.createdAt + stubbedResponse.expiresIn) * 1000)
       state = reducer(state, action)

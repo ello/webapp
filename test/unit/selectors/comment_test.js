@@ -15,7 +15,7 @@ describe('comment selectors', () => {
   beforeEach(() => {
     stateComment = stub('comment', { authorId: 'stateComment' })
     propsComment = stub('comment', { authorId: 'propComment', id: '666' })
-    state = Immutable.Map({ json })
+    state = { json, profile: Immutable.Map() }
   })
 
   afterEach(() => {
@@ -46,13 +46,13 @@ describe('comment selectors', () => {
 
   context('#selectIsOwnComment', () => {
     it('returns if the comment is the users own', () => {
-      state = state.setIn(['profile', 'id'], 'propComment')
+      state = { profile: state.profile.set('id', 'propComment') }
       const props = { comment: propsComment }
       expect(selectIsOwnComment(state, props)).to.equal(true)
     })
 
     it('returns if the comment is not the users own', () => {
-      state = state.setIn(['profile', 'id'], 'stateComment')
+      state = { profile: state.profile.set('id', 'stateComment') }
       const props = { comment: propsComment }
       expect(selectIsOwnComment(state, props)).to.equal(false)
     })
