@@ -88,7 +88,9 @@ function* refreshSchedulerSaga() {
 function* rehydrateSaga() {
   const { payload } = yield take(REHYDRATE)
   if (payload.authentication) {
-    const { createdAt, expiresIn, refreshToken } = payload.authentication
+    const createdAt = payload.authentication.get('createdAt')
+    const expiresIn = payload.authentication.get('expiresIn')
+    const refreshToken = payload.authentication.get('refreshToken')
 
     if (!refreshToken) return
 
