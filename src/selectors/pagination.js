@@ -3,10 +3,9 @@ import { createSelector } from 'reselect'
 import { selectPages, selectPagesResult } from './pages'
 import { selectParamsToken } from './params'
 import { selectPropsPathname } from './routing'
+import { selectJson } from './store'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
-
-const selectJson = state => state.get('json')
 
 const PAGING_BLACKLIST = [
   /^\/enter\b/,

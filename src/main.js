@@ -6,12 +6,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { applyRouterMiddleware, browserHistory, Router } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
 import useScroll from 'react-router-scroll/lib/useScroll'
+import { persistStore } from 'redux-persist'
 import { asyncLocalStorage } from 'redux-persist/storages'
-// import { persistStore } from 'redux-persist-immutable'
+import immutableTransform from 'redux-persist-transform-immutable'
+import { syncHistoryWithStore } from 'react-router-redux'
 
-// import './main.sass'
 import './main.css'
 import { addFeatureDetection, isIOS } from './lib/jello'
 import MemoryStore from './lib/memory_store'
@@ -55,21 +55,7 @@ updateTimeAgoStrings({ about: '' })
 
 const APP_VERSION = '3.0.21'
 
-const createSelectLocationState = () => {
-  let prevRoutingState
-  let prevRoutingStateJS
-  return (state) => {
-    const routingState = state.get('routing')
-    if (typeof prevRoutingState === 'undefined' || prevRoutingState !== routingState) {
-      prevRoutingState = routingState
-      prevRoutingStateJS = routingState.toJS()
-    }
-    return prevRoutingStateJS
-  }
-}
-const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: createSelectLocationState(),
-})
+const history = syncHistoryWithStore(browserHistory, store)
 const routes = createRoutes(store)
 const element = (
   <Provider store={store}>
@@ -81,36 +67,37 @@ const element = (
   </Provider>
 )
 
-// const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
+const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 
 const launchApplication = (storage, hasLocalStorage = false) => {
   addFeatureDetection()
-  // const persistor = persistStore(store, { storage, whitelist }, () => {
-  //   const root = document.getElementById('root')
-  //   ReactDOM.render(element, root)
-  // })
+  const persistor = persistStore(store, {
+    storage,
+    transforms: [immutableTransform()],
+    whitelist,
+  }, () => {
+    const root = document.getElementById('root')
+    ReactDOM.render(element, root)
+  })
 
   // check and update current version and only kill off the persisted reducers
   // due to the async nature of the default storage we need to check against the
   // real localStorage to determine if we should purge to avoid a weird race condition
   if (hasLocalStorage) {
     if (localStorage.getItem('APP_VERSION') !== APP_VERSION) {
-      // persistor.purge(['json'])
+      persistor.purge(['json'])
       Session.clear()
       storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }
   } else {
     storage.getItem('APP_VERSION', (error, result) => {
       if (result && result !== APP_VERSION) {
-        // persistor.purge(['json'])
+        persistor.purge(['json'])
         Session.clear()
         storage.setItem('APP_VERSION', APP_VERSION, () => {})
       }
     })
   }
-
-  const root = document.getElementById('root')
-  ReactDOM.render(element, root)
 }
 
 

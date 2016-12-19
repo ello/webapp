@@ -35,8 +35,7 @@ methods.getCompletions = (action) => {
   return null
 }
 
-// TODO: make sure this still works
-methods.rehydrateEditors = (persistedEditors = {}) => {
+methods.rehydrateEditors = (persistedEditors = Immutable.Map()) => {
   const editors = Immutable.Map()
   persistedEditors.keySeq().forEach((key) => {
     const pe = persistedEditors.get(key)

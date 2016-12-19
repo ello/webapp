@@ -13,6 +13,7 @@ import {
 } from '../selectors/gui'
 import { selectPostFromPropsPostId } from '../selectors/post'
 import { selectPathname } from '../selectors/routing'
+import { selectJson } from '../selectors/store'
 import { getLinkObject } from '../helpers/json_helper'
 import { trackEvent } from '../actions/analytics'
 import { watchPost, unwatchPost } from '../actions/posts'
@@ -30,7 +31,7 @@ import {
 import { WatchTool } from '../components/posts/PostTools'
 
 export function mapStateToProps(state, props) {
-  const json = state.get('json')
+  const json = selectJson(state)
   const pathname = selectPathname(state)
   const post = selectPostFromPropsPostId(state, props)
   const author = json.getIn([MAPPING_TYPES.USERS, post.get('authorId')])

@@ -20,8 +20,7 @@ import {
   WatchOnOriginalPostNotification,
   WatchOnRepostNotification,
 } from '../components/notifications/NotificationRenderables'
-
-const selectJson = state => state.get('json')
+import { selectJson } from '../selectors/store'
 
 const NOTIFICATION_KIND = {
   COMMENT: 'comment_notification',

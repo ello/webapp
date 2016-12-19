@@ -38,10 +38,9 @@ export default (state = initialState, action) => {
     case REHYDRATE:
       auth = action.payload.authentication
       if (auth) {
-        return state.merge({
-          ...auth,
-          expirationDate: new Date((auth.createdAt + auth.expiresIn) * 1000),
-        })
+        return auth.set(
+          'expirationDate', new Date((auth.get('createdAt', 0) + auth.get('expiresIn', 0)) * 1000),
+        )
       }
       return state
     default:
