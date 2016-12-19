@@ -55,7 +55,22 @@ updateTimeAgoStrings({ about: '' })
 
 const APP_VERSION = '3.0.21'
 
-const history = syncHistoryWithStore(browserHistory, store)
+const createSelectLocationState = () => {
+  let prevRoutingState
+  let prevRoutingStateJS
+  return (state) => {
+    const routingState = state.routing
+    if (typeof prevRoutingState === 'undefined' || prevRoutingState !== routingState) {
+      prevRoutingState = routingState
+      prevRoutingStateJS = routingState.toJS()
+    }
+    return prevRoutingStateJS
+  }
+}
+
+const history = syncHistoryWithStore(browserHistory, store, {
+  selectLocationState: createSelectLocationState(),
+})
 const routes = createRoutes(store)
 const element = (
   <Provider store={store}>

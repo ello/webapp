@@ -18,15 +18,15 @@ const createBrowserStore = (history, passedInitialState = {}) => {
   const logger = createLogger({
     collapsed: true,
     predicate: () => ENV.APP_DEBUG,
-    stateTransformer: (state) => {
-      const newState = {}
-      Object.keys(state).forEach((key) => {
-        // if (['json'].includes(key)) {
-        newState[key] = state[key].toJS()
-        // }
-      })
-      return newState
-    },
+    // stateTransformer: (state) => {
+    //   const newState = {}
+    //   Object.keys(state).forEach((key) => {
+    //     if (['json'].includes(key)) {
+    //       newState[key] = state[key].toJS()
+    //     }
+    //   })
+    //   return newState
+    // },
   })
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()

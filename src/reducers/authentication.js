@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
       auth = action.payload.authentication
       if (auth) {
         return auth.set(
-          'expirationDate', new Date((auth.get('createdAt', 0) + auth.get('expiresIn', 0)) * 1000),
+          'expirationDate', new Date((auth.get('createdAt') + auth.get('expiresIn')) * 1000),
         )
       }
       return state
