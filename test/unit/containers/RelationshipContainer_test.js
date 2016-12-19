@@ -36,12 +36,12 @@ describe('RelationshipContainer', () => {
       user,
       hasBlockMuteButton: true,
     }
-    const state = Immutable.fromJS({
-      authentication: { isLoggedIn: true },
-      gui: { deviceSize: 'mobile' },
+    const state = {
+      authentication: Immutable.Map({ isLoggedIn: true }),
+      gui: Immutable.Map({ deviceSize: 'mobile' }),
       json,
-      routing: { location: { pathname: '/discover' }, previousPath: '/onboarding' },
-    })
+      routing: Immutable.fromJS({ location: { pathname: '/discover' }, previousPath: '/onboarding' }),
+    }
 
     const expected = {
       deviceSize: 'mobile',

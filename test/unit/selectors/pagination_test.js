@@ -13,10 +13,10 @@ describe('pagination selectors', () => {
 
   context('#selectPagination', () => {
     it('returns the pagination object related to the /discover page with memoization', () => {
-      let state = Immutable.fromJS({ json, routing: { location: { pathname: '/discover' } } })
+      const state = { json, routing: Immutable.fromJS({ location: { pathname: '/discover' } }) }
       const props = { token: 'paramsToken', type: 'paramsType' }
       expect(selectPagination(state, props)).to.deep.equal(json.getIn(['pages', '/discover', 'pagination']))
-      state = state.set('blah', 1)
+      state.change = 1
       expect(selectPagination(state, props)).to.deep.equal(json.getIn(['pages', '/discover', 'pagination']))
       expect(selectPagination.recomputations()).to.equal(1)
     })

@@ -1,9 +1,10 @@
+import Immutable from 'immutable'
 import { selectIsModalActive, selectModalKind } from '../../../src/selectors/modal'
 
 describe('modal selectors', () => {
   let modal
   beforeEach(() => {
-    modal = { isActive: true, kind: 'Modal' }
+    modal = Immutable.Map({ isActive: true, kind: 'Modal' })
   })
 
   afterEach(() => {

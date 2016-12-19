@@ -47,7 +47,7 @@ describe('profile selectors', () => {
       registrationId: '1234',
       webOnboardingVersion: '1',
     })
-    state = Immutable.fromJS({ json, profile })
+    state = { json, profile: Immutable.fromJS(profile) }
   })
 
   afterEach(() => {
@@ -74,122 +74,122 @@ describe('profile selectors', () => {
 
   context('#selectAvatar', () => {
     it('returns the profile.avatar', () => {
-      expect(selectAvatar(state)).to.deep.equal(state.getIn(['profile', 'avatar']))
+      expect(selectAvatar(state)).to.deep.equal(state.profile.get('avatar'))
     })
   })
 
   context('#selectBlockedCount', () => {
     it('returns the profile.blockedCount', () => {
-      expect(selectBlockedCount(state)).to.deep.equal(state.getIn(['profile', 'blockedCount']))
+      expect(selectBlockedCount(state)).to.deep.equal(state.profile.get('blockedCount'))
     })
   })
 
   context('#selectBuildVersion', () => {
     it('returns the profile.buildVersion', () => {
-      expect(selectBuildVersion(state)).to.deep.equal(state.getIn(['profile', 'buildVersion']))
+      expect(selectBuildVersion(state)).to.deep.equal(state.profile.get('buildVersion'))
     })
   })
 
   context('#selectBundleId', () => {
     it('returns the profile.bundleId', () => {
-      expect(selectBundleId(state)).to.deep.equal(state.getIn(['profile', 'bundleId']))
+      expect(selectBundleId(state)).to.deep.equal(state.profile.get('bundleId'))
     })
   })
 
   context('#selectCoverImage', () => {
     it('returns the profile.coverImage', () => {
-      expect(selectCoverImage(state)).to.deep.equal(state.getIn(['profile', 'coverImage']))
+      expect(selectCoverImage(state)).to.deep.equal(state.profile.get('coverImage'))
     })
   })
 
   context('#selectCreatedAt', () => {
     it('returns the profile.createdAt', () => {
-      expect(selectCreatedAt(state)).to.deep.equal(state.getIn(['profile', 'createdAt']))
+      expect(selectCreatedAt(state)).to.deep.equal(state.profile.get('createdAt'))
     })
   })
 
   context('#selectEmail', () => {
     it('returns the profile.email', () => {
-      expect(selectEmail(state)).to.deep.equal(state.getIn(['profile', 'email']))
+      expect(selectEmail(state)).to.deep.equal(state.profile.get('email'))
     })
   })
 
   context('#selectExternalLinksList', () => {
     it('returns the profile.externalLinksList', () => {
-      expect(selectExternalLinksList(state)).to.deep.equal(state.getIn(['profile', 'externalLinksList']))
+      expect(selectExternalLinksList(state)).to.deep.equal(state.profile.get('externalLinksList'))
     })
   })
 
   context('#selectHasAvatarPresent', () => {
     it('returns the profile.hasAvatarPresent', () => {
-      expect(selectHasAvatarPresent(state)).to.deep.equal(state.getIn(['profile', 'hasAvatarPresent']))
+      expect(selectHasAvatarPresent(state)).to.deep.equal(state.profile.get('hasAvatarPresent'))
     })
   })
 
   context('#selectHasCoverImagePresent', () => {
     it('returns the profile.hasCoverImagePresent', () => {
-      expect(selectHasCoverImagePresent(state)).to.deep.equal(state.getIn(['profile', 'hasCoverImagePresent']))
+      expect(selectHasCoverImagePresent(state)).to.deep.equal(state.profile.get('hasCoverImagePresent'))
     })
   })
 
   context('#selectId', () => {
     it('returns the profile.id', () => {
-      expect(selectId(state)).to.deep.equal(state.getIn(['profile', 'id']))
+      expect(selectId(state)).to.deep.equal(state.profile.get('id'))
     })
   })
 
   context('#selectIsPublic', () => {
     it('returns the profile.isPublic', () => {
-      expect(selectIsPublic(state)).to.deep.equal(state.getIn(['profile', 'isPublic']))
+      expect(selectIsPublic(state)).to.deep.equal(state.profile.get('isPublic'))
     })
   })
 
   context('#selectMarketingVersion', () => {
     it('returns the profile.marketingVersion', () => {
-      expect(selectMarketingVersion(state)).to.deep.equal(state.getIn(['profile', 'marketingVersion']))
+      expect(selectMarketingVersion(state)).to.deep.equal(state.profile.get('marketingVersion'))
     })
   })
 
   context('#selectMutedCount', () => {
     it('returns the profile.mutedCount', () => {
-      expect(selectMutedCount(state)).to.deep.equal(state.getIn(['profile', 'mutedCount']))
+      expect(selectMutedCount(state)).to.deep.equal(state.profile.get('mutedCount'))
     })
   })
 
   context('#selectName', () => {
     it('returns the profile.name', () => {
-      expect(selectName(state)).to.equal(state.getIn(['profile', 'name']))
+      expect(selectName(state)).to.equal(state.profile.get('name'))
     })
   })
 
   context('#selectRegistrationId', () => {
     it('returns the profile.registrationId', () => {
-      expect(selectRegistrationId(state)).to.deep.equal(state.getIn(['profile', 'registrationId']))
+      expect(selectRegistrationId(state)).to.deep.equal(state.profile.get('registrationId'))
     })
   })
 
   context('#selectShortBio', () => {
     it('returns the profile.shortBio', () => {
-      expect(selectShortBio(state)).to.deep.equal(state.getIn(['profile', 'shortBio']))
+      expect(selectShortBio(state)).to.deep.equal(state.profile.get('shortBio'))
     })
   })
 
   context('#selectUsername', () => {
     it('returns the profile.username', () => {
-      expect(selectUsername(state)).to.deep.equal(state.getIn(['profile', 'username']))
+      expect(selectUsername(state)).to.deep.equal(state.profile.get('username'))
     })
   })
 
   context('#selectWebOnboardingVersion', () => {
     it('returns the profile.webOnboardingVersion', () => {
-      expect(selectWebOnboardingVersion(state)).to.deep.equal(state.getIn(['profile', 'webOnboardingVersion']))
+      expect(selectWebOnboardingVersion(state)).to.deep.equal(state.profile.get('webOnboardingVersion'))
     })
   })
 
   context('#selectIsAvatarBlank', () => {
     it('returns a memoized version of a blank avatar', () => {
       expect(selectIsAvatarBlank(state)).to.equal(false)
-      state = state.set('change', 1)
+      state.change = 1
       expect(selectIsAvatarBlank(state)).to.equal(false)
       expect(selectIsAvatarBlank.recomputations()).to.equal(1)
     })
@@ -198,7 +198,7 @@ describe('profile selectors', () => {
   context('#selectIsCoverImageBlank', () => {
     it('returns a memoized version of a blank coverImage', () => {
       expect(selectIsCoverImageBlank(state)).to.equal(false)
-      state = state.set('change', 1)
+      state.change = 1
       expect(selectIsCoverImageBlank(state)).to.equal(false)
       expect(selectIsCoverImageBlank.recomputations()).to.equal(1)
     })
@@ -207,7 +207,7 @@ describe('profile selectors', () => {
   context('#selectIsInfoFormBlank', () => {
     it('returns a memoized version of a blank info form', () => {
       expect(selectIsInfoFormBlank(state)).to.equal(false)
-      state = state.set('change', 1)
+      state.change = 1
       expect(selectIsInfoFormBlank(state)).to.equal(false)
       expect(selectIsInfoFormBlank.recomputations()).to.equal(1)
     })
@@ -216,7 +216,7 @@ describe('profile selectors', () => {
   context('#selectLinksAsText', () => {
     it('returns a memoized version of links text', () => {
       expect(selectLinksAsText(state)).to.deep.equal('google.com')
-      state = state.set('change', 1)
+      state.change = 1
       expect(selectLinksAsText(state)).to.deep.equal('google.com')
       expect(selectLinksAsText.recomputations()).to.equal(1)
     })

@@ -1,4 +1,3 @@
-import Immutable from 'immutable'
 import { clearJSON, json, stubJSONStore } from '../../support/stubs'
 import {
   selectCategories,
@@ -16,7 +15,7 @@ describe('categories selectors', () => {
     stubJSONStore()
     params = { token: 'paramsToken', type: 'paramsType' }
     location = { pathname: '/discover' }
-    state = Immutable.fromJS({ json })
+    state = { json }
   })
 
   afterEach(() => {
@@ -28,7 +27,7 @@ describe('categories selectors', () => {
   context('#selectCategories', () => {
     it('returns the category object with memoization', () => {
       const props = { params, location }
-      const categories = state.getIn(['json', 'categories'])
+      const categories = state.json.get('categories')
       const values = categories.valueSeq()
       let meta = []
       let primary = []

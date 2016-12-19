@@ -59,7 +59,8 @@ export const selectBroadcast = createSelector(
       return lastFollowingBeaconVersion !== FOLLOWING.BEACON_VERSION ? FOLLOWING.BEACON_TEXT : null
     } else if (viewName === 'starred') {
       return lastStarredBeaconVersion !== STARRED.BEACON_VERSION ? STARRED.BEACON_TEXT : null
-    } return null
+    }
+    return null
   },
 )
 
