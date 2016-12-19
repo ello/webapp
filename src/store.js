@@ -4,8 +4,7 @@ import createLogger from 'redux-logger'
 import Immutable from 'immutable'
 import { browserHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
-import { compose, createStore, applyMiddleware } from 'redux'
-import { combineReducers } from 'redux-immutable'
+import { compose, combineReducers, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import createSagaMiddleware, { END } from 'redux-saga'
 import * as reducers from './reducers'
@@ -21,10 +20,10 @@ const createBrowserStore = (history, passedInitialState = {}) => {
     predicate: () => ENV.APP_DEBUG,
     stateTransformer: (state) => {
       const newState = {}
-      state.keySeq().forEach((key) => {
-        if (['json'].includes(key)) {
-          newState[key] = state.get(key).toJS()
-        }
+      Object.keys(state).forEach((key) => {
+        // if (['json'].includes(key)) {
+        newState[key] = state[key].toJS()
+        // }
       })
       return newState
     },
@@ -44,7 +43,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       reduxRouterMiddleware,
       logger,
     ),
-  )(createStore)(reducer, Immutable.fromJS(initialState))
+  )(createStore)(reducer, initialState)
   store.close = () => store.dispatch(END)
 
   store.sagaTask = sagaMiddleware.run(rootSaga)
@@ -57,7 +56,7 @@ const createServerStore = (history, initialState = {}) => {
   const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG })
   const store = compose(
     applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger),
-  )(createStore)(reducer, Immutable.fromJS(initialState))
+  )(createStore)(reducer, initialState)
 
   store.runSaga = sagaMiddleware.run
   store.close = () => store.dispatch(END)

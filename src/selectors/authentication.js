@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect'
 
 // state.authentication.xxx
-export const selectAccessToken = state => state.getIn(['authentication', 'accessToken'])
-export const selectExpirationDate = state => state.getIn(['authentication', 'expirationDate'])
-export const selectIsLoggedIn = state => state.getIn(['authentication', 'isLoggedIn'])
-export const selectRefreshToken = state => state.getIn(['authentication', 'refreshToken'])
+export const selectAccessToken = state => state.authentication.get('accessToken')
+export const selectExpirationDate = state => state.authentication.get('expirationDate')
+export const selectIsLoggedIn = state => state.authentication.get('isLoggedIn')
+export const selectRefreshToken = state => state.authentication.get('refreshToken')
 
 // Memoized selectors
 export const selectShouldUseAccessToken = createSelector(

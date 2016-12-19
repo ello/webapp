@@ -3,17 +3,16 @@ import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import trunc from 'trunc-html'
 import { selectParamsUsername } from './params'
+import { selectJson } from './store'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { findModel } from '../helpers/json_helper'
-
-const selectJson = state => state.get('json')
 
 // props.user.xxx
 export const selectPropsUser = (state, props) => get(props, 'user')
 export const selectPropsUserId = (state, props) => get(props, 'userId') || get(props, 'user').get('id')
 
 // state.json.users.xxx
-export const selectUsers = state => state.getIn(['json', 'users'])
+export const selectUsers = state => state.json.get('users')
 
 // Memoized selectors
 export const selectUser = createSelector(

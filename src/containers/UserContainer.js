@@ -7,6 +7,7 @@ import { createSelector } from 'reselect'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDeviceSize } from '../selectors/gui'
 import { selectViewsAdultContent } from '../selectors/profile'
+import { selectJson } from '../selectors/store'
 import { selectTruncatedShortBio, selectUserFromPropsUserId } from '../selectors/user'
 import {
   UserAvatar,
@@ -22,8 +23,6 @@ import { trackEvent } from '../actions/analytics'
 import { collabWithUser, hireUser } from '../actions/user'
 import { getElloPlatform } from '../lib/jello'
 import { getLinkArray } from '../helpers/json_helper'
-
-const selectJson = state => state.get('json', Immutable.Map())
 
 const selectUserCategories = createSelector(
   [selectUserFromPropsUserId, selectJson], (user, json) =>
