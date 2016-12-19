@@ -2,12 +2,12 @@ import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import sample from 'lodash/sample'
 import { selectPathname, selectViewNameFromRoute } from './routing'
+import { selectJson } from './store'
 import { getLinkArray } from '../helpers/json_helper'
 
-const selectJson = state => state.get('json')
-const selectCats = state => state.getIn(['json', 'categories'], Immutable.Map())
-export const selectAuthPromotionals = state => state.getIn(['promotions', 'authentication'])
-export const selectPagePromotionals = state => state.getIn(['json', 'pagePromotionals'], Immutable.Map())
+const selectCats = state => state.json.get('categories', Immutable.Map())
+export const selectAuthPromotionals = state => state.promotions.get('authentication')
+export const selectPagePromotionals = state => state.json.get('pagePromotionals', Immutable.Map())
 
 export const selectCategoryData = createSelector(
   [selectPathname, selectJson, selectCats], (pathname, json, categories) => {

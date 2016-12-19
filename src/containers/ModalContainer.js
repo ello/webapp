@@ -7,10 +7,10 @@ import { Modal } from '../components/modals/Modal'
 
 export function mapStateToProps(state) {
   return {
-    classList: state.getIn(['modal', 'classList']),
-    component: state.getIn(['modal', 'component']),
-    isActive: state.getIn(['modal', 'isActive']),
-    kind: state.getIn(['modal', 'kind']),
+    classList: state.modal.get('classList'),
+    component: state.modal.get('component'),
+    isActive: state.modal.get('isActive'),
+    kind: state.modal.get('kind'),
   }
 }
 

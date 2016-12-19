@@ -9,8 +9,8 @@ import { Omnibar } from '../components/omnibar/Omnibar'
 export function mapStateToProps(state) {
   return {
     avatar: selectAvatar(state),
-    classList: state.getIn(['omnibar', 'classList']),
-    isActive: state.getIn(['omnibar', 'isActive']),
+    classList: state.omnibar.get('classList'),
+    isActive: state.omnibar.get('isActive'),
   }
 }
 

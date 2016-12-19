@@ -13,7 +13,7 @@ const explore = store => ({
   getComponents,
   onEnter(nextState, replace) {
     const { params: { type } } = nextState
-    const isLoggedIn = store.getState().getIn(['authentication', 'isLoggedIn'])
+    const isLoggedIn = store.getState().authentication.get('isLoggedIn')
     const rootPath = isLoggedIn ? '/discover' : '/'
 
     if (!type) {
@@ -29,7 +29,7 @@ const discover = store => ({
   getComponents,
   onEnter(nextState, replace) {
     const type = nextState.params.type
-    const isLoggedIn = store.getState().getIn(['authentication', 'isLoggedIn'])
+    const isLoggedIn = store.getState().authentication.get('isLoggedIn')
     const rootPath = isLoggedIn ? '/discover' : '/'
 
     // redirect back to root path if type is unrecognized

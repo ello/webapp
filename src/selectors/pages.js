@@ -7,8 +7,8 @@ import { selectPathname } from './routing'
 const selectMeta = (state, props) => get(props, 'action.meta', {})
 
 // state.json.pages.xxx
-export const selectPages = state => state.getIn(['json', 'pages'])
-export const selectAllCategoriesPage = state => state.getIn(['json', 'pages', 'all-categories'])
+export const selectPages = state => state.json.get('pages')
+export const selectAllCategoriesPage = state => state.json.getIn(['pages', 'all-categories'])
 
 export const selectPagesResult = createSelector(
   [selectMeta, selectPathname, selectPages], (meta, pathname, pages) =>

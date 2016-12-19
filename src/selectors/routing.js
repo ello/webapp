@@ -17,11 +17,11 @@ export const selectPropsQueryTerms = (state, props) => get(props, 'location.quer
 export const selectPropsQueryType = (state, props) => get(props, 'location.query.type')
 
 // state.routing.xxx
-export const selectLocation = state => state.getIn(['routing', 'location'])
-export const selectPreviousPath = state => state.getIn(['routing', 'previousPath'])
+export const selectLocation = state => state.routing.get('location')
+export const selectPreviousPath = state => state.routing.get('previousPath')
 
 // state.routing.location.xxx
-export const selectPathname = state => state.getIn(['routing', 'location', 'pathname'])
+export const selectPathname = state => state.routing.getIn(['location', 'pathname'])
 
 // Memoized selectors
 export const selectViewNameFromRoute = createSelector(

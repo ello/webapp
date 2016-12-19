@@ -13,10 +13,11 @@ import {
 
 export function mapStateToProps(state, props) {
   const comment = selectCommentFromPropsCommentId(state, props)
-  const author = state.getIn(['json', MAPPING_TYPES.USERS, comment.authorId])
-  const post = selectPropsPost(state, props) || state.getIn(['json', MAPPING_TYPES.POSTS, comment.postId])
+  const author = state.json.getIn([MAPPING_TYPES.USERS, comment.authorId])
+  const post = selectPropsPost(state, props) ||
+    state.json.getIn([MAPPING_TYPES.POSTS, comment.postId])
   // TODO: this should get moved to a selector
-  const assets = state.getIn(['json', 'assets'])
+  const assets = state.json.get('assets')
   return {
     assets,
     author,

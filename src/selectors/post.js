@@ -4,10 +4,9 @@ import get from 'lodash/get'
 import trunc from 'trunc-html'
 import { selectParamsToken } from './params'
 import { selectId as selectProfileId } from './profile'
+import { selectJson } from './store'
 import { findModel } from '../helpers/json_helper'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-
-const selectJson = state => state.get('json')
 
 // props.post.xxx
 export const selectPropsPost = (state, props) => get(props, 'post')

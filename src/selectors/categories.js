@@ -17,7 +17,7 @@ export function sortCategories(a, b) {
 }
 
 // state.json.categories.xxx
-export const selectCategoryCollection = state => state.getIn(['json', 'categories'])
+export const selectCategoryCollection = state => state.json.get('categories')
 
 export const selectAllCategoriesAsArray = createSelector(
   [selectCategoryCollection, selectAllCategoriesPage],

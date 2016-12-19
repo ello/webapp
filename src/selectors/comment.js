@@ -2,9 +2,8 @@ import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { selectId as selectProfileId } from './profile'
+import { selectJson } from './store'
 import * as MAPPING_TYPES from '../constants/mapping_types'
-
-const selectJson = state => state.get('json')
 
 // props.comment.xxx
 export const selectPropsComment = (state, props) => get(props, 'comment', Immutable.Map())

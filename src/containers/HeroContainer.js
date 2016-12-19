@@ -23,6 +23,7 @@ import {
   selectPagePromotionals,
 } from '../selectors/promotions'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
+import { selectJson } from '../selectors/store'
 import { selectUserFromUsername } from '../selectors/user'
 import { trackEvent } from '../actions/analytics'
 import {
@@ -40,7 +41,6 @@ import {
   HeroPromotionPage,
 } from '../components/heros/HeroRenderables'
 
-const selectJson = state => state.get('json')
 export const selectIsAuthentication = createSelector(
   [selectViewNameFromRoute], viewName => viewName === 'authentication',
 )

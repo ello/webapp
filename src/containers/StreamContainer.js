@@ -14,6 +14,7 @@ import {
   selectInnerWidth,
   selectIsGridMode,
 } from '../selectors/gui'
+import { selectJson, selectOmnibar, selectStream } from '../selectors/store'
 import { makeSelectStreamProps } from '../selectors/stream'
 import { findModel } from '../helpers/json_helper'
 import { getQueryParamValue } from '../helpers/uri_helper'
@@ -38,14 +39,13 @@ export function makeMapStateToProps() {
       innerHeight: selectInnerHeight(state),
       innerWidth: selectInnerWidth(state),
       isLoggedIn: selectIsLoggedIn(state),
-      json: state.get('json'),
+      json: selectJson(state),
       isGridMode: selectIsGridMode(state),
-      omnibar: state.get('omnibar'),
+      omnibar: selectOmnibar(state),
       renderObj,
       result,
       resultPath,
-      routerState: state.getIn(['routing', 'location', 'state'], {}),
-      stream: state.get('stream'),
+      stream: selectStream(state),
     }
   }
   return mapStateToProps
