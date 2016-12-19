@@ -33,6 +33,7 @@ function createPropsForStream(ownProps = {}) {
 
 function createStateForStream(ownState = {}) {
   const defaultProps = {
+    authentication: {},
     json: {
       pages: {
         '/discover': {
@@ -72,7 +73,11 @@ function createStateForStream(ownState = {}) {
     },
     stream: { error: false },
   }
-  return Immutable.fromJS({ ...defaultProps, ...ownState })
+  const streamState = { ...defaultProps, ...ownState }
+  Object.keys(streamState).forEach((key) => {
+    streamState[key] = Immutable.fromJS(streamState[key])
+  })
+  return streamState
 }
 
 describe('StreamContainer', () => {

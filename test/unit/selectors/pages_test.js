@@ -6,7 +6,7 @@ describe('pages selectors', () => {
   let state
   beforeEach(() => {
     stubJSONStore()
-    state = Immutable.fromJS({ json, routing: { location: { pathname: '/discover' } } })
+    state = { json, routing: Immutable.fromJS({ location: { pathname: '/discover' } }) }
   })
 
   afterEach(() => {
@@ -32,9 +32,9 @@ describe('pages selectors', () => {
 
   context('#selectPage', () => {
     it('returns the page', () => {
-      state = state.set('change', true)
+      state.change = true
       expect(selectPage(state)).to.deep.equal(json.getIn(['pages', '/discover']))
-      state = state.set('change', false)
+      state.change = false
       expect(selectPage(state)).to.deep.equal(json.getIn(['pages', '/discover']))
       expect(selectPage.recomputations()).to.equal(1)
     })

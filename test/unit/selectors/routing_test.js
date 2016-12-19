@@ -16,14 +16,14 @@ describe('routing selectors', () => {
   let state
 
   beforeEach(() => {
-    routing = {
+    routing = Immutable.fromJS({
       location: {
         pathname: '/state',
         query: { terms: 'state.query.terms', type: 'state.query.type' },
       },
       previousPath: 'state.previousPath',
-    }
-    state = Immutable.fromJS({ routing })
+    })
+    state = { routing }
     propsLocation = {
       location: {
         pathname: '/props',
@@ -61,93 +61,93 @@ describe('routing selectors', () => {
   context('#selectLocation', () => {
     it('returns the state.routing.location', () => {
       const props = { ...propsLocation }
-      expect(selectLocation(state, props)).to.deep.equal(state.getIn(['routing', 'location']))
+      expect(selectLocation(state, props)).to.deep.equal(state.routing.get('location'))
     })
   })
 
   context('#selectPreviousPath', () => {
     it('returns the state.routing.location', () => {
       const props = { ...propsLocation }
-      expect(selectPreviousPath(state, props)).to.deep.equal(state.getIn(['routing', 'previousPath']))
+      expect(selectPreviousPath(state, props)).to.deep.equal(state.routing.get('previousPath'))
     })
   })
 
   context('#selectPathname', () => {
     it('returns the state.routing.location.pathname', () => {
       const props = { ...propsLocation }
-      expect(selectPathname(state, props)).to.deep.equal(state.getIn(['routing', 'location', 'pathname']))
+      expect(selectPathname(state, props)).to.deep.equal(state.routing.getIn(['location', 'pathname']))
     })
   })
 
   context('#selectViewNameFromRoute', () => {
     it('selects with memoization the view name identifier associated with a route', () => {
-      state = state.setIn(['routing', 'location', 'pathname'], '/following')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/following') }
       const props = { params: { username: 'mk' } }
       selectViewNameFromRoute.resetRecomputations()
       expect(selectViewNameFromRoute(state)).to.equal('following')
 
-      state = state.setIn(['routing', 'location', 'change'], true)
+      state = { routing: state.routing.setIn(['location', 'change'], true) }
       expect(selectViewNameFromRoute(state)).to.equal('following')
       expect(selectViewNameFromRoute.recomputations()).to.equal(1)
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/starred')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/starred') }
       expect(selectViewNameFromRoute(state)).to.equal('starred')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/search')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/search') }
       expect(selectViewNameFromRoute(state)).to.equal('search')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/') }
       expect(selectViewNameFromRoute(state)).to.equal('discover')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/discover')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/discover') }
       expect(selectViewNameFromRoute(state)).to.equal('discover')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/discover/stuff')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/discover/stuff') }
       expect(selectViewNameFromRoute(state)).to.equal('discover')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/invitations')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/invitations') }
       expect(selectViewNameFromRoute(state)).to.equal('invitations')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/settings')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/settings') }
       expect(selectViewNameFromRoute(state)).to.equal('settings')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/notifications')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/notifications') }
       expect(selectViewNameFromRoute(state)).to.equal('notifications')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/onboarding')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/onboarding') }
       expect(selectViewNameFromRoute(state)).to.equal('onboarding')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/onboarding/settings')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/onboarding/settings') }
       expect(selectViewNameFromRoute(state)).to.equal('onboarding')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/mk/post/etlb9br06dh6tleztw4g')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/mk/post/etlb9br06dh6tleztw4g') }
       expect(selectViewNameFromRoute(state)).to.equal('postDetail')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/mk')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/mk') }
       expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/mk/loves')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/mk/loves') }
       expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/mk/following')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/mk/following') }
       expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/mk/followers')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/mk/followers') }
       expect(selectViewNameFromRoute(state, props)).to.equal('userDetail')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/mk/post/etlb9br06dh6tleztw4g')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/mk/post/etlb9br06dh6tleztw4g') }
       expect(selectViewNameFromRoute(state, props)).not.to.equal('userDetail')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/join')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/join') }
       expect(selectViewNameFromRoute(state)).to.equal('join')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/enter')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/enter') }
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/forgot-password')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/forgot-password') }
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/signup')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/signup') }
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
       expect(selectViewNameFromRoute.recomputations()).to.equal(21)

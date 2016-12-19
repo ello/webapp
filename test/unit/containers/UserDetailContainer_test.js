@@ -37,15 +37,15 @@ describe('UserDetailContainer', () => {
       relationshipPriority: 'friend',
       username: 'damian',
     })
-    const state = Immutable.fromJS({
-      authentication: { isLoggedIn: true },
-      gui: {
+    const state = {
+      authentication: Immutable.Map({ isLoggedIn: true }),
+      gui: Immutable.fromJS({
         activeUserFollowingType: 'friend',
         saidHelloTo: ['phillip', 'damian'],
-      },
+      }),
       json,
-      stream: { type: 'USER.DETAIL_SUCCESS', error: {} },
-    })
+      stream: Immutable.fromJS({ type: 'USER.DETAIL_SUCCESS', error: {} }),
+    }
     const props = { params: { type: 'posts', username: 'damian' } }
     const action = getStreamAction({ username: 'damian' })
     const nextProps = mapStateToProps(state, props)
@@ -87,7 +87,7 @@ describe('UserDetailContainer', () => {
       relationshipPriority: 'self',
       username: 'nikki',
     })
-    const state = Immutable.Map({
+    const state = {
       authentication: Immutable.Map({ isLoggedIn: true }),
       gui: Immutable.Map({
         activeUserFollowingType: 'friend',
@@ -95,7 +95,7 @@ describe('UserDetailContainer', () => {
       }),
       json,
       stream: Immutable.Map({ type: 'USER.DETAIL_SUCCESS', error: {} }),
-    })
+    }
     const props = { params: { type: 'following', username: 'nikki' } }
     const action = getStreamAction({ username: 'nikki', type: 'following' })
     const nextProps = mapStateToProps(state, props)
