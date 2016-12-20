@@ -8,7 +8,7 @@ import Avatar from '../assets/Avatar'
 import RelationshipContainer from '../../containers/RelationshipContainer'
 
 function renderMailtoUserHeader(invitation) {
-  const { email } = invitation
+  const email = invitation.get('email')
   return (
     <div className="UserInviteeHeader">
       <a className="UserInviteeUserLink truncate" href={`mailto: ${email}`}>
@@ -31,8 +31,7 @@ class UserInvitee extends Component {
 
   onClickReInvite = () => {
     const { dispatch, invitation } = this.props
-    const emails = [invitation.email]
-    dispatch(inviteUsers(emails))
+    dispatch(inviteUsers([invitation.get('email')]))
   }
 
   renderSending(invitation) {
@@ -57,14 +56,14 @@ class UserInvitee extends Component {
     return (
       <div className={classNames(this.props.className, 'UserInvitee')}>
         <div className="UserInviteeHeader">
-          <Link className="UserInviteeUserLink truncate" to={`/${user.username}`}>
+          <Link className="UserInviteeUserLink truncate" to={`/${user.get('username')}`}>
             <Avatar
-              priority={user.relationshipPriority}
-              sources={user.avatar}
-              userId={`${user.id}`}
-              username={user.username}
+              priority={user.get('relationshipPriority')}
+              sources={user.get('avatar')}
+              userId={`${user.get('id')}`}
+              username={user.get('username')}
             />
-            <span className="UserInviteeUsername">{`@${user.username}`}</span>
+            <span className="UserInviteeUsername">{`@${user.get('username')}`}</span>
           </Link>
         </div>
         <RelationshipContainer user={user} />
@@ -75,9 +74,9 @@ class UserInvitee extends Component {
   // Need to actually define when these states are setup
   render() {
     const { invitation, user } = this.props
-    if (invitation.acceptedAt) {
+    if (invitation.get('acceptedAt')) {
       return this.renderAccepted(user)
-    } else if (invitation.email) {
+    } else if (invitation.get('email')) {
       return this.renderReInvite(invitation)
     }
     return null

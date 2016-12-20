@@ -13,17 +13,17 @@ import {
 
 export function mapStateToProps(state, props) {
   const comment = selectCommentFromPropsCommentId(state, props)
-  const author = state.json.getIn([MAPPING_TYPES.USERS, comment.authorId])
+  const author = state.json.getIn([MAPPING_TYPES.USERS, comment.get('authorId')])
   const post = selectPropsPost(state, props) ||
-    state.json.getIn([MAPPING_TYPES.POSTS, comment.postId])
+    state.json.getIn([MAPPING_TYPES.POSTS, comment.get('postId')])
   // TODO: this should get moved to a selector
   const assets = state.json.get('assets')
   return {
     assets,
     author,
     commentBody: comment.get('body'),
-    currentUser: state.get('profile'),
-    isEditing: comment.get('isEditing'),
+    currentUser: state.profile,
+    isEditing: comment.get('isEditing', false),
     isGridMode: selectIsGridMode(state),
     post,
   }

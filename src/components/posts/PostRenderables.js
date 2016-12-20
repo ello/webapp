@@ -13,7 +13,7 @@ import { loadComments } from '../../actions/posts'
 import { RegionItems } from '../regions/RegionRenderables'
 
 function getPostDetailPath(author, post) {
-  return `/${author.username}/post/${post.token}`
+  return `/${author.get('username')}/post/${post.get('token')}`
 }
 
 export const PostLoversDrawer = ({ post }) =>

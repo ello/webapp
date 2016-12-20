@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import Immutable from 'immutable'
 import get from 'lodash/get'
 import reduce from 'lodash/reduce'
@@ -27,12 +28,12 @@ methods.getCompletions = (action) => {
       if (type === 'location' && !document.activeElement.classList.contains('LocationControl')) {
         return null
       }
-      return { data: payload.response.autocompleteResults, type }
+      return Immutable.fromJS({ data: payload.response.autocompleteResults, type })
     } else if (type === 'emoji') {
-      return { data: suggestEmoji(word, payload.response.emojis), type }
+      return Immutable.fromJS({ data: suggestEmoji(word, payload.response.emojis), type })
     }
   }
-  return null
+  return Immutable.Map()
 }
 
 methods.rehydrateEditors = (persistedEditors = Immutable.Map()) => {
@@ -96,7 +97,7 @@ methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
   if (postBuyLink) {
     newBlock.linkUrl = postBuyLink
   }
-  const order = state.get('order')
+  const order = state.get('order', Immutable.List())
   const updatedState = state.setIn(['collection', `${uid}`], Immutable.fromJS(newBlock))
     .set('order', order.push(uid))
     .set('uid', uid + 1)
@@ -105,7 +106,7 @@ methods.add = ({ block, shouldCheckForEmpty = true, state }) => {
 }
 
 methods.addEmptyTextBlock = (state, shouldCheckForEmpty = false) => {
-  const order = state.get('order')
+  const order = state.get('order', Immutable.List())
   const last = state.getIn(['collection', `${order.last()}`])
   if (order.size > 1) {
     const secondToLast = state.getIn(['collection', `${order.get(-2)}`])
@@ -204,7 +205,6 @@ methods.updateBuyLink = (state, action) => {
 }
 
 methods.getEditorObject = (state = initialState, action) => {
-  let updatedState = null
   switch (action.type) {
     case EDITOR.ADD_BLOCK:
       return methods.add({
@@ -224,12 +224,12 @@ methods.getEditorObject = (state = initialState, action) => {
       }
       return initialState
     case EDITOR.POST_PREVIEW_SUCCESS:
-      updatedState = methods.removeEmptyTextBlock(state)
-      updatedState = methods.add({
+      state = methods.removeEmptyTextBlock(state)
+      state = methods.add({
         block: { ...action.payload.response.postPreviews.body[0] },
-        state: updatedState,
+        state,
       })
-      return updatedState
+      return state
     case EDITOR.REMOVE_BLOCK:
       return methods.remove({ state, uid: action.payload.uid })
     case EDITOR.REMOVE_DRAG_BLOCK:
@@ -248,8 +248,7 @@ methods.getEditorObject = (state = initialState, action) => {
     case EDITOR.RESET:
     case POST.CREATE_SUCCESS:
     case POST.UPDATE_SUCCESS:
-      updatedState = Immutable.fromJS(initialState)
-      return methods.addEmptyTextBlock(updatedState.set('uid', state.get('uid')))
+      return methods.addEmptyTextBlock(initialState.set('uid', state.get('uid')))
     case COMMENT.CREATE_FAILURE:
     case COMMENT.UPDATE_FAILURE:
     case POST.CREATE_FAILURE:
@@ -259,15 +258,14 @@ methods.getEditorObject = (state = initialState, action) => {
       return methods.appendUsernames(state, get(action, 'payload.response.usernames', []))
     case EDITOR.SAVE_ASSET_SUCCESS:
       if (state.getIn(['dragBlock', 'uid']) === action.payload.uid) {
-        updatedState = state.setIn(['dragBlock', 'data', 'url'], action.payload.response.url)
-        updatedState = updatedState.setIn(['dragBlock', 'isLoading'], false)
+        state = state.setIn(['dragBlock', 'data', 'url'], action.payload.response.url)
+          .setIn(['dragBlock', 'isLoading'], false)
       } else {
-        updatedState = state.setIn(['collection', `${action.payload.uid}`, 'data', 'url'], action.payload.response.url)
-        updatedState = updatedState.setIn(['collection', `${action.payload.uid}`, 'isLoading'], false)
+        state = state.setIn(['collection', `${action.payload.uid}`, 'data', 'url'], action.payload.response.url)
+          .setIn(['collection', `${action.payload.uid}`, 'isLoading'], false)
       }
-      return updatedState.set('isPosting', false)
+      return state.set('isPosting', false)
     case EDITOR.TMP_IMAGE_CREATED:
-      updatedState = methods.removeEmptyTextBlock(state)
       return methods.add({
         block: {
           blob: action.payload.url,
@@ -275,13 +273,12 @@ methods.getEditorObject = (state = initialState, action) => {
           data: {},
           isLoading: true,
         },
-        state: updatedState,
+        state: methods.removeEmptyTextBlock(state),
       })
     case EDITOR.UPDATE_BUY_LINK:
       return methods.updateBuyLink(state, action)
     case EDITOR.UPDATE_BLOCK:
-      updatedState = methods.updateBlock(state, action)
-      return updatedState.set('isPosting', false)
+      return methods.updateBlock(state, action).set('isPosting', false)
     default:
       return state
   }

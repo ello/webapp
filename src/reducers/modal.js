@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
     case ALERT.CLOSE:
     case MODAL.OPEN:
     case MODAL.CLOSE:
-      return state.merge(Immutable.fromJS(action.payload))
+      return state.merge(Immutable.fromJS(action.payload)).set('component', action.payload.component)
     case AUTHENTICATION.LOGOUT:
     case PROFILE.DELETE_SUCCESS:
       return initialState

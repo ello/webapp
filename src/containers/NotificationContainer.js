@@ -79,7 +79,7 @@ function mapStateToProps(state, ownProps) {
         json.getIn([MAPPING_TYPES.USERS, parentPost.get('authorId')])
     }
     // repost
-    if (parentPost.get('repostId')) {
+    if (parentPost && parentPost.get('repostId')) {
       repost = parentPost
       repostAuthor = getLinkObject(repost, 'author', json) ||
         json.getIn([MAPPING_TYPES.USERS, repost.get('authorId')])

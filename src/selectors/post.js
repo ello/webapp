@@ -34,7 +34,7 @@ export const selectPostFromPropsPostId = createSelector(
 
 export const selectPostFromToken = createSelector(
   [selectJson, selectParamsToken], (json, token) =>
-    findModel(json, { collection: MAPPING_TYPES.POSTS, findObj: { token } }),
+    findModel(json, { collection: MAPPING_TYPES.POSTS, findObj: { token } }) || Immutable.Map(),
 )
 
 export const selectAuthorFromPost = createSelector(

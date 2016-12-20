@@ -64,7 +64,6 @@ RegionItems.propTypes = {
 export function regionItemsForNotifications(content, postDetailPath = null, assets) {
   const imageAssets = []
   const texts = []
-
   content.forEach((region, i) => {
     switch (region.get('kind')) {
       case 'text':

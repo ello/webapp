@@ -1,7 +1,7 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import get from 'lodash/get'
 import isEqual from 'lodash/isEqual'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
 import { selectPropsPostId } from '../../selectors/post'
@@ -37,7 +37,7 @@ class BlockCollection extends Component {
   static propTypes = {
     buyLink: PropTypes.string,
     avatar: PropTypes.object,
-    blocks: PropTypes.array,
+    blocks: PropTypes.object,
     cancelAction: PropTypes.func.isRequired,
     collection: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
@@ -53,19 +53,20 @@ class BlockCollection extends Component {
     isMobileGridStream: PropTypes.bool,
     isOwnPost: PropTypes.bool,
     isNavbarHidden: PropTypes.bool,
-    order: PropTypes.array,
+    order: PropTypes.object,
+    orderLength: PropTypes.number,
     pathname: PropTypes.string.isRequired,
     postId: PropTypes.string,
-    repostContent: PropTypes.array,
+    repostContent: PropTypes.object,
     submitAction: PropTypes.func.isRequired,
     submitText: PropTypes.string,
   }
 
   static defaultProps = {
-    blocks: [],
+    blocks: Immutable.List(),
     isComment: false,
     isPostDetail: false,
-    repostContent: [],
+    repostContent: Immutable.List(),
     submitText: 'Post',
   }
 
@@ -98,7 +99,8 @@ class BlockCollection extends Component {
   componentDidUpdate(prevProps) {
     const { editorId, isNavbarHidden, isPostDetail, order } = this.props
     const isDragging = document.body.classList.contains('isDragging')
-    if (!isPostDetail && !isDragging && prevProps.order.length !== order.length) {
+    if (!isPostDetail && !isDragging && prevProps.order &&
+        order && prevProps.order.size !== order.size) {
       scrollToLastTextBlock(editorId, isNavbarHidden)
     }
   }
@@ -367,11 +369,13 @@ class BlockCollection extends Component {
 
   render() {
     const {
-      buyLink, avatar, cancelAction, collection, dragBlock, editorId, hasContent, hasMedia,
-      hasMention, isComment, isLoading, isMobileGridStream, isOwnPost, isPosting, order, submitText,
+      buyLink, avatar, cancelAction, collection, dragBlock, editorId,
+      hasContent, hasMedia, hasMention, isComment, isLoading, isMobileGridStream,
+      isOwnPost, isPosting, order, orderLength, submitText,
     } = this.props
     const { dragBlockTop, hasDragOver } = this.state
-    const firstBlockIsText = collection[order[0]] ? /text/.test(collection[order[0]].kind) : true
+    const firstBlock = collection && order ? collection.get(order.first()) : null
+    const firstBlockIsText = firstBlock ? /text/.test(firstBlock.get('kind')) : true
     const showQuickEmoji = isComment && firstBlockIsText
     const editorClassNames = classNames('editor', {
       withQuickEmoji: showQuickEmoji,
@@ -394,9 +398,9 @@ class BlockCollection extends Component {
         {isComment ? <Avatar sources={avatar} /> : null}
         <div
           className="editor-region"
-          data-num-blocks={order.length}
+          data-num-blocks={orderLength}
         >
-          {order.map(uid => this.getBlockElement(collection[uid]))}
+          {order ? order.map(uid => this.getBlockElement(collection.get(uid))) : null}
           {dragBlock ?
             <div className="DragBlock" style={{ top: dragBlockTop }}>
               {this.getBlockElement(dragBlock)}
@@ -422,26 +426,28 @@ class BlockCollection extends Component {
 }
 
 function mapStateToProps(state, props) {
-  const editor = get(state, ['editor', props.editorId], {})
-  const { collection, order } = editor
+  const editor = state.editor.get(props.editorId, Immutable.Map())
+  const collection = editor.get('collection')
+  const order = editor.get('order')
   let buyLink
-  if (collection && order && collection[order[0]]) {
-    buyLink = collection[order[0]].linkUrl
+  const firstBlock = collection && order ? collection.get(order.first()) : null
+  if (firstBlock) {
+    buyLink = firstBlock.get('linkUrl')
   }
   return {
     buyLink,
     avatar: selectAvatar(state),
-    collection: editor.collection,
-    dragBlock: editor.dragBlock,
-    hasContent: editor.hasContent,
-    hasMedia: editor.hasMedia,
-    hasMention: editor.hasMention,
-    isLoading: editor.isLoading,
-    isPosting: editor.isPosting,
+    collection,
+    dragBlock: editor.get('dragBlock'),
+    hasContent: editor.get('hasContent'),
+    hasMedia: editor.get('hasMedia'),
+    hasMention: editor.get('hasMention'),
+    isLoading: editor.get('isLoading'),
+    isPosting: editor.get('isPosting'),
     isMobileGridStream: selectIsMobileGridStream(state),
     isNavbarHidden: selectIsNavbarHidden(state),
-    order: editor.order,
-    orderLength: get(editor, 'order.length'),
+    order,
+    orderLength: order ? order.size : 0,
     pathname: selectPathname(state),
     postId: selectPropsPostId(state, props),
   }

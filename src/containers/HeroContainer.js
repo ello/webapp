@@ -137,7 +137,7 @@ class HeroContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const { broadcast, pathname, promotions } = nextProps
     const hasPathChanged = this.props.pathname !== pathname
-    if (hasPathChanged || !this.state.promotion) {
+    if (promotions && (hasPathChanged || !this.state.promotion)) {
       const keyArr = []
       promotions.keySeq().forEach((key) => {
         keyArr.push(key)
@@ -180,7 +180,7 @@ class HeroContainer extends Component {
 
   getHeroPromotionAuth() {
     const { dpi } = this.props
-    const { promotion } = this.state.promotion || Immutable.Map()
+    const promotion = this.state.promotion || Immutable.Map()
     const creditSources = promotion.get('avatar', null)
     const creditUsername = promotion.get('username', null)
     const sources = promotion.get('coverImage', null)
