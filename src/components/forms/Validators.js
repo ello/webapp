@@ -29,7 +29,7 @@ export function isValidURL(value) {
 // Client-side only validation
 export function getUsernameStateFromClient({ currentStatus, value }) {
   if (!value && !value.length && currentStatus !== STATUS.INDETERMINATE) {
-    return { status: STATUS.INDETERMINATE, suggestions: null, message: '' }
+    return { status: STATUS.INDETERMINATE, suggestions: null, message: ERROR.NONE }
   } else if (containsSpace(value)) {
     return {
       status: STATUS.FAILURE,
@@ -43,7 +43,7 @@ export function getUsernameStateFromClient({ currentStatus, value }) {
       message: ERROR.USERNAME.INVALID_CHARACTERS,
     }
   }
-  return { status: STATUS.SUCCESS, message: '' }
+  return { status: STATUS.SUCCESS, message: ERROR.NONE }
 }
 
 // Validate and normalize the response from the API's validation
@@ -62,7 +62,7 @@ export function getUsernameStateFromServer({ availability, currentStatus }) {
       message: ERROR.USERNAME.EXISTS,
     }
   }
-  return { status: STATUS.INDETERMINATE, suggestions: null, message: '' }
+  return { status: STATUS.INDETERMINATE, suggestions: null, message: ERROR.NONE }
 }
 
 export function isValidEmail(value) {
@@ -72,7 +72,7 @@ export function isValidEmail(value) {
 // Client-side only validation
 export function getEmailStateFromClient({ currentStatus, value }) {
   if (!value && !value.length && currentStatus) {
-    return { status: STATUS.INDETERMINATE, message: '' }
+    return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
   }
   return (
     isValidEmail(value) ?
@@ -85,7 +85,7 @@ export const isValidInvitationCode = value => value.match(/^\S+$/)
 
 export function getInvitationCodeStateFromClient({ currentStatus, value }) {
   if (!value && !value.length && currentStatus) {
-    return { status: STATUS.INDETERMINATE, message: '' }
+    return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
   }
   return (
     isValidInvitationCode(value) ?
@@ -101,11 +101,11 @@ export function getInvitationCodeStateFromServer({ availability, currentStatus }
 
   const invitationCode = availability.get('invitationCode')
   if (invitationCode) {
-    return { status: STATUS.SUCCESS, message: '' }
+    return { status: STATUS.SUCCESS, message: ERROR.NONE }
   } else if (!invitationCode && currentStatus !== STATUS.FAILURE) {
     return { status: STATUS.FAILURE, message: ERROR.INVITATION_CODE.INVALID }
   }
-  return { status: STATUS.INDETERMINATE, message: '' }
+  return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
 }
 
 // Validate and normalize the response from the API's validation
@@ -116,13 +116,13 @@ export function getEmailStateFromServer({ availability, currentStatus }) {
   const email = availability.get('email')
   const suggestions = availability.get('suggestions')
   const full = suggestions.getIn(['email', 'full'], null)
-  const message = full && full.length ? `Did you mean ${full}?` : null
+  const message = full && full.size ? `Did you mean ${full}?` : null
   if (email && currentStatus !== STATUS.SUCCESS) {
-    return { status: STATUS.SUCCESS, message }
+    return { status: STATUS.SUCCESS, message: ERROR.NONE }
   } else if (!email && currentStatus !== STATUS.FAILURE) {
     return { status: STATUS.FAILURE, message: message || 'That email is invalid' }
   }
-  return { status: STATUS.INDETERMINATE, message: '' }
+  return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
 }
 
 export function isValidPassword(value) {
@@ -131,11 +131,11 @@ export function isValidPassword(value) {
 
 export function getPasswordState({ currentStatus, value }) {
   if (!value && !value.length && currentStatus) {
-    return { status: STATUS.INDETERMINATE, message: '' }
+    return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
   }
   return (
     isValidPassword(value) ?
-      { status: STATUS.SUCCESS, message: '' } :
+      { status: STATUS.SUCCESS, message: ERROR.NONE } :
       { status: STATUS.FAILURE, message: ERROR.PASSWORD.TOO_SHORT }
   )
 }
@@ -143,16 +143,16 @@ export function getPasswordState({ currentStatus, value }) {
 // TODO: This could probably validate each of the individual values
 export function getBatchEmailState({ currentStatus, value }) {
   if (!value && !value.length && currentStatus) {
-    return { status: STATUS.INDETERMINATE, message: '' }
+    return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
   }
   // return if the field only has commas and spaces
   if (value.replace(/(,|\s)/g, '').length === 0) {
-    return { status: STATUS.INDETERMINATE, message: '' }
+    return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
   }
   const emails = value.split(/[,\s]+/)
   return (
     emails.length > 0 ?
-      { status: STATUS.SUCCESS, message: '' } :
+      { status: STATUS.SUCCESS, message: ERROR.NONE } :
       { status: STATUS.FAILURE, message: 'appears to be invalid.' }
   )
 }
@@ -160,7 +160,7 @@ export function getBatchEmailState({ currentStatus, value }) {
 // Email or Username control
 export function getUserStateFromClient({ currentStatus, value }) {
   if (!value && !value.length && currentStatus !== STATUS.INDETERMINATE) {
-    return { status: STATUS.INDETERMINATE, suggestions: null, message: '' }
+    return { status: STATUS.INDETERMINATE, suggestions: null, message: ERROR.NONE }
   }
   const usernameState = getUsernameStateFromClient({ currentStatus, value })
   const emailState = getEmailStateFromClient({ currentStatus, value })

@@ -252,7 +252,7 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
 
 UserLinksCell.propTypes = {
   className: PropTypes.string,
-  externalLinksList: PropTypes.array,
+  externalLinksList: PropTypes.object,
   isMobile: PropTypes.bool,
 }
 

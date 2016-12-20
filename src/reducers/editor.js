@@ -1,4 +1,4 @@
-/* eslint-disable new-cap */
+/* eslint-disable no-param-reassign */
 import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import get from 'lodash/get'
@@ -9,19 +9,16 @@ export const initialState = Immutable.Map({ completions: Immutable.Map() })
 
 export default (state = initialState, action) => {
   const editorId = get(action, 'payload.editorId')
-  let updatedState = null
   if (editorId) {
-    const editor = editorMethods.getEditorObject(state.get(`${editorId}`), action)
-    updatedState = state.set(`${editorId}`, editor)
+    state = editorMethods.getEditorObject(state.get(`${editorId}`), action)
+      .set(`${editorId}`, state)
     if (action.type === EDITOR.INITIALIZE) {
-      updatedState = state.setIn([`${editorId}`, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
-    } else if (editor) {
-      updatedState = state.setIn([`${editorId}`, 'hasContent'], editorMethods.hasContent(editor))
-        .setIn([`${editorId}`, 'hasMedia'], editorMethods.hasMedia(editor))
-        .setIn([`${editorId}`, 'hasMention'], editorMethods.hasMention(editor))
-        .setIn([`${editorId}`, 'isLoading'], editorMethods.isLoading(editor))
+      return state.setIn([`${editorId}`, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
     }
-    return updatedState
+    return state.setIn([`${editorId}`, 'hasContent'], editorMethods.hasContent(state))
+      .setIn([`${editorId}`, 'hasMedia'], editorMethods.hasMedia(state))
+      .setIn([`${editorId}`, 'hasMention'], editorMethods.hasMention(state))
+      .setIn([`${editorId}`, 'isLoading'], editorMethods.isLoading(state))
   }
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:

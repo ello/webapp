@@ -32,8 +32,8 @@ Preference.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    isChecked: state.profile[camelize(ownProps.id)],
-    isDisabled: !state.profile.isPublic && ownProps.id === 'has_sharing_enabled',
+    isChecked: state.profile.get(camelize(ownProps.id)),
+    isDisabled: !state.profile.get('isPublic') && ownProps.id === 'has_sharing_enabled',
   }
 }
 

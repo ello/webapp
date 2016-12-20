@@ -216,7 +216,7 @@ class Editor extends Component {
       }
     }
     const editorId = this.getEditorIdentifier()
-    const key = `${editorId}_${blocks.size + repostContent.size}`
+    const key = `${editorId}_${(blocks ? blocks.size : '') + (repostContent ? repostContent.size : '')}`
     return (
       <BlockCollection
         blocks={blocks}

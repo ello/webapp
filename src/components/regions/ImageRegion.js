@@ -37,12 +37,21 @@ class ImageRegion extends Component {
   }
 
   componentWillMount() {
-    const { assets, content, innerHeight } = this.props
+    const { assets, content, innerHeight, links } = this.props
+    let asset
+    let assetId
     let scale = null
-    const assetMatch = content.get('url') && content.get('url').match(/asset\/attachment\/(\d+)\//)
-    if (assetMatch && assets) {
-      const assetId = assetMatch[1]
-      const asset = this.props.assets.get(assetId) || this.props.assets.get(Number(assetId))
+    if (links && assets) {
+      assetId = links.get('assets', -1)
+      asset = assets.get(assetId) || assets.get(Number(assetId))
+    } else {
+      const assetMatch = content.get('url') && content.get('url').match(/asset\/attachment\/(\d+)\//)
+      if (assetMatch && assets) {
+        assetId = assetMatch[1]
+        asset = assets.get(assetId) || assets.get(Number(assetId))
+      }
+    }
+    if (asset) {
       const imageHeight = Number(asset.getIn(['attachment', 'original', 'metadata', 'height']))
       scale = innerHeight / imageHeight
     }
