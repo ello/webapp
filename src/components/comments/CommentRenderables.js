@@ -7,9 +7,9 @@ import CommentToolsContainer from '../../containers/CommentToolsContainer'
 export const CommentHeader = ({ comment, author }) => {
   if (!comment || !author) { return null }
   return (
-    <header className="CommentHeader" key={`CommentHeader_${comment.id}`}>
+    <header className="CommentHeader" key={`CommentHeader_${comment.get('id')}`}>
       <div className="CommentHeaderAuthor">
-        <Link className="CommentHeaderLink" to={`/${author.username}`}>
+        <Link className="CommentHeaderLink" to={`/${author.get('username')}`}>
           <Avatar
             priority={author.get('relationshipPriority')}
             sources={author.get('avatar')}
@@ -58,7 +58,7 @@ export const CommentFooter = ({ author, comment, currentUser, post }) => {
       author={author}
       comment={comment}
       currentUser={currentUser}
-      key={`CommentTools_${comment.id}`}
+      key={`CommentTools_${comment.get('id')}`}
       post={post}
     />
   )

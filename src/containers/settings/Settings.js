@@ -74,7 +74,7 @@ function mapStateToProps(state) {
     availability: selectAvailability(state),
     blockedCount: selectBlockedCount(state) || 0,
     mutedCount: selectMutedCount(state) || 0,
-    profile: state.get('profile'),
+    profile: state.profile,
   }
 }
 
@@ -123,10 +123,10 @@ class Settings extends Component {
     if (!availability) { return }
     const prevUsername = availability.getIn(['original', 'username'], this.usernameValue)
     const prevEmail = availability.getIn(['original', 'email'], this.emailValue)
-    if (availability.get('username') && prevUsername === this.usernameValue) {
+    if (availability.has('username') && prevUsername === this.usernameValue) {
       this.validateUsernameResponse(availability)
     }
-    if (availability.get('email') && prevEmail === this.emailValue) {
+    if (availability.has('email') && prevEmail === this.emailValue) {
       this.validateEmailResponse(availability)
     }
   }

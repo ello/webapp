@@ -56,7 +56,7 @@ export function mapStateToProps(state, props) {
 class UserContainer extends Component {
 
   static propTypes = {
-    categories: PropTypes.array,
+    categories: PropTypes.object,
     className: PropTypes.string,
     dispatch: PropTypes.func,
     followingCount: PropTypes.number,

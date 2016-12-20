@@ -9,7 +9,7 @@ const initialState = Immutable.Map({
 export default (state = initialState, action) => {
   switch (action.type) {
     case PROMOTIONS.AUTHENTICATION_SUCCESS:
-      return state.set('authentication', action.payload.response)
+      return state.set('authentication', Immutable.fromJS(action.payload.response))
     default:
       return state
   }

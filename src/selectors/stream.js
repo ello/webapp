@@ -61,9 +61,13 @@ export const makeSelectStreamProps = () =>
     ) => {
       const renderObj = { data: [], nestedData: [] }
       if (result.get('type') === MAPPING_TYPES.NOTIFICATIONS) {
-        renderObj.data = renderObj.data.concat(result.get('ids').toJS())
-        if (result.next) {
-          renderObj.data = renderObj.data.concat(result.getIn(['next', 'ids']).toJS())
+        result.get('ids').forEach((model) => {
+          renderObj.data.push(model)
+        })
+        if (result.get('next')) {
+          result.getIn(['next', 'ids']).forEach((model) => {
+            renderObj.data.push(model)
+          })
         }
       } else if (shouldRemoveDeletions) {
         const delTypes = json.get(`deleted_${result.get('type')}`)

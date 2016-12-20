@@ -212,13 +212,13 @@ export const PostTools = (props) => {
   const cells = []
   cells.push(<ViewsTool key={`ViewsTool_${postId}`} {...props} />)
   cells.push(<TimeAgoTool key={`TimeAgoTool_${postId}`} {...props} />)
-  if (author.hasCommentingEnabled) {
+  if (author.get('hasCommentingEnabled')) {
     cells.push(<CommentTool key={`CommentTool_${postId}`} {...props} />)
   }
-  if (author.hasLovesEnabled) {
+  if (author.get('hasLovesEnabled')) {
     cells.push(<LoveTool key={`LoveTool_${postId}`} {...props} />)
   }
-  if (author.hasRepostingEnabled && !(isOwnPost && parseInt(postRepostsCount, 10) === 0)) {
+  if (author.get('hasRepostingEnabled') && !(isOwnPost && parseInt(postRepostsCount, 10) === 0)) {
     cells.push(<RepostTool key={`RepostTool_${postId}`} {...props} />)
   }
 
@@ -226,7 +226,7 @@ export const PostTools = (props) => {
     cells.push(<WatchTool key={`WatchTool_${postId}`} {...props} />)
   }
 
-  if (author.hasSharingEnabled) {
+  if (author.get('hasSharingEnabled')) {
     cells.push(<ShareTool key={`ShareTool_${postId}`} {...props} />)
   }
   if (isLoggedIn) {

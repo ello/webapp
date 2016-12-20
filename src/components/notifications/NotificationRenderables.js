@@ -21,7 +21,7 @@ function parseSummary(post, path, assets) {
 function parseSummaryForCommentNotification(post, comment, path, assets) {
   const postContent = post.get('summary', Immutable.List())
   const commentContent = comment.get('summary', Immutable.List())
-  const divider = [{ kind: 'rule' }]
+  const divider = Immutable.fromJS([{ kind: 'rule' }])
   const combined = postContent.concat(divider, commentContent)
   return regionItemsForNotifications(combined, path, assets)
 }

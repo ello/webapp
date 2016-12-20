@@ -5,7 +5,7 @@ import ForgotPasswordContainer from '../../containers/ForgotPasswordContainer'
 
 export default (store) => {
   function onEnter(nextState, replace) {
-    if (store.getState().getIn(['authentication', 'isLoggedIn'])) {
+    if (store.getState().authentication.get('isLoggedIn')) {
       replace({ pathname: store.getState().getIn(['gui', 'homeStream']), state: nextState })
     }
   }
