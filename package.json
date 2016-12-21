@@ -15,8 +15,8 @@
     "lint:js:fix": "eslint src test --fix",
     "start": "NODE_ENV=production node dist/server-iso-entrypoint.js",
     "start:debug": "DEBUG=express:* NODE_ENV=production node dist/server-iso-entrypoint.js",
-    "pretest": "npm run lint",
     "postinstall": "npm run build",
+    "pretest": "npm run lint",
     "test": "npm run test:all",
     "test:all": "NODE_ENV=test mocha test/unit test/integration test/server --recursive",
     "test:watch": "NODE_ENV=test mocha test/unit test/integration --recursive --watch"
