@@ -37,13 +37,14 @@ methods.getCompletions = (action) => {
 }
 
 methods.rehydrateEditors = (persistedEditors = Immutable.Map()) => {
-  const editors = Immutable.Map()
+  let editors = Immutable.Map()
   persistedEditors.keySeq().forEach((key) => {
     const pe = persistedEditors.get(key)
     if (pe && pe.get('shouldPersist')) {
       // clear out the blobs
-      pe.keySeq().forEach((uid) => {
-        const block = pe.get(uid)
+      const collection = pe.get('collection')
+      collection.keySeq().forEach((uid) => {
+        const block = collection.get(uid)
         if (/image/.test(block.get('kind'))) {
           block.delete('blob')
           pe.setIn(['collection', uid], block)
@@ -51,7 +52,7 @@ methods.rehydrateEditors = (persistedEditors = Immutable.Map()) => {
       })
       pe.set('isLoading', false)
       pe.set('isPosting', false)
-      editors.set(key, pe)
+      editors = editors.set(key, pe)
     }
   })
   return editors
@@ -59,10 +60,11 @@ methods.rehydrateEditors = (persistedEditors = Immutable.Map()) => {
 
 methods.hasContent = (state) => {
   const order = state.get('order')
-  const firstBlock = state.getIn(['collection', `${order.get(0)}`])
+  const firstBlock = state.getIn(['collection', `${order.first()}`])
   if (!firstBlock) { return false }
   const data = firstBlock.get('data')
-  return !!(order.size > 1 || (data.length && data !== '<br>'))
+  const hasC = !!(order.size > 1 || (data.length && data !== '<br>'))
+  return hasC
 }
 
 methods.hasMedia = (state) => {

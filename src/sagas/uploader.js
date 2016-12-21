@@ -151,7 +151,7 @@ function* performUpload(action) {
       if (type === EDITOR.SAVE_ASSET) {
         const { editorId } = payload
         yield put(temporaryEditorAssetCreated(objectURL, editorId))
-        uid = yield select(state => state.editor[editorId].uid - 2)
+        uid = yield select(state => state.editor.getIn([editorId, 'uid']) - 2)
       } else if (type === PROFILE.SAVE_AVATAR) {
         yield put(temporaryAssetCreated(PROFILE.TMP_AVATAR_CREATED, objectURL))
       } else if (type === PROFILE.SAVE_COVER) {
@@ -169,7 +169,7 @@ function* performUpload(action) {
         // of the editor at uid 2 and the uid of the editor is now sitting at 3
         // since it gets incremented after a block is added. So the - 2 gets us from
         // the 3 back to the 1 where the image should reconcile back to.
-        uid = yield select(state => state.editor[editorId].uid - 2)
+        uid = yield select(state => state.editor.getIn([editorId, 'uid']) - 2)
       } else if (type === PROFILE.SAVE_AVATAR) {
         yield put(temporaryAssetCreated(PROFILE.TMP_AVATAR_CREATED, imageData.objectURL))
       } else if (type === PROFILE.SAVE_COVER) {
