@@ -2,7 +2,6 @@ import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import isEqual from 'lodash/isEqual'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
 import { selectPropsPostId } from '../../selectors/post'
 import { selectAvatar } from '../../selectors/profile'
@@ -43,6 +42,7 @@ class BlockCollection extends Component {
     dispatch: PropTypes.func.isRequired,
     dragBlock: PropTypes.object,
     editorId: PropTypes.string.isRequired,
+    firstBlock: PropTypes.object,
     hasContent: PropTypes.bool,
     hasMedia: PropTypes.bool,
     hasMention: PropTypes.bool,
@@ -73,10 +73,10 @@ class BlockCollection extends Component {
   componentWillMount() {
     const { blocks, dispatch, editorId, repostContent } = this.props
     this.state = { hasDragOver: false }
-    if (repostContent.length) {
+    if (repostContent.size) {
       dispatch(addBlock({ kind: 'repost', data: repostContent }, editorId))
     }
-    if (blocks.length) {
+    if (blocks.size) {
       blocks.forEach((block) => {
         dispatch(addBlock(block, editorId, false))
       })
@@ -127,7 +127,7 @@ class BlockCollection extends Component {
     this.prevBlock = this.blockNode.previousSibling
     this.nextBlock = this.blockNode.nextSibling
     const dragUid = this.blockNode.dataset.collectionId
-    dispatch(addDragBlock(collection[dragUid], editorId))
+    dispatch(addDragBlock(collection.get(`${dragUid}`), editorId))
     // swap the dragging block for a
     // normal block and set the height/width
     const block = {
@@ -136,7 +136,7 @@ class BlockCollection extends Component {
         height: this.blockNode.offsetHeight,
       },
       kind: 'block',
-      uid: collection[dragUid].uid,
+      uid: collection.getIn([`${dragUid}`, 'uid']),
     }
     dispatch(updateBlock(block, dragUid, editorId, true))
     this.onDragMove(props)
@@ -174,7 +174,7 @@ class BlockCollection extends Component {
   onMoveBlock(delta) {
     if (!this.blockPlaceholder) return
     const { dispatch, dragBlock, editorId } = this.props
-    dispatch(reorderBlocks(dragBlock.uid, delta, editorId))
+    dispatch(reorderBlocks(dragBlock.get('uid'), delta, editorId))
     const placeholder = this.blockPlaceholder.editorBlock
     this.prevBlock = placeholder.previousSibling
     this.nextBlock = placeholder.nextSibling
@@ -234,7 +234,7 @@ class BlockCollection extends Component {
   onSubmitPost() {
     const { collection, editorId, hasContent } = this.props
     if (document.activeElement.parentNode.dataset.editorId === editorId &&
-        !Object.values(collection).some(block => block.isLoading) && hasContent) {
+        collection.every(block => !block.get('isLoading')) && hasContent) {
       this.submit()
     }
   }
@@ -246,23 +246,23 @@ class BlockCollection extends Component {
   getBlockElement(block) {
     const { editorId } = this.props
     const blockProps = {
-      data: block.data,
+      data: block.get('data'),
       editorId,
-      key: block.uid,
-      kind: block.kind,
-      linkURL: block.linkUrl,
+      key: block.get('uid'),
+      kind: block.get('kind'),
+      linkURL: block.get('linkUrl'),
       onRemoveBlock: this.remove,
-      uid: block.uid,
+      uid: block.get('uid'),
     }
-    switch (block.kind) {
+    switch (block.get('kind')) {
       case 'block':
         return (
           <Block
             {...blockProps}
-            className={classNames('BlockPlaceholder', { isUploading: block.isLoading })}
+            className={classNames('BlockPlaceholder', { isUploading: block.get('isLoading') })}
             ref={(comp) => { this.blockPlaceholder = comp }}
           >
-            <div style={{ width: block.data.width, height: block.data.height }} />
+            <div style={{ width: block.getIn(['data', 'width']), height: block.getIn(['data', 'height']) }} />
           </Block>
         )
       case 'embed':
@@ -271,7 +271,7 @@ class BlockCollection extends Component {
         )
       case 'image':
         return (
-          <ImageBlock blob={block.blob} {...blockProps} isUploading={block.isLoading} />
+          <ImageBlock blob={block.get('blob')} {...blockProps} isUploading={block.get('isLoading')} />
         )
       case 'repost':
         return (
@@ -309,7 +309,7 @@ class BlockCollection extends Component {
 
   handleTextBlockInput = (vo) => {
     const { dragBlock, collection, dispatch, editorId } = this.props
-    if (!dragBlock && !isEqual(collection[vo.uid], vo)) {
+    if (!dragBlock && collection.getIn([`${vo.uid}`, 'data']) !== vo.data) {
       dispatch(updateBlock(vo, vo.uid, editorId))
     }
   }
@@ -329,24 +329,27 @@ class BlockCollection extends Component {
     const { collection, order } = this.props
     const results = []
     order.forEach((uid) => {
-      const block = collection[uid]
-      switch (block.kind) {
+      const block = collection.get(`${uid}`)
+      const kind = block.get('kind')
+      const data = block.get('data')
+      const linkUrl = block.get('linkUrl')
+      switch (kind) {
         case 'text':
-          if (block.data.length) {
-            if (block.linkUrl && block.linkUrl.length) {
-              results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
+          if (data && data.length) {
+            if (linkUrl && linkUrl.length) {
+              results.push({ kind, data, link_url: linkUrl })
             } else {
-              results.push({ kind: block.kind, data: block.data })
+              results.push({ kind, data })
             }
           }
           break
         case 'repost':
           break
         default:
-          if (block.linkUrl && block.linkUrl.length) {
-            results.push({ kind: block.kind, data: block.data, link_url: block.linkUrl })
+          if (linkUrl && linkUrl.length) {
+            results.push({ kind, data, link_url: linkUrl })
           } else {
-            results.push({ kind: block.kind, data: block.data })
+            results.push({ kind, data })
           }
           break
       }
@@ -369,12 +372,11 @@ class BlockCollection extends Component {
 
   render() {
     const {
-      buyLink, avatar, cancelAction, collection, dragBlock, editorId,
+      buyLink, avatar, cancelAction, collection, dragBlock, editorId, firstBlock,
       hasContent, hasMedia, hasMention, isComment, isLoading, isMobileGridStream,
       isOwnPost, isPosting, order, orderLength, submitText,
     } = this.props
     const { dragBlockTop, hasDragOver } = this.state
-    const firstBlock = collection && order ? collection.get(order.first()) : null
     const firstBlockIsText = firstBlock ? /text/.test(firstBlock.get('kind')) : true
     const showQuickEmoji = isComment && firstBlockIsText
     const editorClassNames = classNames('editor', {
@@ -400,7 +402,7 @@ class BlockCollection extends Component {
           className="editor-region"
           data-num-blocks={orderLength}
         >
-          {order ? order.map(uid => this.getBlockElement(collection.get(uid))) : null}
+          {order ? order.map(uid => this.getBlockElement(collection.get(`${uid}`))) : null}
           {dragBlock ?
             <div className="DragBlock" style={{ top: dragBlockTop }}>
               {this.getBlockElement(dragBlock)}
@@ -430,7 +432,7 @@ function mapStateToProps(state, props) {
   const collection = editor.get('collection')
   const order = editor.get('order')
   let buyLink
-  const firstBlock = collection && order ? collection.get(order.first()) : null
+  const firstBlock = collection && order ? collection.get(`${order.first()}`) : null
   if (firstBlock) {
     buyLink = firstBlock.get('linkUrl')
   }

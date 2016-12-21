@@ -9,7 +9,7 @@ import { findModel } from '../helpers/json_helper'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 
 // props.post.xxx
-export const selectPropsPost = (state, props) => get(props, 'post')
+export const selectPropsPost = (state, props) => get(props, 'post', Immutable.Map())
 export const selectPropsPostId = (state, props) => selectPropsPost(state, props).get('id')
 export const selectPropsPostToken = (state, props) => selectPropsPost(state, props).get('token')
 export const selectPropsPostAuthorId = (state, props) => selectPropsPost(state, props).get('authorId')

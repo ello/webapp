@@ -3,22 +3,23 @@ import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import get from 'lodash/get'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../constants/action_types'
-import editorMethods from '../helpers/editor_helper'
+import editorMethods, { initialState as editorInitialState } from '../helpers/editor_helper'
 
 export const initialState = Immutable.Map({ completions: Immutable.Map() })
 
 export default (state = initialState, action) => {
   const editorId = get(action, 'payload.editorId')
+  let editor
   if (editorId) {
-    state = editorMethods.getEditorObject(state.get(`${editorId}`), action)
-      .set(`${editorId}`, state)
+    editor = editorMethods.getEditorObject(state.get(`${editorId}`, editorInitialState), action)
+    state = state.set(`${editorId}`, editor)
     if (action.type === EDITOR.INITIALIZE) {
       return state.setIn([`${editorId}`, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
     }
-    return state.setIn([`${editorId}`, 'hasContent'], editorMethods.hasContent(state))
-      .setIn([`${editorId}`, 'hasMedia'], editorMethods.hasMedia(state))
-      .setIn([`${editorId}`, 'hasMention'], editorMethods.hasMention(state))
-      .setIn([`${editorId}`, 'isLoading'], editorMethods.isLoading(state))
+    return state.setIn([`${editorId}`, 'hasContent'], editorMethods.hasContent(editor))
+      .setIn([`${editorId}`, 'hasMedia'], editorMethods.hasMedia(editor))
+      .setIn([`${editorId}`, 'hasMention'], editorMethods.hasMention(editor))
+      .setIn([`${editorId}`, 'isLoading'], editorMethods.isLoading(editor))
   }
   switch (action.type) {
     case AUTHENTICATION.LOGOUT:
