@@ -27,9 +27,9 @@ const editorUniqueIdentifiers = {}
 export function getEditorId(post, comment, isComment, isZero) {
   const prefix = isComment ? 'commentEditor' : 'postEditor'
   let modelId = ''
-  if (post) {
+  if (post && post.size) {
     modelId = post.get('id')
-  } else if (comment) {
+  } else if (comment && comment.size) {
     modelId = `${comment.get('postId')}_${comment.get('id')}`
   } else if (isZero) {
     modelId = 'Zero'
@@ -103,7 +103,7 @@ class Editor extends Component {
       } else {
         dispatch(createComment(allowsAutoWatch, data, this.getEditorIdentifier(), post.get('id')))
       }
-    } else if (!post) {
+    } else if (!post || (post && post.size === 0)) {
       dispatch(closeOmnibar())
       dispatch(createPost(data, this.getEditorIdentifier()))
     } else if (post.isEditing) {
