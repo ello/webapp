@@ -63,14 +63,13 @@ methods.hasContent = (state) => {
   const firstBlock = state.getIn(['collection', `${order.first()}`])
   if (!firstBlock) { return false }
   const data = firstBlock.get('data')
-  const hasC = !!(order.size > 1 || (data.length && data !== '<br>'))
-  return hasC
+  return !!(order.size > 1 || (data.length && data !== '<br>'))
 }
 
 methods.hasMedia = (state) => {
   const collection = state.get('collection')
   const order = state.get('order')
-  return order.some(uid => /embed|image/.test(collection.get(`${uid}`).get('kind')))
+  return order.some(uid => /embed|image/.test(collection.getIn([`${uid}`, 'kind'])))
 }
 
 methods.hasMention = (state) => {
