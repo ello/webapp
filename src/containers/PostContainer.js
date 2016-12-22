@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
@@ -121,8 +122,8 @@ class PostContainer extends Component {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps) {
+    return !Immutable.is(nextProps.post, this.props.post)
   }
 
   onClickWatchPost = () => {
