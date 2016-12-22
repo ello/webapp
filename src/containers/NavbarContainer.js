@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import shallowCompare from 'react-addons-shallow-compare'
 import { isIOS, scrollTo } from '../lib/jello'
 import Session from '../lib/session'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
@@ -88,8 +89,8 @@ class NavbarContainer extends Component {
     this.checkForNotifications(true)
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {
@@ -234,6 +235,7 @@ class NavbarContainer extends Component {
   }
 
   render() {
+    console.log('render navbar')
     const { isLoggedIn } = this.props
     if (isLoggedIn) {
       return (

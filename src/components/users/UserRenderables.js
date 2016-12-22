@@ -193,12 +193,12 @@ export const UserProfile = ({
         /> : null
       }
     </UserNamesCell>
-    {user.totalPostViewsCount && Number(user.get('totalPostViewsCount')) > 0 ?
+    {Number(user.get('totalPostViewsCount', 0)) > 0 ?
       <UserFiguresCell
         className="inUserProfile"
         onClickOpenFeaturedModal={onClickOpenFeaturedModal}
         onClickShareProfile={onClickShareProfile}
-        totalPostViewsCount={user.totalPostViewsCount}
+        totalPostViewsCount={user.get('totalPostViewsCount')}
       /> :
       <button className="UserFiguresShareButton withoutTotalViewCount" onClick={onClickShareProfile} >
         <ShareIcon />
