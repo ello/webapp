@@ -157,8 +157,8 @@ class HeroContainer extends Component {
     }
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return !Immutable.is(nextState.promotion, this.state.promotion)
   }
 
   onClickShareProfile = () => {
@@ -242,6 +242,7 @@ class HeroContainer extends Component {
   }
 
   render() {
+    console.log('render hero')
     const children = []
     const { broadcast } = this.state
     const {
