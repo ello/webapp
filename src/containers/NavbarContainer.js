@@ -235,7 +235,6 @@ class NavbarContainer extends Component {
   }
 
   render() {
-    console.log('render navbar')
     const { isLoggedIn } = this.props
     if (isLoggedIn) {
       return (
