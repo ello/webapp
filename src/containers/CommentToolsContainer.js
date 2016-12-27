@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as ACTION_TYPES from '../constants/action_types'
@@ -48,8 +49,11 @@ class CommentToolsContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.isMoreToolActive !== nextState.isMoreToolActive) { return true }
-    return true
+    if (nextState.isMoreToolActive !== this.state.isMoreToolActive ||
+        nextProps.deviceSize !== this.props.deviceSize) {
+      return true
+    }
+    return !Immutable.is(nextProps.comment, this.props.comment)
   }
 
   onClickMoreTool = () => {
