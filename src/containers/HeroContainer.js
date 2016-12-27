@@ -235,7 +235,6 @@ class HeroContainer extends Component {
   }
 
   render() {
-    console.log('render hero')
     const children = []
     const { broadcast } = this.state
     const {
