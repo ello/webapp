@@ -173,7 +173,7 @@ class PostContainer extends Component {
       showLovers,
       showReposters,
     } = this.props
-    if (!post) { return null }
+    if (!post || !post.get('id')) { return null }
 
     let postHeader
     if (isRepost) {

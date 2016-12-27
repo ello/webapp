@@ -191,7 +191,7 @@ class UserContainer extends Component {
     const onCollabFunc = isLoggedIn ? this.onOpenCollabModal : this.onOpenSignupModal
     const onClickOpenBio = isShortBioTruncated ? this.onClickOpenBio : null
     const onClickOpenFeaturedModal = isFeatured ? this.onClickOpenFeaturedModal : null
-    if (!user.get('id')) { return null }
+    if (!user || !user.get('id')) { return null }
     switch (type) {
       case 'avatar':
         return <UserAvatar user={user} />
