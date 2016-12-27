@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -91,8 +92,8 @@ class ViewportContainer extends Component {
     addScrollObject(this)
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

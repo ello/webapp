@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { createSelector } from 'reselect'
@@ -122,7 +123,7 @@ class UserDetailContainer extends Component {
     } else if (!nextProps.user) {
       return false
     }
-    return true
+    return shallowCompare(this, nextProps, nextState)
   }
 
   render() {

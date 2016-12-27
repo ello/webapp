@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../../constants/application_types'
 
@@ -36,8 +37,8 @@ class DevTools extends Component {
     })
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

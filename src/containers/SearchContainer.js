@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import debounce from 'lodash/debounce'
@@ -65,8 +66,8 @@ class SearchContainer extends Component {
     this.search({ terms, type }, false)
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeControl = (vo) => {

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
@@ -46,8 +47,8 @@ class RelationshipButton extends Component {
     this.setState({ nextPriority: getNextPriority(nextProps.priority) })
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickUpdatePriority = () => {

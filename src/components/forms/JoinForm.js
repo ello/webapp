@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
@@ -66,8 +67,8 @@ class JoinForm extends Component {
     }
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeUsernameControl = ({ username }) => {

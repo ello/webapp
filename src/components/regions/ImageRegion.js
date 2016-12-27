@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import ImageAsset from '../assets/ImageAsset'
@@ -70,8 +70,8 @@ class ImageRegion extends Component {
     }
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickStaticImageRegion = () => {
