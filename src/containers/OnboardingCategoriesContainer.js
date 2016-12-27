@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
@@ -25,7 +26,7 @@ function hasSelectedCategoriesNeeded(state) {
 class OnboardingCategoriesContainer extends Component {
 
   static propTypes = {
-    categories: PropTypes.array,
+    categories: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
   }
 
@@ -54,8 +55,8 @@ class OnboardingCategoriesContainer extends Component {
     this.state = { categoryIds: [] }
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onCategoryClick = (id) => {

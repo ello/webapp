@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { getLinkObject } from '../helpers/json_helper'
@@ -142,8 +143,8 @@ class NotificationParser extends Component {
     subject: PropTypes.object.isRequired,
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps) {
+    return !Immutable.is(nextProps.subject, this.props.subject)
   }
 
   render() {

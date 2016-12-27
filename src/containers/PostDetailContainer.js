@@ -1,6 +1,6 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import isEqual from 'lodash/isEqual'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -26,7 +26,7 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
       isLoggedIn !== nextProps.isLoggedIn) {
     return true
   }
-  if (!isEqual(author, nextProps.author) || !isEqual(post, nextProps.post)) {
+  if (!Immutable.is(nextProps.author, author) || !Immutable.is(nextProps.post, post)) {
     return true
   }
   return false

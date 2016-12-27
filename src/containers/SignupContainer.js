@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { MainView } from '../components/views/MainView'
 import RegistrationRequestForm from '../components/forms/RegistrationRequestForm'
 

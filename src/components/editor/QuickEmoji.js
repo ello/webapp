@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import sampleSize from 'lodash/sampleSize'
 import Emoji from '../assets/Emoji'
 import { SVGIcon } from '../svg/SVGComponents'
@@ -37,8 +38,8 @@ class QuickEmoji extends Component {
     this.state = { isActive: false }
   }
 
-  shouldComponentUpdate() {
-    return true
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

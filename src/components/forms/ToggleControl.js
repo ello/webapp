@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 
 class ToggleControl extends Component {
@@ -28,10 +29,10 @@ class ToggleControl extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     const { isChecked } = nextProps
     if (typeof isChecked === 'undefined') { return false }
-    return true
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeControl = () => {

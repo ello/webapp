@@ -1,5 +1,6 @@
 import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
@@ -30,6 +31,34 @@ import { scrollToLastTextBlock } from '../../lib/jello'
 import * as ACTION_TYPES from '../../constants/action_types'
 import { addDragObject, removeDragObject } from './DragComponent'
 import { addInputObject, removeInputObject } from './InputComponent'
+
+function mapStateToProps(state, props) {
+  const editor = state.editor.get(props.editorId, Immutable.Map())
+  const collection = editor.get('collection')
+  const order = editor.get('order')
+  let buyLink
+  const firstBlock = collection && order ? collection.get(`${order.first()}`) : null
+  if (firstBlock) {
+    buyLink = firstBlock.get('linkUrl')
+  }
+  return {
+    buyLink,
+    avatar: selectAvatar(state),
+    collection,
+    dragBlock: editor.get('dragBlock'),
+    hasContent: editor.get('hasContent'),
+    hasMedia: editor.get('hasMedia'),
+    hasMention: editor.get('hasMention'),
+    isLoading: editor.get('isLoading'),
+    isPosting: editor.get('isPosting'),
+    isMobileGridStream: selectIsMobileGridStream(state),
+    isNavbarHidden: selectIsNavbarHidden(state),
+    order,
+    orderLength: order ? order.size : 0,
+    pathname: selectPathname(state),
+    postId: selectPropsPostId(state, props),
+  }
+}
 
 class BlockCollection extends Component {
 
@@ -91,9 +120,9 @@ class BlockCollection extends Component {
     addInputObject(this)
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (!nextProps.collection || !nextProps.order) { return false }
-    return true
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {
@@ -424,34 +453,6 @@ class BlockCollection extends Component {
         />
       </div>
     )
-  }
-}
-
-function mapStateToProps(state, props) {
-  const editor = state.editor.get(props.editorId, Immutable.Map())
-  const collection = editor.get('collection')
-  const order = editor.get('order')
-  let buyLink
-  const firstBlock = collection && order ? collection.get(`${order.first()}`) : null
-  if (firstBlock) {
-    buyLink = firstBlock.get('linkUrl')
-  }
-  return {
-    buyLink,
-    avatar: selectAvatar(state),
-    collection,
-    dragBlock: editor.get('dragBlock'),
-    hasContent: editor.get('hasContent'),
-    hasMedia: editor.get('hasMedia'),
-    hasMention: editor.get('hasMention'),
-    isLoading: editor.get('isLoading'),
-    isPosting: editor.get('isPosting'),
-    isMobileGridStream: selectIsMobileGridStream(state),
-    isNavbarHidden: selectIsNavbarHidden(state),
-    order,
-    orderLength: order ? order.size : 0,
-    pathname: selectPathname(state),
-    postId: selectPropsPostId(state, props),
   }
 }
 

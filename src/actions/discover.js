@@ -26,6 +26,7 @@ export function getPagePromotionals() {
     payload: { endpoint: api.pagePromotionals() },
     meta: {
       mappingType: MAPPING_TYPES.PAGE_PROMOTIONALS,
+      resultKey: '/page_promotionals',
     },
   }
 }

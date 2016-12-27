@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
@@ -36,7 +37,7 @@ class OmnibarContainer extends Component {
     if (this.state.isFullScreen !== nextState.isFullScreen) {
       return true
     }
-    return true
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate() {
