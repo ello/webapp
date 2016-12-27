@@ -192,7 +192,7 @@
     "redux": "3.6.0",
     "redux-logger": "2.7.4",
     "redux-persist": "4.0.1",
-    "redux-persist-immutable": "4.0.0",
+    "redux-persist-immutable": "4.2.0",
     "redux-persist-transform-immutable": "4.1.0",
     "redux-saga": "0.13.0",
     "reselect": "2.5.4",
