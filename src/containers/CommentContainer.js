@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as MAPPING_TYPES from '../constants/mapping_types'
@@ -43,14 +44,13 @@ class CommentContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (!nextProps.comment) { return false }
-    return true
+    return !Immutable.is(nextProps.comment, this.props.comment)
   }
 
   render() {
     const { comment, assets, author, commentBody,
       currentUser, isEditing, isGridMode, post } = this.props
-    if (!comment) { return null }
+    if (!comment || !comment.get('id')) { return null }
     return (
       <div>
         {!isEditing ?
