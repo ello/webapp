@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import { createSelector } from 'reselect'
@@ -92,9 +93,9 @@ class RelationshipContainer extends Component {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps, nextState) {
     if (!this.props.userId) { return false }
-    return true
+    return shallowCompare(this, nextProps, nextState)
   }
 
   onCloseModal = () => {
