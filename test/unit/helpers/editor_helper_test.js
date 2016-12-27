@@ -30,7 +30,7 @@ describe('editor helper', () => {
     it('sets proper completions for users', () => {
       action = { payload: { response: { autocompleteResults: 'archer' }, type: 'user' } }
       completions = subject.methods.getCompletions(action)
-      expect(completions).to.deep.equal({ data: 'archer', type: 'user' })
+      expect(completions).to.deep.equal(Immutable.Map({ data: 'archer', type: 'user' }))
     })
 
     it('sets proper completions for emoji', () => {
@@ -38,13 +38,13 @@ describe('editor helper', () => {
         payload: { response: { emojis: [{ name: 'metal' }] }, type: 'emoji', word: ':met' },
       }
       completions = subject.methods.getCompletions(action)
-      expect(completions).to.deep.equal({ data: [{ name: 'metal' }], type: 'emoji' })
+      expect(completions).to.deep.equal(Immutable.fromJS({ data: [{ name: 'metal' }], type: 'emoji' }))
     })
 
-    it('sets completions to null without a response', () => {
+    it('sets completions to an empty map without a response', () => {
       action = { payload: { response: null, type: 'user' } }
       completions = subject.methods.getCompletions(action)
-      expect(completions).to.be.null
+      expect(completions).to.equal(Immutable.Map())
     })
   })
 

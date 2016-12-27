@@ -3,7 +3,7 @@ import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import get from 'lodash/get'
 import { AUTHENTICATION, EDITOR, PROFILE } from '../constants/action_types'
-import editorMethods, { initialState as editorInitialState } from '../helpers/editor_helper'
+import editorMethods from '../helpers/editor_helper'
 
 export const initialState = Immutable.Map({ completions: Immutable.Map() })
 
@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
   const editorId = get(action, 'payload.editorId')
   let editor
   if (editorId) {
-    editor = editorMethods.getEditorObject(state.get(`${editorId}`, editorInitialState), action)
+    editor = editorMethods.getEditorObject(state.get(`${editorId}`), action)
     state = state.set(`${editorId}`, editor)
     if (action.type === EDITOR.INITIALIZE) {
       return state.setIn([`${editorId}`, 'shouldPersist'], get(action, 'payload.shouldPersist', false))
