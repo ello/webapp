@@ -160,6 +160,7 @@ export default (state = initialState, action = { type: '' }) => {
       return state.withMutations((s) => {
         s.merge(payload.gui || {})
           .merge(initialNonPersistedState)
+          .set('isGridMode', getIsGridMode(state))
           .set('isNavbarHidden', false)
       })
     case SET_LAYOUT_MODE: {
