@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router'
-import uniqBy from 'lodash/uniqBy'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
 import PostContainer from '../../containers/PostContainer'
 import CommentContainer from '../../containers/CommentContainer'
@@ -109,14 +108,10 @@ export const notificationList = notifications =>
     )}
   </div>
 
-export const userAvatars = (users) => {
-  const uniqUsers = uniqBy(users.data, user => user.get('id'))
-  return (
-    uniqUsers.map(user =>
-      <UserContainer user={user} key={`userAvatar_${user.get('id')}`} type="avatar" />,
-    )
+export const userAvatars = users =>
+  users.data.map(user =>
+    <UserContainer user={user} key={`userAvatar_${user.get('id')}`} type="avatar" />,
   )
-}
 
 export const profileToggles = settings =>
   settings.data.map((setting, index) => {

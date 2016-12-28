@@ -19,6 +19,8 @@ export default (state = initialState, action = { type: '' }) => {
              action.type === USER.DETAIL_SUCCESS ||
              action.type === POST.DETAIL_FAILURE ||
              action.type === USER.DETAIL_FAILURE ||
+             action.type === POST.DETAIL_REQUEST ||
+             action.type === USER.DETAIL_REQUEST ||
              action.type.indexOf('LOAD_STREAM_') === 0 ||
              action.type.indexOf('LOAD_NEXT_CONTENT_') === 0 ||
              (action.type.indexOf('COMMENT.') === 0 && action.type.indexOf('SUCCESS') > -1) ||

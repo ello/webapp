@@ -119,7 +119,7 @@ methods.addOrUpdatePost = (state, action) => {
         state = jsonReducer.methods.mergeModel(
           state,
           MAPPING_TYPES.POSTS,
-          { id: action.meta.repostId, reposted: true },
+          { id: action.meta.repostId, reposted: true, showReposters: true },
         )
       }
       if (action.meta.repostedFromId) {

@@ -75,7 +75,7 @@ export const makeSelectStreamProps = () =>
         // since you can unblock/unmute them from here
         result.get('ids').forEach((id) => {
           const model = json.getIn([result.get('type'), id])
-          if (model && (path === '/settings' || (!delTypes || delTypes.includes(id)))) {
+          if (model && (path === '/settings' || (!delTypes || !delTypes.includes(id)))) {
             renderObj.data.push(model)
           }
         })
@@ -85,7 +85,7 @@ export const makeSelectStreamProps = () =>
           result.getIn(['next', 'ids']).forEach((nextId) => {
             const model = json.getIn([result.getIn(['next', 'type']), nextId])
             if (model && (path === '/settings' ||
-                (!nDelTypes || nDelTypes.includes(nextId)))) {
+                (!nDelTypes || !nDelTypes.includes(nextId)))) {
               renderObj[dataProp].push(model)
             }
           })

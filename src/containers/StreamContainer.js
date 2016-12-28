@@ -29,6 +29,9 @@ import { Paginator } from '../components/streams/Paginator'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { reloadPlayers } from '../components/editor/EmbedBlock'
 
+const selectActionPath = props =>
+  get(props, ['action', 'payload', 'endpoint', 'path'])
+
 export function makeMapStateToProps() {
   const getStreamProps = makeSelectStreamProps()
   const mapStateToProps = (state, props) => {
@@ -90,7 +93,7 @@ class StreamContainer extends Component {
       dispatch(action)
     }
 
-    this.state = { action }
+    this.state = { action, renderType: null }
     this.wasOmnibarActive = omnibar.isActive
     this.setScroll = debounce(this.setScroll, 333)
   }
@@ -119,21 +122,20 @@ class StreamContainer extends Component {
     if (stream.get('type') === ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS) {
       this.setState({ hidePaginator: true })
     }
+    if (selectActionPath(this.props) === nextProps.stream.getIn(['payload', 'endpoint', 'path'])) {
+      this.setState({ renderType: stream.get('type') })
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const { stream } = nextProps
     const { action } = nextState
-    const updateKey = get(action, 'meta.updateKey')
     const streamPath = stream.getIn(['payload', 'endpoint', 'path'], '')
     const streamType = stream.get('type')
-    // this prevents nested stream components from clobbering parents
-    if (updateKey && !streamPath.match(updateKey)) {
-      return false
-      // when hitting the back button the result can update and
-      // try to feed wrong results to the actions render method
-      // thus causing errors when trying to render wrong results
-    } else if (nextProps.resultPath !== this.props.resultPath) {
+    // when hitting the back button the result can update and
+    // try to feed wrong results to the actions render method
+    // thus causing errors when trying to render wrong results
+    if (nextProps.resultPath !== this.props.resultPath) {
       return false
     } else if (nextProps.isGridMode !== this.props.isGridMode) {
       return true
@@ -282,13 +284,13 @@ class StreamContainer extends Component {
   render() {
     const { className, columnCount, initModel, isGridMode, isPostHeaderHidden, json,
       paginatorText, renderObj, result, stream } = this.props
-    const { action, hidePaginator } = this.state
+    const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
     const model = findModel(json, initModel)
     if (model) {
       renderObj.data.push(model)
     } else if (!renderObj.data.length) {
-      switch (stream.get('type')) {
+      switch (renderType) {
         case ACTION_TYPES.LOAD_STREAM_SUCCESS:
           return this.renderZeroState()
         case ACTION_TYPES.LOAD_STREAM_REQUEST:

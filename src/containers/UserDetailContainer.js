@@ -101,8 +101,8 @@ class UserDetailContainer extends Component {
 
   componentWillMount() {
     const { dispatch, paramsUsername } = this.props
+    this.state = { renderType: USER.DETAIL_REQUEST }
     dispatch(loadUserDetail(`~${paramsUsername}`))
-    this.state = { isStreamFailing: false }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,15 +110,19 @@ class UserDetailContainer extends Component {
     if (paramsUsername !== nextProps.paramsUsername) {
       dispatch(loadUserDetail(`~${nextProps.paramsUsername}`))
     }
-    if (nextProps.streamType === USER.DETAIL_SUCCESS) {
-      this.setState({ isStreamFailing: false })
-    } else if (nextProps.streamType === USER.DETAIL_FAILURE) {
-      this.setState({ isStreamFailing: true })
+    switch (nextProps.streamType) {
+      case USER.DETAIL_FAILURE:
+      case USER.DETAIL_REQUEST:
+      case USER.DETAIL_SUCCESS:
+        this.setState({ renderType: nextProps.streamType })
+        break
+      default:
+        break
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.isStreamFailing !== nextState.isStreamFailing) {
+    if (this.state.renderType !== nextState.renderType) {
       return true
     } else if (!nextProps.user) {
       return false
@@ -130,17 +134,17 @@ class UserDetailContainer extends Component {
     const { activeUserFollowingType, dispatch, streamAction, tabs, user, viewKey } = this.props
     const { isLoggedIn, isPostHeaderHidden, isSelf } = this.props
     const { hasSaidHelloTo, hasZeroFollowers, hasZeroPosts } = this.props
-    const { isStreamFailing } = this.state
+    const { renderType } = this.state
     const shouldBindHello = hasZeroPosts && !hasSaidHelloTo
 
-    if (isStreamFailing) {
+    if (renderType === USER.DETAIL_FAILURE) {
       return (
         <UserDetailError>
           <ErrorState4xx />
         </UserDetailError>
       )
     }
-    if (!user) { return null }
+    if (!user || !user.get('id')) { return null }
     const props = {
       activeType: activeUserFollowingType,
       isLoggedIn,
