@@ -97,7 +97,7 @@ class Editor extends Component {
   submit = (data) => {
     const { allowsAutoWatch, comment, dispatch, isComment, isOwnPage, onSubmit, post } = this.props
     if (isComment) {
-      if (comment.get('isEditing')) {
+      if (comment && comment.get('isEditing')) {
         dispatch(toggleCommentEditing(comment, false))
         dispatch(updateComment(comment, data, this.getEditorIdentifier()))
       } else {
@@ -106,10 +106,10 @@ class Editor extends Component {
     } else if (!post || (post && post.size === 0)) {
       dispatch(closeOmnibar())
       dispatch(createPost(data, this.getEditorIdentifier()))
-    } else if (post.isEditing) {
+    } else if (post.get('isEditing')) {
       dispatch(toggleEditing(post, false))
       dispatch(updatePost(post, data, this.getEditorIdentifier()))
-    } else if (post.isReposting) {
+    } else if (post.get('isReposting')) {
       dispatch(toggleReposting(post, false))
       const repostId = post.get('repostId') || post.get('id')
       const repostedFromId = post.get('repostId') ? post.get('id') : null

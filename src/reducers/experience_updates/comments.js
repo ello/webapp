@@ -38,7 +38,7 @@ methods.addOrUpdateComment = (state, action) => {
       // update post watching prop
       state = postMethods.updatePostWatch(state, { payload: { method: 'POST', model: post } })
       // add the comment to the linked array
-      if (!post.getIn(['links', 'comments']).isEmpty()) {
+      if (!post.getIn(['links', 'comments'], Immutable.List()).isEmpty()) {
         state = state.setIn(
           [MAPPING_TYPES.POSTS, postId, 'links', 'comments', 'ids'],
           post.getIn(['links', 'comments', 'ids']).unshift(`${response[MAPPING_TYPES.COMMENTS].id}`),
@@ -50,7 +50,7 @@ methods.addOrUpdateComment = (state, action) => {
       return methods.updateCommentsCount(state, postId, 1)
     case ACTION_TYPES.COMMENT.DELETE_SUCCESS:
       // delete the comment from the linked array
-      if (!post.getIn(['links', 'comments']).isEmpty()) {
+      if (!post.getIn(['links', 'comments'], Immutable.List()).isEmpty()) {
         index = post.links.comments.ids.indexOf(`${model.get('id')}`)
         if (index > -1) {
           state = state.setIn(

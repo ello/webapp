@@ -36,7 +36,7 @@ class CommentContainer extends Component {
     assets: PropTypes.object,
     author: PropTypes.object,
     comment: PropTypes.object,
-    commentBody: PropTypes.array,
+    commentBody: PropTypes.object,
     currentUser: PropTypes.object,
     isEditing: PropTypes.bool,
     isGridMode: PropTypes.bool,

@@ -5,6 +5,7 @@ import { createSelector } from 'reselect'
 import sample from 'lodash/sample'
 import { connect } from 'react-redux'
 import { DISCOVER, FOLLOWING, STARRED } from '../constants/locales/en'
+import { USER } from '../constants/action_types'
 import { getLinkObject } from '../helpers/json_helper'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
@@ -24,6 +25,7 @@ import {
 } from '../selectors/promotions'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { selectJson } from '../selectors/store'
+import { selectStreamType } from '../selectors/stream'
 import { selectUserFromUsername } from '../selectors/user'
 import { trackEvent } from '../actions/analytics'
 import {
@@ -97,6 +99,7 @@ function mapStateToProps(state, props) {
     json: selectJson(state),
     pathname: selectPathname(state),
     promotions,
+    streamType: selectStreamType(state),
     useGif: user && (selectViewsAdultContent(state) || !user.get('postsAdultContent')),
     userCoverImage: user && user.get('coverImage'),
     userId: user && `${user.get('id')}`,
@@ -138,7 +141,7 @@ class HeroContainer extends Component {
   }
 
   componentWillMount() {
-    this.state = { promotion: null, broadcast: this.props.broadcast }
+    this.state = { promotion: null, broadcast: this.props.broadcast, renderType: null }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -155,11 +158,21 @@ class HeroContainer extends Component {
     if (broadcast !== this.state.broadcast) {
       this.setState({ broadcast })
     }
+    switch (nextProps.streamType) {
+      case USER.DETAIL_FAILURE:
+      case USER.DETAIL_REQUEST:
+      case USER.DETAIL_SUCCESS:
+        this.setState({ renderType: nextProps.streamType })
+        break
+      default:
+        break
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return !Immutable.is(nextState.promotion, this.state.promotion) ||
-      nextProps.pathname !== this.props.pathname
+      nextProps.pathname !== this.props.pathname ||
+      nextState.renderType !== this.state.renderType
   }
 
   onClickShareProfile = () => {
@@ -244,7 +257,7 @@ class HeroContainer extends Component {
 
   render() {
     const children = []
-    const { broadcast } = this.state
+    const { broadcast, renderType } = this.state
     const {
       isAuthentication,
       isBackgroundCycle,
@@ -264,7 +277,7 @@ class HeroContainer extends Component {
       children.push(this.getHeroPromotionCategory())
     } else if (isPagePromotion) {
       children.push(this.getHeroPromotionPage())
-    } else if (isUserProfile && userId) {
+    } else if (isUserProfile && userId && renderType !== USER.DETAIL_FAILURE) {
       children.push(this.getHeroProfile())
     } else if (isAuthentication) {
       children.push(this.getHeroPromotionAuth())
