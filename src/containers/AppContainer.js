@@ -60,7 +60,7 @@ class AppContainer extends Component {
 
   static preRender = (store) => {
     const state = store.getState()
-    if (state.getIn(['authentication', 'isLoggedIn'])) {
+    if (state.authentication.get('isLoggedIn')) {
       return Promise.all([
         store.dispatch(loadProfile()),
         store.dispatch(getCategories()),

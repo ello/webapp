@@ -2,7 +2,6 @@ import 'babel-polyfill'
 import 'isomorphic-fetch'
 import path from 'path'
 import fs from 'fs'
-import get from 'lodash/get'
 import { renderToString } from 'react-dom/server'
 import React from 'react'
 import Helmet from 'react-helmet'
@@ -83,7 +82,7 @@ function handlePrerender(context) {
       const componentHTML = renderToString(InitialComponent)
       const head = Helmet.rewind()
       const state = store.getState()
-      if (get(state, 'stream.should404') === true) {
+      if (state.stream.get('should404') === true) {
         process.send({ type: '404' }, null, {}, () => {
           process.exit(1)
         })
@@ -92,7 +91,7 @@ function handlePrerender(context) {
         // Add helmet's stuff after the last statically rendered meta tag
         const html = indexStr.replace(
           'rel="copyright">',
-          `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`
+          `rel="copyright">${head.title.toString()} ${head.meta.toString()} ${head.link.toString()}`,
         ).replace('<div id="root"></div>', `<div id="root">${componentHTML}</div>${initialStateTag}`)
         process.send({ type: 'render', body: html }, null, {}, () => {
           process.exit(0)
