@@ -45,5 +45,10 @@ Paginator.propTypes = {
   totalPagesRemaining: PropTypes.number.isRequired,
 }
 
+Paginator.defaultProps = {
+  totalPages: 0,
+  totalPagesRemaining: 0,
+}
+
 export default Paginator
 

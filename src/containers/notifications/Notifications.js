@@ -177,8 +177,6 @@ class Notifications extends Component {
             <Paginator
               className="NotificationReload"
               isHidden={false}
-              totalPages={0}
-              totalPagesRemaining={0}
             /> :
             null
         }

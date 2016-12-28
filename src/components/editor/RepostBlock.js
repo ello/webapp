@@ -5,16 +5,20 @@ import { connect } from 'react-redux'
 import { LockIcon } from './EditorIcons'
 import { RepostIcon } from '../posts/PostIcons'
 
+function mapStateToProps({ profile: currentUser }) {
+  return { currentUser }
+}
+
 function getBlockElement(block, uid) {
-  const data = block.data
-  switch (block.kind) {
+  const data = block.get('data')
+  switch (block.get('kind')) {
     case 'embed':
       return (
-        <img key={`repostEmbed_${uid}`} src={data.thumbnailLargeUrl} alt={data.service} />
+        <img key={`repostEmbed_${uid}`} src={data.get('thumbnailLargeUrl')} alt={data.get('service')} />
       )
     case 'image':
       return (
-        <img key={`repostImage_${uid}`} src={data.url} alt={data.alt} />
+        <img key={`repostImage_${uid}`} src={data.get('url')} alt={data.get('alt')} />
       )
     case 'text':
       return (
@@ -29,7 +33,7 @@ class RepostBlock extends Component {
 
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
-    data: PropTypes.array.isRequired,
+    data: PropTypes.object.isRequired,
   }
 
   shouldComponentUpdate() {
@@ -42,7 +46,7 @@ class RepostBlock extends Component {
       <div className="editor-block readonly">
         <div className="RepostBlockLabel">
           <RepostIcon />
-          {` by @${currentUser.username}`}
+          {` by @${currentUser.get('username')}`}
         </div>
         {data.map((block, i) => getBlockElement(block, i))}
         <div className="RegionTools">
@@ -51,10 +55,6 @@ class RepostBlock extends Component {
       </div>
     )
   }
-}
-
-function mapStateToProps({ profile: currentUser }) {
-  return { currentUser }
 }
 
 export default connect(mapStateToProps)(RepostBlock)
