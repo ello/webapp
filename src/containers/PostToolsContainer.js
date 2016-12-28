@@ -43,7 +43,7 @@ export function mapStateToProps(state, props) {
                                (`${streamPostIdOrToken}` === `${propsPostId}` ||
                                 `${streamPostIdOrToken}` === `${propsPostToken}`)
   return {
-    detailLink: `/${props.author.get('username')}/post/${post.token}`,
+    detailLink: `/${props.author.get('username')}/post/${post.get('token')}`,
     deviceSize,
     isCommentsRequesting,
     isLoggedIn,
