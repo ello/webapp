@@ -93,7 +93,7 @@ class StreamContainer extends Component {
       dispatch(action)
     }
 
-    this.state = { action, renderType: null }
+    this.state = { action, renderType: ACTION_TYPES.LOAD_STREAM_REQUEST }
     this.wasOmnibarActive = omnibar.isActive
     this.setScroll = debounce(this.setScroll, 333)
   }

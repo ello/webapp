@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
@@ -34,7 +33,7 @@ function mapStateToProps(state, props) {
   }
 }
 
-class JoinContainer extends Component {
+class JoinContainer extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -97,10 +96,6 @@ class JoinContainer extends Component {
     if (availability.get('invitationCode')) {
       this.validateInvitationCodeResponse(availability)
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeUsernameControl = ({ username }) => {

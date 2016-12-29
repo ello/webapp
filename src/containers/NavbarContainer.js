@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import { isIOS, scrollTo } from '../lib/jello'
 import Session from '../lib/session'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
@@ -65,7 +64,7 @@ function mapStateToProps(state, props) {
   }
 }
 
-class NavbarContainer extends Component {
+class NavbarContainer extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -85,10 +84,6 @@ class NavbarContainer extends Component {
 
   componentWillMount() {
     this.checkForNotifications()
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

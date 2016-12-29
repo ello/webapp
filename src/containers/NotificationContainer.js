@@ -144,7 +144,8 @@ class NotificationParser extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.subject, this.props.subject)
+    return !Immutable.is(nextProps.assets, this.props.assets) ||
+      !Immutable.is(nextProps.subject, this.props.subject)
   }
 
   render() {

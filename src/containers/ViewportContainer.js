@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -60,7 +59,7 @@ function mapStateToProps(state, props) {
   }
 }
 
-class ViewportContainer extends Component {
+class ViewportContainer extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     hasLaunchedSignupModal: PropTypes.bool,
@@ -90,10 +89,6 @@ class ViewportContainer extends Component {
     addPageVisibilityObserver(this)
     addResizeObject(this)
     addScrollObject(this)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

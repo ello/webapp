@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import { getSource } from './BackgroundImage'
@@ -12,7 +11,7 @@ const STATUS = {
   FAILURE: 'isFailing',
 }
 
-export default class Avatar extends Component {
+export default class Avatar extends PureComponent {
   static propTypes = {
     alt: PropTypes.string,
     className: PropTypes.string,
@@ -44,10 +43,6 @@ export default class Avatar extends Component {
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
       })
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onLoadSuccess = () => {

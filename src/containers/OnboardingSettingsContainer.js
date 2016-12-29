@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
@@ -31,7 +30,7 @@ function mapStateToProps(state) {
   }
 }
 
-class OnboardingSettingsContainer extends Component {
+class OnboardingSettingsContainer extends PureComponent {
 
   static propTypes = {
     avatar: PropTypes.object,
@@ -69,10 +68,6 @@ class OnboardingSettingsContainer extends Component {
       saveAvatar: bindActionCreators(saveAvatar, dispatch),
       saveCover: bindActionCreators(saveCover, dispatch),
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onDoneClick = () => {

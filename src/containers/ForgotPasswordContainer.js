@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { isAndroid } from '../lib/jello'
 import { FORM_CONTROL_STATUS as STATUS } from '../constants/status_types'
@@ -7,7 +6,7 @@ import { sendForgotPasswordRequest } from '../actions/authentication'
 import { isFormValid, getEmailStateFromClient } from '../components/forms/Validators'
 import { ForgotPassword } from '../components/views/ForgotPassword'
 
-class ForgotPasswordContainer extends Component {
+class ForgotPasswordContainer extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
   }
@@ -18,10 +17,6 @@ class ForgotPasswordContainer extends Component {
       formStatus: STATUS.INDETERMINATE,
     }
     this.emailValue = ''
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeControl = ({ email }) => {

@@ -1,7 +1,6 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 
-export default class ImageAsset extends Component {
+export default class ImageAsset extends PureComponent {
 
   static propTypes = {
     onLoadSuccess: PropTypes.func,
@@ -12,10 +11,6 @@ export default class ImageAsset extends Component {
 
   componentDidMount() {
     this.createLoader()
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

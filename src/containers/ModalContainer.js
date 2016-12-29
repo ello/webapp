@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
@@ -15,7 +14,7 @@ export function mapStateToProps(state) {
   }
 }
 
-class ModalContainer extends Component {
+class ModalContainer extends PureComponent {
   static propTypes = {
     classList: PropTypes.string,
     component: PropTypes.object,
@@ -26,10 +25,6 @@ class ModalContainer extends Component {
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate() {
