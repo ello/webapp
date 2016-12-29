@@ -12,6 +12,15 @@ import { ErrorState4xx } from '../components/errors/Errors'
 import { Paginator } from '../components/streams/Paginator'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
 
+export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
+  if (!nextProps.author || !nextProps.post) { return false }
+  return !Immutable.is(nextProps.post, thisProps.post) ||
+    ['isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
+      nextProps[prop] !== thisProps[prop],
+    ) ||
+    ['renderType'].some(prop => nextState[prop] !== thisState.prop)
+}
+
 export function mapStateToProps(state, props) {
   const post = selectPostFromToken(state, props)
   return {
@@ -67,12 +76,7 @@ class PostDetailContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (!nextProps.author || !nextProps.post) { return false }
-    return !Immutable.is(nextProps.post, this.props.post) ||
-      ['isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
-        nextProps[prop] !== this.props[prop],
-      ) ||
-      ['renderType'].some(prop => nextState[prop] !== this.state.prop)
+    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
   }
 
   componentWillUnmount() {
