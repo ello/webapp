@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import shallowCompare from 'react-addons-shallow-compare'
 import classNames from 'classnames'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { trackEvent, trackInitialPage } from '../actions/analytics'
@@ -44,7 +43,7 @@ function mapStateToProps(state) {
   }
 }
 
-class AppContainer extends Component {
+class AppContainer extends PureComponent {
 
   static propTypes = {
     authPromo: PropTypes.object,
@@ -111,10 +110,6 @@ class AppContainer extends Component {
     } else if (this.props.isLoggedIn && !nextProps.isLoggedIn) {
       dispatch(fetchAuthenticationPromos())
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

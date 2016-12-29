@@ -12,27 +12,6 @@ import { ErrorState4xx } from '../components/errors/Errors'
 import { Paginator } from '../components/streams/Paginator'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
 
-// A lot of information needs to get generated in the meta tags for this page
-// before it ever hits React's virtual DOM so it's really beneficial to
-// optimzize the amount of times render is called.
-export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState) {
-  const { author, isLoggedIn, paramsToken, paramsUsername, post } = thisProps
-  if (thisState.renderType !== nextState.renderType) {
-    return true
-  } else if (!nextProps.author || !nextProps.post) {
-    return false
-  }
-  if (paramsToken !== nextProps.paramsToken ||
-      paramsUsername !== nextProps.paramsUsername ||
-      isLoggedIn !== nextProps.isLoggedIn) {
-    return true
-  }
-  if (!Immutable.is(nextProps.author, author) || !Immutable.is(nextProps.post, post)) {
-    return true
-  }
-  return false
-}
-
 export function mapStateToProps(state, props) {
   const post = selectPostFromToken(state, props)
   return {
@@ -88,7 +67,12 @@ class PostDetailContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return shouldContainerUpdate(this.props, nextProps, this.state, nextState)
+    if (!nextProps.author || !nextProps.post) { return false }
+    return !Immutable.is(nextProps.post, this.props.post) ||
+      ['isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      ) ||
+      ['renderType'].some(prop => nextState[prop] !== this.state.prop)
   }
 
   componentWillUnmount() {

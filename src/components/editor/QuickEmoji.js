@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import sampleSize from 'lodash/sampleSize'
 import Emoji from '../assets/Emoji'
 import { SVGIcon } from '../svg/SVGComponents'
@@ -28,7 +27,7 @@ QuickEmojiChoiceButton.propTypes = {
   onClick: PropTypes.func,
 }
 
-class QuickEmoji extends Component {
+class QuickEmoji extends PureComponent {
 
   static propTypes = {
     onAddEmoji: PropTypes.func.isRequired,
@@ -36,10 +35,6 @@ class QuickEmoji extends Component {
 
   componentWillMount() {
     this.state = { isActive: false }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

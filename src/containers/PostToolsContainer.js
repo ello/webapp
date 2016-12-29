@@ -109,7 +109,10 @@ class PostToolsContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.post, this.props.post)
+    return !Immutable.is(nextProps.post, this.props.post) ||
+      ['isCommentsRequesting', 'isGridMode', 'isLoggedIn', 'isRepostAnimating'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      )
   }
 
   onClickToggleComments = () => {

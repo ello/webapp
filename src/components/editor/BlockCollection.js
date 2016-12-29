@@ -1,6 +1,5 @@
 import Immutable from 'immutable'
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from '../../selectors/gui'
@@ -60,7 +59,7 @@ function mapStateToProps(state, props) {
   }
 }
 
-class BlockCollection extends Component {
+class BlockCollection extends PureComponent {
 
   static propTypes = {
     buyLink: PropTypes.string,
@@ -118,11 +117,6 @@ class BlockCollection extends Component {
     dispatch(addEmptyTextBlock(editorId))
     addDragObject(this.dragObject)
     addInputObject(this)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!nextProps.collection || !nextProps.order) { return false }
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

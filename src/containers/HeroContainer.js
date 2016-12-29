@@ -164,9 +164,10 @@ class HeroContainer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return !Immutable.is(nextState.promotion, this.state.promotion) ||
-      nextProps.pathname !== this.props.pathname ||
-      nextState.renderType !== this.state.renderType ||
-      nextState.broadcast !== this.state.broadcast
+      ['dpi', 'isLoggedIn', 'isMobile', 'pathname', 'viewName'].some(prop =>
+        nextProps[prop] !== this.props[prop],
+      ) ||
+      ['broadcast', 'renderType'].some(prop => nextState[prop] !== this.state[prop])
   }
 
   onClickShareProfile = () => {

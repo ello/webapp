@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { EDITOR } from '../constants/action_types'
@@ -38,7 +37,7 @@ function mapStateToProps(state) {
   }
 }
 
-class InputContainer extends Component {
+class InputContainer extends PureComponent {
 
   static propTypes = {
     deviceSize: PropTypes.string,
@@ -58,10 +57,6 @@ class InputContainer extends Component {
 
   componentDidMount() {
     addInputObject(this)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {

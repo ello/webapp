@@ -91,7 +91,8 @@ class UserContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.user, this.props.user)
+    return !Immutable.is(nextProps.user, this.props.user) ||
+      ['isLoggedIn', 'isMobile'].some(prop => nextProps[prop] !== this.props[prop])
   }
 
   onClickOpenBio = () => {

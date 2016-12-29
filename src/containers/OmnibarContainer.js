@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from '../constants/application_types'
@@ -15,7 +14,7 @@ export function mapStateToProps(state) {
   }
 }
 
-class OmnibarContainer extends Component {
+class OmnibarContainer extends PureComponent {
   static propTypes = {
     avatar: PropTypes.object,
     classList: PropTypes.string,
@@ -31,13 +30,6 @@ class OmnibarContainer extends Component {
 
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.FULLSCREEN, () => { this.onToggleFullScreen() })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.isFullScreen !== nextState.isFullScreen) {
-      return true
-    }
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate() {

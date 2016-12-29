@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import debounce from 'lodash/debounce'
@@ -40,7 +39,7 @@ function onSubmit(e) {
   hideSoftKeyboard()
 }
 
-class InfoForm extends Component {
+class InfoForm extends PureComponent {
 
   static propTypes = {
     className: PropTypes.string,
@@ -89,10 +88,6 @@ class InfoForm extends Component {
       locationStatus: this.locationText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
       nameStatus: this.nameText.length ? STATUS.SUCCESS : STATUS.INDETERMINATE,
     })
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUnmount() {
