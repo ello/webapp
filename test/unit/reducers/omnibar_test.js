@@ -40,10 +40,10 @@ describe('omnibar reducer', () => {
   })
 
   context('AUTHENTICATION', () => {
-    it('AUTHENTICATION.LOGOUT resets the initial state', () => {
+    it('AUTHENTICATION.LOGOUT_SUCCESS resets the initial state', () => {
       const result = reducer(undefined, openOmnibarAction)
       expect(result).to.deep.equal(Immutable.fromJS(openOmnibarAction.payload))
-      const action = { type: AUTHENTICATION.LOGOUT }
+      const action = { type: AUTHENTICATION.LOGOUT_SUCCESS }
       const nextResult = reducer(result, action)
       expect(nextResult).to.equal(initialState)
     })

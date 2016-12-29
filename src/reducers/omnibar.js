@@ -9,7 +9,8 @@ const initialState = Immutable.Map({
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case AUTHENTICATION.LOGOUT:
+    case AUTHENTICATION.LOGOUT_SUCCESS:
+    case AUTHENTICATION.LOGOUT_FAILURE:
     case PROFILE.DELETE_SUCCESS:
       return initialState
     case OMNIBAR.OPEN:

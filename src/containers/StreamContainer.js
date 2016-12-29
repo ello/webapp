@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import get from 'lodash/get'
@@ -149,7 +150,7 @@ class StreamContainer extends Component {
               streamPath !== get(action, 'payload.endpoint.path')) {
       return false
     }
-    return true
+    return shallowCompare(this, nextProps, nextState)
   }
 
 

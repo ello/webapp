@@ -93,7 +93,8 @@ export const initialState = initialNonPersistedState.merge(initialPersistedState
 export default (state = initialState, action = { type: '' }) => {
   const { payload, type } = action
   switch (type) {
-    case AUTHENTICATION.LOGOUT:
+    case AUTHENTICATION.LOGOUT_SUCCESS:
+    case AUTHENTICATION.LOGOUT_FAILURE:
       return state.set('discoverKeyType', null)
     case EDITOR.SET_IS_COMPLETER_ACTIVE:
       return state.set('isCompleterActive', payload.isCompleterActive)

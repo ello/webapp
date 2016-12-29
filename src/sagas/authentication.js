@@ -120,7 +120,8 @@ export default function* authentication() {
   while (true) {
     const action = yield take('*')
     switch (action.type) {
-      case AUTHENTICATION.LOGOUT:
+      case AUTHENTICATION.LOGOUT_SUCCESS:
+      case AUTHENTICATION.LOGOUT_FAILURE:
         yield put(cancelAuthRefresh())
         break
       default:

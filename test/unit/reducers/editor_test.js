@@ -55,8 +55,8 @@ describe('editor reducer', () => {
     })
 
     context('without an editorId', () => {
-      it('returns the initialState with AUTHENTICATION.LOGOUT', () => {
-        action = { type: AUTHENTICATION.LOGOUT }
+      it('returns the initialState with AUTHENTICATION.LOGOUT_SUCCESS', () => {
+        action = { type: AUTHENTICATION.LOGOUT_SUCCESS }
         state = reducer(undefined, action)
         expect(state).to.deep.equal(initialState)
       })

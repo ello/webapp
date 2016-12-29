@@ -13,8 +13,8 @@ describe('profile reducer', () => {
   })
 
   context('AUTHENTICATION', () => {
-    it('AUTHENTICATION.LOGOUT blows away the reducer except for some android data', () => {
-      const action = { type: AUTHENTICATION.LOGOUT, payload: {} }
+    it('AUTHENTICATION.LOGOUT_SUCCESS blows away the reducer except for some android data', () => {
+      const action = { type: AUTHENTICATION.LOGOUT_SUCCESS, payload: {} }
       const state = stubUser({
         buildVersion: 'buildVersion',
         bundleId: 'bundleId',
@@ -109,13 +109,13 @@ describe('profile reducer', () => {
 
     it('PROFILE.DELETE_SUCCESS blows away the reducer except for some android data', () => {
       const action = { type: PROFILE.DELETE_SUCCESS, payload: {} }
-      const state = {
+      const state = Immutable.fromJS({
         buildVersion: 'buildVersion',
         bundleId: 'bundleId',
         marketingVersion: 'marketingVersion',
         registrationId: 'registrationId',
         username: 'username',
-      }
+      })
       const result = reducer(state, {})
       expect(result).to.have.property('username', 'username')
       const nextResult = reducer(result, action)
