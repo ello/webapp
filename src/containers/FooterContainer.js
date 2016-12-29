@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { selectIsGridMode, selectIsLayoutToolHidden } from '../selectors/gui'
 import { selectStreamType } from '../selectors/stream'
@@ -16,17 +15,13 @@ function mapStateToProps(state, props) {
   }
 }
 
-class FooterContainer extends Component {
+class FooterContainer extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLayoutToolHidden: PropTypes.bool.isRequired,
     isPaginatoring: PropTypes.bool,
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onClickScrollToTop = () => {

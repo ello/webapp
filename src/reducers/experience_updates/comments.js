@@ -36,7 +36,7 @@ methods.addOrUpdateComment = (state, action) => {
       )
       if (action.type === ACTION_TYPES.COMMENT.UPDATE_SUCCESS) { return state }
       // update post watching prop
-      state = postMethods.updatePostWatch(state, { payload: { method: 'POST', model: post } })
+      state = postMethods.updatePostWatch(state, { payload: { method: 'POST', model: post }, type: ACTION_TYPES.POST.WATCH_SUCCESS })
       // add the comment to the linked array
       if (!post.getIn(['links', 'comments'], Immutable.List()).isEmpty()) {
         state = state.setIn(

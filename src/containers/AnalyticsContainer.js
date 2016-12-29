@@ -1,5 +1,4 @@
-import { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectAllowsAnalytics, selectAnalyticsId, selectCreatedAt } from '../selectors/profile'
@@ -37,7 +36,7 @@ function mapStateToProps(state) {
   }
 }
 
-class AnalyticsContainer extends Component {
+class AnalyticsContainer extends PureComponent {
 
   static propTypes = {
     allowsAnalytics: PropTypes.bool,
@@ -73,10 +72,6 @@ class AnalyticsContainer extends Component {
       this.hasLoadedTracking = true
       addSegment(analyticsId, createdAt)
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   render() {

@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { replace } from 'react-router-redux'
 import debounce from 'lodash/debounce'
@@ -37,7 +36,7 @@ export function mapStateToProps(state, props) {
   }
 }
 
-class SearchContainer extends Component {
+class SearchContainer extends PureComponent {
   static propTypes = {
     debounceWait: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
@@ -64,10 +63,6 @@ class SearchContainer extends Component {
   componentDidMount() {
     const { terms, type } = this.props
     this.search({ terms, type }, false)
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onChangeControl = (vo) => {

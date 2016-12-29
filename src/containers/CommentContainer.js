@@ -44,7 +44,11 @@ class CommentContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.comment, this.props.comment)
+    return !Immutable.is(nextProps.assets, this.props.assets) ||
+      !Immutable.is(nextProps.comment, this.props.comment) ||
+      !Immutable.is(nextProps.currentUser, this.props.currentUser) ||
+      !Immutable.is(nextProps.post, this.props.post) ||
+      ['isGridMode'].some(prop => nextProps[prop] !== this.props[prop])
   }
 
   render() {

@@ -122,11 +122,7 @@ class UserDetailContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.renderType !== nextState.renderType) {
-      return true
-    } else if (!nextProps.user) {
-      return false
-    }
+    if (!nextProps.user) { return false }
     return shallowCompare(this, nextProps, nextState)
   }
 

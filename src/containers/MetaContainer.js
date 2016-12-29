@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import Helmet from 'react-helmet'
@@ -48,7 +47,7 @@ function mapStateToProps(state, props) {
   }
 }
 
-class MetaContainer extends Component {
+class MetaContainer extends PureComponent {
   static propTypes = {
     discoverMetaData: PropTypes.object,
     metaPageType: PropTypes.string,
@@ -65,10 +64,6 @@ class MetaContainer extends Component {
     userMetaRobots: PropTypes.string,
     userMetaTitle: PropTypes.string,
     viewName: PropTypes.string,
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   getDefaultTags({ description = META.DESCRIPTION, image = META.IMAGE, title = META.TITLE } = {}) {

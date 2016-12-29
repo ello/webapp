@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectParamsType } from '../selectors/params'
@@ -45,7 +44,7 @@ function mapStateToProps(state, props) {
   }
 }
 
-class DiscoverContainer extends Component {
+class DiscoverContainer extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
@@ -63,10 +62,6 @@ class DiscoverContainer extends Component {
   componentWillMount() {
     const { dispatch, paramsType } = this.props
     dispatch(bindDiscoverKey(paramsType))
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   componentDidUpdate(prevProps) {

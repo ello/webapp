@@ -49,11 +49,10 @@ class CommentToolsContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.isMoreToolActive !== this.state.isMoreToolActive ||
-        nextProps.deviceSize !== this.props.deviceSize) {
-      return true
-    }
-    return !Immutable.is(nextProps.comment, this.props.comment)
+    return !Immutable.is(nextProps.comment, this.props.comment) ||
+      !Immutable.is(nextProps.post, this.props.post) ||
+      ['deviceSize'].some(prop => nextProps[prop] !== this.props[prop]) ||
+      ['isMoreToolActive'].some(prop => nextState[prop] !== this.state[prop])
   }
 
   onClickMoreTool = () => {

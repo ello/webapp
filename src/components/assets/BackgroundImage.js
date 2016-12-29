@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import shallowCompare from 'react-addons-shallow-compare'
+import React, { PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
 import { Link } from 'react-router'
 import ImageAsset from '../assets/ImageAsset'
@@ -24,7 +23,7 @@ export function getSource(props) {
   return sources.getIn([dpi, 'url'], null)
 }
 
-export default class BackgroundImage extends Component {
+export default class BackgroundImage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     to: PropTypes.string,
@@ -49,10 +48,6 @@ export default class BackgroundImage extends Component {
         status: nextSource ? STATUS.REQUEST : STATUS.PENDING,
       })
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState)
   }
 
   onLoadSuccess = () => {
