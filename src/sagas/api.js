@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import 'isomorphic-fetch'
+import { push } from 'react-router-redux'
 import { call, put, select, take } from 'redux-saga/effects'
 import { AUTHENTICATION } from '../constants/action_types'
 import {
@@ -27,12 +28,7 @@ export function* fetchCredentials() {
       // If successful, call fetchCredentials again to setup access_token.
       return yield call(fetchCredentials)
     } else if (result.type === AUTHENTICATION.REFRESH_FAILURE) {
-      // If it fails (invalid/expired refresh token) force the user to log in
-      // again after removing all locally stored data.
-      localStorage.clear()
-      requestAnimationFrame(() => {
-        window.location.href = '/enter'
-      })
+      return yield put(push('/enter'))
     }
   }
   return yield call(getClientCredentials)

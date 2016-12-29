@@ -25,16 +25,17 @@ export default (state = initialState, action) => {
           ...action.payload.response.availability,
         },
       })
-    case AUTHENTICATION.LOGOUT:
+    case AUTHENTICATION.LOGOUT_SUCCESS:
+    case AUTHENTICATION.LOGOUT_FAILURE:
     case PROFILE.DELETE_SUCCESS:
       // keep around the registration data so that android
       // can re-register a user if they logout and then login
       // as a different user without leaving the app
       return Immutable.Map({
-        buildVersion: state.buildVersion,
-        bundleId: state.bundleId,
-        marketingVersion: state.marketingVersion,
-        registrationId: state.registrationId,
+        buildVersion: state.get('buildVersion'),
+        bundleId: state.get('bundleId'),
+        marketingVersion: state.get('marketingVersion'),
+        registrationId: state.get('registrationId'),
       })
     case PROFILE.EXPORT_SUCCESS:
       if (action.payload.serverStatus === 200) {

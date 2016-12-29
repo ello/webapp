@@ -300,6 +300,10 @@ export default function json(state = initialState, action = { type: '' }) {
   switch (action.type) {
     case ACTION_TYPES.ADD_NEW_IDS_TO_RESULT:
       return methods.addNewIdsToResult(state)
+    case ACTION_TYPES.AUTHENTICATION.LOGOUT_SUCCESS:
+    case ACTION_TYPES.AUTHENTICATION.LOGOUT_FAILURE:
+    case ACTION_TYPES.PROFILE.DELETE_SUCCESS:
+      return initialState
     case ACTION_TYPES.COMMENT.CREATE_FAILURE:
     case ACTION_TYPES.COMMENT.CREATE_REQUEST:
     case ACTION_TYPES.COMMENT.CREATE_SUCCESS:
@@ -371,7 +375,7 @@ export default function json(state = initialState, action = { type: '' }) {
       let keepers = initialState
       if (action.payload.json) {
         action.payload.json.keySeq().forEach((collection) => {
-          if (/(deleted_)/.test(collection)) {
+          if (/deleted_/.test(collection)) {
             keepers = keepers.set(collection, action.payload.json.get(collection))
           }
         })

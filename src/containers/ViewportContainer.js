@@ -112,7 +112,7 @@ class ViewportContainer extends PureComponent {
     } else if (isLoggedIn) {
       const drift = new Date() - this.hiddenAt
       if (this.hiddenAt && drift >= REFRESH_PERIOD) {
-        document.location.reload()
+        window.location.reload(true)
       }
     }
   }

@@ -34,7 +34,11 @@ describe('push subscription saga', function () {
     it('unregisters push subscription on logout or profile delete', function () {
       const pushAction = requestPushSubscription(regId)
       const pushHandler = logoutPushUnsubscribe()
-      expect(pushHandler).to.take([AUTHENTICATION.LOGOUT, PROFILE.DELETE])
+      expect(pushHandler).to.take([
+        AUTHENTICATION.LOGOUT_SUCCESS,
+        AUTHENTICATION.LOGOUT_FAILURE,
+        PROFILE.DELETE_SUCCESS,
+      ])
       expect(pushHandler.next(pushAction)).to.select(selectRegistrationId)
       expect(pushHandler.next('reg_id')).to.select(selectBundleId)
       expect(pushHandler.next('bundle_id')).to.put(unregisterForGCM('reg_id', 'bundle_id'))

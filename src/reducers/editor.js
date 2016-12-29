@@ -22,7 +22,8 @@ export default (state = initialState, action) => {
       .setIn([`${editorId}`, 'isLoading'], editorMethods.isLoading(editor))
   }
   switch (action.type) {
-    case AUTHENTICATION.LOGOUT:
+    case AUTHENTICATION.LOGOUT_SUCCESS:
+    case AUTHENTICATION.LOGOUT_FAILURE:
     case PROFILE.DELETE_SUCCESS:
       return initialState
     case EDITOR.CLEAR_AUTO_COMPLETERS:
