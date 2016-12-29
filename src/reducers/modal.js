@@ -18,7 +18,8 @@ export default (state = initialState, action) => {
     case MODAL.OPEN:
     case MODAL.CLOSE:
       return state.merge(action.payload).set('component', action.payload.component)
-    case AUTHENTICATION.LOGOUT:
+    case AUTHENTICATION.LOGOUT_SUCCESS:
+    case AUTHENTICATION.LOGOUT_FAILURE:
     case PROFILE.DELETE_SUCCESS:
       return initialState
     case LOCATION_CHANGE:

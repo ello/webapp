@@ -60,10 +60,10 @@ describe('gui reducer', () => {
   })
 
   context('AUTHENTICATION', () => {
-    it('LOGOUT resets the discoverKeyType', () => {
+    it('LOGOUT_SUCCESS resets the discoverKeyType', () => {
       const newState = reducer(initialState, { type: GUI.BIND_DISCOVER_KEY, payload: { type: 'wiketywhack' } })
       expect(newState).to.have.property('discoverKeyType', 'wiketywhack')
-      const action = { type: AUTHENTICATION.LOGOUT }
+      const action = { type: AUTHENTICATION.LOGOUT_SUCCESS }
       expect(reducer(newState, action)).to.have.property('discoverKeyType', null)
     })
   })

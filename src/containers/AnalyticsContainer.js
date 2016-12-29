@@ -62,7 +62,7 @@ class AnalyticsContainer extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { analyticsId, createdAt, allowsAnalytics } = nextProps
+    const { allowsAnalytics, analyticsId, createdAt } = nextProps
     if (this.hasLoadedTracking) {
       // identify the user if they didn't previously have an id to identify with
       if (!this.props.analyticsId && analyticsId) {

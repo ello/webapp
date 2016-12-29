@@ -20,7 +20,11 @@ export function* loginPushSubscribe() {
 
 export function* logoutPushUnsubscribe() {
   while (true) {
-    yield take([AUTHENTICATION.LOGOUT, PROFILE.DELETE])
+    yield take([
+      AUTHENTICATION.LOGOUT_SUCCESS,
+      AUTHENTICATION.LOGOUT_FAILURE,
+      PROFILE.DELETE_SUCCESS,
+    ])
     const registrationId = yield select(selectRegistrationId)
     const bundleId = yield select(selectBundleId)
     yield put(unregisterForGCM(registrationId, bundleId))

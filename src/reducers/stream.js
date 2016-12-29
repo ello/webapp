@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Immutable from 'immutable'
 import get from 'lodash/get'
 import { AUTHENTICATION, LOAD_STREAM_FAILURE, POST, PROFILE, USER } from '../constants/action_types'
@@ -8,7 +7,9 @@ let should404 = false
 const initialState = Immutable.Map()
 
 export default (state = initialState, action = { type: '' }) => {
-  if (action.type === AUTHENTICATION.LOGOUT || action.type === PROFILE.DELETE_SUCCESS) {
+  if (action.type === AUTHENTICATION.LOGOUT_SUCCESS ||
+      action.type === AUTHENTICATION.LOGOUT_FAILURE ||
+      action.type === PROFILE.DELETE_SUCCESS) {
     return initialState
   } else if (!(action.type === POST.DETAIL_SUCCESS || action.type === USER.DETAIL_SUCCESS ||
                action.type === POST.DETAIL_FAILURE || action.type === USER.DETAIL_FAILURE) &&

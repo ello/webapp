@@ -36,7 +36,12 @@ export const selectIsCategoryPromotion = createSelector(
 
 export const selectRandomAuthPromotion = createSelector(
   [selectAuthPromotionals], (authPromos) => {
-    sample(authPromos)
+    const keyArr = []
+    authPromos.keySeq().forEach((key) => {
+      keyArr.push(key)
+    })
+    const randomKey = sample(keyArr)
+    return authPromos.get(randomKey)
   },
 )
 
