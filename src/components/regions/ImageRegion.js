@@ -74,7 +74,7 @@ class ImageRegion extends Component {
     return !Immutable.is(nextProps.assets, this.props.assets) ||
       !Immutable.is(nextProps.content, this.props.content) ||
       !Immutable.is(nextProps.links, this.props.links) ||
-      ['columnWidth', 'contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
+      ['buyLinkURL', 'columnWidth', 'contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
         nextProps[prop] !== this.props[prop],
       ) ||
       ['marginBottom', 'scale', 'status'].some(prop => nextState[prop] !== this.state[prop])
