@@ -258,8 +258,8 @@ methods.updateCurrentUser = (state, action) => {
   const newUser = curUser ?
     curUser.mergeDeep(response[MAPPING_TYPES.USERS]) :
     Immutable.fromJS(response[MAPPING_TYPES.USERS])
-  const tmpAvatar = curUser.getIn(['avatar', 'tmp'])
-  const tmpCoverImage = curUser.getIn(['coverImage', 'tmp'])
+  const tmpAvatar = curUser && curUser.getIn(['avatar', 'tmp'])
+  const tmpCoverImage = curUser && curUser.getIn(['coverImage', 'tmp'])
   if (tmpAvatar) {
     newUser.setIn(['avatar', 'tmp'], tmpAvatar)
   }

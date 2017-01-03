@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Immutable from 'immutable'
 import React from 'react'
 import { LOCATION_CHANGE } from 'react-router-redux'

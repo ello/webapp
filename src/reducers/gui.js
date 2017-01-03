@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import get from 'lodash/get'
@@ -102,7 +101,7 @@ export default (state = initialState, action = { type: '' }) => {
       return state.set('isTextToolsActive', payload.isTextToolsActive)
         .set('textToolsStates', payload.textToolsStates)
     case EDITOR.SET_TEXT_TOOLS_COORDINATES:
-      return state.set('textToolsCoordinates', payload.textToolsCoordinates)
+      return state.set('textToolsCoordinates', Immutable.fromJS(payload.textToolsCoordinates))
     case GUI.BIND_DISCOVER_KEY:
       return state.set('discoverKeyType', payload.type)
     case GUI.NOTIFICATIONS_TAB:
@@ -155,8 +154,11 @@ export default (state = initialState, action = { type: '' }) => {
           .set('isNavbarHidden', false)
       })
     }
-    case PROFILE.DELETE_SUCCESS:
-      return initialState
+    case PROFILE.DELETE_SUCCESS: {
+      return initialState.set('columnCount', state.get('columnCount'))
+        .set('innerWidth', state.get('innerWidth'))
+        .set('innerHeight', state.get('innerHeight'))
+    }
     case REHYDRATE:
       return state.withMutations((s) => {
         s.merge(payload.gui || {})
