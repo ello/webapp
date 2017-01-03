@@ -106,7 +106,7 @@ class BlockCollection extends PureComponent {
     }
     if (blocks.size) {
       blocks.forEach((block) => {
-        dispatch(addBlock(block, editorId, false))
+        dispatch(addBlock(block.toJS(), editorId, false))
       })
     }
   }

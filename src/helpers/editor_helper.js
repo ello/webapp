@@ -63,7 +63,7 @@ methods.hasContent = (state) => {
   const firstBlock = state.getIn(['collection', `${order.first()}`])
   if (!firstBlock) { return false }
   const data = firstBlock.get('data')
-  return !!(order.size > 1 || (data.length && data !== '<br>'))
+  return !!(order.size > 1 || (data && data.length && data !== '<br>'))
 }
 
 methods.hasMedia = (state) => {
