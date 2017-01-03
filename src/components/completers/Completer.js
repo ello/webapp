@@ -90,7 +90,7 @@ export default class Completer extends Component {
         <Completion
           className={i === selectedIndex ? 'isActive UserCompletion' : 'UserCompletion'}
           key={`completion_${i}`}
-          asset={<Avatar className="isTiny" sources={{ tmp: { url: completion.get('imageUrl') } }} />}
+          asset={<Avatar className="isTiny" sources={Immutable.fromJS({ tmp: { url: completion.get('imageUrl') } })} />}
           label={`@${completion.get('name')}`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
           onClick={onCompletion}

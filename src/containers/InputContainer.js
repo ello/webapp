@@ -43,7 +43,7 @@ class InputContainer extends PureComponent {
     deviceSize: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     completions: PropTypes.object,
-    emojis: PropTypes.array,
+    emojis: PropTypes.object,
     isCompleterActive: PropTypes.bool.isRequired,
     isTextToolsActive: PropTypes.bool.isRequired,
     textToolsCoordinates: PropTypes.object,

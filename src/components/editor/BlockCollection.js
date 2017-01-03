@@ -207,7 +207,7 @@ class BlockCollection extends PureComponent {
     const { dispatch, dragBlock, editorId } = this.props
     // swap the normal block out for
     // the one that was removed initially
-    const dragUid = dragBlock.uid
+    const dragUid = dragBlock.get('uid')
     dispatch(updateBlock(dragBlock, dragUid, editorId))
     dispatch(removeDragBlock(editorId))
     document.body.classList.remove('isDragging')
