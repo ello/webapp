@@ -23,29 +23,19 @@ import { MainView } from '../../components/views/MainView'
 import { AnnouncementNotification } from '../../components/notifications/NotificationRenderables'
 
 function mapStateToProps(state, props) {
-  const type = get(props, 'params.type', 'all')
   const announcement = selectAnnouncement(state)
+  const type = get(props, 'params.type', 'all')
   return {
-    announcementBody: announcement && announcement.body,
-    announcementCTACaption: announcement && (announcement.ctaCaption || 'Learn More'),
-    announcementCTAHref: announcement && announcement.ctaHref,
-    announcementImage: announcement && announcement.image.hdpi.url,
-    announcementTitle: announcement && announcement.header,
-    hasAnnouncementNotification: !!(announcement),
+    announcementBody: announcement.get('body'),
+    announcementCTACaption: announcement.get('ctaCaption', 'Learn More'),
+    announcementCTAHref: announcement.get('ctaHref'),
+    announcementImage: announcement.getIn(['image', 'hdpi', 'url']),
+    announcementTitle: announcement.get('header'),
+    hasAnnouncementNotification: !!(announcement.size),
     pathname: selectPropsPathname(state, props),
     streamAction: loadNotifications({ category: type }),
     streamType: selectStreamType(state),
     type,
-  }
-}
-
-function mapStateToProps(state, props) {
-  const category = get(props, 'params.category', 'all')
-  return {
-    category,
-    pathname: selectPropsPathname(state, props),
-    streamAction: loadNotifications({ category }),
-    streamType: selectStreamType(state),
   }
 }
 

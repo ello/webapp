@@ -27,12 +27,12 @@ function mapStateToProps(state) {
   const announcement = selectAnnouncement(state)
   return {
     activeTabType,
-    announcementBody: announcement && announcement.body,
-    announcementCTACaption: announcement && (announcement.ctaCaption || 'Learn More'),
-    announcementCTAHref: announcement && announcement.ctaHref,
-    announcementImage: announcement && announcement.image.hdpi.url,
-    announcementTitle: announcement && announcement.header,
-    hasAnnouncementNotification: !!(announcement),
+    announcementBody: announcement.get('body'),
+    announcementCTACaption: announcement.get('ctaCaption', 'Learn More'),
+    announcementCTAHref: announcement.get('ctaHref'),
+    announcementImage: announcement.getIn(['image', 'hdpi', 'url']),
+    announcementTitle: announcement.get('header'),
+    hasAnnouncementNotification: !!(announcement.size),
     streamAction: loadNotifications({ category: activeTabType }),
     streamType: selectStreamType(state),
   }

@@ -324,7 +324,7 @@ export default function json(state = initialState, action = { type: '' }) {
       // fall through to parse the rest
       break
     case ACTION_TYPES.NOTIFICATIONS.MARK_ANNOUNCEMENT_READ_REQUEST:
-      return methods.markAnnouncementRead(state, action)
+      return methods.markAnnouncementRead(state)
     case ACTION_TYPES.POST.CREATE_FAILURE:
     case ACTION_TYPES.POST.CREATE_SUCCESS:
     case ACTION_TYPES.POST.UPDATE_SUCCESS:
