@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import Block from './Block'
@@ -12,12 +13,12 @@ export default class ImageBlock extends Component {
   }
 
   static defaultProps = {
-    data: {},
+    data: Immutable.Map(),
   }
 
   onLoadSuccess = () => {
     const { data } = this.props
-    URL.revokeObjectURL(data.src)
+    URL.revokeObjectURL(data.get('src'))
   }
 
   render() {
@@ -26,9 +27,9 @@ export default class ImageBlock extends Component {
       <Block {...this.props}>
         <div className={classNames('editable image', { isUploading })}>
           <ImageAsset
-            alt={data.alt}
+            alt={data.get('alt')}
             onLoadSuccess={this.onLoadSuccess}
-            src={blob || data.url}
+            src={blob || data.get('url')}
           />
         </div>
       </Block>
