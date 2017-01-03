@@ -47,7 +47,7 @@ ZeroState.propTypes = {
 export const ZeroStateCreateRelationship = ({ user }) =>
   <ZeroState>
     <h2 className="ZeroStateTitle">
-      <span className="ZeroStateUsername">{`@${user.username}`}</span>
+      <span className="ZeroStateUsername">{`@${user.get('username')}`}</span>
       <span>{' doesn\'t have any followers yet, why don\'t you be their first?'}</span>
     </h2>
     <RelationshipContainer user={user} />
@@ -62,12 +62,12 @@ export const ZeroStateSayHello = ({ hasPosted = false, onSubmit, user }) =>
   <ZeroState>
     <h2 className="ZeroStateTitle">
       <span>{'It doesn\'t look like '}</span>
-      <span className="ZeroStateUsername">{`@${user.username}`}</span>
+      <span className="ZeroStateUsername">{`@${user.get('username')}`}</span>
       <span>{' has posted yet, why don\'t you say hi?'}</span>
     </h2>
     {hasPosted ?
-      <p>{`Notification to @${user.username} has been sent.`}</p> :
-      <Editor autoPopulate={`Hi @${user.username} :wave:`} onSubmit={onSubmit} />
+      <p>{`Notification to @${user.get('username')} has been sent.`}</p> :
+      <Editor autoPopulate={`Hi @${user.get('username')} :wave:`} onSubmit={onSubmit} />
     }
   </ZeroState>
 

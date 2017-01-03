@@ -63,10 +63,6 @@
   text-decoration: underline;
 }
 
-.ZeroState .RelationshipButton {
-  color: #000;
-}
-
 @media (--break-2) {
   .ZeroStates {
     padding: 0;

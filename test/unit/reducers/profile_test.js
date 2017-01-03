@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Immutable from 'immutable'
 import { stubAvatar, stubCoverImage, stubUser } from '../../support/stubs'
 import reducer from '../../../src/reducers/profile'

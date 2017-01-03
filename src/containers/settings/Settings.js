@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -216,7 +217,6 @@ class Settings extends Component {
   onConfirmAccountWasDeleted = () => {
     const { dispatch } = this.props
     dispatch(deleteProfile())
-    dispatch(logout())
     dispatch(trackEvent('user-deleted-account'))
   }
 
@@ -492,7 +492,7 @@ class Settings extends Component {
                 <dd>{profile.get('shortBio') || mdash}</dd>
                 <dt>Links:</dt>
                 <dd>
-                  {!profile.get('externalLinksList').isEmpty() ?
+                  {!profile.get('externalLinksList', Immutable.List()).isEmpty() ?
                     this.getExternalLinkListAsText() :
                     mdash}
                 </dd>

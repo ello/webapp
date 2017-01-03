@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectIsLoggedIn } from '../../selectors/authentication'
@@ -188,7 +189,7 @@ class Editor extends Component {
     let repostContent
     let submitText
     if (autoPopulate && !shouldPersist) {
-      blocks = [{ kind: 'text', data: autoPopulate }]
+      blocks = Immutable.fromJS([{ kind: 'text', data: autoPopulate }])
       submitText = 'Post'
     } else if (isComment) {
       if (comment && comment.get('isEditing')) {

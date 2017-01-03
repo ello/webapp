@@ -203,7 +203,7 @@ UserInfoCell.propTypes = {
 export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
   const externalLinks = []
   const externalLinksIcon = []
-  if (externalLinksList && externalLinksList.length) {
+  if (externalLinksList && externalLinksList.size) {
     externalLinksList.forEach((link, i) => {
       if (link.get('icon')) {
         externalLinksIcon.push(

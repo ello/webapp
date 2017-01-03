@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Immutable from 'immutable'
 import { AUTHENTICATION, OMNIBAR, PROFILE } from '../constants/action_types'
 
