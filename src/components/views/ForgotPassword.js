@@ -47,9 +47,9 @@ const ForgotPasswordForm = (props) => {
 ForgotPasswordForm.propTypes = {
   emailState: PropTypes.object.isRequired,
   isFormValid: PropTypes.bool.isRequired,
-  onBlurControl: PropTypes.func.isRequired,
+  onBlurControl: PropTypes.func,
   onChangeControl: PropTypes.func.isRequired,
-  onFocusControl: PropTypes.func.isRequired,
+  onFocusControl: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
 }
 
@@ -83,9 +83,9 @@ ForgotPassword.propTypes = {
   emailState: PropTypes.object.isRequired,
   isSubmitted: PropTypes.bool.isRequired,
   isFormValid: PropTypes.bool.isRequired,
-  onBlurControl: PropTypes.func.isRequired,
+  onBlurControl: PropTypes.func,
   onChangeControl: PropTypes.func.isRequired,
-  onFocusControl: PropTypes.func.isRequired,
+  onFocusControl: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
 }
 

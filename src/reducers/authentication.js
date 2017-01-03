@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'

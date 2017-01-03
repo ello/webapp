@@ -25,7 +25,7 @@ function hasSelectedCategoriesNeeded(state) {
 class OnboardingCategoriesContainer extends PureComponent {
 
   static propTypes = {
-    categories: PropTypes.object,
+    categories: PropTypes.array,
     dispatch: PropTypes.func.isRequired,
   }
 

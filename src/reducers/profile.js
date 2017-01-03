@@ -1,4 +1,4 @@
-/* eslint-disable new-cap */
+/* eslint-disable no-param-reassign */
 import Immutable from 'immutable'
 import { camelizeKeys } from 'humps'
 import jwtDecode from 'jwt-decode'
@@ -52,11 +52,20 @@ export default (state = initialState, action) => {
     case PROFILE.SAVE_REQUEST:
       return state.set('errors', null)
     case PROFILE.SAVE_SUCCESS: {
-      return state.merge({
+      const tmpAvatar = state && state.getIn(['avatar', 'tmp'])
+      const tmpCoverImage = state && state.getIn(['coverImage', 'tmp'])
+      state = state.merge({
         ...action.payload.response.users,
         availability: null,
         id: `${action.payload.response.users.id}`,
       })
+      if (tmpAvatar) {
+        state = state.setIn(['avatar', 'tmp'], tmpAvatar)
+      }
+      if (tmpCoverImage) {
+        state = state.setIn(['coverImage', 'tmp'], tmpCoverImage)
+      }
+      return state
     }
     // should only happen if we get a 422 meaning
     // the current password entered was wrong

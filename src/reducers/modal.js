@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 import Immutable from 'immutable'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { ALERT, AUTHENTICATION, MODAL, PROFILE } from '../constants/action_types'
