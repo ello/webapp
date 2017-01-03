@@ -109,6 +109,7 @@ class AppContainer extends PureComponent {
       dispatch(loadProfile())
       dispatch(getCategories())
       dispatch(getPagePromotionals())
+      dispatch(loadAnnouncements())
     } else if (this.props.isLoggedIn && !nextProps.isLoggedIn) {
       dispatch(fetchAuthenticationPromos())
       dispatch(getCategories())

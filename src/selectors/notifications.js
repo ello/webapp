@@ -1,15 +1,11 @@
+import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 
-export const selectAnnouncementCollection = state => state.json.announcements
+export const selectAnnouncementCollection = state => state.json.get('announcements', Immutable.Map())
 
 export const selectAnnouncement = createSelector(
-  [selectAnnouncementCollection], (collection) => {
-    const key = collection ? Object.keys(collection)[0] : null
-    if (key) {
-      return collection[key]
-    }
-    return null
-  },
+  [selectAnnouncementCollection], collection =>
+    collection.first() || Immutable.Map(),
 )
 
 export const selectIsAnnouncementUnread = createSelector(
