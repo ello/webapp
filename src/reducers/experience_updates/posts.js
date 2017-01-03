@@ -140,7 +140,7 @@ methods.addOrUpdatePost = (state, action) => {
         state = jsonReducer.methods.updateUserCount(state, user.get('id'), 'postsCount', 1)
         state = jsonReducer.methods.appendPageId(
           state,
-          `/${user.username}`,
+          `/${user.get('username')}`,
           MAPPING_TYPES.POSTS,
           response[MAPPING_TYPES.POSTS].id,
         )

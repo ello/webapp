@@ -103,7 +103,7 @@ class Editor extends Component {
       } else {
         dispatch(createComment(allowsAutoWatch, data, this.getEditorIdentifier(), post.get('id')))
       }
-    } else if (!post || (post && post.size === 0)) {
+    } else if (!post || !post.get('id')) {
       dispatch(closeOmnibar())
       dispatch(createPost(data, this.getEditorIdentifier()))
     } else if (post.get('isEditing')) {
@@ -133,7 +133,7 @@ class Editor extends Component {
       } else {
         this.launchCancelConfirm('comment')
       }
-    } else if (!post) {
+    } else if (!post || !post.get('id')) {
       this.launchCancelConfirm('post')
     } else if (post.get('isEditing')) {
       this.launchCancelConfirm('edit')
