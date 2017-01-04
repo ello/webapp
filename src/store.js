@@ -22,7 +22,9 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       const newState = {}
       Object.keys(state).forEach((key) => {
         // if (['editor', 'json'].includes(key)) {
-        newState[key] = state[key].toJS()
+        if (typeof state[key].toJS === 'function') {
+          newState[key] = state[key].toJS()
+        }
         // }
       })
       return newState
