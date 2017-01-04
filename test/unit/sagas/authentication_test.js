@@ -1,7 +1,9 @@
+import { push } from 'react-router-redux'
 import { AUTHENTICATION } from '../../../src/constants/action_types'
-import { loginSaga } from '../../../src/sagas/authentication'
+import { loginSaga, logoutSaga } from '../../../src/sagas/authentication'
 
 import {
+  cancelAuthRefresh,
   clearAuthStore,
   signIn,
   getUserCredentials,
@@ -17,8 +19,23 @@ describe('authentication saga', function () {
       const loginHandler = loginSaga()
       expect(loginHandler).to.take(AUTHENTICATION.SIGN_IN)
       expect(loginHandler.next(loginAction)).to.put(clearAuthStore())
-
       expect(loginHandler).to.put(getUserCredentials(email, password))
     })
   })
+
+  describe('*logoutSaga', () => {
+    const logoutFn = logoutSaga()
+
+    it('handles logout', () => {
+      expect(logoutFn).to.take([
+        AUTHENTICATION.LOGOUT_SUCCESS,
+        AUTHENTICATION.LOGOUT_FAILURE,
+        AUTHENTICATION.REFRESH_FAILURE,
+      ])
+      expect(logoutFn.next({ type: AUTHENTICATION.LOGOUT_SUCCESS })).to.put(cancelAuthRefresh())
+      expect(document.cookie).to.equal('ello_skip_prerender=false')
+      expect(logoutFn).to.put(push('/enter'))
+    })
+  })
 })
+

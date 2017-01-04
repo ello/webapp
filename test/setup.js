@@ -1,6 +1,6 @@
 import 'babel-polyfill'
-// import fs from 'fs'
-// import path from 'path'
+import fs from 'fs'
+import path from 'path'
 import jsdom from 'jsdom'
 import dotenv from 'dotenv'
 import chai, { expect } from 'chai'
@@ -22,12 +22,8 @@ global.chai = chai
 global.expect = expect
 global.sinon = sinon
 
-// Pending till we can figure out the jsdom issue
-// Need to call npm install twice - wtf?
-// There's also this issue: https://github.com/airbnb/enzyme/issues/507
-if (!true && !global.document) {
-  // const html = fs.readFileSync(path.join(__dirname, '../public/template.html'), 'utf-8')
-  const html = '<html><body><div id="root"></div></body></html>'
+if (!global.document) {
+  const html = fs.readFileSync(path.join(__dirname, '../public/template.html'), 'utf-8')
   const exposedProperties = ['document', 'navigator', 'window']
 
   global.document = jsdom.jsdom(html)
