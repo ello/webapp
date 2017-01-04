@@ -10,18 +10,6 @@ const clientCredentials = {
   id: ENV.AUTH_CLIENT_ID,
 }
 
-function afterLogout() {
-  document.cookie = 'ello_skip_prerender=false'
-  localStorage.clear()
-  requestAnimationFrame(() => {
-    window.location.href = '/enter'
-  })
-}
-
-function afterLogin() {
-  document.cookie = 'ello_skip_prerender=true; expires=Fri, 31 Dec 9999 23:59:59 GMT'
-}
-
 export function cancelAuthRefresh() {
   return {
     type: AUTHENTICATION.CANCEL_REFRESH,
@@ -64,7 +52,7 @@ export function getUserCredentials(email, password, meta) {
         client_id: clientCredentials.id,
       },
     },
-    meta: { ...meta, successAction: afterLogin },
+    meta,
   }
 }
 
@@ -74,10 +62,6 @@ export function logout() {
     payload: {
       endpoint: logoutEndpoint(),
       method: 'DELETE',
-    },
-    meta: {
-      successAction: afterLogout,
-      failureAction: afterLogout,
     },
   }
 }
@@ -93,10 +77,6 @@ export function refreshAuthenticationToken(refreshToken) {
         grant_type: 'refresh_token',
         client_id: clientCredentials.id,
       },
-    },
-    meta: {
-      successAction: afterLogin,
-      failureAction: afterLogout,
     },
   }
 }

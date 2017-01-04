@@ -1,6 +1,7 @@
 /* eslint-disable no-constant-condition */
 import { delay } from 'redux-saga'
 import { call, cancel, fork, put, take } from 'redux-saga/effects'
+import { push } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
 
 import {
@@ -39,16 +40,30 @@ export function* loginSaga() {
   }
 }
 
+export function* logoutSaga() {
+  const actionTypes = [
+    AUTHENTICATION.LOGOUT_SUCCESS,
+    AUTHENTICATION.LOGOUT_FAILURE,
+    AUTHENTICATION.REFRESH_FAILURE,
+  ]
+  while (true) {
+    yield take(actionTypes)
+    document.cookie = 'ello_skip_prerender=false'
+    yield put(cancelAuthRefresh())
+    yield put(push('/enter'))
+  }
+}
+
 function* userSuccessSaga() {
   const actionTypes = [
     AUTHENTICATION.REFRESH_SUCCESS,
     AUTHENTICATION.USER_SUCCESS,
     PROFILE.SIGNUP_SUCCESS,
   ]
-
   while (true) {
     const action = yield take(actionTypes)
     const { payload } = action
+    document.cookie = 'ello_skip_prerender=true; expires=Fri, 31 Dec 9999 23:59:59 GMT'
     yield put(scheduleAuthRefresh(
       payload.response.refreshToken,
       toMilliseconds(7100),
@@ -110,22 +125,9 @@ function* rehydrateSaga() {
 export default function* authentication() {
   yield [
     fork(loginSaga),
+    fork(logoutSaga),
     fork(rehydrateSaga),
     fork(refreshSchedulerSaga),
     fork(userSuccessSaga),
   ]
-
-  /* A dumping ground for simple stuff that
-     used to live in thunks */
-  while (true) {
-    const action = yield take('*')
-    switch (action.type) {
-      case AUTHENTICATION.LOGOUT_SUCCESS:
-      case AUTHENTICATION.LOGOUT_FAILURE:
-        yield put(cancelAuthRefresh())
-        break
-      default:
-        break
-    }
-  }
 }
