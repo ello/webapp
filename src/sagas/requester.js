@@ -338,8 +338,10 @@ export default function* requester() {
     ACTION_TYPES.AUTHENTICATION.REFRESH_SUCCESS,
     ACTION_TYPES.AUTHENTICATION.USER_SUCCESS,
   ])
-  yield fork(refireUnauthorizedActions, authSuccessChannel)
-  yield fork(handleRequest, requestChannel)
+  yield [
+    fork(refireUnauthorizedActions, authSuccessChannel),
+    fork(handleRequest, requestChannel),
+  ]
 }
 
 export { runningFetches }
