@@ -18,7 +18,7 @@ export function shouldContainerUpdate(thisProps, nextProps, thisState, nextState
     ['isLoggedIn', 'paramsToken', 'paramsUsername'].some(prop =>
       nextProps[prop] !== thisProps[prop],
     ) ||
-    ['renderType'].some(prop => nextState[prop] !== thisState.prop)
+    ['renderType'].some(prop => nextState[prop] !== thisState[prop])
 }
 
 export function mapStateToProps(state, props) {
