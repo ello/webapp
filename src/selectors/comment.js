@@ -19,6 +19,6 @@ export const selectIsOwnComment = createSelector(
 
 export const selectCommentFromPropsCommentId = createSelector(
   [selectJson, selectPropsCommentId], (json, commentId) =>
-    json.getIn([MAPPING_TYPES.COMMENTS, commentId], null),
+    json.getIn([MAPPING_TYPES.COMMENTS, commentId], Immutable.Map()),
 )
 
