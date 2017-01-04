@@ -1,5 +1,6 @@
 import 'babel-polyfill'
 import 'isomorphic-fetch'
+import Immutable from 'immutable'
 import path from 'path'
 import fs from 'fs'
 import { renderToString } from 'react-dom/server'
@@ -45,10 +46,10 @@ function handlePrerender(context) {
 
   const memoryHistory = createMemoryHistory(originalUrl)
   const store = createElloStore(memoryHistory, {
-    authentication: {
+    authentication: Immutable.Map({
       accessToken: access_token,
       isLoggedIn: false,
-    },
+    }),
   })
   const isServer = true
   const routes = createRoutes(store, isServer)
