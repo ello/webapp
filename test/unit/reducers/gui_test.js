@@ -11,7 +11,7 @@ import {
   SET_LAYOUT_MODE,
   ZEROS,
 } from '../../../src/constants/action_types'
-import reducer, { setLocation, findLayoutMode } from '../../../src/reducers/gui'
+import reducer, { convertStateToImmutable, setLocation, findLayoutMode } from '../../../src/reducers/gui'
 
 describe('gui reducer', () => {
   let initialState = null
@@ -285,6 +285,208 @@ describe('gui reducer', () => {
       const lastState = reducer(nextState, lastAction)
       expect(lastState.get('saidHelloTo')).to.deep.equal(Immutable.List(['timmy', 'tommy']))
     })
+  })
+
+  it('should migrate from a plain object to an immutable one on v 3.0.22', () => {
+    const oldGui = {
+      columnCount: 2,
+      columnWidth: 137,
+      contentWidth: 283,
+      coverDPI: 'hdpi',
+      deviceSize: 'mobile',
+      innerHeight: 700,
+      innerWidth: 303,
+      isNavbarHidden: false,
+      hasLaunchedSignupModal: false,
+      isCompleterActive: false,
+      isNotificationsActive: false,
+      isOmnibarActive: false,
+      isProfileMenuActive: false,
+      isTextToolsActive: false,
+      saidHelloTo: [],
+      textToolsCoordinates: {
+        top: -200,
+        left: -666,
+      },
+      textToolsStates: {},
+      activeNotificationsType: 'all',
+      activeUserFollowingType: 'friend',
+      currentStream: '/discover',
+      discoverKeyType: 'featured',
+      history: {},
+      isAuthenticationView: true,
+      isGridMode: true,
+      isLayoutToolHidden: false,
+      isNotificationsUnread: false,
+      isOnboardingView: false,
+      lastDiscoverBeaconVersion: '0',
+      lastFollowingBeaconVersion: '0',
+      lastNotificationCheck: 'Mon, 29 Dec 2014 21:28:58 GMT',
+      lastStarredBeaconVersion: '0',
+      modes: [
+        {
+          label: 'root',
+          mode: 'grid',
+          regex: '^/$',
+        },
+        {
+          label: 'discover',
+          mode: 'grid',
+          regex: '/discover|/explore',
+        },
+        {
+          label: 'following',
+          mode: 'list',
+          regex: '/following',
+        },
+        {
+          label: 'invitations',
+          mode: 'list',
+          regex: '/invitations',
+        },
+        {
+          label: 'onboarding',
+          mode: 'grid',
+          regex: '/onboarding',
+        },
+        {
+          label: 'notifications',
+          mode: 'list',
+          regex: '/notifications',
+        },
+        {
+          label: 'search',
+          mode: 'list',
+          regex: '/search|/find',
+        },
+        {
+          label: 'settings',
+          mode: 'list',
+          regex: '/settings',
+        },
+        {
+          label: 'starred',
+          mode: 'list',
+          regex: '/starred',
+        },
+        {
+          label: 'staff',
+          mode: 'list',
+          regex: '/staff',
+        },
+        {
+          label: 'posts',
+          mode: 'list',
+          regex: '/[\\w\\-]+/post/.+',
+        },
+        {
+          label: 'users/following',
+          mode: 'list',
+          regex: '/[\\w\\-]+/following',
+        },
+        {
+          label: 'users/followers',
+          mode: 'grid',
+          regex: '/[\\w\\-]+/followers',
+        },
+        {
+          label: 'users/loves',
+          mode: 'grid',
+          regex: '/[\\w\\-]+/loves',
+        },
+        {
+          label: 'users',
+          mode: 'list',
+          regex: '/[\\w\\-]+',
+        },
+      ],
+    }
+    // test that oldGui gets converted to the immutable type
+    expect(convertStateToImmutable(oldGui)).to.deep.equal(initialState.merge(
+      {
+        lastDiscoverBeaconVersion: '0',
+        lastFollowingBeaconVersion: '0',
+        lastNotificationCheck: 'Mon, 29 Dec 2014 21:28:58 GMT',
+        lastStarredBeaconVersion: '0',
+        modes: [
+          {
+            label: 'root',
+            mode: 'grid',
+            regex: '^/$',
+          },
+          {
+            label: 'discover',
+            mode: 'grid',
+            regex: '/discover|/explore',
+          },
+          {
+            label: 'following',
+            mode: 'list',
+            regex: '/following',
+          },
+          {
+            label: 'invitations',
+            mode: 'list',
+            regex: '/invitations',
+          },
+          {
+            label: 'onboarding',
+            mode: 'grid',
+            regex: '/onboarding',
+          },
+          {
+            label: 'notifications',
+            mode: 'list',
+            regex: '/notifications',
+          },
+          {
+            label: 'search',
+            mode: 'list',
+            regex: '/search|/find',
+          },
+          {
+            label: 'settings',
+            mode: 'list',
+            regex: '/settings',
+          },
+          {
+            label: 'starred',
+            mode: 'list',
+            regex: '/starred',
+          },
+          {
+            label: 'staff',
+            mode: 'list',
+            regex: '/staff',
+          },
+          {
+            label: 'posts',
+            mode: 'list',
+            regex: '/[\\w\\-]+/post/.+',
+          },
+          {
+            label: 'users/following',
+            mode: 'list',
+            regex: '/[\\w\\-]+/following',
+          },
+          {
+            label: 'users/followers',
+            mode: 'grid',
+            regex: '/[\\w\\-]+/followers',
+          },
+          {
+            label: 'users/loves',
+            mode: 'grid',
+            regex: '/[\\w\\-]+/loves',
+          },
+          {
+            label: 'users',
+            mode: 'list',
+            regex: '/[\\w\\-]+',
+          },
+        ],
+      },
+    ))
   })
 })
 

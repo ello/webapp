@@ -52,7 +52,7 @@ Honeybadger.configure({
 
 updateTimeAgoStrings({ about: '' })
 
-const APP_VERSION = '3.0.21'
+const APP_VERSION = '3.0.22'
 
 const createSelectLocationState = () => {
   let prevRoutingState
@@ -99,7 +99,7 @@ const launchApplication = (storage, hasLocalStorage = false) => {
   // real localStorage to determine if we should purge to avoid a weird race condition
   if (hasLocalStorage) {
     if (localStorage.getItem('APP_VERSION') !== APP_VERSION) {
-      persistor.purge(['json'])
+      persistor.purge(['editor', 'json', 'profile'])
       Session.clear()
       storage.setItem('APP_VERSION', APP_VERSION, () => {})
     }

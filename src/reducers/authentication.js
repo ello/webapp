@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
     case PROFILE.DELETE_SUCCESS:
       return initialState
     case AUTHENTICATION.CLEAR_AUTH_TOKEN:
-      return { ...state, accessToken: null, expirationDate: null, expiresIn: null }
+      return state.delete('accessToken').delete('expirationDate').delete('expiresIn')
     case AUTHENTICATION.LOGOUT_SUCCESS:
     case AUTHENTICATION.LOGOUT_FAILURE:
       Session.clear()
@@ -37,6 +37,9 @@ export default (state = initialState, action) => {
     case REHYDRATE:
       auth = action.payload.authentication
       if (auth) {
+        if (typeof auth.getIn !== 'function') {
+          auth = Immutable.fromJS(auth)
+        }
         return auth.set(
           'expirationDate', new Date((auth.get('createdAt') + auth.get('expiresIn')) * 1000),
         )
