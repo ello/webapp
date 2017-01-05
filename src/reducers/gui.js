@@ -168,7 +168,8 @@ export default (state = initialState, action = { type: '' }) => {
         .set('innerHeight', state.get('innerHeight'))
     }
     case REHYDRATE:
-      if (window.nonImmutableState.gui) {
+      if (window.nonImmutableState && window.nonImmutableState.gui) {
+        console.log('set gui from non immutable')
         state = convertStateToImmutable(window.nonImmutableState.gui)
         delete window.nonImmutableState.gui
         return state
