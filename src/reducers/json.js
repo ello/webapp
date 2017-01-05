@@ -373,11 +373,11 @@ export default function json(state = initialState, action = { type: '' }) {
     case REHYDRATE: {
       // only keep the items that have been deleted
       // so we can still filter them out if needed
-      if (window.__INITIAL_STATE__) {
-        return action.payload.json
-      }
       let keepers = initialState
       if (action.payload.json) {
+        if (window.__INITIAL_STATE__) {
+          return action.payload.json
+        }
         action.payload.json.keySeq().forEach((collection) => {
           if (/deleted_/.test(collection)) {
             keepers = keepers.set(collection, action.payload.json.get(collection))
