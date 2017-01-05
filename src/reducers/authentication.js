@@ -37,8 +37,8 @@ export default (state = initialState, action) => {
     case REHYDRATE:
       auth = action.payload.authentication
       if (auth) {
-        if (typeof auth.getIn !== 'function') {
-          auth = Immutable.fromJS(auth)
+        if (window.nonImmutableState.authentication) {
+          auth = Immutable.fromJS(window.nonImmutableState.authentication)
         }
         return auth.set(
           'expirationDate', new Date((auth.get('createdAt') + auth.get('expiresIn')) * 1000),

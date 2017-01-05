@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 import get from 'lodash/get'
@@ -167,8 +168,10 @@ export default (state = initialState, action = { type: '' }) => {
         .set('innerHeight', state.get('innerHeight'))
     }
     case REHYDRATE:
-      if (payload.gui && typeof payload.gui.getIn !== 'function') {
-        return convertStateToImmutable(payload.gui)
+      if (window.nonImmutableState.gui) {
+        state = convertStateToImmutable(window.nonImmutableState.gui)
+        delete window.nonImmutableState.gui
+        return state
       }
       return state.withMutations((s) => {
         s.merge(payload.gui || {})

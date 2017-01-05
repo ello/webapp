@@ -28,7 +28,9 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       return newState
     }
   }
-  if (ENV.APP_DEBUG) { window.Pam = r => console.log(fromJSON(JSON.parse(localStorage.getItem(`reduxPersist:${r}`))).toJS()) } // eslint-disable-line
+  if (ENV.APP_DEBUG) {
+    window.Pam = r => fromJSON(JSON.parse(localStorage.getItem(`reduxPersist:${r}`))).toJS()
+  }
   const logger = createLogger(logConfig)
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()
