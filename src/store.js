@@ -6,6 +6,7 @@ import { routerMiddleware } from 'react-router-redux'
 import { compose, combineReducers, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
 import createSagaMiddleware, { END } from 'redux-saga'
+import { fromJSON } from 'transit-immutable-js'
 import * as reducers from './reducers'
 import rootSaga from './sagas'
 
@@ -27,6 +28,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
       return newState
     }
   }
+  if (ENV.APP_DEBUG) { window.Pam = r => console.log(fromJSON(JSON.parse(localStorage.getItem(`reduxPersist:${r}`))).toJS()) } // eslint-disable-line
   const logger = createLogger(logConfig)
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()
