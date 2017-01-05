@@ -14,17 +14,20 @@ const reducer = combineReducers({
 })
 
 const createBrowserStore = (history, passedInitialState = {}) => {
-  const logger = createLogger({
+  const logConfig = {
     collapsed: true,
     predicate: () => ENV.APP_DEBUG,
-    stateTransformer: (state) => {
+  }
+  if (ENV.NODE_ENV === 'development') {
+    logConfig.stateTransformer = (state) => {
       const newState = {}
       Object.keys(state).forEach((key) => {
         newState[key] = state[key].toJS()
       })
       return newState
-    },
-  })
+    }
+  }
+  const logger = createLogger(logConfig)
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()
   const serverInitState = window.__INITIAL_STATE__
