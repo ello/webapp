@@ -22,8 +22,8 @@
     "test:watch": "NODE_ENV=test mocha test/unit test/integration --recursive --watch"
   },
   "engines": {
-    "node": "6.4.0",
-    "npm": "3.10.3"
+    "node": "7.4.0",
+    "npm": "4.0.5"
   },
   "browserlist": "> 5%, last 2 firefox versions, last 2 chrome versions, last 2 safari versions, last 2 edge versions, ie 11, not OperaMini all",
   "babel": {
