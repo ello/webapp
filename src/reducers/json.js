@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 import Immutable from 'immutable'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
@@ -372,6 +373,9 @@ export default function json(state = initialState, action = { type: '' }) {
     case REHYDRATE: {
       // only keep the items that have been deleted
       // so we can still filter them out if needed
+      if (window.__INITIAL_STATE__) {
+        return action.payload.json
+      }
       let keepers = initialState
       if (action.payload.json) {
         action.payload.json.keySeq().forEach((collection) => {
