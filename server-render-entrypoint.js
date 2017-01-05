@@ -88,6 +88,9 @@ function handlePrerender(context) {
           process.exit(1)
         })
       } else {
+        Object.keys(state).forEach((key) => {
+          state[key] = state[key].toJS()
+        })
         const initialStateTag = `<script id="initial-state">window.__INITIAL_STATE__ = ${JSON.stringify(state)}</script>`
         // Add helmet's stuff after the last statically rendered meta tag
         const html = indexStr.replace(

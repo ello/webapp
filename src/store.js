@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 /* eslint-disable no-underscore-dangle */
 import createLogger from 'redux-logger'
 import Immutable from 'immutable'
@@ -21,18 +20,20 @@ const createBrowserStore = (history, passedInitialState = {}) => {
     stateTransformer: (state) => {
       const newState = {}
       Object.keys(state).forEach((key) => {
-        // if (['editor', 'json'].includes(key)) {
-        if (typeof state[key].toJS === 'function') {
-          newState[key] = state[key].toJS()
-        }
-        // }
+        newState[key] = state[key].toJS()
       })
       return newState
     },
   })
   const reduxRouterMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware()
-  const initialState = window.__INITIAL_STATE__ || passedInitialState
+  const serverInitState = window.__INITIAL_STATE__
+  if (serverInitState) {
+    Object.keys(serverInitState).forEach((key) => {
+      serverInitState[key] = Immutable.fromJS(serverInitState[key])
+    })
+  }
+  const initialState = serverInitState || passedInitialState
   // react-router-redux doesn't know how to serialize
   // query params from server-side rendering, so we just kill it
   // and let the browser reconstruct the router state
