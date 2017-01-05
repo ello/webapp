@@ -89,6 +89,13 @@ const initialPersistedState = Immutable.Map({
 
 export const initialState = initialNonPersistedState.merge(initialPersistedState)
 
+export const convertStateToImmutable = objectState =>
+  initialState.set('lastDiscoverBeaconVersion', objectState.lastDiscoverBeaconVersion)
+    .set('lastFollowingBeaconVersion', objectState.lastFollowingBeaconVersion)
+    .set('lastNotificationCheck', objectState.lastNotificationCheck)
+    .set('lastStarredBeaconVersion', objectState.lastStarredBeaconVersion)
+    .set('modes', Immutable.fromJS(objectState.modes))
+
 export default (state = initialState, action = { type: '' }) => {
   const { payload, type } = action
   switch (type) {
@@ -160,6 +167,9 @@ export default (state = initialState, action = { type: '' }) => {
         .set('innerHeight', state.get('innerHeight'))
     }
     case REHYDRATE:
+      if (payload.gui && typeof payload.gui.getIn !== 'function') {
+        return convertStateToImmutable(payload.gui)
+      }
       return state.withMutations((s) => {
         s.merge(payload.gui || {})
           .merge(initialNonPersistedState)
