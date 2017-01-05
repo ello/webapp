@@ -90,11 +90,11 @@ const initialPersistedState = Immutable.Map({
 export const initialState = initialNonPersistedState.merge(initialPersistedState)
 
 export const convertStateToImmutable = objectState =>
-  initialState.set('lastDiscoverBeaconVersion', objectState.lastDiscoverBeaconVersion)
-    .set('lastFollowingBeaconVersion', objectState.lastFollowingBeaconVersion)
-    .set('lastNotificationCheck', objectState.lastNotificationCheck)
-    .set('lastStarredBeaconVersion', objectState.lastStarredBeaconVersion)
-    .set('modes', Immutable.fromJS(objectState.modes))
+  initialState.set('lastDiscoverBeaconVersion', objectState.lastDiscoverBeaconVersion || '0')
+    .set('lastFollowingBeaconVersion', objectState.lastFollowingBeaconVersion || '0')
+    .set('lastNotificationCheck', objectState.lastNotificationCheck || new Date().toUTCString())
+    .set('lastStarredBeaconVersion', objectState.lastStarredBeaconVersion || '0')
+    .set('modes', objectState.modes ? Immutable.fromJS(objectState.modes) : initialState.get('modes'))
 
 export default (state = initialState, action = { type: '' }) => {
   const { payload, type } = action
