@@ -1,5 +1,7 @@
+/* eslint-disable no-param-reassign */
 import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
+import { LOCATION_CHANGE } from 'react-router-redux'
 import { AUTHENTICATION, PROFILE } from '../constants/action_types'
 import Session from '../lib/session'
 
@@ -34,12 +36,20 @@ export default (state = initialState, action) => {
         expirationDate: new Date((auth.createdAt + auth.expiresIn) * 1000),
         isLoggedIn: true,
       })
+    case LOCATION_CHANGE:
+      if (window.nonImmutableState && window.nonImmutableState.authentication) {
+        console.log('set auth from non immutable LOCATION_CHANGE')
+        state = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
+        delete window.nonImmutableState.authentication
+        return state
+      }
+      return state
     case REHYDRATE:
       auth = action.payload.authentication
       if (auth) {
         if (window.nonImmutableState && window.nonImmutableState.authentication) {
           console.log('set auth from non immutable')
-          auth = Immutable.fromJS(window.nonImmutableState.authentication)
+          auth = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
           delete window.nonImmutableState.authentication
         }
         return auth.set(
