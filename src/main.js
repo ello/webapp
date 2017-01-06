@@ -88,6 +88,7 @@ const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 const authState = localStorage.getItem('reduxPersist:authentication')
 const guiState = localStorage.getItem('reduxPersist:gui')
 console.log('authState', authState)
+console.log('guiState', guiState)
 
 const launchApplication = (storage, hasLocalStorage = false) => {
   addFeatureDetection()
