@@ -91,10 +91,10 @@ const initialPersistedState = Immutable.Map({
 export const initialState = initialNonPersistedState.merge(initialPersistedState)
 
 export const convertStateToImmutable = objectState =>
-  initialState.set('lastDiscoverBeaconVersion', objectState.lastDiscoverBeaconVersion || '0')
-    .set('lastFollowingBeaconVersion', objectState.lastFollowingBeaconVersion || '0')
-    .set('lastNotificationCheck', objectState.lastNotificationCheck || new Date().toUTCString())
-    .set('lastStarredBeaconVersion', objectState.lastStarredBeaconVersion || '0')
+  initialState.set('lastDiscoverBeaconVersion', objectState.lastDiscoverBeaconVersion || '06')
+    .set('lastFollowingBeaconVersion', objectState.lastFollowingBeaconVersion || '06')
+    .set('lastNotificationCheck', objectState.lastNotificationCheck || oldDate.toUTCString())
+    .set('lastStarredBeaconVersion', objectState.lastStarredBeaconVersion || '06')
     .set('modes', objectState.modes ? Immutable.fromJS(objectState.modes) : initialState.get('modes'))
 
 export default (state = initialState, action = { type: '' }) => {
@@ -150,6 +150,12 @@ export default (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE: {
       location = payload
       const pathname = location.pathname
+      if (window.nonImmutableState && window.nonImmutableState.gui) {
+        console.log('set gui from non immutable LOCATION_CHANGE')
+        state = convertStateToImmutable(JSON.parse(window.nonImmutableState.gui))
+        delete window.nonImmutableState.gui
+        return state
+      }
       if (HOME_STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return state.withMutations((s) => {
           s.set('homeStream', pathname)
@@ -170,7 +176,7 @@ export default (state = initialState, action = { type: '' }) => {
     case REHYDRATE:
       if (window.nonImmutableState && window.nonImmutableState.gui) {
         console.log('set gui from non immutable')
-        state = convertStateToImmutable(window.nonImmutableState.gui)
+        state = convertStateToImmutable(JSON.parse(window.nonImmutableState.gui))
         delete window.nonImmutableState.gui
         return state
       }
