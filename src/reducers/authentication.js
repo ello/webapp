@@ -38,7 +38,6 @@ export default (state = initialState, action) => {
       })
     case LOCATION_CHANGE:
       if (window.nonImmutableState && window.nonImmutableState.authentication) {
-        console.log('set auth from non immutable LOCATION_CHANGE')
         state = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
         delete window.nonImmutableState.authentication
         return state
@@ -46,12 +45,11 @@ export default (state = initialState, action) => {
       return state
     case REHYDRATE:
       auth = action.payload.authentication
+      if (window.nonImmutableState && window.nonImmutableState.authentication) {
+        auth = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
+        delete window.nonImmutableState.authentication
+      }
       if (auth) {
-        if (window.nonImmutableState && window.nonImmutableState.authentication) {
-          console.log('set auth from non immutable')
-          auth = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
-          delete window.nonImmutableState.authentication
-        }
         return auth.set(
           'expirationDate', new Date((auth.get('createdAt') + auth.get('expiresIn')) * 1000),
         )

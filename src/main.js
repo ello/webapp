@@ -87,8 +87,6 @@ const whitelist = ['authentication', 'editor', 'gui', 'json', 'profile']
 // TODO: should probably be removed by 6/6/17
 const authState = localStorage.getItem('reduxPersist:authentication')
 const guiState = localStorage.getItem('reduxPersist:gui')
-console.log('authState', authState)
-console.log('guiState', guiState)
 
 const launchApplication = (storage, hasLocalStorage = false) => {
   addFeatureDetection()
@@ -108,7 +106,6 @@ const launchApplication = (storage, hasLocalStorage = false) => {
     const lastVersion = localStorage.getItem('APP_VERSION')
     if (lastVersion !== APP_VERSION) {
       if (Number(lastVersion ? lastVersion.split('.')[0] : 0) < 4) {
-        console.log('set non immutable state')
         window.nonImmutableState = { authentication: authState, gui: guiState }
       }
       persistor.purge(['editor', 'json', 'profile'])
