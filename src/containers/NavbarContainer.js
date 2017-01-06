@@ -20,7 +20,7 @@ import { selectPage } from '../selectors/pages'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
 import { logout } from '../actions/authentication'
 import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
-import { checkForNewNotifications } from '../actions/notifications'
+import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
 import { loadFriends, loadNoise } from '../actions/stream'
@@ -83,7 +83,7 @@ class NavbarContainer extends PureComponent {
   }
 
   componentWillMount() {
-    this.checkForNotifications()
+    this.checkForNotifications(true)
   }
 
   componentDidUpdate(prevProps) {
@@ -199,9 +199,12 @@ class NavbarContainer extends PureComponent {
     )
   }
 
-  checkForNotifications() {
+  checkForNotifications(isMounting = false) {
     const { dispatch, isLoggedIn } = this.props
-    if (isLoggedIn) { dispatch(checkForNewNotifications()) }
+    if (isLoggedIn) {
+      dispatch(checkForNewNotifications())
+      if (!isMounting) { dispatch(loadAnnouncements()) }
+    }
   }
 
   activateProfileMenu() {
