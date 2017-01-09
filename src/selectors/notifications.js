@@ -8,3 +8,7 @@ export const selectAnnouncement = createSelector(
     collection.first() || Immutable.Map(),
 )
 
+export const selectIsAnnouncementUnread = createSelector(
+  [selectAnnouncementCollection], collection => Boolean(collection && Object.keys(collection)[0]),
+)
+
