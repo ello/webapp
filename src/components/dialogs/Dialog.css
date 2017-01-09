@@ -43,9 +43,24 @@
   border-bottom: 1px solid;
 }
 
+.TextDialog .Dismiss {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+.no-touch .Dismiss:hover {
+  color: #aaa;
+}
+
 @media (--break-2) {
   .Modal > .Dialog {
     padding: 20px;
+  }
+
+  .TextDialog .Dismiss {
+    top: 10px;
+    right: 10px;
   }
 }
 
