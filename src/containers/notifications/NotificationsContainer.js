@@ -154,7 +154,9 @@ class NotificationsContainer extends Component {
     const { announcementBody, announcementTitle, dispatch } = this.props
     const trackType = (e.target.classList.contains('AnnouncementNotificationCTA')) ? 'clicked' : 'closed'
     const trackAction = trackEvent(`announcement_${trackType}`, { name: announcementTitle || announcementBody })
-    dispatch(markAnnouncementRead())
+    if (trackType === 'closed') {
+      dispatch(markAnnouncementRead())
+    }
     dispatch(trackAction)
   }
 
