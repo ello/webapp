@@ -375,7 +375,7 @@ export default function json(state = initialState, action = { type: '' }) {
       // so we can still filter them out if needed
       let keepers = initialState
       if (action.payload.json) {
-        if (window.__INITIAL_STATE__) {
+        if (window && window.__INITIAL_STATE__) {
           return action.payload.json
         }
         action.payload.json.keySeq().forEach((collection) => {
