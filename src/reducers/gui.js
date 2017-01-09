@@ -151,7 +151,7 @@ export default (state = initialState, action = { type: '' }) => {
     case LOCATION_CHANGE: {
       location = payload
       const pathname = location.pathname
-      if (window.nonImmutableState && window.nonImmutableState.gui) {
+      if (typeof window !== 'undefined' && window.nonImmutableState && window.nonImmutableState.gui) {
         state = convertStateToImmutable(JSON.parse(window.nonImmutableState.gui))
         delete window.nonImmutableState.gui
         return state
@@ -174,7 +174,7 @@ export default (state = initialState, action = { type: '' }) => {
         .set('innerHeight', state.get('innerHeight'))
     }
     case REHYDRATE:
-      if (window && window.nonImmutableState && window.nonImmutableState.gui) {
+      if (typeof window !== 'undefined' && window.nonImmutableState && window.nonImmutableState.gui) {
         state = convertStateToImmutable(JSON.parse(window.nonImmutableState.gui))
         delete window.nonImmutableState.gui
         return state
