@@ -13,7 +13,7 @@ import {
   selectPostMetaTitle,
   selectPostMetaUrl,
 } from '../selectors/post'
-import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
+import { selectPathname, selectPropsQueryTerms, selectViewNameFromRoute } from '../selectors/routing'
 import {
   selectUserMetaDescription,
   selectUserMetaImage,
@@ -26,9 +26,22 @@ const selectMetaPageType = createSelector(
     (viewName === 'postDetail' || viewName === 'userDetail' ? `${viewName}Tags` : 'defaultTags'),
 )
 
+const selectDefaultMetaRobots = createSelector(
+  [selectViewNameFromRoute, selectPropsQueryTerms], (viewName, terms) => {
+    // Terms seems to be undefined at mount time..
+    console.log(viewName, terms)
+    if (viewName === 'search' && terms && terms.length) {
+      return terms.charAt(0) === '#' ? 'index, follow' : 'noindex, follow'
+    }
+    return null
+  },
+)
+
 function mapStateToProps(state, props) {
   const pagination = selectPagination(state, props)
+  console.log('robots', selectDefaultMetaRobots(state, props))
   return {
+    defaultMetaRobots: selectDefaultMetaRobots(state, props),
     discoverMetaData: selectDiscoverMetaData(state, props),
     metaPageType: selectMetaPageType(state, props),
     nextPage: pagination ? pagination.get('next') : null,
@@ -49,6 +62,7 @@ function mapStateToProps(state, props) {
 
 class MetaContainer extends PureComponent {
   static propTypes = {
+    defaultMetaRobots: PropTypes.string,
     discoverMetaData: PropTypes.object.isRequired,
     metaPageType: PropTypes.string.isRequired,
     nextPage: PropTypes.string,
@@ -67,6 +81,7 @@ class MetaContainer extends PureComponent {
   }
 
   static defaultProps = {
+    defaultMetaRobots: null,
     nextPage: null,
     postMetaCanonicalUrl: null,
     postMetaDescription: null,
@@ -80,7 +95,12 @@ class MetaContainer extends PureComponent {
     userMetaTitle: null,
   }
 
-  getDefaultTags({ description = META.DESCRIPTION, image = META.IMAGE, title = META.TITLE } = {}) {
+  getDefaultTags({
+    description = META.DESCRIPTION,
+    image = META.IMAGE,
+    title = META.TITLE,
+    robots = null,
+  } = {}) {
     const { nextPage, pathname } = this.props
     const url = `${ENV.AUTH_DOMAIN}${pathname}`
     const meta = [
@@ -95,6 +115,9 @@ class MetaContainer extends PureComponent {
       { property: 'og:image', content: image },
       { name: 'twitter:card', content: 'summary_large_image' },
     ]
+    if (robots) {
+      meta.push({ name: 'robots', content: robots })
+    }
     const link = [
       nextPage ? { href: `${pathname}?${nextPage.split('?')[1]}`, rel: 'next' } : {},
     ]
@@ -144,6 +167,7 @@ class MetaContainer extends PureComponent {
 
   getTags() {
     const {
+      defaultMetaRobots,
       discoverMetaData,
       metaPageType,
       pathname,
@@ -166,6 +190,7 @@ class MetaContainer extends PureComponent {
         description: META.SEARCH_PAGE_DESCRIPTION,
         image: discoverMetaData.image,
         title: META.SEARCH_TITLE,
+        robots: defaultMetaRobots,
       })
     } else if (viewName === 'authentication') {
       switch (pathname) {
