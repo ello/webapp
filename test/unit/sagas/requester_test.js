@@ -1,7 +1,7 @@
 import { channel } from 'redux-saga'
 import { selectRefreshToken } from '../../../src/selectors/authentication'
 import { loadDiscoverPosts } from '../../../src/actions/discover'
-import { clearAuthToken, refreshAuthenticationToken } from '../../../src/actions/authentication'
+import { clearAuthStore, refreshAuthenticationToken } from '../../../src/actions/authentication'
 import {
   handleRequest,
   handleRequestError,
@@ -188,7 +188,7 @@ describe('requester saga', function () {
 
       it('clears the auth token and tries to refresh again', function () {
         const refreshTokenHandler = handleRequestError(responseError, pretendAction)
-        expect(refreshTokenHandler).to.put(clearAuthToken())
+        expect(refreshTokenHandler).to.put(clearAuthStore())
         expect(refreshTokenHandler).to.select(selectRefreshToken)
         expect(refreshTokenHandler.next('footokenfoo')).to.put(refreshAuthenticationToken('footokenfoo'))
       })
