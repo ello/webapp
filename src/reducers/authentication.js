@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
         isLoggedIn: true,
       })
     case LOCATION_CHANGE:
-      if (window.nonImmutableState && window.nonImmutableState.authentication) {
+      if (typeof window !== 'undefined' && window.nonImmutableState && window.nonImmutableState.authentication) {
         state = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
         delete window.nonImmutableState.authentication
         return state
@@ -45,7 +45,7 @@ export default (state = initialState, action) => {
       return state
     case REHYDRATE:
       auth = action.payload.authentication
-      if (window.nonImmutableState && window.nonImmutableState.authentication) {
+      if (typeof window !== 'undefined' && window.nonImmutableState && window.nonImmutableState.authentication) {
         auth = Immutable.fromJS(JSON.parse(window.nonImmutableState.authentication))
         delete window.nonImmutableState.authentication
       }
