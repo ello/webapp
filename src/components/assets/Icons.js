@@ -12,12 +12,18 @@ const FillShapeForty = ({ className = 'svg-fill' }) =>
 FillShapeForty.propTypes = {
   className: PropTypes.string,
 }
+FillShapeForty.defaultProps = {
+  className: null,
+}
 
 const FillShapeSixty = ({ className = 'svg-fill' }) =>
   <path className={className} d="M0 0h60v60h-60z" />
 
 FillShapeSixty.propTypes = {
   className: PropTypes.string,
+}
+FillShapeSixty.defaultProps = {
+  className: null,
 }
 
 const SmileShapeForty = () =>

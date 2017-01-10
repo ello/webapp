@@ -2,15 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { getSelectionContainerElement } from '../editor/SelectionUtil'
 
-/* eslint-disable react/prefer-stateless-function */
 export default class Completion extends Component {
 
   static propTypes = {
-    asset: PropTypes.object,
-    className: PropTypes.string,
+    asset: PropTypes.element.isRequired,
+    className: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
-    value: PropTypes.string,
   }
 
   onClickCompletion = (e) => {
@@ -21,8 +19,7 @@ export default class Completion extends Component {
   }
 
   getValue() {
-    const { label, value } = this.props
-    return value || label
+    return this.props.label
   }
 
   render() {

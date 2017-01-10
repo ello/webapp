@@ -20,15 +20,21 @@ class PostActionBar extends Component {
   static propTypes = {
     buyLink: PropTypes.string,
     cancelAction: PropTypes.func.isRequired,
-    deviceSize: PropTypes.string,
+    deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    disableSubmitAction: PropTypes.bool,
+    disableSubmitAction: PropTypes.bool.isRequired,
     editorId: PropTypes.string.isRequired,
     handleFileAction: PropTypes.func.isRequired,
     hasMedia: PropTypes.bool,
     replyAllAction: PropTypes.func,
     submitAction: PropTypes.func.isRequired,
-    submitText: PropTypes.string,
+    submitText: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    buyLink: null,
+    hasMedia: false,
+    replyAllAction: null,
   }
 
   onAddBuyLink = ({ value }) => {

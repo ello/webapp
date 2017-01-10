@@ -35,6 +35,10 @@ CommentHeader.propTypes = {
   author: PropTypes.object,
   comment: PropTypes.object,
 }
+CommentHeader.defaultProps = {
+  author: null,
+  comment: null,
+}
 
 export const CommentBody = ({ assets, comment, isGridMode = true }) =>
   <div className="CommentBody" key={`CommentBody${comment.get('id')}`} >
@@ -49,6 +53,11 @@ CommentBody.propTypes = {
   assets: PropTypes.object,
   comment: PropTypes.object,
   isGridMode: PropTypes.bool,
+}
+CommentBody.defaultProps = {
+  assets: null,
+  comment: null,
+  isGridMode: false,
 }
 
 export const CommentFooter = ({ author, comment, currentUser, post }) => {
@@ -69,5 +78,11 @@ CommentFooter.propTypes = {
   comment: PropTypes.object,
   currentUser: PropTypes.object,
   post: PropTypes.object,
+}
+CommentFooter.defaultProps = {
+  author: null,
+  comment: null,
+  currentUser: null,
+  post: null,
 }
 

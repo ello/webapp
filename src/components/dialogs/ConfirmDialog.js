@@ -8,9 +8,9 @@ const ConfirmDialog = ({ title, onConfirm, onDismiss }) =>
   </div>
 
 ConfirmDialog.propTypes = {
-  title: PropTypes.string,
-  onConfirm: PropTypes.func,
-  onDismiss: PropTypes.func,
+  title: PropTypes.string.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  onDismiss: PropTypes.func.isRequired,
 }
 
 export default ConfirmDialog

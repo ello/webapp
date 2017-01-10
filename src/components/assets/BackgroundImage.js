@@ -30,8 +30,8 @@ export default class BackgroundImage extends PureComponent {
   }
 
   static defaultProps = {
-    dpi: 'xhdpi',
-    useGif: false,
+    className: null,
+    to: null,
   }
 
   componentWillMount() {

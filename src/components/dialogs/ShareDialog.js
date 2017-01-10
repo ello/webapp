@@ -41,7 +41,13 @@ class ShareDialog extends Component {
     author: PropTypes.object,
     post: PropTypes.object,
     username: PropTypes.string,
-    trackEvent: PropTypes.func,
+    trackEvent: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    author: null,
+    post: null,
+    username: null,
   }
 
   componentWillMount() {

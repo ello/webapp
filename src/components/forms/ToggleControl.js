@@ -5,11 +5,15 @@ import classNames from 'classnames'
 class ToggleControl extends Component {
 
   static propTypes = {
-    className: PropTypes.string,
     id: PropTypes.string.isRequired,
     isChecked: PropTypes.bool,
     isDisabled: PropTypes.bool,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    isChecked: false,
+    isDisabled: false,
   }
 
   componentWillMount() {
@@ -46,11 +50,11 @@ class ToggleControl extends Component {
   }
 
   render() {
-    const { className, id, isDisabled } = this.props
+    const { id, isDisabled } = this.props
     const { checked } = this.state
     return (
       <label
-        className={classNames('ToggleControl', className, { isChecked: checked })}
+        className={classNames('ToggleControl', { isChecked: checked })}
         disabled={isDisabled}
         htmlFor={id}
       >

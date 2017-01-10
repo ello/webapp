@@ -78,9 +78,12 @@ class BuyLinkDialog extends Component {
 }
 
 BuyLinkDialog.propTypes = {
-  onConfirm: PropTypes.func,
-  onDismiss: PropTypes.func,
+  onConfirm: PropTypes.func.isRequired,
+  onDismiss: PropTypes.func.isRequired,
   text: PropTypes.string,
+}
+BuyLinkDialog.defaultProps = {
+  text: null,
 }
 
 export default BuyLinkDialog

@@ -15,7 +15,7 @@ const TimeAgoTool = ({ createdAt }) =>
   </span>
 
 TimeAgoTool.propTypes = {
-  createdAt: PropTypes.string,
+  createdAt: PropTypes.string.isRequired,
 }
 
 const EditTool = ({ onClickEditComment }) =>
@@ -27,7 +27,7 @@ const EditTool = ({ onClickEditComment }) =>
   </span>
 
 EditTool.propTypes = {
-  onClickEditComment: PropTypes.func,
+  onClickEditComment: PropTypes.func.isRequired,
 }
 
 const DeleteTool = ({ onClickDeleteComment }) =>
@@ -39,7 +39,7 @@ const DeleteTool = ({ onClickDeleteComment }) =>
   </span>
 
 DeleteTool.propTypes = {
-  onClickDeleteComment: PropTypes.func,
+  onClickDeleteComment: PropTypes.func.isRequired,
 }
 
 const ReplyTool = ({ onClickReplyToComment }) =>
@@ -51,7 +51,7 @@ const ReplyTool = ({ onClickReplyToComment }) =>
   </span>
 
 ReplyTool.propTypes = {
-  onClickReplyToComment: PropTypes.func,
+  onClickReplyToComment: PropTypes.func.isRequired,
 }
 
 const FlagTool = ({ className, onClickFlagComment }) =>
@@ -64,7 +64,10 @@ const FlagTool = ({ className, onClickFlagComment }) =>
 
 FlagTool.propTypes = {
   className: PropTypes.string,
-  onClickFlagComment: PropTypes.func,
+  onClickFlagComment: PropTypes.func.isRequired,
+}
+FlagTool.defaultProps = {
+  className: null,
 }
 
 const MoreTool = ({ onClickMoreTool }) =>
@@ -76,7 +79,7 @@ const MoreTool = ({ onClickMoreTool }) =>
   </span>
 
 MoreTool.propTypes = {
-  onClickMoreTool: PropTypes.func,
+  onClickMoreTool: PropTypes.func.isRequired,
 }
 
 export const CommentTools = (props) => {
@@ -125,15 +128,21 @@ export const CommentTools = (props) => {
 
 CommentTools.propTypes = {
   canDeleteComment: PropTypes.bool,
-  comment: PropTypes.object,
+  comment: PropTypes.object.isRequired,
   isLoggedIn: PropTypes.bool,
   isMoreToolActive: PropTypes.bool,
   isOwnComment: PropTypes.bool,
-  onClickDeleteComment: PropTypes.func,
-  onClickEditComment: PropTypes.func,
-  onClickFlagComment: PropTypes.func,
-  onClickMoreTool: PropTypes.func,
-  onClickReplyToComment: PropTypes.func,
+  onClickDeleteComment: PropTypes.func.isRequired,
+  onClickEditComment: PropTypes.func.isRequired,
+  onClickFlagComment: PropTypes.func.isRequired,
+  onClickMoreTool: PropTypes.func.isRequired,
+  onClickReplyToComment: PropTypes.func.isRequired,
+}
+CommentTools.defaultProps = {
+  canDeleteComment: false,
+  isLoggedIn: false,
+  isMoreToolActive: false,
+  isOwnComment: false,
 }
 
 export default CommentTools

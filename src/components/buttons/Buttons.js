@@ -14,6 +14,9 @@ MiniPillButton.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
 }
+MiniPillButton.defaultProps = {
+  className: null,
+}
 
 export default MiniPillButton
 

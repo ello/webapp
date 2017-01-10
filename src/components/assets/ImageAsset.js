@@ -9,6 +9,12 @@ export default class ImageAsset extends PureComponent {
     srcSet: PropTypes.string,
   }
 
+  static defaultProps = {
+    onLoadSuccess: null,
+    onLoadFailure: null,
+    srcSet: null,
+  }
+
   componentDidMount() {
     this.createLoader()
   }

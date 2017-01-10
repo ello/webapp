@@ -5,8 +5,11 @@ const Hint = ({ className, children }) =>
   <span className={classNames('Hint', className)}>{children}</span>
 
 Hint.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.string.isRequired,
   className: PropTypes.string,
+}
+Hint.defaultProps = {
+  className: null,
 }
 
 export default Hint
