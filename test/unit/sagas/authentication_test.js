@@ -34,6 +34,7 @@ describe('authentication saga', function () {
       ])
       expect(logoutFn.next({ type: AUTHENTICATION.LOGOUT_SUCCESS })).to.put(cancelAuthRefresh())
       expect(document.cookie).to.equal('ello_skip_prerender=false')
+      expect(logoutFn).to.put(clearAuthStore())
       expect(logoutFn).to.put(push('/enter'))
     })
   })
