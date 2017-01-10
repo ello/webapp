@@ -30,8 +30,8 @@ class UsernameControl extends Component {
       return (
         <ul className="FormControlSuggestionList hasSuggestions">
           <p>Here are some available usernames &mdash;</p>
-          {suggestions.map((suggestion, i) =>
-            <li key={`suggestion_${i}`}>
+          {suggestions.map(suggestion =>
+            <li key={`suggestion_${suggestion}`}>
               <button
                 className="FormControlSuggestionButton"
                 title={suggestion}

@@ -24,7 +24,15 @@ class FormControl extends Component {
   }
 
   static defaultProps = {
+    classList: null,
+    className: null,
+    icon: null,
     kind: 'input',
+    label: null,
+    onBlur: null,
+    onChange: null,
+    onFocus: null,
+    renderStatus: null,
     renderFeedback: null,
     status: STATUS.INDETERMINATE,
     tabIndex: '0',

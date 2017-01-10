@@ -11,7 +11,7 @@ export const TextMarkupDialog = ({ html }) =>
 
 
 TextMarkupDialog.propTypes = {
-  html: PropTypes.string,
+  html: PropTypes.string.isRequired,
 }
 
 export const FeaturedInDialog = ({ children }) =>
@@ -20,6 +20,6 @@ export const FeaturedInDialog = ({ children }) =>
   </div>
 
 FeaturedInDialog.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 }
 

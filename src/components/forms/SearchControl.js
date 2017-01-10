@@ -19,6 +19,7 @@ class SearchControl extends Component {
     label: 'Search',
     name: 'search[terms]',
     placeholder: 'Search',
+    text: '',
   }
 
   componentDidMount() {

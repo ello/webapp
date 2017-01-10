@@ -20,6 +20,11 @@ class TextBlock extends Component {
     uid: PropTypes.number.isRequired,
   }
 
+  static defaultProps = {
+    data: '',
+    linkURL: '',
+  }
+
   componentDidMount() {
     if (this.props.shouldAutofocus) {
       placeCaretAtEnd(this.text)

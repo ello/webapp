@@ -3,8 +3,8 @@ import React, { Component, PropTypes } from 'react'
 class DeleteAccountDialog extends Component {
 
   static propTypes = {
-    onConfirm: PropTypes.func,
-    onDismiss: PropTypes.func,
+    onConfirm: PropTypes.func.isRequired,
+    onDismiss: PropTypes.func.isRequired,
   }
 
   componentWillMount() {

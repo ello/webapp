@@ -98,7 +98,7 @@ class UserContainer extends Component {
   onClickOpenBio = () => {
     const { dispatch, isMobile, user } = this.props
     dispatch(openModal(
-      <TextMarkupDialog html={user.get('formattedShortBio')} />,
+      <TextMarkupDialog html={user.get('formattedShortBio', '')} />,
       isMobile ? 'isFlex hasOverlay9' : 'hasOverlay9',
     ))
   }

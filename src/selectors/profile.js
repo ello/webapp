@@ -57,7 +57,7 @@ export const selectIsInfoFormBlank = createSelector(
 
 export const selectLinksAsText = createSelector(
   [selectExternalLinksList], (externalLinksList) => {
-    const links = externalLinksList || ''
+    const links = externalLinksList.size ? externalLinksList : ''
     if (typeof links === 'string') {
       return links
     }

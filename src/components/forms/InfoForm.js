@@ -42,19 +42,20 @@ function onSubmit(e) {
 class InfoForm extends PureComponent {
 
   static propTypes = {
-    className: PropTypes.string,
-    controlClassModifiers: PropTypes.string,
+    className: PropTypes.string.isRequired,
+    controlClassModifiers: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     isOnboardingControl: PropTypes.bool,
-    linksText: PropTypes.string,
-    location: PropTypes.string,
-    name: PropTypes.string,
-    shortBio: PropTypes.string,
+    linksText: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    shortBio: PropTypes.string.isRequired,
     tabIndexStart: PropTypes.number,
-    username: PropTypes.string,
+    username: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
+    isOnboardingControl: false,
     tabIndexStart: 0,
   }
 
@@ -207,7 +208,7 @@ class InfoForm extends PureComponent {
           onChange={this.onChangeBioControl}
           status={bioStatus}
           tabIndex={`${tabIndexStart + 2}`}
-          text={shortBio || ''}
+          text={shortBio}
         />
         <LinksControl
           classList={controlClassModifiers}

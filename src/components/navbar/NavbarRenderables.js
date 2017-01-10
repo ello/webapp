@@ -82,6 +82,9 @@ NavbarLoggedOut.propTypes = {
   onClickNavbarMark: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
 }
+NavbarLoggedOut.defaultProps = {
+  categoryTabs: null,
+}
 
 export const NavbarLoggedIn = ({
   avatar,
@@ -212,5 +215,11 @@ NavbarLoggedIn.propTypes = {
   onLogOut: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   username: PropTypes.string,
+}
+NavbarLoggedIn.defaultProps = {
+  avatar: null,
+  categoryTabs: null,
+  isGridMode: false,
+  username: null,
 }
 
