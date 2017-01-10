@@ -29,6 +29,16 @@ Emoji.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
 }
+Emoji.defaultProps = {
+  alt: null,
+  className: null,
+  name: null,
+  size: null,
+  src: null,
+  title: null,
+  width: null,
+  height: null,
+}
 
 export default Emoji
 

@@ -73,10 +73,16 @@ class Editor extends Component {
   }
 
   static defaultProps = {
+    allowsAutoWatch: false,
     autoPopulate: null,
+    comment: null,
     isComment: false,
+    isLoggedIn: false,
     isOwnPage: false,
+    isOwnPost: false,
     isPostDetail: false,
+    onSubmit: null,
+    post: null,
     shouldLoadFromState: false,
     shouldPersist: false,
   }

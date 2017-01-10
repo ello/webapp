@@ -38,9 +38,7 @@ class EmbedBlock extends Component {
       ) :
       null
     return (
-      <Block
-        {...this.props}
-      >
+      <Block {...this.props}>
         <div
           className="editable embed"
           dangerouslySetInnerHTML={{ __html: children }}

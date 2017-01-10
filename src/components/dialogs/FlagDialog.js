@@ -16,9 +16,9 @@ const OFFSETS = { mobile: 70, tablet: 80, desktop: 100 }
 class FlagDialog extends Component {
 
   static propTypes = {
-    deviceSize: PropTypes.string,
-    onResponse: PropTypes.func,
-    onConfirm: PropTypes.func,
+    deviceSize: PropTypes.string.isRequired,
+    onResponse: PropTypes.func.isRequired,
+    onConfirm: PropTypes.func.isRequired,
   }
 
   componentWillMount() {

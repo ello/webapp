@@ -3,14 +3,13 @@ import classNames from 'classnames'
 
 // -------------------------------------
 
-export const FooterLabel = ({ className, label }) =>
-  <span className={classNames(className, 'FooterLabel')}>
+export const FooterLabel = ({ label }) =>
+  <span className="FooterLabel">
     {label}
   </span>
 
 FooterLabel.propTypes = {
-  className: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.string.isRequired,
 }
 
 // -----------------
@@ -29,9 +28,13 @@ export const FooterLink = ({ className, href, icon, label }) =>
 
 FooterLink.propTypes = {
   className: PropTypes.string,
-  href: PropTypes.string,
+  href: PropTypes.string.isRequired,
   icon: PropTypes.node,
-  label: PropTypes.string,
+  label: PropTypes.string.isRequired,
+}
+FooterLink.defaultProps = {
+  className: null,
+  icon: null,
 }
 
 // -----------------
@@ -43,9 +46,9 @@ export const FooterTool = ({ className, icon, label, onClick }) =>
   </button>
 
 FooterTool.propTypes = {
-  className: PropTypes.string,
-  icon: PropTypes.node,
-  label: PropTypes.string,
-  onClick: PropTypes.func,
+  className: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 

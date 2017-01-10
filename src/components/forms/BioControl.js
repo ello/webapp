@@ -6,8 +6,8 @@ class BioControl extends Component {
 
   static propTypes = {
     id: PropTypes.string.isRequired,
-    onChange: PropTypes.func,
-    text: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired,
   }
 
   static defaultProps = {

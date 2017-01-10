@@ -13,7 +13,9 @@ export default class ImageBlock extends Component {
   }
 
   static defaultProps = {
+    blob: null,
     data: Immutable.Map(),
+    isUploading: false,
   }
 
   onLoadSuccess = () => {

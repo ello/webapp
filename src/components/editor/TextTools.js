@@ -25,6 +25,7 @@ export default class TextTools extends Component {
       isItalicActive: false,
       isLinkActive: false,
     },
+    coordinates: null,
     text: '',
   }
 

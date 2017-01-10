@@ -15,6 +15,11 @@ Modal.propTypes = {
   kind: PropTypes.string.isRequired,
   onClickModal: PropTypes.func,
 }
+Modal.defaultProps = {
+  classList: null,
+  component: null,
+  onClickModal: null,
+}
 
 export default Modal
 
