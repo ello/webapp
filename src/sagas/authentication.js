@@ -50,6 +50,7 @@ export function* logoutSaga() {
     yield take(actionTypes)
     document.cookie = 'ello_skip_prerender=false'
     yield put(cancelAuthRefresh())
+    yield put(clearAuthStore())
     yield put(push('/enter'))
   }
 }

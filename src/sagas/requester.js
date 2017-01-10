@@ -8,7 +8,7 @@ import { selectRefreshToken } from '../selectors/authentication'
 import { selectLastNotificationCheck } from '../selectors/gui'
 import { selectPathname } from '../selectors/routing'
 import {
-  clearAuthToken,
+  clearAuthStore,
   refreshAuthenticationToken,
 } from '../actions/authentication'
 import { fetchCredentials, sagaFetch } from './api'
@@ -166,8 +166,7 @@ export function* handleRequestError(error, action) {
       unauthorizedActionQueue.push(action)
       if (Object.keys(runningFetches).length === 0) {
         // if a 401 happens we should rm the access token - it is invalid
-        yield put(clearAuthToken())
-
+        yield put(clearAuthStore())
         const refreshToken = yield select(selectRefreshToken)
         yield put(refreshAuthenticationToken(refreshToken))
       }
