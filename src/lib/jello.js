@@ -113,6 +113,15 @@ export function scrollTo(x, y, options = {}) {
   requestAnimationFrame(animate)
 }
 
+export function isElementPartiallyInViewport(el) {
+  const rect = el.getBoundingClientRect()
+  const containmentRect = {
+    top: 0,
+    bottom: window.innerHeight || document.documentElement.clientHeight,
+  }
+  return rect.top <= containmentRect.bottom && rect.bottom >= containmentRect.top
+}
+
 function isElementInViewport(el, topOffset = 0) {
   const rect = el.getBoundingClientRect()
   return (

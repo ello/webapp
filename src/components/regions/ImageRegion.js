@@ -25,6 +25,7 @@ class ImageRegion extends Component {
     innerHeight: PropTypes.number,
     isComment: PropTypes.bool,
     isGridMode: PropTypes.bool.isRequired,
+    isVisible: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
     links: PropTypes.object,
     postDetailPath: PropTypes.string,
@@ -32,7 +33,6 @@ class ImageRegion extends Component {
 
   static defaultProps = {
     isComment: false,
-    isGridMode: false,
     isNotification: false,
   }
 
@@ -74,7 +74,7 @@ class ImageRegion extends Component {
     return !Immutable.is(nextProps.assets, this.props.assets) ||
       !Immutable.is(nextProps.content, this.props.content) ||
       !Immutable.is(nextProps.links, this.props.links) ||
-      ['buyLinkURL', 'columnWidth', 'contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
+      ['buyLinkURL', 'columnWidth', 'contentWidth', 'innerHeight', 'isGridMode', 'isVisible'].some(prop =>
         nextProps[prop] !== this.props[prop],
       ) ||
       ['marginBottom', 'scale', 'status'].some(prop => nextState[prop] !== this.state[prop])
@@ -201,13 +201,15 @@ class ImageRegion extends Component {
   }
 
   renderGifAttachment() {
-    const { content, isNotification } = this.props
+    const { content, isNotification, isVisible } = this.props
     const dimensions = this.getImageDimensions()
+    console.log('renderGifAttachment')
     return (
       <ImageAsset
         alt={content.get('alt') ? content.get('alt').replace('.gif', '') : null}
         className="ImageAttachment"
         height={isNotification ? 'auto' : dimensions.height}
+        isVisible={isVisible}
         onLoadFailure={this.onLoadFailure}
         onLoadSuccess={this.onLoadSuccess}
         role="presentation"

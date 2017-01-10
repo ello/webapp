@@ -30,6 +30,8 @@ import {
   RepostHeader,
 } from '../components/posts/PostRenderables'
 import { WatchTool } from '../components/posts/PostTools'
+import { isElementPartiallyInViewport } from '../lib/jello'
+import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 
 export function mapStateToProps(state, props) {
   const json = selectJson(state)
@@ -122,13 +124,29 @@ class PostContainer extends Component {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.assets, this.props.assets) ||
+  componentWillMount() {
+    this.state = { isVisible: false }
+    addScrollObject(this)
+  }
+
+  componentDidMount() {
+    this.onScroll()
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return ['isVisible'].some(prop =>
+        nextState[prop] !== this.state[prop],
+      ) ||
+      !Immutable.is(nextProps.assets, this.props.assets) ||
       !Immutable.is(nextProps.author, this.props.author) ||
       !Immutable.is(nextProps.post, this.props.post) ||
       ['columnWidth', 'contentWidth', 'innerHeight', 'isGridMode', 'isLoggedIn', 'isMobile'].some(prop =>
         nextProps[prop] !== this.props[prop],
       )
+  }
+
+  componentWillUnmount() {
+    removeScrollObject(this)
   }
 
   onClickWatchPost = () => {
@@ -143,6 +161,13 @@ class PostContainer extends Component {
     } else {
       dispatch(watchPost(post))
       dispatch(trackEvent('watched-post'))
+    }
+  }
+
+  onScroll() {
+    const isVisible = isElementPartiallyInViewport(this.postContainer)
+    if (this.state.isVisible !== isVisible) {
+      this.setState({ isVisible })
     }
   }
 
@@ -178,6 +203,7 @@ class PostContainer extends Component {
       showLovers,
       showReposters,
     } = this.props
+    const { isVisible } = this.state
     if (!post || !post.get('id')) { return null }
 
     let postHeader
@@ -201,7 +227,15 @@ class PostContainer extends Component {
 
     const isRepostAnimating = isReposting && !postBody
     return (
-      <div className={classNames('Post', { isPostHeaderHidden: isPostHeaderHidden && !isRepost })}>
+      <div
+        className={classNames(
+          'Post',
+          { isPostHeaderHidden: isPostHeaderHidden && !isRepost },
+          { isVisibilityHidden: !isVisible },
+        )}
+        id={post.get('id')}
+        ref={(comp) => { this.postContainer = comp }}
+      >
         {postHeader}
         {showEditor ?
           <Editor post={post} /> :
@@ -214,6 +248,7 @@ class PostContainer extends Component {
             contentWidth={contentWidth}
             innerHeight={innerHeight}
             isGridMode={isGridMode}
+            isVisible={isVisible}
             post={post}
           />
         }

@@ -3,6 +3,7 @@ import React, { PropTypes, PureComponent } from 'react'
 export default class ImageAsset extends PureComponent {
 
   static propTypes = {
+    isVisible: PropTypes.bool,
     onLoadSuccess: PropTypes.func,
     onLoadFailure: PropTypes.func,
     src: PropTypes.string.isRequired,
@@ -10,11 +11,13 @@ export default class ImageAsset extends PureComponent {
   }
 
   componentDidMount() {
-    this.createLoader()
+    if (this.props.isVisible) {
+      this.createLoader()
+    }
   }
 
   componentDidUpdate(prevProps) {
-    if (!this.img && prevProps.src !== this.props.src) {
+    if (this.props.isVisible && !this.img && prevProps.src !== this.props.src) {
       this.createLoader()
     }
   }
@@ -40,6 +43,7 @@ export default class ImageAsset extends PureComponent {
   createLoader() {
     this.disposeLoader()
     const { src, srcSet } = this.props
+    console.log('createLoader', src)
     const hasSource = !!((src && src.length) || (srcSet && srcSet.length))
     if (!hasSource) { return }
     this.img = new Image()
@@ -62,6 +66,7 @@ export default class ImageAsset extends PureComponent {
     const elementProps = { ...this.props }
     delete elementProps.onLoadFailure
     delete elementProps.onLoadSuccess
+    delete elementProps.isVisible
     if (elementProps.isBackgroundImage) {
       const style = elementProps.src ? { backgroundImage: `url(${elementProps.src})` } : null
       delete elementProps.src

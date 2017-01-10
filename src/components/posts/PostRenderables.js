@@ -218,7 +218,7 @@ RepostHeader.propTypes = {
 
 export const PostBody = (props) => {
   const { assets, author, columnWidth, commentOffset, contentWarning,
-    contentWidth, innerHeight, isGridMode, post } = props
+    contentWidth, innerHeight, isGridMode, isVisible, post } = props
   if (!post || !author) { return null }
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
@@ -234,6 +234,7 @@ export const PostBody = (props) => {
     contentWidth,
     innerHeight,
     isGridMode,
+    isVisible,
     postDetailPath,
   }
   if (post.get('repostContent') && post.get('repostContent').size) {
@@ -281,6 +282,7 @@ PostBody.propTypes = {
   contentWidth: PropTypes.number,
   innerHeight: PropTypes.number,
   isGridMode: PropTypes.bool,
+  isVisible: PropTypes.bool,
   post: PropTypes.object,
 }
 
