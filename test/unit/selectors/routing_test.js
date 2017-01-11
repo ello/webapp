@@ -6,6 +6,7 @@ import {
   selectLocation,
   selectPreviousPath,
   selectPathname,
+  selectQueryTerms,
   selectViewNameFromRoute,
 } from '../../../src/selectors/routing'
 
@@ -19,7 +20,7 @@ describe('routing selectors', () => {
     routing = Immutable.fromJS({
       location: {
         pathname: '/state',
-        query: { terms: 'state.query.terms', type: 'state.query.type' },
+        terms: 'state.query.terms',
       },
       previousPath: 'state.previousPath',
     })
@@ -76,6 +77,12 @@ describe('routing selectors', () => {
     it('returns the state.routing.location.pathname', () => {
       const props = { ...propsLocation }
       expect(selectPathname(state, props)).to.deep.equal(state.routing.getIn(['location', 'pathname']))
+    })
+  })
+
+  context('#selectQueryTerms', () => {
+    it('returns the routing.location.query.terms', () => {
+      expect(selectQueryTerms(state)).to.equal('state.query.terms')
     })
   })
 
