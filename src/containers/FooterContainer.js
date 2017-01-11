@@ -21,7 +21,7 @@ class FooterContainer extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLayoutToolHidden: PropTypes.bool.isRequired,
-    isPaginatoring: PropTypes.bool,
+    isPaginatoring: PropTypes.bool.isRequired,
   }
 
   onClickScrollToTop = () => {
