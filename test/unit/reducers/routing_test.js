@@ -18,6 +18,7 @@ describe('routing reducer', () => {
       location: {
         pathname: '/discover/trending',
         state: undefined,
+        terms: undefined,
       },
       locationBeforeTransitions: { pathname: '/discover/trending' },
       previousPath: undefined,
@@ -27,6 +28,26 @@ describe('routing reducer', () => {
       const action = { type: LOCATION_CHANGE, payload: { locationBeforeTransitions: { pathname: '/discover/trending' } } }
       const state = reducer(initialState, action)
       expect(state).to.equal(subject)
+    })
+
+    it('LOCATION_CHANGE updates the query.terms when present', () => {
+      const action = { type: LOCATION_CHANGE, payload: { locationBeforeTransitions: { query: { terms: 'terms' } } } }
+      const state = reducer(initialState, action)
+      expect(state.getIn(['location', 'terms'])).to.equal('terms')
+    })
+
+    it('LOCATION_CHANGE updates the query.terms from payload', () => {
+      const action = { type: LOCATION_CHANGE, payload: { query: { terms: 'terms' } } }
+      const state = reducer(initialState, action)
+      expect(state.getIn(['location', 'terms'])).to.equal('terms')
+    })
+
+    it('LOCATION_CHANGE resets the terms to undefined when missing', () => {
+      const action = { type: LOCATION_CHANGE, payload: { query: { terms: 'terms' } } }
+      let state = reducer(initialState, action)
+      expect(state.getIn(['location', 'terms'])).to.equal('terms')
+      state = reducer(state, { type: LOCATION_CHANGE, payload: { locationBeforeTransitions: { pathname: '/discover/trending' } } })
+      expect(state.getIn(['location', 'terms'])).to.equal(undefined)
     })
 
     it('A non LOCATION_CHANGE action type does not update the routing', () => {
