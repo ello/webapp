@@ -23,6 +23,11 @@ class ModalContainer extends PureComponent {
     kind: PropTypes.string.isRequired,
   }
 
+  static defaultProps = {
+    classList: null,
+    component: null,
+  }
+
   componentDidMount() {
     Mousetrap.bind(SHORTCUT_KEYS.ESC, () => { this.close() })
   }
