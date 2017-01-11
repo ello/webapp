@@ -23,7 +23,10 @@ const EmbedRegion = ({ postDetailPath, region }) => {
 
 EmbedRegion.propTypes = {
   postDetailPath: PropTypes.string,
-  region: PropTypes.object,
+  region: PropTypes.object.isRequired,
+}
+EmbedRegion.defaultProps = {
+  postDetailPath: null,
 }
 
 export default EmbedRegion

@@ -67,7 +67,7 @@ CommentTool.propTypes = {
   detailLink: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   onClickToggleComments: PropTypes.func.isRequired,
-  postCommentsCount: PropTypes.number,
+  postCommentsCount: PropTypes.number.isRequired,
 }
 
 const LoveTool = ({ onClickLovePost, onClickToggleLovers, postLoved, postLovesCount }) =>
@@ -94,7 +94,10 @@ LoveTool.propTypes = {
   onClickLovePost: PropTypes.func.isRequired,
   onClickToggleLovers: PropTypes.func.isRequired,
   postLoved: PropTypes.bool,
-  postLovesCount: PropTypes.number,
+  postLovesCount: PropTypes.number.isRequired,
+}
+LoveTool.defaultProps = {
+  postLoved: false,
 }
 
 const RepostTool = ({
@@ -123,12 +126,16 @@ const RepostTool = ({
   </span>
 
 RepostTool.propTypes = {
-  isOwnPost: PropTypes.bool,
+  isOwnPost: PropTypes.bool.isRequired,
   isRepostAnimating: PropTypes.bool,
   onClickRepostPost: PropTypes.func.isRequired,
   onClickToggleReposters: PropTypes.func.isRequired,
   postReposted: PropTypes.bool,
-  postRepostsCount: PropTypes.number,
+  postRepostsCount: PropTypes.number.isRequired,
+}
+RepostTool.defaultProps = {
+  isRepostAnimating: false,
+  postReposted: false,
 }
 
 // In use by the PostContainer for a weird design around the watch tool in mobile
@@ -141,8 +148,8 @@ export const WatchTool = ({ isMobile, isWatchingPost, onClickWatchPost }) =>
   </span>
 
 WatchTool.propTypes = {
-  isMobile: PropTypes.bool,
-  isWatchingPost: PropTypes.bool,
+  isMobile: PropTypes.bool.isRequired,
+  isWatchingPost: PropTypes.bool.isRequired,
   onClickWatchPost: PropTypes.func.isRequired,
 }
 
@@ -248,13 +255,13 @@ PostTools.propTypes = {
   author: PropTypes.object.isRequired,
   isCommentsActive: PropTypes.bool.isRequired,
   isCommentsRequesting: PropTypes.bool.isRequired,
-  isGridMode: PropTypes.bool,
+  isGridMode: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  isMobile: PropTypes.bool,
-  isOwnOriginalPost: PropTypes.bool,
-  isOwnPost: PropTypes.bool,
+  isMobile: PropTypes.bool.isRequired,
+  isOwnOriginalPost: PropTypes.bool.isRequired,
+  isOwnPost: PropTypes.bool.isRequired,
   post: PropTypes.object.isRequired,
-  postRepostsCount: PropTypes.number,
+  postRepostsCount: PropTypes.number.isRequired,
 }
 
 export default PostTools

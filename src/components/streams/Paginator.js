@@ -14,11 +14,11 @@ function getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRema
 }
 
 export const Paginator = ({
-    className = null,
-    hasShowMoreButton = false,
-    isHidden = true,
+    className,
+    hasShowMoreButton,
+    isHidden,
     loadNextPage,
-    messageText = '',
+    messageText,
     totalPages,
     totalPagesRemaining,
   }) => {
@@ -34,18 +34,21 @@ export const Paginator = ({
     </div>
   )
 }
-
 Paginator.propTypes = {
   className: PropTypes.string,
   hasShowMoreButton: PropTypes.bool,
   isHidden: PropTypes.bool,
   loadNextPage: PropTypes.func,
   messageText: PropTypes.string,
-  totalPages: PropTypes.number.isRequired,
-  totalPagesRemaining: PropTypes.number.isRequired,
+  totalPages: PropTypes.number,
+  totalPagesRemaining: PropTypes.number,
 }
-
 Paginator.defaultProps = {
+  className: null,
+  hasShowMoreButton: false,
+  isHidden: true,
+  loadNextPage: null,
+  messageText: '',
   totalPages: 0,
   totalPagesRemaining: 0,
 }
