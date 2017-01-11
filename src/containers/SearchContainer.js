@@ -46,6 +46,10 @@ class SearchContainer extends PureComponent {
     terms: PropTypes.string.isRequired,
   }
 
+  static defaultProps = {
+    debounceWait: 666,
+  }
+
   static preRender = (store, routerState) => {
     const term = get(routerState, 'location.query.terms', '')
     const type = get(routerState, 'location.query.type', 'posts')
@@ -54,7 +58,7 @@ class SearchContainer extends PureComponent {
   }
 
   componentWillMount() {
-    const { debounceWait = 666 } = this.props
+    const { debounceWait } = this.props
     if (debounceWait > 0) {
       this.search = debounce(this.search, debounceWait)
     }
