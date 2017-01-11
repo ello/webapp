@@ -7,7 +7,7 @@ import { CheckIcon } from '../editor/EditorIcons'
 class CategoryButton extends Component {
 
   static propTypes = {
-    category: PropTypes.object,
+    category: PropTypes.object.isRequired,
     onCategoryClick: PropTypes.func.isRequired,
   }
 
@@ -45,11 +45,11 @@ const OnboardingCategories = ({
   onCategoryClick,
 }) => {
   const btns = []
-  categories.map((category, index) =>
+  categories.map(category =>
     btns.push(
       <CategoryButton
         category={category}
-        key={`CategoryLink_${category.get('slug')}_${index}`}
+        key={`CategoryLink_${category.get('slug')}`}
         onCategoryClick={onCategoryClick}
       />,
     ),
@@ -69,7 +69,7 @@ const OnboardingCategories = ({
 }
 
 OnboardingCategories.propTypes = {
-  categories: PropTypes.array,
+  categories: PropTypes.array.isRequired,
   isNextDisabled: PropTypes.bool.isRequired,
   onCategoryClick: PropTypes.func.isRequired,
 }

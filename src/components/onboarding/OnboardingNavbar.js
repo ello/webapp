@@ -26,7 +26,9 @@ const OnboardingNavbar = (props, context) => {
 OnboardingNavbar.propTypes = {
   isNextDisabled: PropTypes.bool,
 }
-
+OnboardingNavbar.defaultProps = {
+  isNextDisabled: false,
+}
 OnboardingNavbar.contextTypes = {
   nextLabel: PropTypes.string,
   onDoneClick: PropTypes.func,

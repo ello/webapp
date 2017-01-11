@@ -18,11 +18,11 @@ class ImageRegion extends Component {
   static propTypes = {
     buyLinkURL: PropTypes.string,
     assets: PropTypes.object,
-    columnWidth: PropTypes.number,
-    commentOffset: PropTypes.number,
+    columnWidth: PropTypes.number.isRequired,
+    commentOffset: PropTypes.number.isRequired,
     content: PropTypes.object.isRequired,
-    contentWidth: PropTypes.number,
-    innerHeight: PropTypes.number,
+    contentWidth: PropTypes.number.isRequired,
+    innerHeight: PropTypes.number.isRequired,
     isComment: PropTypes.bool,
     isGridMode: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
@@ -31,9 +31,12 @@ class ImageRegion extends Component {
   }
 
   static defaultProps = {
+    buyLinkURL: null,
+    assets: null,
     isComment: false,
-    isGridMode: false,
     isNotification: false,
+    links: null,
+    postDetailPath: null,
   }
 
   componentWillMount() {

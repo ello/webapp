@@ -13,8 +13,8 @@ const BlockMuteButton = ({ className, onClick }) =>
   </button>
 
 BlockMuteButton.propTypes = {
-  className: PropTypes.string,
-  onClick: PropTypes.func,
+  className: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default BlockMuteButton
