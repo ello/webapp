@@ -77,6 +77,22 @@ class ViewportContainer extends PureComponent {
     userDetailPathClassName: PropTypes.string,
   }
 
+  static defaultProps = {
+    hasLaunchedSignupModal: false,
+    innerHeight: 0,
+    innerWidth: 0,
+    isAuthenticationView: false,
+    isDiscoverView: false,
+    isLoggedIn: false,
+    isNavbarHidden: false,
+    isNotificationsActive: false,
+    isOnboardingView: false,
+    isProfileMenuActive: false,
+    modalType: null,
+    scrollOffset: 0,
+    userDetailPathClassName: null,
+  }
+
   static contextTypes = {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
   }
