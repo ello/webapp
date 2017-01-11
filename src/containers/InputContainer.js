@@ -40,14 +40,19 @@ function mapStateToProps(state) {
 class InputContainer extends PureComponent {
 
   static propTypes = {
-    deviceSize: PropTypes.string,
+    deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     completions: PropTypes.object,
     emojis: PropTypes.object,
     isCompleterActive: PropTypes.bool.isRequired,
     isTextToolsActive: PropTypes.bool.isRequired,
-    textToolsCoordinates: PropTypes.object,
-    textToolsStates: PropTypes.object,
+    textToolsCoordinates: PropTypes.object.isRequired,
+    textToolsStates: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    completions: null,
+    emojis: null,
   }
 
   componentWillMount() {
