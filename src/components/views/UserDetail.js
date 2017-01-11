@@ -52,7 +52,6 @@ export const UserDetail = (props) => {
     </MainView>
   )
 }
-
 UserDetail.propTypes = {
   activeType: PropTypes.string,
   isLoggedIn: PropTypes.bool.isRequired,
@@ -75,7 +74,6 @@ export const UserDetailError = ({ children }) =>
       {children}
     </section>
   </MainView>
-
 UserDetailError.propTypes = {
   children: PropTypes.node.isRequired,
 }

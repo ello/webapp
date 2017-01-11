@@ -22,6 +22,10 @@ class TextRegion extends Component {
     postDetailPath: PropTypes.string,
   }
 
+  static defaultProps = {
+    postDetailPath: null,
+  }
+
   onClickRegion = (e) => {
     const { dispatch, isGridMode, postDetailPath } = this.props
     const { classList, dataset } = e.target

@@ -20,7 +20,9 @@ function renderHeader({ notifier }) {
 renderHeader.propTypes = {
   notifier: PropTypes.object,
 }
-
+renderHeader.defaultProps = {
+  notifier: null,
+}
 
 function renderBody({ children, summary }) {
   if (!children) { return null }
@@ -37,7 +39,10 @@ renderBody.propTypes = {
   children: PropTypes.node,
   summary: PropTypes.object,
 }
-
+renderBody.defaultProps = {
+  children: null,
+  summary: null,
+}
 
 function renderAssets({ summary }) {
   return (
@@ -45,9 +50,11 @@ function renderAssets({ summary }) {
       <div className="NotificationAsset">{summary.assets[0]}</div> : null
   )
 }
-
 renderAssets.propTypes = {
   summary: PropTypes.object,
+}
+renderAssets.defaultProps = {
+  summary: null,
 }
 
 function renderFooter({ activityPath, createdAt }) {
@@ -60,10 +67,12 @@ function renderFooter({ activityPath, createdAt }) {
     </footer>
   )
 }
-
 renderFooter.propTypes = {
   activityPath: PropTypes.string.isRequired,
   createdAt: PropTypes.string,
+}
+renderFooter.defaultProps = {
+  createdAt: null,
 }
 
 export const Notification = ({
@@ -84,8 +93,6 @@ export const Notification = ({
     </div>
   )
 }
-
-
 Notification.propTypes = {
   activityPath: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
@@ -93,6 +100,12 @@ Notification.propTypes = {
   createdAt: PropTypes.string,
   notifier: PropTypes.object,
   summary: PropTypes.object,
+}
+Notification.defaultProps = {
+  className: null,
+  createdAt: null,
+  notifier: null,
+  summary: null,
 }
 
 export default Notification

@@ -66,7 +66,7 @@ export function mapStateToProps(state, props) {
     paramsUsername: username,
     streamAction,
     streamType: selectStreamType(state),
-    tabs: isSelf && type === 'following' ? followingTabs : null,
+    tabs: isSelf && type === 'following' ? followingTabs : [],
     user,
     viewKey: `userDetail/${username}/${type}${keyPostfix}`,
   }

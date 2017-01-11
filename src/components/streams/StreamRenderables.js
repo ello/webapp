@@ -13,11 +13,11 @@ import { isElloAndroid } from '../../lib/jello'
 
 export const categoriesAsGrid = categories =>
   <div className="Categories asGrid">
-    {categories.data.map((category, index) =>
+    {categories.data.map(category =>
       <Link
         className="CategoryLink"
         to={`/discover/${category.get('slug')}`}
-        key={`CategoryLink_${category.get('slug')}_${index}`}
+        key={`CategoryLink_${category.get('slug')}`}
         style={{ backgroundImage: `url("${category.getIn(['tileImage', 'large', 'url'])}")` }}
       >
         <span className="CategoryLinkName">{category.get('name')}</span>
@@ -63,8 +63,8 @@ export const postsAsGrid = (posts, columnCount, isPostHeaderHidden = false) => {
   })
   return (
     <div className="Posts asGrid">
-      {columns.map((columnPosts, index) =>
-        <div className="Column" key={`column_${index}`}>
+      {columns.map(columnPosts =>
+        <div className="Column" key={`column_${Math.random()}`}>
           {columnPosts.map(post =>
             <article className="PostGrid" key={`postsAsGrid_${post.get('id')}`}>
               <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
@@ -100,9 +100,9 @@ export const commentsAsList = post =>
 
 export const notificationList = notifications =>
   <div className="Notifications">
-    {notifications.data.map((notification, index) =>
+    {notifications.data.map(notification =>
       <NotificationContainer
-        key={`notificationParser${index}_${notification.get('createdAt', Date.now())}`}
+        key={`notificationParser_${notification.get('createdAt', Date.now())}`}
         notification={notification}
       />,
     )}
@@ -116,9 +116,9 @@ export const userAvatars = users =>
 export const profileToggles = settings =>
   settings.data.map((setting, index) => {
     if (!isElloAndroid() && setting.get('label').toLowerCase().indexOf('push') === 0) { return null }
-    const arr = [<TreeButton key={`settingLabel${index}`}>{setting.get('label')}</TreeButton>]
+    const arr = [<TreeButton key={`settingLabel_${setting.get('label')}`}>{setting.get('label')}</TreeButton>]
     arr.push(
-      <TreePanel key={`settingItems${index}`}>
+      <TreePanel key={`settingItems_${setting.get('label', index)}`}>
         {setting.get('items').map(item =>
           <Preference
             definition={{ term: item.get('label'), desc: item.get('info') }}

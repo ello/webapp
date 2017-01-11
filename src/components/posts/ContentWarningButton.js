@@ -4,7 +4,6 @@ import classNames from 'classnames'
 export default class ContentWarningButton extends Component {
 
   static propTypes = {
-    onClick: PropTypes.func,
     post: PropTypes.object.isRequired,
   }
 
@@ -14,14 +13,10 @@ export default class ContentWarningButton extends Component {
     }
   }
 
-  onClickToggle = (e) => {
-    const { onClick } = this.props
+  onClickToggle = () => {
     const { isOpen } = this.state
     const newIsOpen = !isOpen
     this.setState({ isOpen: newIsOpen })
-    if (onClick) {
-      onClick({ isOpen: newIsOpen }, e)
-    }
   }
 
   render() {

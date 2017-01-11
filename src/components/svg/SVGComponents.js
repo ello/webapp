@@ -19,11 +19,13 @@ export const SVGIcon = ({ children, className, onClick }) =>
   >
     {children}
   </SVGComponent>
-
 SVGIcon.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string.isRequired,
   onClick: PropTypes.func,
+}
+SVGIcon.defaultProps = {
+  onClick: null,
 }
 
 export const SVGBox = ({ children, className, size = '40' }) =>
@@ -34,10 +36,12 @@ export const SVGBox = ({ children, className, size = '40' }) =>
   >
     {children}
   </SVGComponent>
-
 SVGBox.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string.isRequired,
   size: PropTypes.string,
+}
+SVGBox.defaultProps = {
+  size: null,
 }
 
