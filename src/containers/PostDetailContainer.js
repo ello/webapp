@@ -44,6 +44,11 @@ class PostDetailContainer extends Component {
     paramsUsername: PropTypes.string.isRequired,
   }
 
+  static defaultProps = {
+    author: null,
+    post: null,
+  }
+
   static preRender = (store, routerState) => {
     const params = routerState.params
     return store.dispatch(loadPostDetail(`~${params.token}`, `~${params.username}`))
