@@ -49,10 +49,10 @@ function mapStateToProps(state, props) {
 
 class MetaContainer extends PureComponent {
   static propTypes = {
-    discoverMetaData: PropTypes.object,
-    metaPageType: PropTypes.string,
+    discoverMetaData: PropTypes.object.isRequired,
+    metaPageType: PropTypes.string.isRequired,
     nextPage: PropTypes.string,
-    pathname: PropTypes.string,
+    pathname: PropTypes.string.isRequired,
     postMetaCanonicalUrl: PropTypes.string,
     postMetaDescription: PropTypes.string,
     postMetaImages: PropTypes.object,
@@ -63,7 +63,21 @@ class MetaContainer extends PureComponent {
     userMetaImage: PropTypes.string,
     userMetaRobots: PropTypes.string,
     userMetaTitle: PropTypes.string,
-    viewName: PropTypes.string,
+    viewName: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    nextPage: null,
+    postMetaCanonicalUrl: null,
+    postMetaDescription: null,
+    postMetaImages: PropTypes.object,
+    postMetaRobots: null,
+    postMetaTitle: null,
+    postMetaUrl: null,
+    userMetaDescription: null,
+    userMetaImage: null,
+    userMetaRobots: null,
+    userMetaTitle: null,
   }
 
   getDefaultTags({ description = META.DESCRIPTION, image = META.IMAGE, title = META.TITLE } = {}) {
