@@ -74,19 +74,19 @@ export function mapStateToProps(state, props) {
 
 class UserDetailContainer extends Component {
   static propTypes = {
-    activeUserFollowingType: PropTypes.string,
+    activeUserFollowingType: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isPostHeaderHidden: PropTypes.bool,
+    isPostHeaderHidden: PropTypes.bool.isRequired,
     isSelf: PropTypes.bool.isRequired,
     hasSaidHelloTo: PropTypes.bool.isRequired,
     hasZeroFollowers: PropTypes.bool.isRequired,
     hasZeroPosts: PropTypes.bool.isRequired,
     paramsUsername: PropTypes.string.isRequired,
-    streamAction: PropTypes.object,
-    tabs: PropTypes.array,
-    user: PropTypes.object,
-    viewKey: PropTypes.string,
+    streamAction: PropTypes.object.isRequired,
+    tabs: PropTypes.array.isRequired,
+    user: PropTypes.object.isRequired,
+    viewKey: PropTypes.string.isRequired,
   }
 
   static preRender = (store, routerState) => {
