@@ -16,7 +16,7 @@ export default (state = initialState, { type, payload }) => {
       location: {
         pathname: get(payload, 'locationBeforeTransitions.pathname', get(payload, 'pathname')),
         state: get(payload, 'locationBeforeTransitions.state', get(payload, 'state')),
-        terms: get(payload, 'locationBeforeTransitions.query.terms', get(payload, 'query.terms', null)),
+        terms: get(payload, 'locationBeforeTransitions.query.terms', get(payload, 'query.terms', undefined)),
       },
       locationBeforeTransitions: payload.locationBeforeTransitions || payload,
       previousPath: state.getIn(['location', 'pathname']),

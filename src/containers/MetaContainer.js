@@ -28,7 +28,6 @@ const selectMetaPageType = createSelector(
 
 const selectDefaultMetaRobots = createSelector(
   [selectViewNameFromRoute, selectQueryTerms], (viewName, terms) => {
-    // Terms seems to be undefined at mount time..
     if (viewName === 'search' && terms && terms.length) {
       return terms.charAt(0) === '#' ? 'index, follow' : 'noindex, follow'
     }
@@ -38,7 +37,6 @@ const selectDefaultMetaRobots = createSelector(
 
 function mapStateToProps(state, props) {
   const pagination = selectPagination(state, props)
-  console.log('robots', selectDefaultMetaRobots(state, props))
   return {
     defaultMetaRobots: selectDefaultMetaRobots(state, props),
     discoverMetaData: selectDiscoverMetaData(state, props),
