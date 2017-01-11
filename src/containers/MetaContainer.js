@@ -13,7 +13,7 @@ import {
   selectPostMetaTitle,
   selectPostMetaUrl,
 } from '../selectors/post'
-import { selectPathname, selectPropsQueryTerms, selectViewNameFromRoute } from '../selectors/routing'
+import { selectPathname, selectQueryTerms, selectViewNameFromRoute } from '../selectors/routing'
 import {
   selectUserMetaDescription,
   selectUserMetaImage,
@@ -27,9 +27,8 @@ const selectMetaPageType = createSelector(
 )
 
 const selectDefaultMetaRobots = createSelector(
-  [selectViewNameFromRoute, selectPropsQueryTerms], (viewName, terms) => {
+  [selectViewNameFromRoute, selectQueryTerms], (viewName, terms) => {
     // Terms seems to be undefined at mount time..
-    console.log(viewName, terms)
     if (viewName === 'search' && terms && terms.length) {
       return terms.charAt(0) === '#' ? 'index, follow' : 'noindex, follow'
     }
