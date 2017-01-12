@@ -19,12 +19,15 @@ export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
       </article>
     </div>
   </MainView>
-
 PostDetail.propTypes = {
   author: PropTypes.object,
-  hasEditor: PropTypes.bool,
-  post: PropTypes.object,
+  hasEditor: PropTypes.bool.isRequired,
+  post: PropTypes.object.isRequired,
   streamAction: PropTypes.object,
+}
+PostDetail.defaultProps = {
+  author: null,
+  streamAction: null,
 }
 
 export const PostDetailError = ({ children }) =>
@@ -33,7 +36,6 @@ export const PostDetailError = ({ children }) =>
       {children}
     </section>
   </MainView>
-
 PostDetailError.propTypes = {
   children: PropTypes.node.isRequired,
 }
