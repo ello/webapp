@@ -111,23 +111,31 @@ function mapStateToProps(state, props) {
 class HeroContainer extends Component {
   static propTypes = {
     broadcast: PropTypes.string,
-    categoryData: PropTypes.object,
+    categoryData: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     dpi: PropTypes.string.isRequired,
-    isAuthentication: PropTypes.bool,
-    isBackgroundCycle: PropTypes.bool,
-    isCategoryPromotion: PropTypes.bool,
+    isAuthentication: PropTypes.bool.isRequired,
+    isBackgroundCycle: PropTypes.bool.isRequired,
+    isCategoryPromotion: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    isPagePromotion: PropTypes.bool,
-    isUserProfile: PropTypes.bool,
+    isPagePromotion: PropTypes.bool.isRequired,
+    isUserProfile: PropTypes.bool.isRequired,
     json: PropTypes.object,
     pathname: PropTypes.string.isRequired,
-    useGif: PropTypes.bool,
+    useGif: PropTypes.bool.isRequired,
     userCoverImage: PropTypes.object,
     userId: PropTypes.string,
     username: PropTypes.string,
     viewName: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    broadcast: null,
+    json: null,
+    userCoverImage: null,
+    userId: null,
+    username: null,
   }
 
   static childContextTypes = {
