@@ -55,17 +55,21 @@ export function RegionItems(props) {
 }
 RegionItems.propTypes = {
   assets: PropTypes.object,
-  columnWidth: PropTypes.number.isRequired,
-  commentOffset: PropTypes.number.isRequired,
+  columnWidth: PropTypes.number,
+  commentOffset: PropTypes.number,
   content: PropTypes.object,
-  contentWidth: PropTypes.number.isRequired,
-  innerHeight: PropTypes.number.isRequired,
+  contentWidth: PropTypes.number,
+  innerHeight: PropTypes.number,
   isGridMode: PropTypes.bool,
   postDetailPath: PropTypes.string,
 }
 RegionItems.defaultProps = {
   assets: null,
+  columnWidth: null,
+  commentOffset: null,
   content: null,
+  contentWidth: null,
+  innerHeight: null,
   isGridMode: true,
   postDetailPath: null,
 }
