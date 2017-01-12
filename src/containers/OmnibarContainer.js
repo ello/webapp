@@ -22,6 +22,11 @@ class OmnibarContainer extends PureComponent {
     isActive: PropTypes.bool.isRequired,
   }
 
+  static defaultProps = {
+    avatar: null,
+    classList: null,
+  }
+
   componentWillMount() {
     this.state = {
       isFullScreen: false,
