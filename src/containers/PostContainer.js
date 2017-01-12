@@ -142,8 +142,7 @@ class PostContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return !Immutable.is(nextProps.assets, this.props.assets) ||
-      !Immutable.is(nextProps.author, this.props.author) ||
+    return !Immutable.is(nextProps.author, this.props.author) ||
       !Immutable.is(nextProps.post, this.props.post) ||
       ['columnWidth', 'contentWidth', 'innerHeight', 'isGridMode', 'isLoggedIn', 'isMobile'].some(prop =>
         nextProps[prop] !== this.props[prop],
@@ -198,7 +197,6 @@ class PostContainer extends Component {
       showReposters,
     } = this.props
     if (!post || !post.get('id')) { return null }
-
     let postHeader
     if (isRepost) {
       const { authorLinkObject } = this.props
