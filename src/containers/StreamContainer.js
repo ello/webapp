@@ -58,31 +58,35 @@ export function makeMapStateToProps() {
 class StreamContainer extends Component {
 
   static propTypes = {
-    action: PropTypes.object,
+    action: PropTypes.object.isRequired,
     children: PropTypes.node,
     className: PropTypes.string,
     columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
-    hasLaunchedSignupModal: PropTypes.bool,
+    hasLaunchedSignupModal: PropTypes.bool.isRequired,
     initModel: PropTypes.object,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isModalComponent: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
     json: PropTypes.object.isRequired,
-    omnibar: PropTypes.object,
+    omnibar: PropTypes.object.isRequired,
     paginatorText: PropTypes.string,
     renderObj: PropTypes.object.isRequired,
     result: PropTypes.object.isRequired,
-    resultPath: PropTypes.string,
+    resultPath: PropTypes.string.isRequired,
     scrollContainer: PropTypes.object,
     stream: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
+    children: null,
     className: '',
-    paginatorText: 'Loading',
+    initModel: null,
     isModalComponent: false,
+    isPostHeaderHidden: null,
+    paginatorText: 'Loading',
+    scrollContainer: null,
   }
 
   static contextTypes = {
