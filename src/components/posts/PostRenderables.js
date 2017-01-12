@@ -204,10 +204,13 @@ export const RepostHeader = ({ post, repostAuthor, repostedBy, inUserDetail }) =
   )
 }
 RepostHeader.propTypes = {
-  inUserDetail: PropTypes.bool.isRequired,
+  inUserDetail: PropTypes.bool,
   post: PropTypes.object.isRequired,
   repostAuthor: PropTypes.object.isRequired,
   repostedBy: PropTypes.object.isRequired,
+}
+RepostHeader.defaultProps = {
+  inUserDetail: false,
 }
 
 export const PostBody = (props) => {
