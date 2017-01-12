@@ -20,6 +20,10 @@ ZeroStream.propTypes = {
   onDismiss: PropTypes.func,
 }
 
+ZeroStream.defaultProps = {
+  onDismiss: null,
+}
+
 
 export const ZeroFollowingStream = () =>
   <ZeroStream emoji="lollipop">
