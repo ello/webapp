@@ -33,14 +33,19 @@ export function mapStateToProps(state, props) {
 class CommentContainer extends Component {
 
   static propTypes = {
-    assets: PropTypes.object,
-    author: PropTypes.object,
-    comment: PropTypes.object,
+    assets: PropTypes.object.isRequired,
+    author: PropTypes.object.isRequired,
+    comment: PropTypes.object.isRequired,
     commentBody: PropTypes.object,
     currentUser: PropTypes.object,
-    isEditing: PropTypes.bool,
-    isGridMode: PropTypes.bool,
-    post: PropTypes.object,
+    isEditing: PropTypes.bool.isRequired,
+    isGridMode: PropTypes.bool.isRequired,
+    post: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    currentUser: null,
+    commentBody: null,
   }
 
   shouldComponentUpdate(nextProps) {
