@@ -18,7 +18,6 @@ const ZeroStates = ({
         /> : null
       }
     </div>
-
 ZeroStates.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   isSelf: PropTypes.bool.isRequired,
@@ -28,7 +27,9 @@ ZeroStates.propTypes = {
   onSubmitHello: PropTypes.func,
   user: PropTypes.object.isRequired,
 }
-
+ZeroStates.defaultProps = {
+  onSubmitHello: null,
+}
 
 export const UserDetail = (props) => {
   // deconstruct props
@@ -53,20 +54,23 @@ export const UserDetail = (props) => {
   )
 }
 UserDetail.propTypes = {
-  activeType: PropTypes.string,
+  activeType: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  isPostHeaderHidden: PropTypes.bool,
+  isPostHeaderHidden: PropTypes.bool.isRequired,
   isSelf: PropTypes.bool.isRequired,
   hasSaidHelloTo: PropTypes.bool.isRequired,
   hasZeroFollowers: PropTypes.bool.isRequired,
   hasZeroPosts: PropTypes.bool.isRequired,
   onSubmitHello: PropTypes.func,
   onTabClick: PropTypes.func,
-  streamAction: PropTypes.object,
-  tabs: PropTypes.array,
+  streamAction: PropTypes.object.isRequired,
+  tabs: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
 }
-
+UserDetail.defaultProps = {
+  onSubmitHello: null,
+  onTabClick: null,
+}
 
 export const UserDetailError = ({ children }) =>
   <MainView className="UserDetail">
