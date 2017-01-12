@@ -28,7 +28,7 @@ SVGIcon.defaultProps = {
   onClick: null,
 }
 
-export const SVGBox = ({ children, className, size = '40' }) =>
+export const SVGBox = ({ children, className, size }) =>
   <SVGComponent
     className={classNames(className, 'SVGBox')}
     width={size}
@@ -42,6 +42,6 @@ SVGBox.propTypes = {
   size: PropTypes.string,
 }
 SVGBox.defaultProps = {
-  size: null,
+  size: 40,
 }
 
