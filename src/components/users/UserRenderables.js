@@ -31,9 +31,8 @@ export const UserAvatar = ({ user }) =>
     />
     <Hint>{`@${user.get('username')}`}</Hint>
   </Link>
-
 UserAvatar.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.object.isRequired,
 }
 
 // -----------------
@@ -56,9 +55,8 @@ export const UserCompact = ({ user }) =>
       user={user}
     />
   </div>
-
 UserCompact.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.object.isRequired,
 }
 
 // -----------------
@@ -72,7 +70,6 @@ export const UserDrawer = ({ endpoint, icon, post, resultType }) =>
       ignoresScrollPosition
     />
   </section>
-
 UserDrawer.propTypes = {
   endpoint: PropTypes.object.isRequired,
   icon: PropTypes.element.isRequired,
@@ -140,14 +137,16 @@ export const UserProfileCard = ({
       : null
     }
   </div>
-
 UserProfileCard.propTypes = {
-  isMobile: PropTypes.bool,
-  onClickCollab: PropTypes.func,
-  onClickHireMe: PropTypes.func,
+  isMobile: PropTypes.bool.isRequired,
+  onClickCollab: PropTypes.func.isRequired,
+  onClickHireMe: PropTypes.func.isRequired,
   onClickOpenFeaturedModal: PropTypes.func,
-  truncatedShortBio: PropTypes.string,
-  user: PropTypes.object,
+  truncatedShortBio: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
+}
+UserProfileCard.defaultProps = {
+  onClickOpenFeaturedModal: null,
 }
 
 // -----------------
@@ -238,17 +237,20 @@ export const UserProfile = ({
       />
     </UserProfileButtons>
   </div>
-
 UserProfile.propTypes = {
-  isLoggedIn: PropTypes.bool,
-  isMobile: PropTypes.bool,
-  onClickCollab: PropTypes.func,
-  onClickHireMe: PropTypes.func,
+  isLoggedIn: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool.isRequired,
+  onClickCollab: PropTypes.func.isRequired,
+  onClickHireMe: PropTypes.func.isRequired,
   onClickOpenBio: PropTypes.func,
   onClickOpenFeaturedModal: PropTypes.func,
-  onClickShareProfile: PropTypes.func,
-  truncatedShortBio: PropTypes.string,
-  useGif: PropTypes.bool,
-  user: PropTypes.object,
+  onClickShareProfile: PropTypes.func.isRequired,
+  truncatedShortBio: PropTypes.string.isRequired,
+  useGif: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
+}
+UserProfile.defaultProps = {
+  onClickOpenBio: null,
+  onClickOpenFeaturedModal: null,
 }
 
