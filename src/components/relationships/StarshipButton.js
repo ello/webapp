@@ -13,6 +13,7 @@ export function getNextPriority(currentPriority) {
 }
 
 class StarshipButton extends PureComponent {
+
   static propTypes = {
     className: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
@@ -25,11 +26,15 @@ class StarshipButton extends PureComponent {
       RELATIONSHIP_PRIORITY.BLOCK,
       RELATIONSHIP_PRIORITY.NONE,
       null,
-    ]).isRequired,
+    ]),
     userId: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
     ]).isRequired,
+  }
+
+  static defaultProps = {
+    priority: null,
   }
 
   componentWillMount() {

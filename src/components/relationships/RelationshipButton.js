@@ -19,6 +19,7 @@ export function getNextPriority(currentPriority) {
 }
 
 class RelationshipButton extends PureComponent {
+
   static propTypes = {
     className: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
@@ -31,11 +32,15 @@ class RelationshipButton extends PureComponent {
       RELATIONSHIP_PRIORITY.BLOCK,
       RELATIONSHIP_PRIORITY.NONE,
       null,
-    ]).isRequired,
+    ]),
     userId: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
     ]).isRequired,
+  }
+
+  static defaultProps = {
+    priority: null,
   }
 
   componentWillMount() {
