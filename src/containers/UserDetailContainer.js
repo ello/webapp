@@ -23,7 +23,7 @@ const followingTabs = [
   { type: 'noise', children: 'Starred' },
 ]
 
-export function getStreamAction({ activeUserFollowingType = 'friend', type = 'posts', username }) {
+export function getStreamAction({ activeUserFollowingType, type = 'posts', username }) {
   switch (type) {
     case 'following':
       return loadUserFollowing(`~${username}`, activeUserFollowingType)
