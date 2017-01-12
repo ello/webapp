@@ -78,7 +78,7 @@ class PostToolsContainer extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     isOwnOriginalPost: PropTypes.bool.isRequired,
     isOwnPost: PropTypes.bool.isRequired,
-    isRepostAnimating: PropTypes.bool,
+    isRepostAnimating: PropTypes.bool.isRequired,
     isWatchingPost: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
     postCommentsCount: PropTypes.number.isRequired,
