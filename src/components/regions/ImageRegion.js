@@ -74,8 +74,7 @@ class ImageRegion extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !Immutable.is(nextProps.assets, this.props.assets) ||
-      !Immutable.is(nextProps.content, this.props.content) ||
+    return !Immutable.is(nextProps.content, this.props.content) ||
       !Immutable.is(nextProps.links, this.props.links) ||
       ['buyLinkURL', 'columnWidth', 'contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
         nextProps[prop] !== this.props[prop],

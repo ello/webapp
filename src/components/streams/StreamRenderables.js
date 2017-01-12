@@ -63,8 +63,8 @@ export const postsAsGrid = (posts, columnCount, isPostHeaderHidden = false) => {
   })
   return (
     <div className="Posts asGrid">
-      {columns.map(columnPosts =>
-        <div className="Column" key={`column_${Math.random()}`}>
+      {columns.map((columnPosts, i) =>
+        <div className="Column" key={`column_${i + 1}`}>
           {columnPosts.map(post =>
             <article className="PostGrid" key={`postsAsGrid_${post.get('id')}`}>
               <PostContainer post={post} isPostHeaderHidden={isPostHeaderHidden} />
