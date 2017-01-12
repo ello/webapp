@@ -28,7 +28,8 @@ class EmbedBlock extends Component {
   }
 
   render() {
-    const { data: { service, url, thumbnailLargeUrl, id } } = this.props
+    const dataJS = this.props.data.toJS()
+    const { service, url, thumbnailLargeUrl, id } = dataJS
     const children = typeof window !== 'undefined' ?
       window.embetter.utils.playerHTML(
         window.embetter.services[service],
