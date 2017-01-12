@@ -5,7 +5,6 @@ export const SVGComponent = ({ children, ...rest }) =>
   <svg {...rest}>
     {children}
   </svg>
-
 SVGComponent.propTypes = {
   children: PropTypes.node.isRequired,
 }
@@ -42,6 +41,6 @@ SVGBox.propTypes = {
   size: PropTypes.string,
 }
 SVGBox.defaultProps = {
-  size: 40,
+  size: '40',
 }
 
