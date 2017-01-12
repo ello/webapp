@@ -41,6 +41,11 @@ class OnboardingSettingsContainer extends PureComponent {
     isNextDisabled: PropTypes.bool.isRequired,
   }
 
+  static defaultProps = {
+    avatar: null,
+    coverImage: null,
+  }
+
   static childContextTypes = {
     avatar: PropTypes.object,
     coverImage: PropTypes.object,
