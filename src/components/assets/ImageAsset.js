@@ -5,8 +5,15 @@ export default class ImageAsset extends PureComponent {
   static propTypes = {
     onLoadSuccess: PropTypes.func,
     onLoadFailure: PropTypes.func,
-    src: PropTypes.string.isRequired,
+    src: PropTypes.string,
     srcSet: PropTypes.string,
+  }
+
+  static defaultProps = {
+    onLoadSuccess: null,
+    onLoadFailure: null,
+    src: null,
+    srcSet: null,
   }
 
   componentDidMount() {

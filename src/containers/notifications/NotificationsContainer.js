@@ -48,7 +48,7 @@ class NotificationsContainer extends Component {
     announcementImage: PropTypes.string,
     announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    hasAnnouncementNotification: PropTypes.bool,
+    hasAnnouncementNotification: PropTypes.bool.isRequired,
     streamAction: PropTypes.object,
     streamType: PropTypes.string,
   }
@@ -56,9 +56,12 @@ class NotificationsContainer extends Component {
   static defaultProps = {
     activeTabType: 'all',
     announcementBody: '',
+    announcementCTACaption: null,
     announcementCTAHref: null,
     announcementImage: null,
     announcementTitle: '',
+    streamAction: null,
+    streamType: null,
   }
 
   static childContextTypes = {

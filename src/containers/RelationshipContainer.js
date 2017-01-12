@@ -89,6 +89,13 @@ class RelationshipContainer extends Component {
     username: PropTypes.string.isRequired,
   }
 
+  static defaultProps = {
+    className: null,
+    previousPath: null,
+    relationshipPriority: null,
+    shouldRenderBlockMute: false,
+  }
+
   static contextTypes = {
     onClickOpenRegistrationRequestDialog: PropTypes.func,
   }

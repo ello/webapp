@@ -24,9 +24,8 @@ export const PostLoversDrawer = ({ post }) =>
     post={post}
     resultType="love"
   />
-
 PostLoversDrawer.propTypes = {
-  post: PropTypes.object,
+  post: PropTypes.object.isRequired,
 }
 
 export const PostRepostersDrawer = ({ post }) =>
@@ -37,9 +36,8 @@ export const PostRepostersDrawer = ({ post }) =>
     post={post}
     resultType="repost"
   />
-
 PostRepostersDrawer.propTypes = {
-  post: PropTypes.object,
+  post: PropTypes.object.isRequired,
 }
 
 export const CommentStream = ({ post, author }) =>
@@ -63,24 +61,21 @@ export const CommentStream = ({ post, author }) =>
       }
     </StreamContainer>
   </div>
-
 CommentStream.propTypes = {
-  author: PropTypes.object,
-  post: PropTypes.object,
+  author: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired,
 }
 
 const PostHeaderTimeAgoLink = ({ to, createdAt }) =>
   <Link className="PostHeaderTimeAgoLink" to={to}>
     <span>{new Date(createdAt).timeAgoInWords()}</span>
   </Link>
-
 PostHeaderTimeAgoLink.propTypes = {
-  createdAt: PropTypes.string,
-  to: PropTypes.string,
+  createdAt: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
 }
 
-export const PostHeader = ({ post, author, isPostDetail = false }) => {
-  if (!post || !author) { return null }
+export const PostHeader = ({ post, author, isPostDetail }) => {
   const postDetailPath = getPostDetailPath(author, post)
   return (
     <header className="PostHeader" key={`PostHeader_${post.get('id')}`}>
@@ -115,11 +110,13 @@ export const PostHeader = ({ post, author, isPostDetail = false }) => {
     </header>
   )
 }
-
 PostHeader.propTypes = {
-  author: PropTypes.object,
+  author: PropTypes.object.isRequired,
   isPostDetail: PropTypes.bool,
-  post: PropTypes.object,
+  post: PropTypes.object.isRequired,
+}
+PostHeader.defaultProps = {
+  isPostDetail: false,
 }
 
 export const CategoryHeader = ({ post, author, categoryName, categoryPath }) => {
@@ -157,16 +154,14 @@ export const CategoryHeader = ({ post, author, categoryName, categoryPath }) => 
     </header>
   )
 }
-
 CategoryHeader.propTypes = {
-  author: PropTypes.object,
-  categoryName: PropTypes.string,
-  categoryPath: PropTypes.string,
-  post: PropTypes.object,
+  author: PropTypes.object.isRequired,
+  categoryName: PropTypes.string.isRequired,
+  categoryPath: PropTypes.string.isRequired,
+  post: PropTypes.object.isRequired,
 }
 
 export const RepostHeader = ({ post, repostAuthor, repostedBy, inUserDetail }) => {
-  if (!post || !repostedBy) { return null }
   const postDetailPath = getPostDetailPath(repostedBy, post)
   return (
     <header className={classNames('RepostHeader', { inUserDetail })} key={`RepostHeader_${post.get('id')}`}>
@@ -208,18 +203,19 @@ export const RepostHeader = ({ post, repostAuthor, repostedBy, inUserDetail }) =
     </header>
   )
 }
-
 RepostHeader.propTypes = {
   inUserDetail: PropTypes.bool,
-  post: PropTypes.object,
-  repostAuthor: PropTypes.object,
-  repostedBy: PropTypes.object,
+  post: PropTypes.object.isRequired,
+  repostAuthor: PropTypes.object.isRequired,
+  repostedBy: PropTypes.object.isRequired,
+}
+RepostHeader.defaultProps = {
+  inUserDetail: false,
 }
 
 export const PostBody = (props) => {
   const { assets, author, columnWidth, commentOffset, contentWarning,
     contentWidth, innerHeight, isGridMode, post } = props
-  if (!post || !author) { return null }
   const cells = []
   const postDetailPath = getPostDetailPath(author, post)
 
@@ -271,17 +267,25 @@ export const PostBody = (props) => {
     </div>
   )
 }
-
 PostBody.propTypes = {
   assets: PropTypes.object,
-  author: PropTypes.object,
+  author: PropTypes.object.isRequired,
   columnWidth: PropTypes.number,
   commentOffset: PropTypes.number,
   contentWarning: PropTypes.string,
   contentWidth: PropTypes.number,
   innerHeight: PropTypes.number,
   isGridMode: PropTypes.bool,
-  post: PropTypes.object,
+  post: PropTypes.object.isRequired,
+}
+PostBody.defaultProps = {
+  assets: null,
+  columnWidth: 0,
+  commentOffset: 0,
+  contentWarning: null,
+  contentWidth: 0,
+  innerHeight: 0,
+  isGridMode: false,
 }
 
 export const PostFooter = ({ post, author, isGridMode, isRepostAnimating }) => {
@@ -298,9 +302,13 @@ export const PostFooter = ({ post, author, isGridMode, isRepostAnimating }) => {
 }
 
 PostFooter.propTypes = {
-  author: PropTypes.object,
+  author: PropTypes.object.isRequired,
   isGridMode: PropTypes.bool,
   isRepostAnimating: PropTypes.bool,
-  post: PropTypes.object,
+  post: PropTypes.object.isRequired,
+}
+PostFooter.defaultProps = {
+  isGridMode: false,
+  isRepostAnimating: false,
 }
 

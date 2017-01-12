@@ -5,18 +5,18 @@ import TextRegion from '../regions/TextRegion'
 
 export function RegionItems(props) {
   const { assets, columnWidth, commentOffset, content, contentWidth,
-    innerHeight, isGridMode = true, postDetailPath = null } = props
+    innerHeight, isGridMode, postDetailPath } = props
   // sometimes the content is null/undefined for some reason
   if (!content) { return null }
   const cells = []
-  content.forEach((region, i) => {
+  content.forEach((region) => {
     switch (region.get('kind')) {
       case 'text':
         cells.push(
           <TextRegion
             content={region.get('data')}
             isGridMode={isGridMode}
-            key={`TextRegion_${i}`}
+            key={`TextRegion_${region.get('data')}`}
             postDetailPath={postDetailPath}
           />,
         )
@@ -32,14 +32,19 @@ export function RegionItems(props) {
             contentWidth={contentWidth}
             innerHeight={innerHeight}
             isGridMode={isGridMode}
-            key={`ImageRegion_${i}_${JSON.stringify(region.get('data'))}`}
+            key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
             links={region.get('links')}
             postDetailPath={postDetailPath}
           />,
         )
         break
       case 'embed':
-        cells.push(<EmbedRegion region={region} key={`EmbedRegion_${i}`} />)
+        cells.push(
+          <EmbedRegion
+            key={`EmbedRegion_${JSON.stringify(region.get('data'))}`}
+            region={region}
+          />,
+        )
         break
       default:
         break
@@ -48,7 +53,6 @@ export function RegionItems(props) {
   // loop through cells to grab out image/text
   return <div>{cells}</div>
 }
-
 RegionItems.propTypes = {
   assets: PropTypes.object,
   columnWidth: PropTypes.number,
@@ -59,19 +63,29 @@ RegionItems.propTypes = {
   isGridMode: PropTypes.bool,
   postDetailPath: PropTypes.string,
 }
+RegionItems.defaultProps = {
+  assets: null,
+  columnWidth: null,
+  commentOffset: null,
+  content: null,
+  contentWidth: null,
+  innerHeight: null,
+  isGridMode: true,
+  postDetailPath: null,
+}
 
 
 export function regionItemsForNotifications(content, postDetailPath = null, assets) {
   const imageAssets = []
   const texts = []
-  content.forEach((region, i) => {
+  content.forEach((region) => {
     switch (region.get('kind')) {
       case 'text':
         texts.push(
           <TextRegion
             content={region.get('data')}
             isGridMode={false}
-            key={`TextRegion_${i}`}
+            key={`TextRegion_${region.get('data')}`}
             postDetailPath={postDetailPath}
           />,
         )
@@ -84,7 +98,7 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
             content={region.get('data')}
             isGridMode
             isNotification
-            key={`ImageRegion_${i}_${JSON.stringify(region.get('data'))}`}
+            key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
             links={region.get('links')}
             postDetailPath={postDetailPath}
           />,
@@ -93,14 +107,14 @@ export function regionItemsForNotifications(content, postDetailPath = null, asse
       case 'embed':
         imageAssets.push(
           <EmbedRegion
-            key={`EmbedRegion_${i}`}
+            key={`EmbedRegion_${JSON.stringify(region.get('data'))}`}
             postDetailPath={postDetailPath}
             region={region}
           />,
         )
         break
       case 'rule':
-        texts.push(<hr className="NotificationRule" key={`NotificationRule_${i}`} />)
+        texts.push(<hr className="NotificationRule" />)
         break
       default:
         break

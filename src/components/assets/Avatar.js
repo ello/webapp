@@ -24,9 +24,14 @@ export default class Avatar extends PureComponent {
   }
 
   static defaultProps = {
+    alt: null,
     className: '',
+    onClick: null,
+    priority: null,
     size: 'regular',
-    useGif: false,
+    to: null,
+    userId: null,
+    username: null,
   }
 
   componentWillMount() {

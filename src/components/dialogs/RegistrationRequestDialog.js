@@ -13,7 +13,7 @@ const RegistrationRequestDialog = ({ promotional }) =>
   </div>
 
 RegistrationRequestDialog.propTypes = {
-  promotional: PropTypes.object,
+  promotional: PropTypes.object.isRequired,
 }
 
 export default RegistrationRequestDialog

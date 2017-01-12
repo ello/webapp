@@ -62,7 +62,6 @@ const Join = (props) => {
     </MainView>
   )
 }
-
 Join.propTypes = {
   email: PropTypes.string,
   isValid: PropTypes.bool.isRequired,
@@ -74,6 +73,12 @@ Join.propTypes = {
   usernameRenderStatus: PropTypes.func,
   usernameStatus: PropTypes.string.isRequired,
   usernameSuggestions: PropTypes.array,
+}
+Join.defaultProps = {
+  email: null,
+  passwordRenderStatus: null,
+  usernameRenderStatus: null,
+  usernameSuggestions: null,
 }
 
 export default Join

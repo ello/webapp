@@ -36,14 +36,14 @@ export function mapStateToProps(state, props) {
   const deviceSize = selectDeviceSize(state)
   return {
     categories,
-    followersCount: user.get('followersCount'),
-    followingCount: user.get('followingCount'),
+    followersCount: user.get('followersCount', 0),
+    followingCount: user.get('followingCount', 0),
     isFeatured: !!(categories.size),
     isLoggedIn: selectIsLoggedIn(state),
     isShortBioTruncated: truncatedShortBio.text.length >= 150,
     isMobile: deviceSize === 'mobile',
-    lovesCount: user.get('lovesCount'),
-    postsCount: user.get('postsCount'),
+    lovesCount: user.get('lovesCount', 0),
+    postsCount: user.get('postsCount', 0),
     relationshipPriority: user.get('relationshipPriority'),
     truncatedShortBio: truncatedShortBio.html,
     useGif: selectViewsAdultContent(state) || !user.get('postsAdultContent'),
@@ -58,17 +58,17 @@ class UserContainer extends Component {
   static propTypes = {
     categories: PropTypes.object,
     className: PropTypes.string,
-    dispatch: PropTypes.func,
-    followingCount: PropTypes.number,
-    followersCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    isFeatured: PropTypes.bool,
-    isLoggedIn: PropTypes.bool,
-    isShortBioTruncated: PropTypes.bool,
-    isMobile: PropTypes.bool,
-    lovesCount: PropTypes.number,
-    postsCount: PropTypes.number,
+    dispatch: PropTypes.func.isRequired,
+    followingCount: PropTypes.number.isRequired,
+    followersCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    isFeatured: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    isShortBioTruncated: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
+    lovesCount: PropTypes.number.isRequired,
+    postsCount: PropTypes.number.isRequired,
     relationshipPriority: PropTypes.string,
-    truncatedShortBio: PropTypes.string,
+    truncatedShortBio: PropTypes.string.isRequired,
     type: PropTypes.oneOf([
       'avatar',
       'compact',
@@ -76,7 +76,7 @@ class UserContainer extends Component {
       'profile',
     ]).isRequired,
     useGif: PropTypes.bool,
-    user: PropTypes.object,
+    user: PropTypes.object.isRequired,
     username: PropTypes.string,
   }
 
@@ -85,9 +85,12 @@ class UserContainer extends Component {
   }
 
   static defaultProps = {
+    categories: null,
     className: '',
+    relationshipPriority: null,
     showBlockMuteButton: false,
     useGif: false,
+    username: null,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -98,7 +101,7 @@ class UserContainer extends Component {
   onClickOpenBio = () => {
     const { dispatch, isMobile, user } = this.props
     dispatch(openModal(
-      <TextMarkupDialog html={user.get('formattedShortBio')} />,
+      <TextMarkupDialog html={user.get('formattedShortBio', '')} />,
       isMobile ? 'isFlex hasOverlay9' : 'hasOverlay9',
     ))
   }

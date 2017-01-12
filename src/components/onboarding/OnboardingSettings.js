@@ -64,7 +64,9 @@ const OnboardingSettings = (props, context) => {
 OnboardingSettings.propTypes = {
   isNextDisabled: PropTypes.bool,
 }
-
+OnboardingSettings.defaultProps = {
+  isNextDisabled: false,
+}
 OnboardingSettings.contextTypes = {
   avatar: PropTypes.object,
   coverImage: PropTypes.object,

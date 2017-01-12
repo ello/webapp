@@ -23,6 +23,11 @@ export default class Completer extends Component {
     onCompletion: PropTypes.func.isRequired,
   }
 
+  static defaultProps = {
+    className: null,
+    deviceSize: null,
+  }
+
   componentWillMount() {
     this.state = {
       selectedIndex: 0,
@@ -89,7 +94,7 @@ export default class Completer extends Component {
       completions.get('data').map((completion, i) =>
         <Completion
           className={i === selectedIndex ? 'isActive UserCompletion' : 'UserCompletion'}
-          key={`completion_${i}`}
+          key={`completion_${completion.get('name')}`}
           asset={<Avatar className="isTiny" sources={Immutable.fromJS({ tmp: { url: completion.get('imageUrl') } })} />}
           label={`@${completion.get('name')}`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
@@ -106,7 +111,7 @@ export default class Completer extends Component {
       completions.get('data').map((completion, i) =>
         <Completion
           className={i === selectedIndex ? 'isActive EmojiCompletion' : 'EmojiCompletion'}
-          key={`completion_${i}`}
+          key={`completion_${completion.get('name')}`}
           asset={<Emoji key={completion.get('name')} src={completion.get('imageUrl')} />}
           label={`:${completion.get('name')}:`}
           ref={(comp) => { this[`completion_${i}`] = comp }}
@@ -123,7 +128,7 @@ export default class Completer extends Component {
       completions.get('data').map((completion, i) =>
         <Completion
           className={i === selectedIndex ? 'isActive LocationCompletion' : 'LocationCompletion'}
-          key={`completion_${i}`}
+          key={`completion_${completion.get('location')}`}
           asset={<MarkerIcon />}
           label={`${completion.get('location')}`}
           ref={(comp) => { this[`completion_${i}`] = comp }}

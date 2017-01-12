@@ -48,7 +48,7 @@ class Notifications extends Component {
     announcementImage: PropTypes.string,
     announcementTitle: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    hasAnnouncementNotification: PropTypes.bool,
+    hasAnnouncementNotification: PropTypes.bool.isRequired,
     pathname: PropTypes.string,
     streamAction: PropTypes.object,
     type: PropTypes.string,
@@ -56,9 +56,12 @@ class Notifications extends Component {
 
   static defaultProps = {
     announcementBody: '',
+    announcementCTACaption: null,
     announcementCTAHref: null,
     announcementImage: null,
     announcementTitle: '',
+    pathname: null,
+    streamAction: null,
     type: 'all',
   }
 

@@ -6,12 +6,17 @@ import { ElloBuyButton } from './ElloBuyButton'
 class Block extends Component {
 
   static propTypes = {
-    children: PropTypes.element,
+    children: PropTypes.element.isRequired,
     className: PropTypes.string,
     editorId: PropTypes.string.isRequired,
     linkURL: PropTypes.string,
     onRemoveBlock: PropTypes.func.isRequired,
     uid: PropTypes.number.isRequired,
+  }
+
+  static defaultProps = {
+    className: null,
+    linkURL: null,
   }
 
   static defaultProps = {

@@ -36,9 +36,9 @@ class CommentToolsContainer extends Component {
   static propTypes = {
     author: PropTypes.object.isRequired,
     comment: PropTypes.object.isRequired,
-    deviceSize: PropTypes.string,
+    deviceSize: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    isNavbarHidden: PropTypes.bool,
+    isNavbarHidden: PropTypes.bool.isRequired,
     post: PropTypes.object.isRequired,
   }
 

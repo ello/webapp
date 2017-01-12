@@ -75,7 +75,7 @@ describe('UserDetailContainer', () => {
     })
 
     it('sets tabs to null', () => {
-      expect(nextProps.tabs).to.be.null
+      expect(nextProps.tabs.length).to.equal(0)
     })
   })
 
@@ -89,15 +89,15 @@ describe('UserDetailContainer', () => {
     })
     const state = {
       authentication: Immutable.Map({ isLoggedIn: true }),
-      gui: Immutable.Map({
+      gui: Immutable.fromJS({
         activeUserFollowingType: 'friend',
-        saidHelloTo: Immutable.List(['phillip', 'damian']),
+        saidHelloTo: ['phillip', 'damian'],
       }),
       json,
-      stream: Immutable.Map({ type: 'USER.DETAIL_SUCCESS', error: {} }),
+      stream: Immutable.fromJS({ type: 'USER.DETAIL_SUCCESS', error: {} }),
     }
     const props = { params: { type: 'following', username: 'nikki' } }
-    const action = getStreamAction({ username: 'nikki', type: 'following' })
+    const action = getStreamAction({ activeUserFollowingType: 'friend', username: 'nikki', type: 'following' })
     const nextProps = mapStateToProps(state, props)
     const tabs = [
       { type: 'friend', children: 'Following' },

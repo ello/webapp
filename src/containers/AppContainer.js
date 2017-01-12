@@ -47,14 +47,18 @@ class AppContainer extends PureComponent {
 
   static propTypes = {
     authPromo: PropTypes.object,
-    categoryData: PropTypes.object,
+    categoryData: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
-    isAuthenticationLayout: PropTypes.bool,
-    isCategoryPromotion: PropTypes.bool,
+    isAuthenticationLayout: PropTypes.bool.isRequired,
+    isCategoryPromotion: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isPagePromotion: PropTypes.bool,
+    isPagePromotion: PropTypes.bool.isRequired,
     params: PropTypes.object.isRequired,
+  }
+
+  static defaultProps = {
+    authPromo: null,
   }
 
   static preRender = (store) => {

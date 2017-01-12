@@ -62,19 +62,24 @@ function mapStateToProps(state, props) {
 class ViewportContainer extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    hasLaunchedSignupModal: PropTypes.bool,
-    innerHeight: PropTypes.number,
-    innerWidth: PropTypes.number,
-    isAuthenticationView: PropTypes.bool,
-    isDiscoverView: PropTypes.bool,
-    isLoggedIn: PropTypes.bool,
-    isNavbarHidden: PropTypes.bool,
-    isNotificationsActive: PropTypes.bool,
-    isOnboardingView: PropTypes.bool,
-    isProfileMenuActive: PropTypes.bool,
+    hasLaunchedSignupModal: PropTypes.bool.isRequired,
+    innerHeight: PropTypes.number.isRequired,
+    innerWidth: PropTypes.number.isRequired,
+    isAuthenticationView: PropTypes.bool.isRequired,
+    isDiscoverView: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    isNavbarHidden: PropTypes.bool.isRequired,
+    isNotificationsActive: PropTypes.bool.isRequired,
+    isOnboardingView: PropTypes.bool.isRequired,
+    isProfileMenuActive: PropTypes.bool.isRequired,
     modalType: PropTypes.string,
-    scrollOffset: PropTypes.number,
+    scrollOffset: PropTypes.number.isRequired,
     userDetailPathClassName: PropTypes.string,
+  }
+
+  static defaultProps = {
+    modalType: null,
+    userDetailPathClassName: null,
   }
 
   static contextTypes = {

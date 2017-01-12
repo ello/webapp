@@ -25,11 +25,12 @@ class KeyboardContainer extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isModalActive: PropTypes.bool,
+    isModalActive: PropTypes.bool.isRequired,
     shortcuts: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
+    discoverKeyType: null,
     shortcuts: {
       [SHORTCUT_KEYS.SEARCH]: '/search',
       [SHORTCUT_KEYS.DISCOVER]: '/discover',
