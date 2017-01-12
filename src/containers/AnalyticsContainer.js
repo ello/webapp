@@ -45,6 +45,12 @@ class AnalyticsContainer extends PureComponent {
     isLoggedIn: PropTypes.bool.isRequired,
   }
 
+  static defaultProps = {
+    allowsAnalytics: null,
+    analyticsId: null,
+    createdAt: null,
+  }
+
   componentWillMount() {
     this.hasLoadedTracking = false
   }
