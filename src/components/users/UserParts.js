@@ -18,11 +18,13 @@ const UserStatsLink = ({ asDisabled = false, children, to }, { onClickScrollToCo
     <Link onClick={onClickScrollToContent} className="UserStatsLink" to={to}>
       {children}
     </Link>)
-
 UserStatsLink.propTypes = {
   asDisabled: PropTypes.bool,
-  children: PropTypes.node,
-  to: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  to: PropTypes.string.isRequired,
+}
+UserStatsLink.defaultProps = {
+  asDisabled: false,
 }
 UserStatsLink.contextTypes = {
   onClickScrollToContent: PropTypes.func,
@@ -34,10 +36,9 @@ export const UserFeaturedButton = ({ className, onClick }) =>
   <button className={classNames('UserFeaturedButton', className)} onClick={onClick} >
     <BadgeCheckIcon />
   </button>
-
 UserFeaturedButton.propTypes = {
-  className: PropTypes.string,
-  onClick: PropTypes.func,
+  className: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 // -----------------
@@ -50,11 +51,10 @@ export const UserNamesCell = ({ className, name, username, children }) =>
     {name ? <h2 className="UserUsername truncate">@{username}</h2> : null}
     { children }
   </div>
-
 UserNamesCell.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  name: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
 }
 
@@ -67,10 +67,9 @@ export const UserNamesCellCard = ({ className, name, username }) =>
     </h2>
     {name ? <h3 className="UserUsername truncate">@{username}</h3> : null}
   </div>
-
 UserNamesCellCard.propTypes = {
-  className: PropTypes.string,
-  name: PropTypes.string,
+  className: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
 }
 
@@ -99,12 +98,15 @@ export const UserFiguresCell = ({
       </div> : null
     }
   </div>
-
 UserFiguresCell.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string.isRequired,
   onClickOpenFeaturedModal: PropTypes.func,
-  onClickShareProfile: PropTypes.func,
+  onClickShareProfile: PropTypes.func.isRequired,
   totalPostViewsCount: PropTypes.string,
+}
+UserFiguresCell.defaultProps = {
+  onClickOpenFeaturedModal: null,
+  totalPostViewsCount: null,
 }
 
 // -----------------
@@ -147,9 +149,8 @@ export const UserStatsCell = ({
       </UserStatsLink>
     </dl>
   </div>
-
 UserStatsCell.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string.isRequired,
   followingCount: PropTypes.number.isRequired,
   followersCount: PropTypes.oneOfType([
     PropTypes.string,
@@ -172,10 +173,12 @@ export const UserLocationCell = ({ className, location }) =>
       : null
     }
   </div>
-
 UserLocationCell.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string.isRequired,
   location: PropTypes.string,
+}
+UserLocationCell.defaultProps = {
+  location: null,
 }
 
 // -----------------
@@ -191,11 +194,13 @@ export const UserInfoCell = ({ className, onClickOpenBio, truncatedShortBio }) =
       </button> : null
     }
   </div>
-
 UserInfoCell.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string.isRequired,
   onClickOpenBio: PropTypes.func,
-  truncatedShortBio: PropTypes.string,
+  truncatedShortBio: PropTypes.string.isRequired,
+}
+UserInfoCell.defaultProps = {
+  onClickOpenBio: null,
 }
 
 // -----------------
@@ -251,9 +256,12 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
 }
 
 UserLinksCell.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string.isRequired,
   externalLinksList: PropTypes.object,
-  isMobile: PropTypes.bool,
+  isMobile: PropTypes.bool.isRequired,
+}
+UserLinksCell.defaultProps = {
+  externalLinksList: null,
 }
 
 export const UserProfileButtons = ({ children, className, onClickCollab, onClickHireMe }) =>
@@ -268,9 +276,13 @@ export const UserProfileButtons = ({ children, className, onClickCollab, onClick
   </div>
 
 UserProfileButtons.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string.isRequired,
   onClickCollab: PropTypes.func,
   onClickHireMe: PropTypes.func,
+}
+UserProfileButtons.defaultProps = {
+  onClickCollab: null,
+  onClickHireMe: null,
 }
 
