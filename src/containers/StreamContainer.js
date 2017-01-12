@@ -61,12 +61,12 @@ class StreamContainer extends Component {
     action: PropTypes.object,
     children: PropTypes.node,
     className: PropTypes.string,
-    columnCount: PropTypes.number,
+    columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasLaunchedSignupModal: PropTypes.bool,
     initModel: PropTypes.object,
-    isGridMode: PropTypes.bool,
-    isLoggedIn: PropTypes.bool,
+    isGridMode: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     isModalComponent: PropTypes.bool,
     isPostHeaderHidden: PropTypes.bool,
     json: PropTypes.object.isRequired,
@@ -80,6 +80,7 @@ class StreamContainer extends Component {
   }
 
   static defaultProps = {
+    className: '',
     paginatorText: 'Loading',
     isModalComponent: false,
   }
