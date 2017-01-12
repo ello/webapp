@@ -9,7 +9,7 @@ type Props = {
   isNotificationsActive: boolean,
   isOnboardingView: boolean,
   isProfileMenuActive: boolean,
-  userDetailPathClassName?: string,
+  userDetailPathClassName: string|null,
 }
 
 export const Viewport = (props: Props) =>
