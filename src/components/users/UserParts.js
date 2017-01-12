@@ -69,8 +69,12 @@ export const UserNamesCellCard = ({ className, name, username }) =>
   </div>
 UserNamesCellCard.propTypes = {
   className: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   username: PropTypes.string.isRequired,
+}
+
+UserNamesCellCard.defaultProps = {
+  name: null,
 }
 
 // -----------------
