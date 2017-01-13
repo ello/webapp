@@ -28,9 +28,13 @@ methods.updatePostLoves = (state, action) => {
     case ACTION_TYPES.POST.LOVE_SUCCESS:
       if (method === 'POST') {
         newPost.showLovers = true
+        // this is to force the drawer to redraw so it can fetch the
+        // lovers again to show avatars correctly
+        newPost.invalidate = true
         idAdded = true
       } else {
         newPost.showLovers = false
+        newPost.invalidate = false
       }
       break
     case ACTION_TYPES.POST.LOVE_FAILURE:
@@ -61,7 +65,7 @@ methods.updatePostLoves = (state, action) => {
   if (currentUser) {
     state = idAdded ?
       jsonReducer.methods.appendPageId(state, resultPath, MAPPING_TYPES.USERS, currentUser.get('id')) :
-      jsonReducer.methods.removePageId(state, resultPath, currentUser.get('id'))
+      jsonReducer.methods.removePageId(state, resultPath, MAPPING_TYPES.USERS, currentUser.get('id'))
   }
 
   if (currentUser.get('id') === model.get('authorId')) {

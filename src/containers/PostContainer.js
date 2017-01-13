@@ -75,8 +75,10 @@ export function mapStateToProps(state, props) {
     showCommentEditor,
     showComments,
     showEditor,
-    showLovers: !showEditor && !isGridMode && post.get('showLovers') && lovesCount > 0,
-    showReposters: !showEditor && !isGridMode && post.get('showReposters') && repostsCount > 0,
+    showLovers: (!showEditor && !isGridMode && post.get('showLovers') && lovesCount > 0) ||
+      (!showEditor && !isGridMode && props.isPostDetail && lovesCount > 0),
+    showReposters: (!showEditor && !isGridMode && post.get('showReposters') && repostsCount > 0) ||
+      (!showEditor && !isGridMode && props.isPostDetail && repostsCount > 0),
   }
 
   if (isRepost) {
@@ -109,7 +111,7 @@ class PostContainer extends Component {
     isRepost: PropTypes.bool.isRequired,
     isReposting: PropTypes.bool.isRequired,
     isWatchingPost: PropTypes.bool,
-    post: PropTypes.object,
+    post: PropTypes.object.isRequired,
     postBody: PropTypes.object,
     showCommentEditor: PropTypes.bool,
     showComments: PropTypes.bool,
@@ -128,7 +130,6 @@ class PostContainer extends Component {
     isPostDetail: false,
     isPostHeaderHidden: false,
     isWatchingPost: false,
-    post: null,
     postBody: null,
     showCommentEditor: false,
     showComments: false,

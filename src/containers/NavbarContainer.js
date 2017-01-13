@@ -37,6 +37,7 @@ function mapStateToProps(state, props) {
   const viewName = selectViewNameFromRoute(state)
   const categoryTabs = viewName === 'discover' ? selectCategoryTabs(state) : null
   const isUnread = selectIsNotificationsUnread(state) || selectIsAnnouncementUnread(state)
+  const isGridMode = selectIsGridMode(state)
 
   if (isLoggedIn) {
     return {
@@ -45,7 +46,7 @@ function mapStateToProps(state, props) {
       deviceSize: selectDeviceSize(state),
       hasLoadMoreButton,
       homeStream,
-      isGridMode: selectIsGridMode(state),
+      isGridMode,
       isLayoutToolHidden: selectIsLayoutToolHidden(state, props),
       isLoggedIn,
       isNotificationsActive: selectIsNotificationsActive(state),
@@ -60,6 +61,7 @@ function mapStateToProps(state, props) {
     categoryTabs,
     hasLoadMoreButton,
     homeStream,
+    isGridMode,
     isLoggedIn,
     pathname,
     viewName,
@@ -78,6 +80,11 @@ class NavbarContainer extends PureComponent {
     pathname: PropTypes.string.isRequired,
     params: PropTypes.object.isRequired,
     viewName: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    isProfileMenuActive: false,
+    isNotificationsActive: false,
   }
 
   static contextTypes = {
