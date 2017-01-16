@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { trackEvent } from '../actions/analytics'
 import { saveAvatar, saveCover } from '../actions/profile'
+import { selectDPI } from '../selectors/gui'
 import {
   selectAvatar,
   selectCoverImage,
@@ -17,6 +18,7 @@ import OnboardingSettings from '../components/onboarding/OnboardingSettings'
 function mapStateToProps(state) {
   const avatar = selectAvatar(state)
   const coverImage = selectCoverImage(state)
+  const dpi = selectDPI(state)
   const isAvatarBlank = selectIsAvatarBlank(state)
   const isCoverImageBlank = selectIsCoverImageBlank(state)
   const isInfoFormBlank = selectIsInfoFormBlank(state)
@@ -24,6 +26,7 @@ function mapStateToProps(state) {
   return {
     avatar,
     coverImage,
+    dpi,
     isAvatarBlank,
     isCoverImageBlank,
     isNextDisabled,
@@ -36,6 +39,7 @@ class OnboardingSettingsContainer extends PureComponent {
     avatar: PropTypes.object,
     coverImage: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    dpi: PropTypes.string.isRequired,
     isAvatarBlank: PropTypes.bool.isRequired,
     isCoverImageBlank: PropTypes.bool.isRequired,
     isNextDisabled: PropTypes.bool.isRequired,
@@ -49,6 +53,7 @@ class OnboardingSettingsContainer extends PureComponent {
   static childContextTypes = {
     avatar: PropTypes.object,
     coverImage: PropTypes.object,
+    dpi: PropTypes.string.isRequired,
     isAvatarBlank: PropTypes.bool,
     isCoverImageBlank: PropTypes.bool,
     nextLabel: PropTypes.string,
@@ -60,11 +65,12 @@ class OnboardingSettingsContainer extends PureComponent {
 
   getChildContext() {
     const {
-      avatar, dispatch, coverImage, isAvatarBlank, isCoverImageBlank, isNextDisabled,
+      avatar, dispatch, coverImage, dpi, isAvatarBlank, isCoverImageBlank, isNextDisabled,
     } = this.props
     return {
       avatar,
       coverImage,
+      dpi,
       isAvatarBlank,
       isCoverImageBlank,
       nextLabel: 'Invite Cool People',

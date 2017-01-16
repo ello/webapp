@@ -10,7 +10,7 @@ import BackgroundImage from '../assets/BackgroundImage'
 
 const OnboardingSettings = (props, context) => {
   const { avatar, isAvatarBlank, saveAvatar } = context
-  const { coverImage, isCoverImageBlank, saveCover } = context
+  const { coverImage, dpi, isCoverImageBlank, saveCover } = context
   const { isNextDisabled } = props
   return (
     <MainView className="Onboarding OnboardingSettings">
@@ -29,6 +29,7 @@ const OnboardingSettings = (props, context) => {
         <BackgroundImage
           className="hasOverlay6 inOnboarding"
           sources={coverImage}
+          dpi={dpi}
           useGif
         />
       </div>
@@ -69,6 +70,7 @@ OnboardingSettings.defaultProps = {
 }
 OnboardingSettings.contextTypes = {
   avatar: PropTypes.object,
+  dpi: PropTypes.string.isRequired,
   coverImage: PropTypes.object,
   isAvatarBlank: PropTypes.bool,
   isCoverImageBlank: PropTypes.bool,
