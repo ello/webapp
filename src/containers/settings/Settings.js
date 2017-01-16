@@ -8,6 +8,7 @@ import debounce from 'lodash/debounce'
 import { PREFERENCES, SETTINGS } from '../../constants/locales/en'
 import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { preferenceToggleChanged } from '../../helpers/junk_drawer'
+import { selectDPI } from '../../selectors/gui'
 import { selectAvailability, selectBlockedCount, selectMutedCount } from '../../selectors/profile'
 import { openModal, closeModal } from '../../actions/modals'
 import { logout } from '../../actions/authentication'
@@ -74,6 +75,7 @@ function mapStateToProps(state) {
   return {
     availability: selectAvailability(state),
     blockedCount: selectBlockedCount(state) || 0,
+    dpi: selectDPI(state),
     mutedCount: selectMutedCount(state) || 0,
     profile: state.profile,
   }
@@ -84,6 +86,7 @@ class Settings extends Component {
   static propTypes = {
     blockedCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
+    dpi: PropTypes.string.isRequired,
     mutedCount: PropTypes.number.isRequired,
     profile: PropTypes.object,
   }
@@ -304,7 +307,7 @@ class Settings extends Component {
   }
 
   render() {
-    const { blockedCount, dispatch, mutedCount, profile } = this.props
+    const { blockedCount, dispatch, dpi, mutedCount, profile } = this.props
     const { currentPasswordState, emailState, passwordState, usernameState } = this.state
     const requiresSave = this.shouldRequireCredentialsSave()
     const allowNSFWToggle = !isElloAndroid()
@@ -326,6 +329,7 @@ class Settings extends Component {
           />
           <BackgroundImage
             className="hasOverlay6 inSettings"
+            dpi={dpi}
             sources={profile.get('coverImage')}
             useGif
           />
