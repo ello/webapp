@@ -43,6 +43,8 @@ export const loadAnnouncements = () =>
     },
     meta: {
       mappingType: MAPPING_TYPES.ANNOUNCEMENTS,
+      resultKey: '/announcements',
+      updateKey: '/announcements',
     },
   })
 
