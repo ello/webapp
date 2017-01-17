@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
 const Emoji = (props) => {
-  const { alt, className, name = 'ello', size, src, title, width, height } = props
+  const { alt, className, name, size, src, title, width, height } = props
   const tip = name.replace(/_|-/, ' ')
   return (
     <img
@@ -30,14 +30,14 @@ Emoji.propTypes = {
   height: PropTypes.number,
 }
 Emoji.defaultProps = {
-  alt: null,
+  alt: 'ello',
   className: null,
-  name: null,
+  name: 'ello',
   size: 20,
   src: null,
-  title: null,
-  width: null,
-  height: null,
+  title: 'ello',
+  width: 20,
+  height: 20,
 }
 
 export default Emoji
