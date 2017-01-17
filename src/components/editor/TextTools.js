@@ -127,7 +127,7 @@ export default class TextTools extends Component {
     const { isBoldActive, isItalicActive, isLinkActive, isLinkInputOpen, text } = this.state
     const { coordinates, isHidden } = this.props
     const asShowLinkForm = isLinkInputOpen
-    const style = coordinates ? { left: coordinates.left, top: coordinates.top - 40 } : null
+    const style = coordinates ? { left: coordinates.get('left'), top: coordinates.get('top') - 40 } : null
     return (
       <div
         style={style}
