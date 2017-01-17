@@ -242,7 +242,7 @@ export const PostBody = (props) => {
       regionProps.content = post.get('repostContent')
       cells.push(<RegionItems {...regionProps} key={`RegionItems_${post.get('id')}`} />)
       if (post.get('content') && post.get('content').size) {
-        regionProps.content = post.content
+        regionProps.content = post.get('content')
         cells.push(
           <div className="PostBody RepostedBody" key={`RepostedBody_${post.get('id')}`}>
             <Avatar
