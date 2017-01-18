@@ -21,7 +21,7 @@ export function getNextPriority(currentPriority) {
 class RelationshipButton extends PureComponent {
 
   static propTypes = {
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     priority: PropTypes.oneOf([
       RELATIONSHIP_PRIORITY.INACTIVE,
@@ -40,6 +40,7 @@ class RelationshipButton extends PureComponent {
   }
 
   static defaultProps = {
+    className: '',
     priority: null,
   }
 
