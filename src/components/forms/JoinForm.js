@@ -34,7 +34,7 @@ class JoinForm extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    email: PropTypes.string.isRequired,
+    email: PropTypes.string,
     invitationCode: PropTypes.string,
   }
 
@@ -56,9 +56,11 @@ class JoinForm extends PureComponent {
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
     this.delayedShowUsernameError = debounce(this.delayedShowUsernameError, 1000)
     this.delayedShowPasswordError = debounce(this.delayedShowPasswordError, 1000)
+    this.checkForInviteCode(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
+    this.checkForInviteCode(nextProps)
     const { availability } = nextProps
     if (!availability) { return }
     if (availability.get('username')) {
@@ -106,6 +108,21 @@ class JoinForm extends PureComponent {
     dispatch(
       signUpUser(email, this.usernameValue, this.passwordValue, invitationCode),
     )
+  }
+
+  checkForInviteCode(props) {
+    const { dispatch, email, invitationCode } = props
+    if (invitationCode) {
+      this.invitationCodeValue = invitationCode
+    }
+    if (invitationCode && !email) {
+      dispatch(getInviteEmail(invitationCode))
+    } else if (email) {
+      this.emailValue = email
+      requestAnimationFrame(() => {
+        this.setState({ emailState: { status: STATUS.SUCCESS } })
+      })
+    }
   }
 
   checkServerForAvailability(vo) {
