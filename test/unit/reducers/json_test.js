@@ -24,11 +24,11 @@ describe('json reducer', () => {
     })
 
     it('concats the existing result ids to the morePostIds and deletes the old morePostIds', () => {
-      state = state.set('pages', Immutable.fromJS({ sweetpath: { morePostIds: ['1', '2', '3'], ids: ['2', '10', '20', '30'] } }))
+      state = state.set('pages', Immutable.fromJS({ sweetpath: { morePostIds: ['184068', '184067', '184066', '184065'], ids: ['184067', '184066', '184065', '184064'] } }))
       subject.setPath('sweetpath')
       state = subject.methods.addNewIdsToResult(state)
       expect(state.getIn(['pages', 'sweetpath', 'morePostIds'])).to.be.undefined
-      expect(state.getIn(['pages', 'sweetpath', 'ids'])).to.deep.equal(Immutable.List(['1', '2', '3', '10', '20', '30']))
+      expect(state.getIn(['pages', 'sweetpath', 'ids'])).to.deep.equal(Immutable.List(['184068', '184067', '184066', '184065', '184064']))
     })
   })
 
