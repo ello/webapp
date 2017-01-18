@@ -5,6 +5,7 @@ import { LOCATION_CHANGE } from 'react-router-redux'
 import { REHYDRATE } from 'redux-persist/constants'
 import { camelize } from 'humps'
 import get from 'lodash/get'
+import union from 'lodash/union'
 import * as ACTION_TYPES from '../constants/action_types'
 import * as MAPPING_TYPES from '../constants/mapping_types'
 import { RELATIONSHIP_PRIORITY } from '../constants/relationship_types'
@@ -31,14 +32,14 @@ export function emptyPagination() {
 }
 
 methods.addNewIdsToResult = (state) => {
-  const result = state.getIn(['pages', path])
+  let result = state.getIn(['pages', path])
   if (!result || !result.get('morePostIds')) { return state }
   // if you have created a post it gets prepended to the result ids
   // when we come back with additional ids we want them to be unique
   // and in descending order, which fills in the gaps and is what union does
-  // unfortunately it is not very performant to use the `toSet` and `toList`
-  return state.setIn(['pages', path, 'ids'], result.get('morePostIds').toSet().union(result.get('ids').toSet()).toList())
-    .deleteIn(['pages', path, 'morePostIds'])
+  // unfortunately it is not very performant to use the `toArray`
+  result = result.set('ids', Immutable.List(union(result.get('morePostIds').toArray(), result.get('ids').toArray()))).delete('morePostIds')
+  return state.setIn(['pages', path], result)
 }
 
 methods.updateUserCount = (state, userId, prop, delta) => {
@@ -213,7 +214,7 @@ methods.updateResult = (response, state, action) => {
         if (!existingResult.get('morePostIds', Immutable.List()).isEmpty()) {
           return state.setIn(
             ['pages', resultPath, 'morePostIds'],
-            result.get('ids').toSet().union(existingResult.get('morePostIds').toSet()).toList(),
+            Immutable.List(union(result.get('ids').toArray(), existingResult.get('morePostIds').toArray())),
           )
         } else if (existingResult.get('ids').first() !== result.get('ids').first()) {
           return state.setIn(['pages', resultPath, 'morePostIds'], result.get('ids'))
