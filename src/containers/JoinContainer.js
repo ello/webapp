@@ -38,7 +38,6 @@ class JoinContainer extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
-    invitationCode: PropTypes.string,
   }
 
   static childContextTypes = {
@@ -71,21 +70,12 @@ class JoinContainer extends PureComponent {
     this.checkServerForAvailability = debounce(this.checkServerForAvailability, 300)
     this.delayedShowUsernameError = debounce(this.delayedShowUsernameError, 1000)
     this.delayedShowPasswordError = debounce(this.delayedShowPasswordError, 1000)
+    this.checkForInviteCode(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { availability, dispatch, email, invitationCode } = nextProps
-    if (invitationCode) {
-      this.invitationCodeValue = invitationCode
-    }
-    if (invitationCode && !email) {
-      dispatch(getInviteEmail(invitationCode))
-    } else if (email) {
-      this.emailValue = email
-      requestAnimationFrame(() => {
-        this.setState({ emailState: { status: STATUS.SUCCESS } })
-      })
-    }
+    this.checkForInviteCode(nextProps)
+    const { availability } = nextProps
     if (!availability) { return }
     if (availability.get('username')) {
       this.validateUsernameResponse(availability)
@@ -138,6 +128,21 @@ class JoinContainer extends PureComponent {
     dispatch(
       signUpUser(this.emailValue, this.usernameValue, this.passwordValue, this.invitationCodeValue),
     )
+  }
+
+  checkForInviteCode(props) {
+    const { dispatch, email, invitationCode } = props
+    if (invitationCode) {
+      this.invitationCodeValue = invitationCode
+    }
+    if (invitationCode && !email) {
+      dispatch(getInviteEmail(invitationCode))
+    } else if (email) {
+      this.emailValue = email
+      requestAnimationFrame(() => {
+        this.setState({ emailState: { status: STATUS.SUCCESS } })
+      })
+    }
   }
 
   checkServerForAvailability(vo) {
