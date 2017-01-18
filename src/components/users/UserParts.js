@@ -213,10 +213,10 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
   const externalLinks = []
   const externalLinksIcon = []
   if (externalLinksList && externalLinksList.size) {
-    externalLinksList.forEach((link) => {
+    externalLinksList.forEach((link, i) => {
       if (link.get('icon')) {
         externalLinksIcon.push(
-          <span className="UserExternalLinksIcon" key={link.get('type')}>
+          <span className="UserExternalLinksIcon" key={`${link.get('type')}_${i + 1}`}>
             <a href={link.get('url')} rel="noopener noreferrer" target="_blank">
               <img alt={link.get('type')} src={link.get('icon')} />
               <Hint>{link.get('type')}</Hint>
@@ -225,7 +225,7 @@ export const UserLinksCell = ({ className, externalLinksList, isMobile }) => {
         )
       } else {
         externalLinks.push(
-          <span className="UserExternalLinksLabel" key={link.get('text')}>
+          <span className="UserExternalLinksLabel" key={`${link.get('text')}_${i + 1}`}>
             <a href={link.get('url')} rel="noopener noreferrer" target="_blank">{link.get('text')}</a>
           </span>,
         )

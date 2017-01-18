@@ -256,11 +256,11 @@ class Settings extends Component {
   getExternalLinkListAsText() {
     const { profile } = this.props
     return (
-      profile.get('externalLinksList').toJS().map(link =>
+      profile.get('externalLinksList').toJS().map((link, i) =>
         <a
           href={link.url}
           target="_blank"
-          key={`settingslinks_${link.text}`}
+          key={`settingslinks_${link.text}_${i + 1}`}
           rel="noopener noreferrer"
           style={{ marginRight: `${5 / 16}rem` }}
         >
