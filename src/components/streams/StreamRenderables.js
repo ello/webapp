@@ -100,9 +100,9 @@ export const commentsAsList = post =>
 
 export const notificationList = notifications =>
   <div className="Notifications">
-    {notifications.data.map(notification =>
+    {notifications.data.map((notification, i) =>
       <NotificationContainer
-        key={`notificationParser_${notification.get('createdAt', Date.now())}`}
+        key={`notificationParser_${notification.get('createdAt', Date.now())}_${i + 1}`}
         notification={notification}
       />,
     )}
