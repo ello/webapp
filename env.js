@@ -8,6 +8,5 @@ module.exports = {
   PORT: (process.env.PORT || '6660'),
   SEGMENT_WRITE_KEY: process.env.SEGMENT_WRITE_KEY,
   USE_LOCAL_EMOJI: (process.env.USE_LOCAL_EMOJI === 'true'),
-  ENABLE_REFRESH_ON_FOCUS: (process.env.ENABLE_REFRESH_ON_FOCUS === 'true'),
 }
 
