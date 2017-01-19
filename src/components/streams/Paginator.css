@@ -58,6 +58,11 @@
 }
 
 /* // Position bottom left for see more on settings */
+.BlockedUsers,
+.MutedUsers {
+  margin-bottom: 80px;
+}
+
 .BlockedUsers .Paginator,
 .MutedUsers .Paginator {
   right: auto;
@@ -66,8 +71,8 @@
   transform: translate3d(0, 0, 0);
 }
 
-.BlockedUsers,
-.MutedUsers {
-  margin-bottom: 80px;
+.BlockedUsers .Paginator:not(.isBusy) .ElloMark,
+.MutedUsers .Paginator:not(.isBusy) .ElloMark {
+  display: none;
 }
 
