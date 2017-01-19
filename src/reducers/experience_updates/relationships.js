@@ -8,7 +8,7 @@ import * as jsonReducer from '../../reducers/json'
 const methods = {}
 
 methods.removeIdFromDeletedArray = (state, type, id) => {
-  const delArr = state.get(`deleted_${type}`)
+  const delArr = state.get(`deleted_${type}`, Immutable.List())
   if (!delArr.isEmpty()) {
     const index = delArr.indexOf(`${id}`)
     if (index > -1) {
