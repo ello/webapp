@@ -45,6 +45,7 @@ User Compact  */
 
 .UserCompactUserLink {
   display: inline-block;
+  max-width: calc(100% - 20px) !important;
   transition: color var(--speed) ease;
 }
 

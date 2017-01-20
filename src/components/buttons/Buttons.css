@@ -37,6 +37,7 @@
   text-align: center;
   background-color: transparent;
   border: 1px solid;
+  border-radius: 5px;
   transition: background-color var(--speed), border-color var(--speed), color var(--speed);
 }
 

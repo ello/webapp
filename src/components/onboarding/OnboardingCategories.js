@@ -58,7 +58,7 @@ const OnboardingCategories = ({
     <MainView className="Onboarding OnboardingCategories">
       <h1 className="OnboardingHeading">
         <span>{'Pick what you\'re into.'}</span>
-        <span>Slow down & check out some cool ass shit.</span>
+        <span> Slow down & check out some cool ass shit.</span>
       </h1>
       <section className="StreamContainer">
         <div className="Categories asGrid">{btns}</div>
