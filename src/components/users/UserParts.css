@@ -105,6 +105,10 @@ User Names  */
   font-size: 18px;
 }
 
+.UserNamesCell.inUserProfile.isSingle .UserName {
+  max-width: calc(100% - 70px);
+}
+
 .no-touch .UserName > a:hover {
   color: #666;
 }
