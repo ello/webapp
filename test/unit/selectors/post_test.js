@@ -117,7 +117,7 @@ describe('post selectors', () => {
     it('returns the post meta description', () => {
       const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
       state = { json }
-      expect(selector.selectPostMetaDescription(state, props)).to.equal('meta description')
+      expect(selector.selectPostMetaDescription(state, props)).to.equal('meta post description')
     })
   })
 
@@ -133,7 +133,7 @@ describe('post selectors', () => {
     it('returns the post meta title', () => {
       const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
       state = { json }
-      expect(selector.selectPostMetaTitle(state, props)).to.equal('meta title')
+      expect(selector.selectPostMetaTitle(state, props)).to.equal('meta post title')
     })
   })
 
@@ -159,12 +159,12 @@ describe('post selectors', () => {
     it('returns the meta images (image/embed) for a post', () => {
       const result = {
         openGraphImages: [
-          { property: 'og:image', content: 'meta-image-0.jpg' },
-          { property: 'og:image', content: 'meta-image-1.jpg' },
+          { property: 'og:image', content: 'meta-post-image-0.jpg' },
+          { property: 'og:image', content: 'meta-post-image-1.jpg' },
         ],
         schemaImages: [
-          { name: 'image', itemprop: 'image', content: 'meta-image-0.jpg' },
-          { name: 'image', itemprop: 'image', content: 'meta-image-1.jpg' },
+          { name: 'image', itemprop: 'image', content: 'meta-post-image-0.jpg' },
+          { name: 'image', itemprop: 'image', content: 'meta-post-image-1.jpg' },
         ],
       }
 
