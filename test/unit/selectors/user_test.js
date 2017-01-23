@@ -79,61 +79,54 @@ describe('user selectors', () => {
     })
   })
 
+  context('#selectUserMetaAttributes', () => {
+    it('returns the user meta attributes', () => {
+      const usr = stub('user')
+      const props = { user: Immutable.Map({ id: '1' }), params: { username: usr.get('username') } }
+      const attr = Immutable.fromJS({
+        description: 'meta user description',
+        image: 'meta-user-image.jpg',
+        robots: 'index, follow',
+        title: 'meta user title',
+      })
+      state = { json }
+      expect(selector.selectUserMetaAttributes(state, props)).to.deep.equal(attr)
+    })
+  })
+
   context('#selectUserMetaDescription', () => {
     it('returns the user meta description', () => {
       const usr = stub('user')
-      const bio = usr.get('formattedShortBio').replace(/[</p>]/gi, '')
-      state = { json }
       const props = { user: Immutable.Map({ id: '1' }), params: { username: usr.get('username') } }
-      expect(selector.selectUserMetaDescription(state, props)).to.deep.equal(bio)
-      state.change = 1
-      expect(selector.selectUserMetaDescription(state, props)).to.deep.equal(bio)
-      expect(selector.selectUserMetaDescription.recomputations()).to.equal(1)
+      state = { json }
+      expect(selector.selectUserMetaDescription(state, props)).to.equal('meta user description')
     })
   })
 
   context('#selectUserMetaImage', () => {
     it('returns the user meta description', () => {
       const usr = stub('user')
-      const img = usr.getIn(['coverImage', 'optimized', 'url'])
-      state = { json }
       const props = { user: Immutable.Map({ id: '1' }), params: { username: usr.get('username') } }
-      expect(selector.selectUserMetaImage(state, props)).to.deep.equal(img)
-      state.change = 1
-      expect(selector.selectUserMetaImage(state, props)).to.deep.equal(img)
-      expect(selector.selectUserMetaImage.recomputations()).to.equal(1)
+      state = { json }
+      expect(selector.selectUserMetaImage(state, props)).to.equal('meta-user-image.jpg')
     })
   })
 
   context('#selectUserMetaRobots', () => {
     it('returns the user meta robot instructions', () => {
       const usr = stub('user', { username: 'archer' })
-      state = { json }
       const props = { user: Immutable.Map({ id: '1' }), params: { username: usr.get('username') } }
+      state = { json }
       expect(selector.selectUserMetaRobots(state, props)).to.deep.equal('index, follow')
-      state.change = 1
-      expect(selector.selectUserMetaRobots(state, props)).to.deep.equal('index, follow')
-      expect(selector.selectUserMetaRobots.recomputations()).to.equal(1)
-
-      state = { json: state.json.setIn(['users', '1', 'badForSeo'], true) }
-      expect(selector.selectUserMetaRobots(state, props)).to.deep.equal('noindex, follow')
-      expect(selector.selectUserMetaRobots.recomputations()).to.equal(2)
     })
   })
 
   context('#selectUserMetaTitle', () => {
     it('returns the user meta title', () => {
       const usr = stub('user', { username: 'pam' })
-      state = { json }
       const props = { user: Immutable.Map({ id: '1' }), params: { username: usr.get('username') } }
-      expect(selector.selectUserMetaTitle(state, props)).to.deep.equal('name (@pam) | Ello')
-      state.change = 1
-      expect(selector.selectUserMetaTitle(state, props)).to.deep.equal('name (@pam) | Ello')
-      expect(selector.selectUserMetaTitle.recomputations()).to.equal(1)
-
-      state = { json: state.json.setIn(['users', '1', 'name'], null) }
-      expect(selector.selectUserMetaTitle(state, props)).to.deep.equal('@pam | Ello')
-      expect(selector.selectUserMetaTitle.recomputations()).to.equal(2)
+      state = { json }
+      expect(selector.selectUserMetaTitle(state, props)).to.equal('meta user title')
     })
   })
 })
