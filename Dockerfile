@@ -6,10 +6,10 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json /app/package.json
-RUN npm install
+RUN yarn install
 
 # Add the rest of the app's code
 COPY . /app
 
 EXPOSE 6660
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]
