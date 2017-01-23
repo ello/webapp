@@ -151,10 +151,10 @@ function stubPost(properties, shouldAdd = true) {
     lovesCount: 0,
     metaAttributes: {
       canonicalUrl: null,
-      description: 'meta description',
-      images: ['meta-image-0.jpg', 'meta-image-1.jpg'],
+      description: 'meta post description',
+      images: ['meta-post-image-0.jpg', 'meta-post-image-1.jpg'],
       robots: 'index, follow',
-      title: 'meta title',
+      title: 'meta post title',
       url: 'https://ello.co/author/post/meta-url',
     },
     repostCount: 0,
