@@ -82,7 +82,7 @@ class MetaContainer extends PureComponent {
     nextPage: null,
     postMetaCanonicalUrl: null,
     postMetaDescription: null,
-    postMetaImages: PropTypes.object,
+    postMetaImages: null,
     postMetaRobots: null,
     postMetaTitle: null,
     postMetaUrl: null,
