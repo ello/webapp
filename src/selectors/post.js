@@ -62,7 +62,6 @@ export const selectPostMetaCanonicalUrl = createSelector(
 
 export const selectPostMetaImages = createSelector(
   [selectPostMetaAttributes], (metaAttributes) => {
-    if (!metaAttributes.size) { return null }
     const images = metaAttributes.get('images', Immutable.List()).toArray()
     const openGraphImages = images.map(image => ({ property: 'og:image', content: image }))
     const schemaImages = images.map(image => ({ name: 'image', itemprop: 'image', content: image }))
