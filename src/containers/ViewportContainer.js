@@ -22,7 +22,6 @@ import {
 import { addResizeObject, removeResizeObject } from '../components/viewport/ResizeComponent'
 import { Viewport } from '../components/viewport/Viewport'
 
-const REFRESH_PERIOD = 30 * 60 * 1000 // 30 minutes in microseconds
 const selectIsAuthenticationView = createSelector(
   [selectViewNameFromRoute], viewName => viewName === 'authentication' || viewName === 'join',
 )
@@ -102,23 +101,11 @@ class ViewportContainer extends PureComponent {
     removeScrollObject(this)
   }
 
-  onPageVisibilityHidden() {
-    const { isLoggedIn } = this.props
-    if (isLoggedIn && ENV.ENABLE_REFRESH_ON_FOCUS) {
-      this.hiddenAt = new Date()
-    }
-  }
-
   onPageVisibilityVisible() {
     const { hasLaunchedSignupModal, isLoggedIn, modalType } = this.props
     if (!isLoggedIn && !hasLaunchedSignupModal && !modalType) {
       const { onClickOpenRegistrationRequestDialog } = this.context
       onClickOpenRegistrationRequestDialog('page-visibility')
-    } else if (isLoggedIn) {
-      const drift = new Date() - this.hiddenAt
-      if (this.hiddenAt && drift >= REFRESH_PERIOD) {
-        window.location.reload(true)
-      }
     }
   }
 
