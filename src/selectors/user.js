@@ -41,33 +41,27 @@ export const selectTruncatedShortBio = createSelector(
     }),
 )
 
+export const selectUserMetaAttributes = createSelector(
+  [selectUserFromUsername], user => user.get('metaAttributes'),
+)
+
 export const selectUserMetaDescription = createSelector(
-  [selectUserFromUsername], (user) => {
-    if (!user) { return null }
-    const nickname = user.get('name', `@${user.get('username')}`)
-    const backupTitle = `See ${nickname}'s work on Ello.`
-    return trunc(user.get('formattedShortBio', backupTitle), 160).text
-  },
+  [selectUserMetaAttributes], metaAttributes =>
+    (metaAttributes ? metaAttributes.get('description') : null),
 )
 
 export const selectUserMetaImage = createSelector(
-  [selectUserFromUsername], user =>
-    user.getIn(['coverImage', 'optimized', 'url'], null),
+  [selectUserMetaAttributes], metaAttributes =>
+    (metaAttributes ? metaAttributes.get('image') : null),
 )
 
 export const selectUserMetaRobots = createSelector(
-  [selectUserFromUsername], (user) => {
-    if (!user) { return null }
-    return (user.get('badForSeo') ? 'noindex, follow' : 'index, follow')
-  },
+  [selectUserMetaAttributes], metaAttributes =>
+    (metaAttributes ? metaAttributes.get('robots') : null),
 )
 
 export const selectUserMetaTitle = createSelector(
-  [selectUserFromUsername], (user) => {
-    if (!user) { return null }
-    const name = user.get('name')
-    const username = user.get('username')
-    return (name ? `${name} (@${username}) | Ello` : `@${username} | Ello`)
-  },
+  [selectUserMetaAttributes], metaAttributes =>
+    (metaAttributes ? metaAttributes.get('title') : null),
 )
 

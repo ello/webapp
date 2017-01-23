@@ -93,6 +93,12 @@ function stubUser(properties, shouldAdd = true) {
     hasRepostingEnabled: true,
     hasSharingEnabled: true,
     lovesCount: 0,
+    metaAttributes: {
+      description: 'meta user description',
+      image: 'meta-user-image.jpg',
+      robots: 'index, follow',
+      title: 'meta user title',
+    },
     name: 'name',
     postsAdultContent: false,
     postsCount: 0,
