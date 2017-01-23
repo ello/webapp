@@ -42,26 +42,22 @@ export const selectTruncatedShortBio = createSelector(
 )
 
 export const selectUserMetaAttributes = createSelector(
-  [selectUserFromUsername], user => user.get('metaAttributes'),
+  [selectUserFromUsername], user => user.get('metaAttributes', Immutable.Map()),
 )
 
 export const selectUserMetaDescription = createSelector(
-  [selectUserMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('description') : null),
+  [selectUserMetaAttributes], metaAttributes => metaAttributes.get('description'),
 )
 
 export const selectUserMetaImage = createSelector(
-  [selectUserMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('image') : null),
+  [selectUserMetaAttributes], metaAttributes => metaAttributes.get('image'),
 )
 
 export const selectUserMetaRobots = createSelector(
-  [selectUserMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('robots') : null),
+  [selectUserMetaAttributes], metaAttributes => metaAttributes.get('robots'),
 )
 
 export const selectUserMetaTitle = createSelector(
-  [selectUserMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('title') : null),
+  [selectUserMetaAttributes], metaAttributes => metaAttributes.get('title'),
 )
 

@@ -37,38 +37,33 @@ export const selectPostFromToken = createSelector(
 )
 
 export const selectPostMetaAttributes = createSelector(
-  [selectPostFromToken], post => post.get('metaAttributes'),
+  [selectPostFromToken], post => post.get('metaAttributes', Immutable.Map()),
 )
 
 export const selectPostMetaDescription = createSelector(
-  [selectPostMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('description') : null),
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('description'),
 )
 
 export const selectPostMetaRobots = createSelector(
-  [selectPostMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('robots') : null),
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('robots'),
 )
 
 export const selectPostMetaTitle = createSelector(
-  [selectPostMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('title') : null),
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('title'),
 )
 
 export const selectPostMetaUrl = createSelector(
-  [selectPostMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('url') : null),
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('url'),
 )
 
 export const selectPostMetaCanonicalUrl = createSelector(
-  [selectPostMetaAttributes], metaAttributes =>
-    (metaAttributes ? metaAttributes.get('canonicalUrl') : null),
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('canonicalUrl'),
 )
 
 export const selectPostMetaImages = createSelector(
   [selectPostMetaAttributes], (metaAttributes) => {
-    if (!metaAttributes) { return null }
-    const images = metaAttributes.get('images') ? metaAttributes.get('images').toArray() : []
+    if (!metaAttributes.size) { return null }
+    const images = metaAttributes.get('images', Immutable.List()).toArray()
     const openGraphImages = images.map(image => ({ property: 'og:image', content: image }))
     const schemaImages = images.map(image => ({ name: 'image', itemprop: 'image', content: image }))
     return { openGraphImages, schemaImages }
