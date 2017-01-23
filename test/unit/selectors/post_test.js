@@ -113,6 +113,22 @@ describe('post selectors', () => {
     })
   })
 
+  context('#selectPostMetaAttributes', () => {
+    it('returns the post meta attributes', () => {
+      const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
+      const attr = Immutable.fromJS({
+        canonicalUrl: null,
+        description: 'meta post description',
+        images: ['meta-post-image-0.jpg', 'meta-post-image-1.jpg'],
+        robots: 'index, follow',
+        title: 'meta post title',
+        url: 'https://ello.co/author/post/meta-url',
+      })
+      state = { json }
+      expect(selector.selectPostMetaAttributes(state, props)).to.deep.equal(attr)
+    })
+  })
+
   context('#selectPostMetaDescription', () => {
     it('returns the post meta description', () => {
       const props = { post: Immutable.Map({ id: '1' }), params: { token: 'token' } }
