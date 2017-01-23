@@ -1,7 +1,6 @@
 import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
-import trunc from 'trunc-html'
 import { selectParamsToken } from './params'
 import { selectId as selectProfileId } from './profile'
 import { selectJson } from './store'
@@ -37,93 +36,35 @@ export const selectPostFromToken = createSelector(
     findModel(json, { collection: MAPPING_TYPES.POSTS, findObj: { token } }) || Immutable.Map(),
 )
 
-export const selectAuthorFromPost = createSelector(
-  [selectJson, selectPostFromToken], (json, post) =>
-    (post ? json.getIn([MAPPING_TYPES.USERS, post.get('authorId')], Immutable.Map()) : null),
-)
-
-export const selectPostBlocks = createSelector(
-  [selectPostFromToken], (post) => {
-    if (!post) { return null }
-    return (post.get('repostContent') || post.get('content')) || post.get('summary')
-  },
-)
-
-export const selectPostEmbedContent = createSelector(
-  [selectPostBlocks], (blocks) => {
-    if (!blocks) { return Immutable.List() }
-    return blocks.filter(block => /embed/.test(block.get('kind')) && block.getIn(['data', 'thumbnailLargeUrl']))
-      .map(block => block.getIn(['data', 'thumbnailLargeUrl']))
-  },
-)
-
-export const selectPostImageContent = createSelector(
-  [selectPostBlocks], (blocks) => {
-    if (!blocks) { return Immutable.List() }
-    return blocks.filter(block => /image/.test(block.get('kind')) && block.getIn(['data', 'url']))
-      .map(block => block.getIn(['data', 'url']))
-  },
-)
-
-export const selectPostImageAndEmbedContent = createSelector(
-  [selectPostEmbedContent, selectPostImageContent], (embeds, images) =>
-    images.concat(embeds),
-)
-
-export const selectPostTextContent = createSelector(
-  [selectPostBlocks], (blocks) => {
-    if (!blocks) { return null }
-    const text = blocks.map(block => (/text/.test(block.get('kind')) ? block.get('data') : '')).join('')
-    return text.length ? trunc(text, 200).text : ''
-  },
+export const selectPostMetaAttributes = createSelector(
+  [selectPostFromToken], post => post.get('metaAttributes', Immutable.Map()),
 )
 
 export const selectPostMetaDescription = createSelector(
-  [selectPostTextContent], text =>
-    (text && text.length ? text : 'Discover more amazing work like this on Ello.'),
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('description'),
 )
 
 export const selectPostMetaRobots = createSelector(
-  [selectAuthorFromPost], (author) => {
-    if (!author) { return null }
-    return (author.get('badForSeo') ? 'noindex, follow' : 'index, follow')
-  },
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('robots'),
 )
 
 export const selectPostMetaTitle = createSelector(
-  [selectPostTextContent, selectAuthorFromPost], (text, author) => {
-    if (!author) { return null }
-    if (text && text.length) {
-      const paragraphs = text.split('\n')
-      const title = paragraphs[0].split('.')[0]
-      if (title && title.length) {
-        return `${title} - from @${author.get('username')} on Ello.`
-      }
-    }
-    return `A post from @${author.get('username')} on Ello.`
-  },
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('title'),
 )
 
 export const selectPostMetaUrl = createSelector(
-  [selectPostFromToken, selectAuthorFromPost], (post, author) => {
-    if (!post || !author) { return null }
-    return `${ENV.AUTH_DOMAIN}/${author.get('username')}/post/${post.get('token')}`
-  },
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('url'),
 )
 
 export const selectPostMetaCanonicalUrl = createSelector(
-  [selectPostFromToken], (post) => {
-    if (!post) { return null }
-    return (
-      post.get('repostContent') ? `${ENV.AUTH_DOMAIN}${post.get('repostPath')}` : null
-    )
-  },
+  [selectPostMetaAttributes], metaAttributes => metaAttributes.get('canonicalUrl'),
 )
 
 export const selectPostMetaImages = createSelector(
-  [selectPostImageAndEmbedContent], (images) => {
-    const openGraphImages = images.toArray().map(image => ({ property: 'og:image', content: image }))
-    const schemaImages = images.toArray().map(image => ({ name: 'image', itemprop: 'image', content: image }))
+  [selectPostMetaAttributes], (metaAttributes) => {
+    const images = metaAttributes.get('images', Immutable.List()).toArray()
+    const openGraphImages = images.map(image => ({ property: 'og:image', content: image }))
+    const schemaImages = images.map(image => ({ name: 'image', itemprop: 'image', content: image }))
     return { openGraphImages, schemaImages }
   },
 )
