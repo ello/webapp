@@ -127,7 +127,7 @@ function mapStateToProps(state, ownProps) {
 
 class NotificationParser extends Component {
   static propTypes = {
-    assets: PropTypes.object.isRequired,
+    assets: PropTypes.object,
     createdAt: PropTypes.string.isRequired,
     kind: PropTypes.string.isRequired,
     parentPost: PropTypes.object,
@@ -144,6 +144,7 @@ class NotificationParser extends Component {
   }
 
   static defaultProps = {
+    assets: null,
     parentPost: null,
     parentPostAuthor: null,
     postActionAuthor: null,
