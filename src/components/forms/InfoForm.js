@@ -47,15 +47,18 @@ class InfoForm extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     isOnboardingControl: PropTypes.bool,
     linksText: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
+    location: PropTypes.string,
     name: PropTypes.string.isRequired,
-    shortBio: PropTypes.string.isRequired,
+    shortBio: PropTypes.string,
     tabIndexStart: PropTypes.number,
     username: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
+    location: null,
     isOnboardingControl: false,
+    name: null,
+    shortBio: null,
     tabIndexStart: 0,
   }
 
