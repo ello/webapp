@@ -16,7 +16,7 @@ describe('HeroContainer', () => {
       expect(selectIsAuthentication(state)).to.equal(true)
       expect(selectIsAuthentication.recomputations()).to.equal(1)
 
-      state = Immutable.fromJS({ routing: { location: { pathname: '/join', change: true } } })
+      state = { routing: Immutable.fromJS({ location: { pathname: '/join', change: true } }) }
       expect(selectIsAuthentication(state)).to.equal(true)
       expect(selectIsAuthentication.recomputations()).to.equal(1)
 

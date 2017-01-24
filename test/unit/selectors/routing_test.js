@@ -145,7 +145,7 @@ describe('routing selectors', () => {
       state = { routing: state.routing.setIn(['location', 'pathname'], '/mk/post/etlb9br06dh6tleztw4g') }
       expect(selectViewNameFromRoute(state, props)).not.to.equal('userDetail')
 
-      state = state.setIn(['routing', 'location', 'pathname'], '/join')
+      state = { routing: state.routing.setIn(['location', 'pathname'], '/join') }
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
       state = { routing: state.routing.setIn(['location', 'pathname'], '/enter') }
