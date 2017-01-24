@@ -402,7 +402,7 @@ export default function json(state = initialState, action = { type: '' }) {
       return state
   }
   const { response } = action.payload
-  // TODO: Add to immutable branch
+  // Announcement notifications dismissed from another tab/device/browser send an empty response
   if (!response && get(action, ['meta', 'mappingType'], null) === MAPPING_TYPES.ANNOUNCEMENTS) {
     return methods.markAnnouncementRead(state, action)
   }
