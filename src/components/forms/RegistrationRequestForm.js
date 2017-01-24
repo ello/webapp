@@ -66,11 +66,10 @@ class RegistrationRequestForm extends Component {
       this.checkForInviteCode(nextProps)
     }
     if (!availability) { return }
-    // TODO: update this for immutable
-    if ({}.hasOwnProperty.call(availability, 'email')) {
+    if (availability.has('email')) {
       this.validateEmailResponse(availability)
     }
-    if ({}.hasOwnProperty.call(availability, 'invitationCode')) {
+    if (availability.has('invitationCode')) {
       this.validateInvitationCodeResponse(availability)
     }
   }
@@ -139,7 +138,7 @@ class RegistrationRequestForm extends Component {
     const { emailState } = this.state
     const currentStatus = emailState.status
     const newState = getEmailStateFromServer({ availability, currentStatus })
-    if (newState.status === STATUS.SUCCESS && availability.original.is_signup) {
+    if (newState.status === STATUS.SUCCESS && availability.getIn(['original', 'is_signup'])) {
       if (inModal) {
         dispatch(trackEvent('modal-registration-request-form-completion'))
       }
