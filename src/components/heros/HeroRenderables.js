@@ -17,7 +17,7 @@ export const HeroBroadcast = ({ broadcast, onDismiss }) =>
 
 HeroBroadcast.propTypes = {
   broadcast: PropTypes.string.isRequired,
-  onDismiss: PropTypes.func,
+  onDismiss: PropTypes.func.isRequired,
 }
 
 // -------------------------------------
@@ -39,7 +39,11 @@ HeroProfile.propTypes = {
   dpi: PropTypes.string.isRequired,
   sources: PropTypes.object,
   userId: PropTypes.string,
-  useGif: PropTypes.bool,
+  useGif: PropTypes.bool.isRequired,
+}
+HeroProfile.defaultProps = {
+  sources: null,
+  userId: null,
 }
 
 // -------------------------------------
@@ -62,6 +66,11 @@ HeroPromotionAuth.propTypes = {
   creditUsername: PropTypes.string,
   dpi: PropTypes.string.isRequired,
   sources: PropTypes.object,
+}
+HeroPromotionAuth.defaultProps = {
+  creditSources: null,
+  creditUsername: null,
+  sources: null,
 }
 
 // -------------------------------------
@@ -103,17 +112,24 @@ export const HeroPromotionCategory = (props) => {
 }
 
 HeroPromotionCategory.propTypes = {
-  creditLabel: PropTypes.string,
+  creditLabel: PropTypes.string.isRequired,
   creditSources: PropTypes.object,
   creditUsername: PropTypes.string,
   ctaCaption: PropTypes.string,
   ctaHref: PropTypes.string,
-  description: PropTypes.string,
+  description: PropTypes.string.isRequired,
   dpi: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   sources: PropTypes.object,
+}
+HeroPromotionCategory.defaultProps = {
+  creditSources: null,
+  creditUsername: null,
+  ctaCaption: null,
+  ctaHref: null,
+  sources: null,
 }
 
 // -------------------------------------
@@ -142,9 +158,16 @@ HeroPromotionPage.propTypes = {
   ctaCaption: PropTypes.string,
   ctaHref: PropTypes.string,
   dpi: PropTypes.string.isRequired,
-  header: PropTypes.string,
+  header: PropTypes.string.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
   sources: PropTypes.object,
-  subheader: PropTypes.string,
+  subheader: PropTypes.string.isRequired,
+}
+HeroPromotionPage.defaultProps = {
+  creditSources: null,
+  creditUsername: null,
+  ctaCaption: null,
+  ctaHref: null,
+  sources: null,
 }
 
