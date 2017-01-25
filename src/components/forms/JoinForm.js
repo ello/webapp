@@ -61,7 +61,7 @@ class JoinForm extends PureComponent {
   componentWillReceiveProps(nextProps) {
     const { availability } = nextProps
     if (!availability) { return }
-    if (availability.get('username')) {
+    if (availability.has('username')) {
       this.validateUsernameResponse(availability)
     }
   }
