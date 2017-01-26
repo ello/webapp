@@ -53,31 +53,34 @@ function getPostDetailPath(author, post) {
 }
 
 export function mapStateToProps(state, props) {
-  const { postId } = props
-  const json = selectJson(state)
-  const post = json.getIn([MAPPING_TYPES.POSTS, postId])
-  const postToken = post.get('token')
-  const pathname = selectPathname(state)
-  const author = json.getIn([MAPPING_TYPES.USERS, post.get('authorId')])
-  const assets = json.get('assets')
-  const categories = post.getIn(['links', 'categories'])
-  const category = json.getIn(['categories', categories ? categories.first() : null])
+  const { isPostDetail, postId } = props
   const isLoggedIn = selectIsLoggedIn(state)
-  const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
-  const isRepost = !!(post.get('repostContent') && post.get('repostContent').size)
-  const isEditing = post.get('isEditing', false)
-  const isReposting = post.get('isReposting', false)
-  const postBody = post.get('body')
-  const showEditor = !!((isEditing || isReposting) && postBody)
-  const postCommentsCount = post.get('commentsCount')
-  const postLovesCount = post.get('lovesCount')
-  const postRepostsCount = post.get('repostsCount')
-  const showCommentEditor = !showEditor && !props.isPostDetail && post.get('showComments')
-  const showComments = showCommentEditor && postCommentsCount > 0
-  const isGridMode = props.isPostDetail ? false : selectIsGridMode(state)
+  const json = selectJson(state)
+  const pathname = selectPathname(state)
   const streamType = selectStreamType(state)
   const streamMappingType = selectStreamMappingType(state)
   const streamPostIdOrToken = selectStreamPostIdOrToken(state)
+
+  const post = json.getIn([MAPPING_TYPES.POSTS, postId])
+  const author = json.getIn([MAPPING_TYPES.USERS, post.get('authorId')])
+  const assets = json.get('assets')
+
+  const categories = post.getIn(['links', 'categories'])
+  const category = json.getIn(['categories', categories ? categories.first() : null])
+  const isEditing = post.get('isEditing', false)
+  const isReposting = post.get('isReposting', false)
+  const postBody = post.get('body')
+  const postCommentsCount = post.get('commentsCount')
+  const postLovesCount = post.get('lovesCount')
+  const postRepostsCount = post.get('repostsCount')
+  const postToken = post.get('token')
+
+  const isGridMode = isPostDetail ? false : selectIsGridMode(state)
+  const isOnFeaturedCategory = /^\/(?:discover(\/featured|\/recommended)?)?$/.test(pathname)
+  const isRepost = !!(post.get('repostContent') && post.get('repostContent').size)
+  const showEditor = !!((isEditing || isReposting) && postBody)
+  const showCommentEditor = !showEditor && !isPostDetail && post.get('showComments')
+  const showComments = showCommentEditor && postCommentsCount > 0
 
   const newProps = {
     assets,
@@ -109,7 +112,7 @@ export function mapStateToProps(state, props) {
     pathname,
     post,
     postBody,
-    postCommentsCount: post.get('commentsCount'),
+    postCommentsCount,
     postCreatedAt: post.get('createdAt'),
     postId,
     postLoved: post.get('loved'),
@@ -123,9 +126,9 @@ export function mapStateToProps(state, props) {
     showComments,
     showEditor,
     showLovers: (!showEditor && !isGridMode && post.get('showLovers') && postLovesCount > 0) ||
-      (!showEditor && !isGridMode && props.isPostDetail && postLovesCount > 0),
+      (!showEditor && !isGridMode && isPostDetail && postLovesCount > 0),
     showReposters: (!showEditor && !isGridMode && post.get('showReposters') && postRepostsCount > 0) ||
-      (!showEditor && !isGridMode && props.isPostDetail && postRepostsCount > 0),
+      (!showEditor && !isGridMode && isPostDetail && postRepostsCount > 0),
     summary: post.get('summary'),
   }
 

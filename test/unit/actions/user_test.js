@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 import { isFSA, isFSAName } from '../../support/test_helpers'
 import * as subject from '../../../src/actions/user'
 import {
@@ -161,8 +162,8 @@ describe('user actions', () => {
   })
 
   context('#loadUserDrawer', () => {
-    const post = { id: '666' }
-    const action = subject.loadUserDrawer(postLovers(post.id), post, 'loves')
+    const post = Immutable.fromJS({ id: '666' })
+    const action = subject.loadUserDrawer(postLovers(post.get('id')), post.get('id'), 'loves')
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
