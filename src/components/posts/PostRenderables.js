@@ -4,38 +4,12 @@ import React, { Component, PropTypes, PureComponent } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
-import { UserDrawer } from '../users/UserRenderables'
 import ContentWarningButton from '../posts/ContentWarningButton'
-import { HeartIcon, RepostIcon } from '../posts/PostIcons'
+import { RepostIcon } from '../posts/PostIcons'
 import RelationshipContainer from '../../containers/RelationshipContainer'
-import { postLovers, postReposters } from '../../networking/api'
 import StreamContainer from '../../containers/StreamContainer'
 import { loadComments } from '../../actions/posts'
 import { RegionItems } from '../regions/RegionRenderables'
-
-export const PostLoversDrawer = ({ post }) =>
-  <UserDrawer
-    endpoint={postLovers(post.get('id'))}
-    icon={<HeartIcon />}
-    key={`userAvatarsLovers_${post.get('id')}${post.get('lovesCount')}`}
-    post={post}
-    resultType="love"
-  />
-PostLoversDrawer.propTypes = {
-  post: PropTypes.object.isRequired,
-}
-
-export const PostRepostersDrawer = ({ post }) =>
-  <UserDrawer
-    endpoint={postReposters(post.get('id'))}
-    icon={<RepostIcon />}
-    key={`userAvatarsReposters_${post.get('id')}${post.get('repostsCount')}`}
-    post={post}
-    resultType="repost"
-  />
-PostRepostersDrawer.propTypes = {
-  post: PropTypes.object.isRequired,
-}
 
 export const CommentStream = ({ detailPath, post, postCommentsCount }) =>
   <div>

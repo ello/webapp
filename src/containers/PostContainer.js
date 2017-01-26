@@ -36,16 +36,17 @@ import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import Editor from '../components/editor/Editor'
+import { HeartIcon, RepostIcon } from '../components/posts/PostIcons'
 import {
   CategoryHeader,
   CommentStream,
   PostBody,
   PostHeader,
-  PostLoversDrawer,
-  PostRepostersDrawer,
   RepostHeader,
 } from '../components/posts/PostRenderables'
 import { PostTools, WatchTool } from '../components/posts/PostTools'
+import { UserDrawer } from '../components/users/UserRenderables'
+import { postLovers, postReposters } from '../networking/api'
 
 function getPostDetailPath(author, post) {
   return `/${author.get('username')}/post/${post.get('token')}`
@@ -68,10 +69,11 @@ export function mapStateToProps(state, props) {
   const isReposting = post.get('isReposting', false)
   const postBody = post.get('body')
   const showEditor = !!((isEditing || isReposting) && postBody)
-  const lovesCount = post.get('lovesCount')
-  const repostsCount = post.get('repostsCount')
+  const postCommentsCount = post.get('commentsCount')
+  const postLovesCount = post.get('lovesCount')
+  const postRepostsCount = post.get('repostsCount')
   const showCommentEditor = !showEditor && !props.isPostDetail && post.get('showComments')
-  const showComments = showCommentEditor && post.get('commentsCount') > 0
+  const showComments = showCommentEditor && postCommentsCount > 0
   const isGridMode = props.isPostDetail ? false : selectIsGridMode(state)
   const streamType = selectStreamType(state)
   const streamMappingType = selectStreamMappingType(state)
@@ -111,7 +113,7 @@ export function mapStateToProps(state, props) {
     postCreatedAt: post.get('createdAt'),
     postId,
     postLoved: post.get('loved'),
-    postLovesCount: post.get('lovesCount'),
+    postLovesCount,
     postReposted: post.get('reposted'),
     postRepostsCount: post.get('repostsCount'),
     postViewsCountRounded: post.get('viewsCountRounded'),
@@ -120,10 +122,10 @@ export function mapStateToProps(state, props) {
     showCommentEditor,
     showComments,
     showEditor,
-    showLovers: (!showEditor && !isGridMode && post.get('showLovers') && lovesCount > 0) ||
-      (!showEditor && !isGridMode && props.isPostDetail && lovesCount > 0),
-    showReposters: (!showEditor && !isGridMode && post.get('showReposters') && repostsCount > 0) ||
-      (!showEditor && !isGridMode && props.isPostDetail && repostsCount > 0),
+    showLovers: (!showEditor && !isGridMode && post.get('showLovers') && postLovesCount > 0) ||
+      (!showEditor && !isGridMode && props.isPostDetail && postLovesCount > 0),
+    showReposters: (!showEditor && !isGridMode && post.get('showReposters') && postRepostsCount > 0) ||
+      (!showEditor && !isGridMode && props.isPostDetail && postRepostsCount > 0),
     summary: post.get('summary'),
   }
 
@@ -190,6 +192,7 @@ class PostContainer extends Component {
     categoryPath: null,
     contentWarning: null,
     isPostDetail: false,
+    isPostHeaderHidden: false,
     isWatchingPost: false,
     postBody: null,
     previousPath: null,
@@ -512,8 +515,24 @@ class PostContainer extends Component {
           postRepostsCount={postRepostsCount}
           postViewsCountRounded={postViewsCountRounded}
         />
-        {showLovers && <PostLoversDrawer post={post} />}
-        {showReposters && <PostRepostersDrawer post={post} />}
+        {showLovers &&
+          <UserDrawer
+            endpoint={postLovers(postId)}
+            icon={<HeartIcon />}
+            key={`userAvatarsLovers_${postId}`}
+            postId={postId}
+            resultType="love"
+          />
+        }
+        {showReposters &&
+          <UserDrawer
+            endpoint={postReposters(postId)}
+            icon={<RepostIcon />}
+            key={`userAvatarsReposters_${postId}`}
+            postId={postId}
+            resultType="repost"
+          />
+        }
         {isMobile &&
           <WatchTool
             isMobile
