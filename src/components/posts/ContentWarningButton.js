@@ -4,7 +4,7 @@ import classNames from 'classnames'
 export default class ContentWarningButton extends Component {
 
   static propTypes = {
-    post: PropTypes.object.isRequired,
+    contentWarning: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
@@ -20,13 +20,13 @@ export default class ContentWarningButton extends Component {
   }
 
   render() {
-    const { post } = this.props
+    const { contentWarning } = this.props
     const { isOpen } = this.state
     const classes = classNames('ContentWarningButton', { isOpen })
     return (
       <button className={classes} onClick={this.onClickToggle}>
         <span className="ContentWarningButtonMessage">
-          {post.get('contentWarning')}
+          {contentWarning}
         </span>
         <span className="ContentWarningButtonStateLabel">
           {isOpen ? 'Hide' : 'View'}

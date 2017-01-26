@@ -125,12 +125,12 @@ function isElementInViewport(el, topOffset = 0) {
 export function scrollToLastTextBlock(editorId, isNavbarHidden) {
   const textBlocks = document.querySelectorAll(`[data-editor-id='${editorId}'] div.text`)
   const lastTextBlock = textBlocks[textBlocks.length - 1]
-  if (lastTextBlock && !isElementInViewport(lastTextBlock, isNavbarHidden ? 0 : 80)) {
+  if (lastTextBlock && !isElementInViewport(lastTextBlock, isNavbarHidden ? 80 : 160)) {
     const pos = lastTextBlock.getBoundingClientRect()
     if (pos.top > window.innerHeight) {
       scrollTo(0, window.scrollY + ((pos.top - window.innerHeight) + 140))
     } else {
-      scrollTo(0, window.scrollY + (pos.top - 100))
+      scrollTo(0, window.scrollY + (pos.top - 200))
     }
   }
 }

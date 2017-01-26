@@ -73,6 +73,9 @@ export const makeSelectStreamProps = () =>
         const delTypes = json.get(`deleted_${result.get('type')}`)
         // don't filter out blocked ids if we are in settings
         // since you can unblock/unmute them from here
+        // TODO: should only be using ids in the renderObj.data
+        // so that the model containers can do their own lookups
+        // on the json object which should have the absolute latest
         result.get('ids').forEach((id) => {
           const model = json.getIn([result.get('type'), id])
           if (model && (path === '/settings' || (!delTypes || !delTypes.includes(id)))) {

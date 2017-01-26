@@ -84,7 +84,7 @@ class StreamContainer extends Component {
     className: '',
     initModel: null,
     isModalComponent: false,
-    isPostHeaderHidden: null,
+    isPostHeaderHidden: false,
     paginatorText: 'Loading',
     scrollContainer: null,
   }
