@@ -106,6 +106,7 @@
           ]
         }
       ],
+      "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
       "semi": 0
     }
   },

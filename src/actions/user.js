@@ -86,7 +86,7 @@ export function loadUserUsers(username, type) {
   }
 }
 
-export function loadUserDrawer(endpoint, post, resultType) {
+export function loadUserDrawer(endpoint, postId, resultType) {
   return {
     type: ACTION_TYPES.LOAD_STREAM,
     payload: { endpoint },
@@ -97,8 +97,8 @@ export function loadUserDrawer(endpoint, post, resultType) {
         asGrid: StreamRenderables.userAvatars,
         asError: <ErrorState />,
       },
-      resultKey: `/posts/${post.id}/${resultType}`,
-      updateKey: `/posts/${post.id}/`,
+      resultKey: `/posts/${postId}/${resultType}`,
+      updateKey: `/posts/${postId}/`,
     },
   }
 }

@@ -61,11 +61,11 @@ UserCompact.propTypes = {
 
 // -----------------
 
-export const UserDrawer = ({ endpoint, icon, post, resultType }) =>
+export const UserDrawer = ({ endpoint, icon, postId, resultType }) =>
   <section className="UserDrawer">
     {icon}
     <StreamContainer
-      action={loadUserDrawer(endpoint, post, resultType)}
+      action={loadUserDrawer(endpoint, postId, resultType)}
       paginatorText="+more"
       ignoresScrollPosition
     />
@@ -73,7 +73,7 @@ export const UserDrawer = ({ endpoint, icon, post, resultType }) =>
 UserDrawer.propTypes = {
   endpoint: PropTypes.object.isRequired,
   icon: PropTypes.element.isRequired,
-  post: PropTypes.object.isRequired,
+  postId: PropTypes.string.isRequired,
   resultType: PropTypes.string.isRequired,
 }
 

@@ -9,7 +9,7 @@ export const PostDetail = ({ author, hasEditor, post, streamAction }) =>
     <div className="PostDetails Posts asList">
       <article className="PostList" id={`Post_${post.get('id', '_')}`}>
         <div className="StreamContainer">
-          {author && post ? <PostContainer isPostDetail post={post} /> : null}
+          {author && post ? <PostContainer isPostDetail postId={post.get('id')} /> : null}
           {hasEditor && post ? <Editor post={post} isComment isPostDetail /> : null}
         </div>
         {streamAction ?
