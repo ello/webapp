@@ -52,22 +52,16 @@ export function mapStateToProps(state, props) {
   }
 }
 
-/* eslint-disable react/no-unused-prop-types */
 class UserContainer extends Component {
 
   static propTypes = {
     categories: PropTypes.object,
     className: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    followingCount: PropTypes.number.isRequired,
-    followersCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     isFeatured: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isShortBioTruncated: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    lovesCount: PropTypes.number.isRequired,
-    postsCount: PropTypes.number.isRequired,
-    relationshipPriority: PropTypes.string,
     truncatedShortBio: PropTypes.string.isRequired,
     type: PropTypes.oneOf([
       'avatar',
@@ -232,7 +226,6 @@ class UserContainer extends Component {
     }
   }
 }
-/* eslint-enable react/no-unused-prop-types */
 
 export default connect(mapStateToProps)(UserContainer)
 

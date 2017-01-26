@@ -227,17 +227,18 @@ class PostContainer extends Component {
   }
 
   getChildContext() {
+    const { isLoggedIn } = this.props
     return {
       onClickDeletePost: this.onClickDeletePost,
       onClickEditPost: this.onClickEditPost,
       onClickFlagPost: this.onClickFlagPost,
-      onClickLovePost: this.onClickLovePost,
-      onClickRepostPost: this.onClickRepostPost,
+      onClickLovePost: isLoggedIn ? this.onClickLovePost : this.onOpenSignupModal,
+      onClickRepostPost: isLoggedIn ? this.onClickRepostPost : this.onOpenSignupModal,
       onClickSharePost: this.onClickSharePost,
       onClickToggleComments: this.onClickToggleComments,
-      onClickToggleLovers: this.onClickToggleLovers,
-      onClickToggleReposters: this.onClickToggleReposters,
-      onClickWatchPost: this.onClickWatchPost,
+      onClickToggleLovers: isLoggedIn ? this.onClickToggleLovers : this.onOpenSignupModal,
+      onClickToggleReposters: isLoggedIn ? this.onClickToggleReposters : this.onOpenSignupModal,
+      onClickWatchPost: isLoggedIn ? this.onClickWatchPost : this.onOpenSignupModal,
     }
   }
 
@@ -299,11 +300,7 @@ class PostContainer extends Component {
   }
 
   onClickLovePost = () => {
-    const { dispatch, isLoggedIn, post, postLoved } = this.props
-    if (!isLoggedIn) {
-      this.onSignUp()
-      return
-    }
+    const { dispatch, post, postLoved } = this.props
     if (postLoved) {
       dispatch(postActions.unlovePost(post))
     } else {
@@ -313,11 +310,7 @@ class PostContainer extends Component {
   }
 
   onClickRepostPost = () => {
-    const { dispatch, isLoggedIn, post, postReposted } = this.props
-    if (!isLoggedIn) {
-      this.onSignUp()
-      return
-    }
+    const { dispatch, post, postReposted } = this.props
     if (!postReposted) {
       dispatch(postActions.toggleReposting(post, true))
       dispatch(postActions.loadEditablePost(post.get('id')))
@@ -343,12 +336,7 @@ class PostContainer extends Component {
   }
 
   onClickToggleLovers = () => {
-    const { detailPath, dispatch, isGridMode, isLoggedIn,
-            pathname, post, showLovers } = this.props
-    if (!isLoggedIn) {
-      this.onSignUp()
-      return
-    }
+    const { detailPath, dispatch, isGridMode, pathname, post, showLovers } = this.props
     if (isGridMode && pathname !== detailPath) {
       dispatch(push(detailPath))
     } else {
@@ -358,12 +346,7 @@ class PostContainer extends Component {
   }
 
   onClickToggleReposters = () => {
-    const { detailPath, dispatch, isGridMode, isLoggedIn,
-      pathname, post, showReposters } = this.props
-    if (!isLoggedIn) {
-      this.onSignUp()
-      return
-    }
+    const { detailPath, dispatch, isGridMode, pathname, post, showReposters } = this.props
     if (isGridMode && pathname !== detailPath) {
       dispatch(push(detailPath))
     } else {
@@ -373,11 +356,7 @@ class PostContainer extends Component {
   }
 
   onClickWatchPost = () => {
-    const { dispatch, isLoggedIn, post, isWatchingPost } = this.props
-    if (!isLoggedIn) {
-      this.onSignUp()
-      return
-    }
+    const { dispatch, post, isWatchingPost } = this.props
     if (isWatchingPost) {
       dispatch(postActions.unwatchPost(post))
       dispatch(trackEvent('unwatched-post'))
@@ -392,7 +371,7 @@ class PostContainer extends Component {
     dispatch(closeModal())
   }
 
-  onSignUp = () => {
+  onOpenSignupModal = () => {
     const { onClickOpenRegistrationRequestDialog } = this.context
     onClickOpenRegistrationRequestDialog('post-tools')
   }
