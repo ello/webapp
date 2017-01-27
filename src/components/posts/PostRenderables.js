@@ -234,9 +234,9 @@ export class PostBody extends Component {
       columnWidth,
       commentOffset,
       contentWidth,
+      detailPath,
       innerHeight,
       isGridMode,
-      detailPath,
     }
     if (isRepost) {
       // this is weird, but the post summary is

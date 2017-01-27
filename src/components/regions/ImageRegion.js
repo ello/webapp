@@ -22,21 +22,20 @@ class ImageRegion extends Component {
     commentOffset: PropTypes.number.isRequired,
     content: PropTypes.object.isRequired,
     contentWidth: PropTypes.number.isRequired,
+    detailPath: PropTypes.string.isRequired,
     innerHeight: PropTypes.number.isRequired,
     isComment: PropTypes.bool,
     isGridMode: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
     links: PropTypes.object,
-    postDetailPath: PropTypes.string,
   }
 
   static defaultProps = {
-    buyLinkURL: null,
     assets: null,
+    buyLinkURL: null,
     isComment: false,
     isNotification: false,
     links: null,
-    postDetailPath: null,
   }
 
   componentWillMount() {
@@ -269,10 +268,10 @@ class ImageRegion extends Component {
   }
 
   renderRegionAsLink() {
-    const { buyLinkURL, postDetailPath } = this.props
+    const { buyLinkURL, detailPath } = this.props
     return (
       <div className="RegionContent">
-        <Link to={postDetailPath}>
+        <Link to={detailPath}>
           {this.renderAttachment()}
         </Link>
         {
@@ -304,9 +303,9 @@ class ImageRegion extends Component {
   }
 
   render() {
-    const { isGridMode, postDetailPath } = this.props
+    const { isGridMode, detailPath } = this.props
     const { status } = this.state
-    const asLink = isGridMode && postDetailPath
+    const asLink = isGridMode && detailPath
     return (
       <div className={classNames('ImageRegion', status)} >
         {asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic()}

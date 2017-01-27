@@ -5,7 +5,7 @@ import TextRegion from '../regions/TextRegion'
 
 export function RegionItems(props) {
   const { assets, columnWidth, commentOffset, content, contentWidth,
-    innerHeight, isGridMode, postDetailPath } = props
+    detailPath, innerHeight, isGridMode } = props
   // sometimes the content is null/undefined for some reason
   if (!content) { return null }
   const cells = []
@@ -15,9 +15,9 @@ export function RegionItems(props) {
         cells.push(
           <TextRegion
             content={region.get('data')}
+            detailPath={detailPath}
             isGridMode={isGridMode}
             key={`TextRegion_${region.get('data')}`}
-            postDetailPath={postDetailPath}
           />,
         )
         break
@@ -30,11 +30,11 @@ export function RegionItems(props) {
             commentOffset={commentOffset}
             content={region.get('data')}
             contentWidth={contentWidth}
+            detailPath={detailPath}
             innerHeight={innerHeight}
             isGridMode={isGridMode}
             key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
             links={region.get('links')}
-            postDetailPath={postDetailPath}
           />,
         )
         break
@@ -55,23 +55,16 @@ export function RegionItems(props) {
 }
 RegionItems.propTypes = {
   assets: PropTypes.object,
-  columnWidth: PropTypes.number,
-  commentOffset: PropTypes.number,
-  content: PropTypes.object,
-  contentWidth: PropTypes.number,
-  innerHeight: PropTypes.number,
-  isGridMode: PropTypes.bool,
-  postDetailPath: PropTypes.string,
+  columnWidth: PropTypes.number.isRequired,
+  commentOffset: PropTypes.number.isRequired,
+  content: PropTypes.object.isRequired,
+  contentWidth: PropTypes.number.isRequired,
+  detailPath: PropTypes.string.isRequired,
+  innerHeight: PropTypes.number.isRequired,
+  isGridMode: PropTypes.bool.isRequired,
 }
 RegionItems.defaultProps = {
   assets: null,
-  columnWidth: null,
-  commentOffset: null,
-  content: null,
-  contentWidth: null,
-  innerHeight: null,
-  isGridMode: true,
-  postDetailPath: null,
 }
 
 
