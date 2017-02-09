@@ -5,7 +5,7 @@ import TextRegion from '../regions/TextRegion'
 
 export function RegionItems(props) {
   const { assets, columnWidth, commentOffset, content, contentWidth,
-    detailPath, innerHeight, isGridMode } = props
+    detailPath, innerHeight, isGridMode, isOnScreen } = props
   // sometimes the content is null/undefined for some reason
   if (!content) { return null }
   const cells = []
@@ -33,6 +33,7 @@ export function RegionItems(props) {
             detailPath={detailPath}
             innerHeight={innerHeight}
             isGridMode={isGridMode}
+            isOnScreen={isOnScreen}
             key={`ImageRegion_${JSON.stringify(region.get('data'))}`}
             links={region.get('links')}
           />,
@@ -63,6 +64,7 @@ RegionItems.propTypes = {
   detailPath: PropTypes.string.isRequired,
   innerHeight: PropTypes.number.isRequired,
   isGridMode: PropTypes.bool.isRequired,
+  isOnScreen: PropTypes.bool.isRequired,
 }
 RegionItems.defaultProps = {
   assets: null,

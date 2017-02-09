@@ -26,6 +26,7 @@ class ImageRegion extends Component {
     innerHeight: PropTypes.number,
     isComment: PropTypes.bool,
     isGridMode: PropTypes.bool.isRequired,
+    isOnScreen: PropTypes.bool.isRequired,
     isNotification: PropTypes.bool,
     links: PropTypes.object,
   }
@@ -79,7 +80,7 @@ class ImageRegion extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !Immutable.is(nextProps.content, this.props.content) ||
       !Immutable.is(nextProps.links, this.props.links) ||
-      ['buyLinkURL', 'columnWidth', 'contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
+      ['buyLinkURL', 'columnWidth', 'contentWidth', 'innerHeight', 'isGridMode', 'isOnScreen'].some(prop =>
         nextProps[prop] !== this.props[prop],
       ) ||
       ['marginBottom', 'scale', 'status'].some(prop => nextState[prop] !== this.state[prop])
@@ -241,6 +242,24 @@ class ImageRegion extends Component {
     )
   }
 
+  renderImagePlaceholder() {
+    const { content, isNotification } = this.props
+    const dimensions = this.getImageDimensions()
+    return (
+      <div
+        alt={content.get('alt') ? content.get('alt').replace('.jpg', '') : null}
+        className="ImagePlaceholder"
+        role="presentation"
+        style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.2)',
+          display: 'inline-block',
+          width: isNotification ? null : dimensions.width,
+          height: isNotification ? 'auto' : dimensions.height,
+        }}
+      />
+    )
+  }
+
   renderLegacyImageAttachment() {
     const { content, isNotification } = this.props
     const attrs = { src: content.get('url') }
@@ -263,9 +282,12 @@ class ImageRegion extends Component {
   }
 
   renderAttachment() {
-    const { assets, links } = this.props
+    const { assets, links, isOnScreen } = this.props
     if (!this.isBasicAttachment()) {
       this.attachment = assets.getIn([links.get('assets'), 'attachment'])
+      if (!isOnScreen) {
+        return this.renderImagePlaceholder()
+      }
       return this.isGif() ? this.renderGifAttachment() : this.renderImageAttachment()
     }
     return this.renderLegacyImageAttachment()

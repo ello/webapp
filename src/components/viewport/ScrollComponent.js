@@ -2,6 +2,7 @@ let hasWindowListener = false
 let lastScrollDirection = null
 let lastScrollY = null
 let ticking = false
+let screen = 0
 const scrollObjects = []
 const scrollTargetObjects = []
 
@@ -59,30 +60,41 @@ function getScrollHeight() {
   return Math.max(document.body.scrollHeight, document.body.offsetHeight)
 }
 
-function getScrollBottom(scrollHeight) {
-  return Math.round(scrollHeight - window.innerHeight)
+function getScrollBottom(scrollHeight, innerHeight) {
+  return Math.round(scrollHeight - innerHeight)
+}
+
+function getScrollScreen(scrollY, innerHeight) {
+  return Math.ceil((scrollY + 1) / innerHeight)
 }
 
 function getScrollProperties() {
+  const innerHeight = window.innerHeight
   const scrollY = getScrollY()
   const scrollHeight = getScrollHeight()
-  const scrollBottom = getScrollBottom(scrollHeight)
+  const scrollBottom = getScrollBottom(scrollHeight, innerHeight)
+  const scrollScreen = getScrollScreen(scrollY, innerHeight)
   return {
     scrollY,
     scrollHeight,
     scrollBottom,
+    scrollScreen,
     scrollPercent: getScrollPercent(0, scrollBottom, scrollY),
     scrollDirection: getScrollDirection(scrollY),
   }
 }
 
 function scrolled() {
+  const scrollProperties = getScrollProperties()
+  const scrollAction = getScrollAction(scrollProperties)
   scrollObjects.forEach((obj) => {
-    const scrollProperties = getScrollProperties()
-    const scrollAction = getScrollAction(scrollProperties)
     callMethod(obj, 'onScroll', scrollProperties)
     if (scrollAction) {
       callMethod(obj, scrollAction, scrollProperties)
+    }
+    if (screen !== scrollProperties.scrollScreen) {
+      screen = scrollProperties.scrollScreen
+      callMethod(obj, 'onScrollScreenChange', scrollProperties)
     }
     lastScrollY = scrollProperties.scrollY
     lastScrollDirection = scrollProperties.scrollDirection
