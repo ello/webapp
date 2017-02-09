@@ -2,7 +2,7 @@ let hasWindowListener = false
 let lastScrollDirection = null
 let lastScrollY = null
 let ticking = false
-let screen = 0
+let screen = 1
 const scrollObjects = []
 const scrollTargetObjects = []
 

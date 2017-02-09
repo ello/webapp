@@ -19,15 +19,15 @@ const createBrowserStore = (history, passedInitialState = {}) => {
     collapsed: true,
     predicate: () => ENV.APP_DEBUG,
   }
-  if (ENV.NODE_ENV === 'development') {
-    logConfig.stateTransformer = (state) => {
-      const newState = {}
-      Object.keys(state).forEach((key) => {
-        newState[key] = state[key].toJS()
-      })
-      return newState
-    }
-  }
+  // if (ENV.NODE_ENV === 'development') {
+  //   logConfig.stateTransformer = (state) => {
+  //     const newState = {}
+  //     Object.keys(state).forEach((key) => {
+  //       newState[key] = state[key].toJS()
+  //     })
+  //     return newState
+  //   }
+  // }
   if (ENV.APP_DEBUG) {
     window.Pam = r => fromJSON(JSON.parse(localStorage.getItem(`reduxPersist:${r}`))).toJS()
   }

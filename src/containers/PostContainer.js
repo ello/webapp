@@ -253,16 +253,20 @@ class PostContainer extends Component {
 
   componentDidMount() {
     this.activeScreen = Math.abs(Math.ceil(this.ref.offsetTop / this.props.innerHeight))
+    this.componentWillReceiveProps(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     const { scrollScreen } = nextProps
     const { isOnScreen } = this.state
-    if (this.activeScreen === scrollScreen && !isOnScreen) {
-      console.log('Coming on screen:', this.props.postId, scrollScreen)
+    const isActive = this.activeScreen === scrollScreen ||
+      this.activeScreen + 1 === scrollScreen ||
+      this.activeScreen - 1 === scrollScreen
+    if (isActive && !isOnScreen) {
+      // console.log('Coming on screen:', this.props.postId, scrollScreen)
       this.setState({ isOnScreen: true })
-    } else if (this.activeScreen !== scrollScreen && isOnScreen) {
-      console.log('Going off screen:', this.props.postId, scrollScreen)
+    } else if (!isActive && isOnScreen) {
+      // console.log('Going off screen:', this.props.postId, scrollScreen)
       this.setState({ isOnScreen: false })
     }
   }
@@ -439,6 +443,7 @@ class PostContainer extends Component {
       summary,
     } = this.props
     if (!post || !post.get('id') || !author || !author.get('id')) { return null }
+    console.log('render post')
     let postHeader
     const headerProps = { detailPath, postCreatedAt, postId }
     if (isRepost) {
