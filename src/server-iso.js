@@ -1,5 +1,4 @@
 /* eslint-disable max-len, no-console */
-import newrelic from 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 import values from 'lodash/values'
@@ -90,7 +89,7 @@ function renderFromServer(req, res, cacheKey) {
     }, preRenderTimeout)
 
     // start waiting for a render semaphore
-    librato.timing('render:wait', function(waitDone) {
+    librato.timing('render:wait', (waitDone) => {
       renderSemaphore.take(() => {
         waitDone()
         child = cp.fork('./dist/server-render-entrypoint')
