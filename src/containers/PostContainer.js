@@ -417,7 +417,7 @@ class PostContainer extends Component {
       showReposters,
       summary,
     } = this.props
-    if (!post || !post.get('id') || !author || !author.get('id')) { return null }
+    if (!post || post.isEmpty() || !author || author.isEmpty()) { return null }
     let postHeader
     const headerProps = { detailPath, postCreatedAt, postId }
     if (isRepost) {

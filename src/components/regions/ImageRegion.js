@@ -69,10 +69,17 @@ class ImageRegion extends Component {
     }
   }
 
-  componentWillReceiveProps() {
+  componentDidMount() {
+    this.setPage(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
     const { scale } = this.state
     if (scale) {
       this.setImageScale()
+    }
+    if (nextProps.innerHeight !== this.props.innerHeight) {
+      this.setPage(nextProps)
     }
   }
 
@@ -185,6 +192,15 @@ class ImageRegion extends Component {
         scale: innerHeight / imageHeight,
         marginBottom: -(imageHeight - innerHeight),
       })
+    }
+  }
+
+  setPage(props) {
+    const newPage = Math.ceil(this.ref.offsetTop / props.innerHeight)
+    console.log('newPage', newPage)
+    if (newPage !== this.page) {
+      this.ref.dataset.page = newPage
+      this.page = newPage
     }
   }
 
@@ -311,7 +327,7 @@ class ImageRegion extends Component {
     const { status } = this.state
     const asLink = isGridMode && detailPath
     return (
-      <div className={classNames('ImageRegion', status)} >
+      <div ref={comp => (this.ref = comp)} className={classNames('ImageRegion', status)} >
         {asLink ? this.renderRegionAsLink() : this.renderRegionAsStatic()}
       </div>
     )

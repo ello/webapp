@@ -62,6 +62,7 @@ class StreamContainer extends Component {
     columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasLaunchedSignupModal: PropTypes.bool.isRequired,
+    innerHeight: PropTypes.number.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isModalComponent: PropTypes.bool,
@@ -109,6 +110,7 @@ class StreamContainer extends Component {
       this.scrollObject = this
       addScrollObject(this.scrollObject)
     }
+    this.onScroll({ scrollY: 0 })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -170,7 +172,24 @@ class StreamContainer extends Component {
     removeScrollTarget(this.scrollObject)
   }
 
-  onScroll() {
+  onScroll({ scrollY }) {
+    // the +1 is so that we never have a page 0
+    const newPage = Math.ceil((scrollY + 1) / this.props.innerHeight)
+    if (newPage !== this.page) {
+      console.log('onScroll', newPage)
+      document.head.querySelector('#style-images').innerText = `
+        [data-page] img {
+          opacity: 0;
+        }
+        [data-page="${newPage - 1}"] img,
+        [data-page="${newPage}"] img,
+        [data-page="${newPage + 1}"] img {
+          opacity: 1;
+        }
+      `
+      // dispatch(setVisiblePage(newPage))
+      this.page = newPage
+    }
     this.setScroll()
   }
 
