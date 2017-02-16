@@ -68,6 +68,7 @@ const initialPersistedState = Immutable.Map({
   lastFollowingBeaconVersion: '0',
   lastNotificationCheck: oldDate.toUTCString(),
   lastStarredBeaconVersion: '0',
+  scrollScreen: 1,
   // order matters for matching routes
   modes: Immutable.List([
     Immutable.Map({ label: 'root', mode: 'grid', regex: '^/$' }),
@@ -130,6 +131,8 @@ export default (state = initialState, action = { type: '' }) => {
       return state.set('lastStarredBeaconVersion', payload.version)
     case GUI.SET_SIGNUP_MODAL_LAUNCHED:
       return state.set('hasLaunchedSignupModal', payload.hasLaunchedSignupModal)
+    case GUI.SET_SCROLL_SCREEN:
+      return state.set('scrollScreen', payload.scrollScreen)
     case GUI.SET_VIEWPORT_SIZE_ATTRIBUTES:
       return state.merge(payload)
     case GUI.TOGGLE_NOTIFICATIONS:

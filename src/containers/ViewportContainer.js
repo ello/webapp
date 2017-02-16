@@ -13,7 +13,7 @@ import {
 } from '../selectors/gui'
 import { selectModalType } from '../selectors/modal'
 import { selectPathname, selectViewNameFromRoute } from '../selectors/routing'
-import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
+import { setIsNavbarHidden, setScrollScreen, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import {
   addPageVisibilityObserver,
@@ -142,6 +142,11 @@ class ViewportContainer extends PureComponent {
     if (isNavbarHidden && scrollDirection === 'up') {
       dispatch(setIsNavbarHidden({ isHidden: false }))
     }
+  }
+
+  onScrollScreenChange({ scrollScreen }) {
+    const { dispatch } = this.props
+    dispatch(setScrollScreen({ scrollScreen }))
   }
 
   render() {

@@ -204,6 +204,7 @@ export class PostBody extends Component {
     detailPath: PropTypes.string.isRequired,
     innerHeight: PropTypes.number.isRequired,
     isGridMode: PropTypes.bool.isRequired,
+    isOnScreen: PropTypes.bool.isRequired,
     isRepost: PropTypes.bool.isRequired,
     postId: PropTypes.string.isRequired,
     repostContent: PropTypes.object,
@@ -216,7 +217,7 @@ export class PostBody extends Component {
   }
   shouldComponentUpdate(nextProps) {
     return !Immutable.is(nextProps.content, this.props.content) ||
-      ['contentWidth', 'innerHeight', 'isGridMode'].some(prop =>
+      ['contentWidth', 'innerHeight', 'isGridMode', 'isOnScreen'].some(prop =>
         nextProps[prop] !== this.props[prop],
       )
   }
@@ -232,6 +233,7 @@ export class PostBody extends Component {
       detailPath,
       innerHeight,
       isGridMode,
+      isOnScreen,
       isRepost,
       postId,
       repostContent,
@@ -251,6 +253,7 @@ export class PostBody extends Component {
       detailPath,
       innerHeight,
       isGridMode,
+      isOnScreen,
     }
     if (isRepost) {
       // this is weird, but the post summary is

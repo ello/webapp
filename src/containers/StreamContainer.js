@@ -287,6 +287,7 @@ class StreamContainer extends Component {
       paginatorText, renderObj, result, stream } = this.props
     const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
+    console.log('render stream container')
     if (!renderObj.data.length) {
       switch (renderType) {
         case ACTION_TYPES.LOAD_STREAM_SUCCESS:

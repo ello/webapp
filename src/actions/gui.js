@@ -52,6 +52,15 @@ export function setLastStarredBeaconVersion({ version }) {
   }
 }
 
+export function setScrollScreen({ scrollScreen }) {
+  return {
+    type: GUI.SET_SCROLL_SCREEN,
+    payload: {
+      scrollScreen,
+    },
+  }
+}
+
 export function setViewportSizeAttributes(resizeAttributes) {
   return {
     type: GUI.SET_VIEWPORT_SIZE_ATTRIBUTES,

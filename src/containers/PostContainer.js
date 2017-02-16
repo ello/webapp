@@ -14,6 +14,7 @@ import {
   selectDeviceSize,
   selectInnerHeight,
   selectIsMobile,
+  selectScrollScreen,
 } from '../selectors/gui'
 import {
   selectPost,
@@ -124,6 +125,7 @@ export function mapStateToProps(state, props) {
     previousPath: selectPreviousPath(state),
     repostAuthor: selectPostRepostAuthorWithFallback(state, props),
     repostContent: selectPostRepostContent(state, props),
+    scrollScreen: selectScrollScreen(state),
     showCommentEditor: selectPostShowCommentEditor(state, props),
     showComments: selectPostShowCommentsDrawer(state, props),
     showEditor: selectPostShowEditor(state, props),
@@ -175,6 +177,7 @@ class PostContainer extends Component {
     previousPath: PropTypes.string,
     repostAuthor: PropTypes.object,
     repostContent: PropTypes.object,
+    scrollScreen: PropTypes.number.isRequired,
     showCommentEditor: PropTypes.bool.isRequired,
     showComments: PropTypes.bool.isRequired,
     showEditor: PropTypes.bool.isRequired,
@@ -241,13 +244,35 @@ class PostContainer extends Component {
   componentWillMount() {
     this.state = {
       isCommentsActive: false,
+      isOnScreen: false,
       showComments: false,
       showLovers: false,
       showReposters: false,
     }
   }
 
-  shouldComponentUpdate(nextProps) {
+  componentDidMount() {
+    this.activeScreen = Math.abs(Math.ceil(this.ref.offsetTop / this.props.innerHeight))
+    this.componentWillReceiveProps(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { scrollScreen } = nextProps
+    const { isOnScreen } = this.state
+    const isActive = this.activeScreen === scrollScreen ||
+      this.activeScreen + 1 === scrollScreen ||
+      this.activeScreen - 1 === scrollScreen
+    if (isActive && !isOnScreen) {
+      // console.log('Coming on screen:', this.props.postId, scrollScreen)
+      this.setState({ isOnScreen: true })
+    } else if (!isActive && isOnScreen) {
+      // console.log('Going off screen:', this.props.postId, scrollScreen)
+      this.setState({ isOnScreen: false })
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.isOnScreen !== this.state.isOnScreen) { return true }
     if (!nextProps.post || nextProps.post.isEmpty()) { return false }
     return !Immutable.is(nextProps.post, this.props.post) ||
       ['columnWidth', 'contentWidth', 'innerHeight', 'isGridMode', 'isLoggedIn', 'isMobile'].some(prop =>
@@ -418,6 +443,7 @@ class PostContainer extends Component {
       summary,
     } = this.props
     if (!post || !post.get('id') || !author || !author.get('id')) { return null }
+    console.log('render post')
     let postHeader
     const headerProps = { detailPath, postCreatedAt, postId }
     if (isRepost) {
@@ -452,7 +478,10 @@ class PostContainer extends Component {
 
     const isRepostAnimating = isReposting && !postBody
     return (
-      <div className={classNames('Post', { isPostHeaderHidden: isPostHeaderHidden && !isRepost })}>
+      <div
+        className={classNames('Post', { isPostHeaderHidden: isPostHeaderHidden && !isRepost })}
+        ref={comp => (this.ref = comp)}
+      >
         {postHeader}
         {showEditor ?
           <Editor post={post} /> :
@@ -467,6 +496,7 @@ class PostContainer extends Component {
             detailPath={detailPath}
             innerHeight={innerHeight}
             isGridMode={isGridMode}
+            isOnScreen={this.state.isOnScreen}
             isRepost={isRepost}
             postId={postId}
             repostContent={repostContent}
