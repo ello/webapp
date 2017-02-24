@@ -1,7 +1,29 @@
+// @flow
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import { ChevronIcon, ListIcon, GridIcon } from '../assets/Icons'
 import { FooterForm, FooterLink, FooterTool } from '../footer/FooterParts'
+
+type LinkType = {
+  label: string,
+  to: string,
+}
+
+type FooterPropTypes = {
+  formActionPath: string,
+  isFormDisabled: boolean,
+  isGridMode: boolean,
+  isLayoutToolHidden: boolean,
+  isLoggedIn: boolean,
+  isMobile: boolean,
+  isPaginatoring: boolean,
+  links: Array<LinkType>,
+}
+
+type FooterContextTypes = {
+  onClickScrollToTop: () => void,
+  onClickToggleLayoutMode: () => void,
+}
 
 export const Footer = ({
   formActionPath,
@@ -12,10 +34,10 @@ export const Footer = ({
   isFormDisabled,
   isPaginatoring,
   links,
-}, {
+}: FooterPropTypes, {
   onClickScrollToTop,
   onClickToggleLayoutMode,
-}) =>
+}: FooterContextTypes) =>
   <footer
     className={classNames('Footer', { isPaginatoring })}
     role="contentinfo"
@@ -54,17 +76,6 @@ export const Footer = ({
       }
     </div>
   </footer>
-
-Footer.propTypes = {
-  formActionPath: PropTypes.string.isRequired,
-  isFormDisabled: PropTypes.bool.isRequired,
-  isGridMode: PropTypes.bool.isRequired,
-  isLayoutToolHidden: PropTypes.bool.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
-  isMobile: PropTypes.bool.isRequired,
-  isPaginatoring: PropTypes.bool.isRequired,
-  links: PropTypes.array.isRequired,
-}
 
 Footer.contextTypes = {
   onClickScrollToTop: PropTypes.func.isRequired,
