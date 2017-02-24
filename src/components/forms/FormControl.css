@@ -16,6 +16,24 @@
   margin-bottom: 25px;
 }
 
+.FormControl.inFooter {
+  display: inline-block;
+  width: 130px;
+  vertical-align: middle;
+}
+
+@media (--break-2) {
+  .FormControl.inFooter {
+    width: 200px;
+  }
+}
+
+@media (--break-3) {
+  .FormControl.inFooter {
+    width: 270px;
+  }
+}
+
 /* ------------------------------------- */
 
 .FormIcon {
@@ -78,6 +96,15 @@
   .FormControlInput.isOnboardingControl {
     font-size: 24px;
   }
+}
+
+.FormControlInput.inFooter {
+  height: 30px;
+  min-height: 30px;
+  padding-left: 10px;
+  line-height: 30px;
+  background-color: #fff;
+  border-bottom: 0;
 }
 
 .FormControlInput.isBoxControl {
@@ -233,6 +260,7 @@ textarea.FormControlInput.isOnboardingControl {
   text-align: right;
 }
 
+.FormControlLabel.inFooter,
 .FormControlLabel.isOnboardingControl {
   display: none;
 }

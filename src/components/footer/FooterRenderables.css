@@ -6,14 +6,17 @@
   bottom: 0;
   left: 0;
   z-index: var(--z-footer);
-  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  height: 54px;
   padding: 0 10px;
-  line-height: 30px;
+  line-height: 54px;
   color: #aaa;
-  background-color: #fff;
+  background-color: #f2f2f2;
   transition: transform 150ms ease;
 }
 
+.isAuthenticationView ~ .Footer,
 .isOnboardingView ~ .Footer {
   display: none;
 }
@@ -27,22 +30,51 @@
   transform: translate3d(0, 100%, 0);
 }
 
+/* 374 and below */
+@media (max-width: 23.375em) {
+  .Footer {
+    height: 40px;
+    line-height: 40px;
+  }
+}
+
+.FooterLinks {
+  position: relative;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.FooterLinks > .FooterLink {
+  margin-right: 15px;
+}
+
 .FooterTools {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  text-align: right;
+}
+
+.FooterTools::before {
   position: absolute;
   top: 0;
-  right: 10px;
+  bottom: 0;
+  left: -20px;
+  z-index: 2;
+  width: 20px;
+  content: "";
+  background: linear-gradient(to right, rgba(242, 242, 242, 0) 0%, rgba(242, 242, 242, 1) 90%);
 }
 
-.FooterLinks > .FooterLink,
-.FooterTools > .FooterTool {
-  margin-left: 10px;
-}
-
-.FooterTools > .FooterTool:last-child {
+.FooterTools > .LayoutTool {
   margin-right: -8px;
+  margin-left: 5px;
 }
 
-/* // MAX-WIDTH! */
+/* MAX-WIDTH! */
 @media (--break-2-max) {
   .isEditorFocused .Footer {
     display: none;
@@ -68,12 +100,8 @@
     background-color: rgba(0, 0, 0, 0);
   }
 
-  .FooterTools {
-    right: 20px;
-  }
-
   .FooterLinks > .FooterLink {
-    margin-left: 20px;
+    margin-right: 20px;
   }
 }
 
@@ -82,16 +110,8 @@
     padding: 0 40px;
   }
 
-  .FooterTools {
-    right: 40px;
+  .FooterTools::before {
+    display: none;
   }
-
-  .FooterLinks > .FooterLink {
-    margin-left: 40px;
-  }
-}
-
-.isAuthenticationView ~ .Footer {
-  display: none;
 }
 

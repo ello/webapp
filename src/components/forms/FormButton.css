@@ -17,16 +17,6 @@
     width var(--speed) var(--ease);
 }
 
-.FormButton.isRounded {
-  border-radius: 5px;
-}
-
-.FormButton.isAutoSize {
-  width: auto;
-  height: 40px;
-  line-height: 40px;
-}
-
 .FormButton:not([disabled]):active,
 .no-touch .FormButton:not([disabled]):hover {
   color: #fff;
@@ -40,9 +30,50 @@
   border: 1px solid #7ac97a;
 }
 
+.FormButton.isRounded {
+  border-radius: 5px;
+}
+
+.FormButton.isAutoSize {
+  width: auto;
+  height: 40px;
+  line-height: 40px;
+}
+
 .FormButton.isOutlined[disabled] {
   color: #aaa;
   background-color: transparent;
   border-color: #aaa;
+}
+
+.FormButton.inFooter {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  margin-top: 1px;
+  margin-left: 10px;
+  line-height: 30px;
+  background-color: #00d100;
+  border: 1px solid #00d100;
+  border-radius: 50%;
+}
+
+.FormButton.inFooter[disabled] {
+  background-color: #000;
+  border: 1px solid #000;
+}
+
+.FormButton .ArrowEastIcon {
+  margin-top: -2px;
+}
+
+@media (--break-2) {
+  .FormButton.inFooter {
+    width: auto;
+    height: 30px;
+    padding: 0 15px;
+    margin-right: 5px;
+    border-radius: 20px;
+  }
 }
 

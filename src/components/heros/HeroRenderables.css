@@ -48,6 +48,17 @@
   }
 }
 
+/* 374 and below */
+@media (max-width: 23.375em) {
+  .isDiscoverView ~ .Hero {
+    padding-top: 135px !important;
+  }
+
+  .isLoggedOut .isDiscoverView ~ .Hero {
+    padding-top: 100px !important;
+  }
+}
+
 @media (--break-2) {
   .Hero {
     padding-top: 80px;
