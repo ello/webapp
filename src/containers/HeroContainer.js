@@ -104,7 +104,7 @@ function mapStateToProps(state, props) {
     pathname: selectPathname(state),
     promotions,
     streamType: selectStreamType(state),
-    useGif: selectViewsAdultContent(state) || selectUserPostsAdultContent(state, props),
+    useGif: selectViewsAdultContent(state) || selectUserPostsAdultContent(state, props) || false,
     userCoverImage: selectUserCoverImage(state, props),
     userId: selectUserId(state, props),
     username: selectUserUsername(state, props),
