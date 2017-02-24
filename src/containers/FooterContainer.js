@@ -1,23 +1,13 @@
 // @flow
 import React, { PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
+import { FOOTER_LINKS as links } from '../constants/locales/en'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectIsGridMode, selectIsLayoutToolHidden, selectIsMobile } from '../selectors/gui'
 import { selectStreamType } from '../selectors/stream'
 import { scrollToPosition } from '../lib/jello'
 import { LOAD_NEXT_CONTENT_REQUEST, SET_LAYOUT_MODE } from '../constants/action_types'
 import { Footer } from '../components/footer/FooterRenderables'
-
-const links = [
-  { label: 'About', to: 'https://ello.co/wtf' },
-  { label: 'Help', to: 'https://ello.co/wtf' },
-  { label: 'Blog', to: 'https://ello.co/wtf' },
-  { label: 'Shop', to: 'https://ello.co/wtf' },
-  { label: 'Apps', to: 'https://ello.co/resources/mobile-features/' },
-  { label: 'Jobs', to: 'https://ello.co/wtf' },
-  { label: 'Terms', to: 'https://ello.co/wtf' },
-  { label: 'Privacy', to: 'https://ello.co/wtf' },
-]
 
 function mapStateToProps(state, props) {
   const streamType = selectStreamType(state)
