@@ -11,6 +11,8 @@ type LinkType = {
 
 type FooterPropTypes = {
   formActionPath: string,
+  formMessage: string,
+  formStatus: string,
   isFormDisabled: boolean,
   isGridMode: boolean,
   isLayoutToolHidden: boolean,
@@ -27,6 +29,8 @@ type FooterContextTypes = {
 
 export const Footer = ({
   formActionPath,
+  formMessage,
+  formStatus,
   isGridMode,
   isLayoutToolHidden,
   isLoggedIn,
@@ -55,7 +59,13 @@ export const Footer = ({
     <div className="FooterTools">
       { !isLoggedIn &&
         <FooterForm
-          {...{ formActionPath, isDisabled: isFormDisabled, isMobile }}
+          {...{
+            formActionPath,
+            formMessage,
+            formStatus,
+            isDisabled: isFormDisabled,
+            isMobile,
+          }}
         />
       }
       { (isLoggedIn || (!isLoggedIn && !isMobile)) && // TODO: move to FooterContainer

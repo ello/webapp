@@ -379,3 +379,41 @@ textarea.FormControlInput.isOnboardingControl {
   transition-delay: 1s, 1s, 1s;
 }
 
+.FormControlStatusBubble {
+  display: inline-block;
+  height: 30px;
+  padding: 0 15px;
+  line-height: 30px;
+  color: #fff;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #000;
+  border: 1px solid #000;
+  border-radius: 20px;
+  transition: opacity var(--speed);
+}
+
+.isSucceeding > .FormControlStatusBubble {
+  background-color: #00d100;
+  border-color: #00d100;
+}
+
+.isFailing > .FormControlStatusBubble {
+  background-color: #f00;
+  border-color: #f00;
+}
+
+.FormControlStatusBubble.inFooter {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  z-index: 2;
+}
+
+@media (--break-2) {
+  .FormControlStatusBubble.inFooter {
+    right: auto;
+    left: 0;
+  }
+}
+

@@ -2,6 +2,7 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component, PropTypes, PureComponent } from 'react'
 import classNames from 'classnames'
+import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
 import { ArrowEastIcon } from '../assets/Icons'
 import EmailControl from '../forms/EmailControl'
 import FormButton from '../forms/FormButton'
@@ -10,6 +11,8 @@ import FormButton from '../forms/FormButton'
 
 type FormPropTypes = {
   formActionPath: string,
+  formMessage: string,
+  formStatus: string,
   isDisabled: boolean,
   isMobile: boolean,
 }
@@ -20,14 +23,26 @@ export class FooterForm extends PureComponent {
     onSubmit: PropTypes.func.isRequired,
   }
 
+  getStatusAsClassName() {
+    const { formStatus } = this.props
+    switch (formStatus) {
+      case STATUS.FAILURE:
+        return 'isFailing'
+      case STATUS.SUCCESS:
+        return 'isSucceeding'
+      default:
+        return 'isIndeterminate'
+    }
+  }
+
   props: FormPropTypes
   render() {
-    const { formActionPath, isDisabled, isMobile } = this.props
+    const { formActionPath, formMessage, isDisabled, isMobile } = this.props
     const { onChangeEmailControl, onSubmit } = this.context
     return (
       <form
         action={formActionPath}
-        className="FooterForm"
+        className={classNames('FooterForm', this.getStatusAsClassName())}
         method="POST"
         noValidate="novalidate"
         onSubmit={onSubmit}
@@ -45,6 +60,9 @@ export class FooterForm extends PureComponent {
         >
           { isMobile ? <ArrowEastIcon /> : 'Subscribe' }
         </FormButton>
+        { formMessage && formMessage.length &&
+          <span className="FormControlStatusBubble inFooter">{formMessage}</span>
+        }
       </form>
     )
   }

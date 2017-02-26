@@ -70,7 +70,6 @@
 @media (--break-2) {
   .FormButton.inFooter {
     width: auto;
-    height: 30px;
     padding: 0 15px;
     margin-right: 5px;
     border-radius: 20px;
