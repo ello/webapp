@@ -32,14 +32,13 @@ export const FOLLOWING = {
 }
 
 export const FOOTER_LINKS = [
-  { label: 'About', to: `${ENV.AUTH_DOMAIN}/wtf` },
+  { label: 'About', to: `${ENV.AUTH_DOMAIN}/wtf/about/what-is-ello/` },
   { label: 'Help', to: `${ENV.AUTH_DOMAIN}/wtf` },
-  { label: 'Blog', to: `${ENV.AUTH_DOMAIN}/wtf` },
-  { label: 'Shop', to: `${ENV.AUTH_DOMAIN}/wtf` },
+  { label: 'Blog', to: `${ENV.AUTH_DOMAIN}/elloblog` },
+  { label: 'Shop', to: `${ENV.AUTH_DOMAIN}/discover/shop` },
   { label: 'Apps', to: `${ENV.AUTH_DOMAIN}/resources/mobile-features/` },
-  { label: 'Jobs', to: `${ENV.AUTH_DOMAIN}/wtf` },
-  { label: 'Terms', to: `${ENV.AUTH_DOMAIN}/wtf` },
-  { label: 'Privacy', to: `${ENV.AUTH_DOMAIN}/wtf` },
+  { label: 'Terms', to: `${ENV.AUTH_DOMAIN}/wtf/policies/terms-of-use/` },
+  { label: 'Privacy', to: `${ENV.AUTH_DOMAIN}/wtf/policies/privacy-policy/` },
 ]
 
 export const META = {
