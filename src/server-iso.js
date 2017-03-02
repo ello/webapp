@@ -1,5 +1,4 @@
 /* eslint-disable max-len, no-console */
-import 'newrelic'
 import 'babel-polyfill'
 import 'isomorphic-fetch'
 import values from 'lodash/values'
@@ -92,59 +91,64 @@ function renderFromServer(req, res, cacheKey) {
       }
       res.send(indexStr)
     }, preRenderTimeout)
-    renderSemaphore.take(() => {
-      child = cp.fork('./dist/server-render-entrypoint')
-      // Don't let processes run away on us
-      // Handle the return on renders
-      child.once('message', (msg) => {
-        const { type, location, body } = msg
-        switch (type) {
-          case 'redirect':
-            console.log(`-- Redirecting to ${location}`)
-            librato.increment('webapp-server-render-redirect')
-            res.redirect(location)
-            break
-          case 'render':
-            console.log('-- Rendering ISO response')
-            librato.increment('webapp-server-render-success')
-            res.send(body)
-            saveResponseToCache(cacheKey, body)
-            break
-          case 'error':
-            console.log('-- Rendering error response')
-            librato.increment('webapp-server-render-error')
-            res.status(500).end()
-            break
-          case '404':
-            console.log('-- Rendering 404 response')
-            librato.increment('webapp-server-render-404')
-            res.status(404).end()
-            break
-          default:
-            // No-op
-        }
-        clearTimeout(renderTimeout)
-      })
-      // Clean up any lingering renderer processes at shutdown
-      const exitHandler = () => {
-        console.log(`- Killing child render process ${child.pid}`)
-        child.kill('SIGKILL')
-      }
-      process.on('exit', exitHandler);
 
-      // Handle assorted child process errors
-      child.once('exit', (code, signal) => {
-        clearTimeout(renderTimeout)
-        process.removeListener('exit', exitHandler);
-        renderSemaphore.leave()
-        // Abnormal exit, may be in a dirty state
-        if (code !== 0) {
-          console.log(`- Render process exited with ${code} due to ${signal}`)
-          res.status(500).end()
+    // start waiting for a render semaphore
+    librato.timing('render:wait', (waitDone) => {
+      renderSemaphore.take(() => {
+        waitDone()
+        child = cp.fork('./dist/server-render-entrypoint')
+        // Don't let processes run away on us
+        // Handle the return on renders
+        child.once('message', (msg) => {
+          const { type, location, body } = msg
+          switch (type) {
+            case 'redirect':
+              console.log(`-- Redirecting to ${location}`)
+              librato.increment('webapp-server-render-redirect')
+              res.redirect(location)
+              break
+            case 'render':
+              console.log('-- Rendering ISO response')
+              librato.increment('webapp-server-render-success')
+              res.send(body)
+              saveResponseToCache(cacheKey, body)
+              break
+            case 'error':
+              console.log('-- Rendering error response')
+              librato.increment('webapp-server-render-error')
+              res.status(500).end()
+              break
+            case '404':
+              console.log('-- Rendering 404 response')
+              librato.increment('webapp-server-render-404')
+              res.status(404).end()
+              break
+            default:
+              // No-op
+          }
+          clearTimeout(renderTimeout)
+        })
+        // Clean up any lingering renderer processes at shutdown
+        const exitHandler = () => {
+          console.log(`- Killing child render process ${child.pid}`)
+          child.kill('SIGKILL')
         }
+        process.on('exit', exitHandler);
+
+        // Handle assorted child process errors
+        child.once('exit', (code, signal) => {
+          clearTimeout(renderTimeout)
+          process.removeListener('exit', exitHandler);
+          renderSemaphore.leave()
+          // Abnormal exit, may be in a dirty state
+          if (code !== 0) {
+            console.log(`- Render process exited with ${code} due to ${signal}`)
+            res.status(500).end()
+          }
+        })
+        // Kick off the render
+        child.send({ access_token: token.token.access_token, originalUrl: req.originalUrl, url: req.url })
       })
-      // Kick off the render
-      child.send({ access_token: token.token.access_token, originalUrl: req.originalUrl, url: req.url })
     })
   })
 }
@@ -181,7 +185,7 @@ function cacheKeyForRequest(req, salt = '') {
 
 app.use((req, res) => {
   res.setHeader('Cache-Control', 'public, max-age=60');
-  res.setHeader('Expires', new Date(Date.now() + (1000 * 60)).toUTCString());
+  res.setHeader('Expires', new Date(Date.now() + (1000 * memcacheDefaultTTL)).toUTCString());
   if (canPrerenderRequest(req)) {
     const cacheKey = cacheKeyForRequest(req)
     console.log('Serving pre-rendered markup for path', req.url, cacheKey)
