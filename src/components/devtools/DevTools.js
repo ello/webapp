@@ -40,11 +40,16 @@ export default class DevTools extends PureComponent {
     Mousetrap.bind(SHORTCUT_KEYS.DT_GRID_CYCLE, () => {
       this.nextGridForCycle()
     })
+
+    Mousetrap.bind('g a', () => {
+      document.body.classList.toggle('hideDebugModules')
+    })
   }
 
   componentWillUnmount() {
     Mousetrap.unbind(SHORTCUT_KEYS.DT_GRID_TOGGLE)
     Mousetrap.unbind(SHORTCUT_KEYS.DT_GRID_CYCLE)
+    Mousetrap.unbind('g a')
   }
 
   // Toggles the full grid overlay.
