@@ -23,7 +23,6 @@ export const selectCategoryData = createSelector(
 export const selectIsPagePromotion = createSelector(
   [selectViewNameFromRoute, selectPathname], (viewName, pathname) =>
     (viewName === 'search') ||
-    (viewName === 'discover' && pathname === '/') ||
     (viewName === 'discover' && pathname === '/discover') ||
     (viewName === 'discover' && pathname === '/discover/all') ||
     (viewName === 'discover' && /\/featured\b|\/trending\b|\/recent\b/.test(pathname)),

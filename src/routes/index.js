@@ -2,8 +2,8 @@ import AppContainer from '../containers/AppContainer'
 import PostDetailRoute from './post_detail'
 import WTFRoute from './wtf'
 import authenticationRoutes from './authentication'
+import EditorialRoute, { getComponents as getEditorialComponents } from './editorial'
 import {
-  getComponents as getDiscoverComponents,
   discover as discoverRoute,
   explore as exploreRoute,
 } from './discover'
@@ -55,15 +55,7 @@ const routes = (store) => {
   }
 
   const indexRoute = {
-    getComponents: getDiscoverComponents,
-    onEnter(nextState, replace) {
-      const isLoggedIn = store.getState().authentication.get('isLoggedIn')
-      const homeStream = store.getState().gui.get('homeStream')
-
-      if (isLoggedIn) {
-        replace({ pathname: homeStream, state: nextState })
-      }
-    },
+    getComponent: getEditorialComponents,
   }
 
   const allowStyleguide = route =>
@@ -77,6 +69,7 @@ const routes = (store) => {
       // order matters, so less specific routes should go at the bottom
       childRoutes: [
         WTFRoute,
+        EditorialRoute,
         PostDetailRoute,
         ...authenticationRoutes(store),
         discoverRoute(store),

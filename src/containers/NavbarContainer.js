@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { push } from 'react-router-redux'
 import { scrollToPosition } from '../lib/jello'
 import * as ElloAndroidInterface from '../lib/android_interface'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
@@ -8,7 +9,6 @@ import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectCategoryTabs } from '../selectors/categories'
 import {
   selectActiveNotificationsType,
-  selectHomeStream,
   selectDeviceSize,
   selectIsGridMode,
   selectIsLayoutToolHidden,
@@ -26,12 +26,9 @@ import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
-import { loadFollowing } from '../actions/stream'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
-import { getDiscoverAction } from '../containers/DiscoverContainer'
 
 function mapStateToProps(state, props) {
-  const homeStream = selectHomeStream(state)
   const isLoggedIn = selectIsLoggedIn(state)
   const pathname = selectPathname(state)
   const pageResult = selectPage(state)
@@ -48,7 +45,6 @@ function mapStateToProps(state, props) {
       categoryTabs,
       deviceSize: selectDeviceSize(state),
       hasLoadMoreButton,
-      homeStream,
       isGridMode,
       isLayoutToolHidden: selectIsLayoutToolHidden(state, props),
       isLoggedIn,
@@ -63,7 +59,6 @@ function mapStateToProps(state, props) {
   return {
     categoryTabs,
     hasLoadMoreButton,
-    homeStream,
     isGridMode,
     isLoggedIn,
     pathname,
@@ -76,7 +71,6 @@ class NavbarContainer extends PureComponent {
   static propTypes = {
     activeTabType: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    homeStream: PropTypes.string.isRequired,
     isGridMode: PropTypes.bool.isRequired,
     isProfileMenuActive: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
@@ -142,17 +136,9 @@ class NavbarContainer extends PureComponent {
   }
 
   onClickNavbarMark = () => {
-    const { homeStream, dispatch, pathname, params, viewName } = this.props
-    if (homeStream === pathname) {
-      if (viewName === 'discover') {
-        if (params.type) {
-          dispatch(getDiscoverAction(params.type))
-        }
-      } else if (viewName === 'following') {
-        dispatch(loadFollowing())
-      }
-      scrollToPosition(0, 0)
-    }
+    const { dispatch } = this.props
+    dispatch(push('/'))
+    scrollToPosition(0, 0)
   }
 
   onClickOmniButton = () => {

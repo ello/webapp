@@ -7,7 +7,6 @@ export const selectActiveNotificationsType = state => state.gui.get('activeNotif
 export const selectColumnCount = state => state.gui.get('columnCount')
 export const selectDiscoverKeyType = state => state.gui.get('discoverKeyType')
 export const selectHasLaunchedSignupModal = state => state.gui.get('hasLaunchedSignupModal')
-export const selectHomeStream = state => state.gui.get('homeStream')
 export const selectInnerHeight = state => state.gui.get('innerHeight')
 export const selectInnerWidth = state => state.gui.get('innerWidth')
 export const selectIsCompleterActive = state => state.gui.get('isCompleterActive')

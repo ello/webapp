@@ -110,7 +110,7 @@ describe('routing selectors', () => {
       expect(selectViewNameFromRoute(state)).to.equal('search')
 
       state = { routing: state.routing.setIn(['location', 'pathname'], '/') }
-      expect(selectViewNameFromRoute(state)).to.equal('discover')
+      expect(selectViewNameFromRoute(state)).to.equal('editorial')
 
       state = { routing: state.routing.setIn(['location', 'pathname'], '/discover') }
       expect(selectViewNameFromRoute(state)).to.equal('discover')

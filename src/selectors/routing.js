@@ -28,13 +28,16 @@ export const selectQueryTerms = state => state.routing.getIn(['location', 'terms
 // Memoized selectors
 export const selectViewNameFromRoute = createSelector(
   [selectPathname, selectParamsUsername], (pathname, username) => {
+    if (pathname === '/') {
+      return 'editorial'
+    }
     if (/^\/following\b/.test(pathname)) {
       return 'following'
     }
     if (/^\/find\b|^\/search\b/.test(pathname)) {
       return 'search'
     }
-    if (pathname === '/' || /^\/discover\b|^\/explore\b/.test(pathname)) {
+    if (/^\/discover\b|^\/explore\b/.test(pathname)) {
       return 'discover'
     }
     if (/^\/invitations\b/.test(pathname)) {
