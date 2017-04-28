@@ -57,7 +57,6 @@ const initialPersistedState = Immutable.Map({
   activeNotificationsType: 'all',
   columnCount: 2,
   discoverKeyType: null,
-  homeStream: '/discover',
   innerHeight: 0,
   innerWidth: 0,
   isGridMode: true,
@@ -92,7 +91,6 @@ export const convertStateToImmutable = objectState =>
   initialState.set('lastDiscoverBeaconVersion', objectState.lastDiscoverBeaconVersion || '0')
     .set('lastFollowingBeaconVersion', objectState.lastFollowingBeaconVersion || '0')
     .set('lastNotificationCheck', objectState.lastNotificationCheck || oldDate.toUTCString())
-    .set('homeStream', objectState.homeStream || '/discover')
     .set('modes', objectState.modes ? Immutable.fromJS(objectState.modes) : initialState.get('modes'))
 
 export default (state = initialState, action = { type: '' }) => {
@@ -156,9 +154,8 @@ export default (state = initialState, action = { type: '' }) => {
       }
       if (HOME_STREAMS_WHITELIST.some(re => re.test(pathname))) {
         return state.withMutations((s) => {
-          s.set('homeStream', pathname)
-            .set('isGridMode', getIsGridMode(state))
-            .set('isNavbarHidden', false)
+          s.set('isGridMode', getIsGridMode(state))
+           .set('isNavbarHidden', false)
         })
       }
       return state.withMutations((s) => {

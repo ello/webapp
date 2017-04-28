@@ -6,6 +6,7 @@ import { replace } from 'react-router-redux'
 import debounce from 'lodash/debounce'
 import set from 'lodash/set'
 import { FORM_CONTROL_STATUS as STATUS } from 'ello-brains/constants/status_types'
+import { isAndroid, isElloAndroid } from '../lib/jello'
 import {
   selectBuildVersion,
   selectBundleId,
@@ -43,7 +44,6 @@ function renderStatus(state) {
 
 function mapStateToProps(state) {
   const obj = {
-    homeStream: selectHomeStream(state),
     webOnboardingVersionSeen: selectWebOnboardingVersion(state),
   }
   if (isElloAndroid()) {
@@ -61,7 +61,6 @@ class EnterContainer extends PureComponent {
     buildVersion: PropTypes.string,
     bundleId: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
-    homeStream: PropTypes.string,
     marketingVersion: PropTypes.string,
     registrationId: PropTypes.string,
     webOnboardingVersionSeen: PropTypes.string,
@@ -84,11 +83,11 @@ class EnterContainer extends PureComponent {
   componentWillReceiveProps(nextProps) {
     if (typeof this.props.webOnboardingVersionSeen === 'undefined' &&
         this.props.webOnboardingVersionSeen !== nextProps.webOnboardingVersionSeen) {
-      const { dispatch, homeStream } = this.props
+      const { dispatch } = this.props
       if (!nextProps.webOnboardingVersionSeen) {
         dispatch(replace({ pathname: '/onboarding' }))
       } else {
-        dispatch(replace({ pathname: homeStream }))
+        dispatch(replace({ pathname: '/' }))
       }
     }
   }

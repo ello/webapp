@@ -24,20 +24,14 @@ import NotificationsContainer from '../../containers/NotificationsContainer'
 
 export const NavbarLoggedOut = ({
   categoryTabs,
-  homeStream,
   hasLoadMoreButton,
-  isLoggedIn,
   onClickLoadMorePosts,
   onClickNavbarMark,
   pathname,
 }, { onClickLogin, onClickSignup }) =>
   <nav className="Navbar" role="navigation" >
     <div className="NavbarMain">
-      <NavbarMark
-        homeStream={homeStream}
-        isLoggedIn={isLoggedIn}
-        onClick={onClickNavbarMark}
-      />
+      <NavbarMark onClick={onClickNavbarMark} />
       <NavbarLabel />
       {hasLoadMoreButton ? <NavbarMorePostsButton onClick={onClickLoadMorePosts} /> : null}
       <div className="NavbarLinks">
@@ -46,7 +40,7 @@ export const NavbarLoggedOut = ({
           icon={<SparklesIcon />}
           label="Discover"
           pathname={pathname}
-          to="/"
+          to="/discover"
         />
         <NavbarLink
           className="IconOnly"
@@ -76,9 +70,7 @@ export const NavbarLoggedOut = ({
 
 NavbarLoggedOut.propTypes = {
   categoryTabs: PropTypes.array,
-  homeStream: PropTypes.string.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
   onClickLoadMorePosts: PropTypes.func.isRequired,
   onClickNavbarMark: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
@@ -94,12 +86,10 @@ NavbarLoggedOut.contextTypes = {
 export const NavbarLoggedIn = ({
   avatar,
   categoryTabs,
-  homeStream,
   deviceSize,
   hasLoadMoreButton,
   isGridMode,
   isLayoutToolHidden,
-  isLoggedIn,
   isNotificationsActive,
   isNotificationsUnread,
   isProfileMenuActive,
@@ -120,11 +110,7 @@ export const NavbarLoggedIn = ({
 }) =>
   <nav className="Navbar" role="navigation" >
     <div className="NavbarMain">
-      <NavbarMark
-        homeStream={homeStream}
-        isLoggedIn={isLoggedIn}
-        onClick={onClickNavbarMark}
-      />
+      <NavbarMark onClick={onClickNavbarMark} />
       <NavbarOmniButton
         onClick={onClickOmniButton}
         onDragOver={onDragOverOmniButton}
@@ -187,12 +173,10 @@ export const NavbarLoggedIn = ({
 NavbarLoggedIn.propTypes = {
   avatar: PropTypes.object,
   categoryTabs: PropTypes.array,
-  homeStream: PropTypes.string.isRequired,
   deviceSize: PropTypes.string.isRequired,
   hasLoadMoreButton: PropTypes.bool.isRequired,
   isGridMode: PropTypes.bool,
   isLayoutToolHidden: PropTypes.bool.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired,
   isNotificationsActive: PropTypes.bool.isRequired,
   isNotificationsUnread: PropTypes.bool.isRequired,
   isProfileMenuActive: PropTypes.bool.isRequired,
