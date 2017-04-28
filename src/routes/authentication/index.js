@@ -5,7 +5,7 @@ import ForgotPasswordContainer from '../../containers/ForgotPasswordContainer'
 export default (store) => {
   function onEnter(nextState, replace) {
     if (store.getState().authentication.get('isLoggedIn')) {
-      replace({ pathname: store.getState().gui.get('homeStream'), state: nextState })
+      replace({ pathname: '/', state: nextState })
     } else if (/\/signup/.test(nextState.location.pathname)) {
       const pathname = nextState.params.invitationCode ? `/join/${nextState.params.invitationCode}` : '/join'
       replace({ pathname, state: nextState })

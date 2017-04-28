@@ -8,7 +8,7 @@ export default (store) => {
   function onEnter(nextState, replace) {
     const state = store.getState()
     if (state.profile.get('webOnboardingVersion') === ONBOARDING_VERSION) {
-      replace({ pathname: state.gui.get('homeStream'), state: nextState })
+      replace({ pathname: '/', state: nextState })
     }
   }
 
