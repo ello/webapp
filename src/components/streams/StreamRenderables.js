@@ -4,6 +4,7 @@ import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
 import PostContainer from '../../containers/PostContainer'
 import UserContainer from '../../containers/UserContainer'
+import Editorials from '../../components/editorials/Editorials'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
@@ -47,6 +48,8 @@ export const commentsAsList = commentIds =>
     )}
   </div>
 
+// EDITORIAL
+export const editorials = editorialIds => <Editorials editorialIds={editorialIds} />
 
 // POSTS
 export const postsAsGrid = (postIds, columnCount, isPostHeaderHidden) => {
