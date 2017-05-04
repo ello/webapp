@@ -1,20 +1,46 @@
 // @flow
+import { is, Map } from 'immutable'
 import React, { Component } from 'react'
-import { MainView } from '../components/views/MainView'
-import StreamContainer from './StreamContainer'
-import { editorials } from '../actions/editorials'
+import { connect } from 'react-redux'
+import {
+  ExternalEditorial,
+  CuratedPostEditorial,
+  PostEditorial,
+} from '../components/editorials/EditorialRenderables'
+import type { EditorialProps } from '../types/flowtypes'
 
-export default class extends Component {
-  shouldComponentUpdate() {
-    return false
-  }
+// TODO: Selectors!
+const makeMapStateToProps = () => (
+  (state: any, props: EditorialProps) => (
+    {
+      editorial: state.json.getIn(['editorials', props.editorialId], Map()),
+    }
+  )
+)
 
-  render() {
+class EditorialContainer extends Component {
+  props: EditorialProps
+
+  shouldComponentUpdate(nextProps) {
     return (
-      <MainView className="Editorial">
-        <StreamContainer action={editorials()} shouldInfiniteScroll={false} />
-      </MainView>
+      nextProps.editorialId !== this.props.editorialId ||
+      !is(nextProps.editorial, this.props.editorial)
     )
   }
+
+
+  render() {
+    switch (this.props.editorial.get('kind')) {
+      case 'post_stream':
+        return <CuratedPostEditorial {...this.props} />
+      case 'external':
+        return <ExternalEditorial {...this.props} />
+      case 'post':
+      default:
+        return <PostEditorial {...this.props} />
+    }
+  }
 }
+
+export default connect(makeMapStateToProps)(EditorialContainer)
 
