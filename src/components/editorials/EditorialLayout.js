@@ -75,6 +75,7 @@ const pushRight = css(
 const alignEnd = media(s.minBreak3, s.selfEnd)
 
 // -------------------------------------
+// Layout
 
 const sectionStyle = css(
   s.flex,

@@ -78,13 +78,13 @@ describe('isomorphically rendering on the server', () => {
   // - Manually edit the responses to redact any sensitive data such as client_id,
   //   client_secret, and access tokens before committing
   describe('prerendering content', () => {
-    it('isomorphically renders the homepage', (done) => {
+    it('isomorphically renders the discover page', (done) => {
       currentToken().then((token) => {
         const renderOpts = {
           accessToken: token.token.access_token,
           expiresAt: token.token.expires_at,
-          originalUrl: '/',
-          url: '/',
+          originalUrl: '/discover',
+          url: '/discover',
           timingHeader: '',
           requestId: '1' }
         prerender(renderOpts).then((result) => {
