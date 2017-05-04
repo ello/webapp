@@ -7,3 +7,15 @@ export type CategoryTabProps = {
   to: string,
 }
 
+export type EditorialProps = {
+  editorialId: string,
+  editorial: {
+    id: string,
+    kind: string,
+    subtitle: string,
+    title: string,
+    postId: string,
+  },
+  isLoggedIn: boolean,
+}
+

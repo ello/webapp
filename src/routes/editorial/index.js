@@ -1,7 +1,7 @@
-import EditorialContainer from '../../containers/EditorialContainer'
+import EditorialPage from '../../pages/EditorialPage'
 
 export const getComponents = (location, cb) => {
-  cb(null, EditorialContainer)
+  cb(null, EditorialPage)
 }
 
 export default [
