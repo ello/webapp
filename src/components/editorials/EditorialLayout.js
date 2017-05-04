@@ -6,24 +6,37 @@ import { css, media } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
 // -------------------------------------
+// Row
+
+const rowStyle = css(
+  media(s.minBreak2, s.mb20, s.flex, s.flexWrap),
+  media(s.minBreak4, s.mb40),
+)
+
+type RowProps = {
+  children?: React.Element<*>,
+}
+
+const Row = (props: RowProps) => (
+  <div className={rowStyle}>
+    {props.children}
+  </div>
+)
+Row.defaultProps = {
+  children: null,
+}
+
+// -------------------------------------
 // Cells
-const outerCell = css(
+
+const cellStyle = css(
   s.flex,
   s.flexWrap,
   s.fullWidth,
   { height: '100vw' },
   s.overflowHidden,
-)
-
-const nestedCell = css(
-  outerCell,
-  media(s.minBreak2, { height: 'calc(50% - 10px)' }),
-  media(s.minBreak4, { height: 'calc(50% - 20px)' }),
-)
-
-const nestedSplitCell = css(
-  { ...nestedCell },
-  media(s.minBreak2, s.flex2),
+  s.pb10,
+  media(s.minBreak2, s.fullHeight, s.pb0),
 )
 
 type CellProps = {
@@ -32,7 +45,7 @@ type CellProps = {
 }
 
 const Cell = (props: CellProps) =>
-  <div className={props.className}>
+  <div className={`${cellStyle} ${props.className}`}>
     {props.children}
   </div>
 
@@ -41,29 +54,25 @@ Cell.defaultProps = {
 }
 
 // -------------------------------------
-// Grid
-const col66 = css(
-  media(s.minBreak2, { width: 'calc(66.66666% - 10px)' }),
-  media(s.minBreak4, { width: 'calc(66.66666% - 20px)' }),
+// Grid (Cell modifiers)
+
+const height1 = media(s.minBreak2, { height: 420 })
+const height2 = media(s.minBreak4, { height: 840 })
+const halfHeight = css(
+  media(s.minBreak2, { height: 'calc(50% - 10px)' }),
+  media(s.minBreak4, { height: 'calc(50% - 20px)' }),
 )
 
-const col33 = css(
-  media(s.minBreak2, { width: 'calc(33.33333% - 10px)' }),
-  media(s.minBreak4, { width: 'calc(33.33333% - 20px)' }),
+const width1 = media(s.minBreak2, { width: '33.333333%' })
+const width2 = media(s.minBreak2, { flex: 1 })
+const halfWidth = media(s.minBreak2, s.flex2)
+
+const pushRight = css(
+  media(s.minBreak2, s.pr20),
+  media(s.minBreak4, s.pr40),
 )
 
-const col33Middle = css(
-  media(s.minBreak2, { width: 'calc(33.33333% - 20px)' }),
-  media(s.minBreak4, { width: 'calc(33.33333% - 40px)' }),
-)
-
-const row420 = css(media(s.minBreak2, { height: 420 }))
-const row840 = css(media(s.minBreak2, { height: 840 }))
-
-const pushRight = css(media(s.minBreak2, s.mr10), media(s.minBreak4, s.mr20))
-const pushDown = css(s.mb10, media(s.minBreak2, s.mb20), media(s.minBreak4, s.mb40))
-const pushLeft = css(media(s.minBreak2, s.ml10), media(s.minBreak4, s.ml20))
-const pushRightAndLeft = css(media(s.minBreak2, s.mx10), media(s.minBreak4, s.mx20))
+const alignEnd = media(s.minBreak2, s.selfEnd)
 
 // -------------------------------------
 
@@ -72,157 +81,171 @@ const sectionStyle = css(
   s.flexWrap,
   s.mxAuto,
   { maxWidth: 1360 },
-  media(s.minBreak2, s.px20),
-  media('(min-width: 87.5em)', s.px0), // 1400px
 )
 
 export default({ ids }: { ids: List<string> }) => (
   <section className={sectionStyle}>
     { /* Row 1 */ }
-    { ids.get(0) &&
-      <Cell className={`${outerCell} ${col66} ${row420} ${pushDown} ${pushRight}`}>
-        <EditorialContainer editorialId={ids.get(0)} />
-      </Cell>
-    }
-    { ids.get(1) &&
-      <Cell className={`${outerCell} ${col33} ${row420} ${pushDown} ${pushLeft}`}>
-        <EditorialContainer editorialId={ids.get(1)} />
-      </Cell>
-    }
+    <Row>
+      { ids.get(0) &&
+        <Cell className={`${width2} ${height1} ${pushRight}`}>
+          <EditorialContainer editorialId={ids.get(0)} />
+        </Cell>
+      }
+      { ids.get(1) &&
+        <Cell className={`${width1} ${height1}`}>
+          <EditorialContainer editorialId={ids.get(1)} />
+        </Cell>
+      }
+    </Row>
 
     { /* Row 2 */ }
-    { ids.get(2) &&
-      <Cell className={`${outerCell} ${col33} ${row420} ${pushDown} ${pushRight}`}>
-        <EditorialContainer editorialId={ids.get(2)} />
-      </Cell>
-    }
-    { ids.get(3) &&
-      <Cell className={`${outerCell} ${col33Middle} ${row420} ${pushDown} ${pushRightAndLeft}`}>
-        <EditorialContainer editorialId={ids.get(3)} />
-      </Cell>
-    }
-    { ids.get(4) &&
-      <Cell className={`${outerCell} ${col33} ${row420} ${pushDown} ${pushLeft}`}>
-        <EditorialContainer editorialId={ids.get(4)} />
-      </Cell>
-    }
+    <Row>
+      { ids.get(2) &&
+        <Cell className={`${width1} ${height1} ${pushRight}`}>
+          <EditorialContainer editorialId={ids.get(2)} />
+        </Cell>
+      }
+      { ids.get(3) &&
+        <Cell className={`${width1} ${height1} ${pushRight}`}>
+          <EditorialContainer editorialId={ids.get(3)} />
+        </Cell>
+      }
+      { ids.get(4) &&
+        <Cell className={`${width1} ${height1}`}>
+          <EditorialContainer editorialId={ids.get(4)} />
+        </Cell>
+      }
+    </Row>
 
     { /* Row 3 */ }
-    { ids.get(5) &&
-      <Cell className={`${outerCell} ${col66} ${row840} ${pushDown} ${pushRight}`}>
-        <EditorialContainer editorialId={ids.get(5)} />
-      </Cell>
-    }
-    { ids.get(6) &&
-      <Cell className={`${outerCell} ${col33} ${row840} ${pushDown} ${pushLeft}`}>
-        <Cell className={`${nestedCell} ${pushDown}`}>
-          <EditorialContainer editorialId={ids.get(6)} />
+    <Row>
+      { ids.get(5) &&
+        <Cell className={`${width2} ${height2} ${pushRight}`}>
+          <EditorialContainer editorialId={ids.get(5)} />
         </Cell>
-        { ids.get(7) &&
-          <Cell className={nestedCell}>
-            <EditorialContainer editorialId={ids.get(7)} />
+      }
+      { ids.get(6) &&
+        <Cell className={`${width1} ${height2}`}>
+          <Cell className={halfHeight}>
+            <EditorialContainer editorialId={ids.get(6)} />
           </Cell>
-        }
-      </Cell>
-    }
+          { ids.get(7) &&
+            <Cell className={`${halfHeight} ${alignEnd}`}>
+              <EditorialContainer editorialId={ids.get(7)} />
+            </Cell>
+          }
+        </Cell>
+      }
+    </Row>
 
     { /* Row 4 */ }
-    { ids.get(8) &&
-      <Cell className={`${outerCell} ${col33} ${row840} ${pushDown} ${pushRight}`}>
-        <EditorialContainer editorialId={ids.get(8)} />
-      </Cell>
-    }
-    { ids.get(9) &&
-      <Cell className={`${outerCell} ${col66} ${row840} ${pushDown} ${pushLeft}`}>
-        <Cell className={`${nestedCell} ${pushDown}`}>
-          <EditorialContainer editorialId={ids.get(9)} />
+    <Row>
+      { ids.get(8) &&
+        <Cell className={`${width1} ${height2} ${pushRight}`}>
+          <EditorialContainer editorialId={ids.get(8)} />
         </Cell>
-        { ids.get(10) &&
-          <Cell className={`${nestedSplitCell} ${pushDown} ${pushRight}`}>
-            <EditorialContainer editorialId={ids.get(10)} />
+      }
+      { ids.get(9) &&
+        <Cell className={`${width2} ${height2}`}>
+          <Cell className={halfHeight}>
+            <EditorialContainer editorialId={ids.get(9)} />
           </Cell>
-        }
-        { ids.get(11) &&
-          <Cell className={`${nestedSplitCell} ${pushDown} ${pushLeft}`}>
-            <EditorialContainer editorialId={ids.get(11)} />
-          </Cell>
-        }
-      </Cell>
-    }
+          { ids.get(10) &&
+            <Cell className={`${halfWidth} ${halfHeight} ${pushRight} ${alignEnd}`}>
+              <EditorialContainer editorialId={ids.get(10)} />
+            </Cell>
+          }
+          { ids.get(11) &&
+            <Cell className={`${halfWidth} ${halfHeight} ${alignEnd}`}>
+              <EditorialContainer editorialId={ids.get(11)} />
+            </Cell>
+          }
+        </Cell>
+      }
+    </Row>
 
     { /* Reverse */ }
 
     { /* Row 5 (1) */ }
-    { ids.get(12) &&
-      <Cell className={`${outerCell} ${col33} ${row420} ${pushDown} ${pushRight}`}>
-        <EditorialContainer editorialId={ids.get(12)} />
-      </Cell>
-    }
-    { ids.get(13) &&
-      <Cell className={`${outerCell} ${col66} ${row420} ${pushDown} ${pushLeft}`}>
-        <EditorialContainer editorialId={ids.get(13)} />
-      </Cell>
-    }
+    <Row>
+      { ids.get(12) &&
+        <Cell className={`${width1} ${height1} ${pushRight}`}>
+          <EditorialContainer editorialId={ids.get(12)} />
+        </Cell>
+      }
+      { ids.get(13) &&
+        <Cell className={`${width2} ${height1}`}>
+          <EditorialContainer editorialId={ids.get(13)} />
+        </Cell>
+      }
+    </Row>
 
     { /* Row 6 (2) */ }
-    { ids.get(14) &&
-      <Cell className={`${outerCell} ${col33} ${row420} ${pushDown} ${pushRight}`}>
-        <EditorialContainer editorialId={ids.get(14)} />
-      </Cell>
-    }
-    { ids.get(15) &&
-      <Cell className={`${outerCell} ${col33Middle} ${row420} ${pushDown} ${pushRightAndLeft}`}>
-        <EditorialContainer editorialId={ids.get(15)} />
-      </Cell>
-    }
-    { ids.get(16) &&
-      <Cell className={`${outerCell} ${col33} ${row420} ${pushDown} ${pushLeft}`}>
-        <EditorialContainer editorialId={ids.get(16)} />
-      </Cell>
-    }
+    <Row>
+      { ids.get(14) &&
+        <Cell className={`${width1} ${height1} ${pushRight}`}>
+          <EditorialContainer editorialId={ids.get(14)} />
+        </Cell>
+      }
+      { ids.get(15) &&
+        <Cell className={`${width1} ${height1} ${pushRight}`}>
+          <EditorialContainer editorialId={ids.get(15)} />
+        </Cell>
+      }
+      { ids.get(16) &&
+        <Cell className={`${width1} ${height1}`}>
+          <EditorialContainer editorialId={ids.get(16)} />
+        </Cell>
+      }
+    </Row>
 
     { /* Row 7 (3) */ }
-    { ids.get(17) &&
-      <Cell className={`${outerCell} ${col33} ${row840} ${pushDown} ${pushRight}`}>
-        <Cell className={`${nestedCell} ${pushDown}`}>
-          <EditorialContainer editorialId={ids.get(17)} />
-        </Cell>
-        { ids.get(18) &&
-          <Cell className={nestedCell}>
-            <EditorialContainer editorialId={ids.get(18)} />
+    <Row>
+      { ids.get(17) &&
+        <Cell className={`${width1} ${height2} ${pushRight}`}>
+          <Cell className={halfHeight}>
+            <EditorialContainer editorialId={ids.get(17)} />
           </Cell>
-        }
-      </Cell>
-    }
-    { ids.get(19) &&
-      <Cell className={`${outerCell} ${col66} ${row840} ${pushDown} ${pushLeft}`}>
-        <EditorialContainer editorialId={ids.get(19)} />
-      </Cell>
-    }
+          { ids.get(18) &&
+            <Cell className={`${halfHeight} ${alignEnd}`}>
+              <EditorialContainer editorialId={ids.get(18)} />
+            </Cell>
+          }
+        </Cell>
+      }
+      { ids.get(19) &&
+        <Cell className={`${width2} ${height2}`}>
+          <EditorialContainer editorialId={ids.get(19)} />
+        </Cell>
+      }
+    </Row>
 
     { /* Row 8 (4) */ }
-    { ids.get(20) &&
-      <Cell className={`${outerCell} ${col66} ${row840} ${pushDown} ${pushRight}`}>
-        <Cell className={`${nestedCell} ${pushDown}`}>
-          <EditorialContainer editorialId={ids.get(20)} />
+    <Row>
+      { ids.get(20) &&
+        <Cell className={`${width2} ${height2} ${pushRight}`}>
+          <Cell className={halfHeight}>
+            <EditorialContainer editorialId={ids.get(20)} />
+          </Cell>
+          { ids.get(21) &&
+            <Cell className={`${halfWidth} ${halfHeight} ${pushRight} ${alignEnd}`}>
+              <EditorialContainer editorialId={ids.get(21)} />
+            </Cell>
+          }
+          { ids.get(22) &&
+            <Cell className={`${halfWidth} ${halfHeight} ${alignEnd}`}>
+              <EditorialContainer editorialId={ids.get(22)} />
+            </Cell>
+          }
         </Cell>
-        { ids.get(21) &&
-          <Cell className={`${nestedSplitCell} ${pushDown} ${pushRight}`}>
-            <EditorialContainer editorialId={ids.get(21)} />
-          </Cell>
-        }
-        { ids.get(22) &&
-          <Cell className={`${nestedSplitCell} ${pushDown} ${pushLeft}`}>
-            <EditorialContainer editorialId={ids.get(22)} />
-          </Cell>
-        }
-      </Cell>
-    }
-    { ids.get(23) &&
-      <Cell className={`${outerCell} ${col33} ${row840} ${pushDown} ${pushLeft}`}>
-        <EditorialContainer editorialId={ids.get(23)} />
-      </Cell>
-    }
+      }
+      { ids.get(23) &&
+        <Cell className={`${width1} ${height2}`}>
+          <EditorialContainer editorialId={ids.get(23)} />
+        </Cell>
+      }
+    </Row>
   </section>
 )
 
