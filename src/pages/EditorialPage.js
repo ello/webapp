@@ -3,9 +3,10 @@ import React, { Component } from 'react'
 import { editorials } from '../actions/editorials'
 import StreamContainer from '../containers/StreamContainer'
 import { MainView } from '../components/views/MainView'
-import { css } from '../styles/jss'
+import { media } from '../styles/jss'
+import { maxBreak2 } from '../styles/jso'
 
-const streamStyle = css({
+const streamStyle = media(maxBreak2, {
   paddingLeft: '0 !important',
   paddingRight: '0 !important',
 })
