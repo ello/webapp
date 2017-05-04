@@ -1,10 +1,11 @@
+import Immutable from 'immutable'
 import React from 'react'
 import CategoryContainer from '../../containers/CategoryContainer'
 import CommentContainer from '../../containers/CommentContainer'
 import NotificationContainer from '../../containers/NotificationContainer'
 import PostContainer from '../../containers/PostContainer'
 import UserContainer from '../../containers/UserContainer'
-import Editorials from '../../components/editorials/Editorials'
+import EditorialLayout from '../../components/editorials/EditorialLayout'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
 import TreePanel from '../../components/navigation/TreePanel'
@@ -48,8 +49,12 @@ export const commentsAsList = commentIds =>
     )}
   </div>
 
-// EDITORIAL
-export const editorials = editorialIds => <Editorials editorialIds={editorialIds} />
+// EDITORIAL: chunk layouts into pages of 24 editorials
+export const editorials = editorialIds => (
+  Immutable.Range(0, editorialIds.size - 1, 24)
+    .map(chunkStart => editorialIds.slice(chunkStart, chunkStart + 24))
+    .map(pageIds => <EditorialLayout key={pageIds} ids={pageIds} />)
+)
 
 // POSTS
 export const postsAsGrid = (postIds, columnCount, isPostHeaderHidden) => {
