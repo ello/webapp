@@ -9,7 +9,7 @@ import * as s from '../../styles/jso'
 // Row
 
 const rowStyle = css(
-  media(s.minBreak2, s.mb20, s.flex, s.flexWrap),
+  media(s.minBreak3, s.mb20, s.flex, s.flexWrap),
   media(s.minBreak4, s.mb40),
 )
 
@@ -36,7 +36,7 @@ const cellStyle = css(
   { height: '100vw' },
   s.overflowHidden,
   s.pb10,
-  media(s.minBreak2, s.fullHeight, s.pb0),
+  media(s.minBreak3, s.fullHeight, s.pb0),
 )
 
 type CellProps = {
@@ -56,23 +56,23 @@ Cell.defaultProps = {
 // -------------------------------------
 // Grid (Cell modifiers)
 
-const height1 = media(s.minBreak2, { height: 420 })
-const height2 = media(s.minBreak4, { height: 840 })
+const height1 = media(s.minBreak3, { height: 420 })
+const height2 = media(s.minBreak3, { height: 840 })
 const halfHeight = css(
-  media(s.minBreak2, { height: 'calc(50% - 10px)' }),
+  media(s.minBreak3, { height: 'calc(50% - 10px)' }),
   media(s.minBreak4, { height: 'calc(50% - 20px)' }),
 )
 
-const width1 = media(s.minBreak2, { width: '33.333333%' })
-const width2 = media(s.minBreak2, { flex: 1 })
-const halfWidth = media(s.minBreak2, s.flex2)
+const width1 = media(s.minBreak3, { width: '33.333333%' })
+const width2 = media(s.minBreak3, { flex: 1 })
+const halfWidth = media(s.minBreak3, { flex: 2 })
 
 const pushRight = css(
-  media(s.minBreak2, s.pr20),
+  media(s.minBreak3, s.pr20),
   media(s.minBreak4, s.pr40),
 )
 
-const alignEnd = media(s.minBreak2, s.selfEnd)
+const alignEnd = media(s.minBreak3, s.selfEnd)
 
 // -------------------------------------
 
