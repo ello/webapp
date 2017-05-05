@@ -22,6 +22,14 @@
   }
 }
 
+@media (--break-2-max) {
+  /* stylelint-disable selector-max-compound-selectors */
+  .isProfileMenuActive ~ .Navbar .CategoryTabBar {
+    display: none;
+  }
+  /* stylelint-enable selector-max-compound-selectors */
+}
+
 .CategoryTabs {
   position: relative;
   display: inline-block;

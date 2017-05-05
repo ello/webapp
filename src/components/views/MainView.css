@@ -24,6 +24,10 @@ body.isModalActive .MainView {
   .isOnboardingView ~ .MainView {
     margin-top: 120px;
   }
+
+  .isProfileMenuActive ~ .MainView {
+    display: none;
+  }
 }
 
 @media (--break-2) {
