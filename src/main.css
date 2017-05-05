@@ -11,8 +11,6 @@
 @import "components/notifications/Notification.css";
 @import "components/notifications/NotificationRenderables.css";
 
-@import "components/omnibar/Omnibar.css";
-
 @import "components/onboarding/Onboarding.css";
 @import "components/onboarding/OnboardingNavbar.css";
 

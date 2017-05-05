@@ -334,6 +334,7 @@ const profilePopStyle = css(
       { top: 15, left: 0, width: 100, height: 30, content: '""' },
       { backgroundColor: 'rgba(0, 0, 0, 0)', transform: 'translateX(-100%)' },
     )),
+    parent('.isOmnibarActive .Navbar >', s.absolute, { transform: 'translate3d(400px, 0, 0)' }),
   ),
   media(s.minBreak4, { right: 40 }),
 )

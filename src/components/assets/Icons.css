@@ -544,5 +544,10 @@
   color: #ababab;
 }
 
+.Omnibar .ChevronIcon {
+  margin-right: 5px;
+  transform: rotate(180deg);
+}
+
 /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 

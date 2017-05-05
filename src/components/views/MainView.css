@@ -4,11 +4,13 @@
   background-color: #fff;
 }
 
-/* stylelint-disable selector-no-qualifying-type */
-body.isModalActive .MainView {
+.isModalActive .MainView {
   pointer-events: none;
 }
-/* stylelint-enable selector-no-qualifying-type */
+
+.isOmnibarActive .MainView {
+  padding-top: 0;
+}
 
 .PostDetail.MainView {
   padding-bottom: 30px;
@@ -20,11 +22,13 @@ body.isModalActive .MainView {
   color: #aaa;
 }
 
+/* // MAX-WIDTH! */
 @media (--break-2-max) {
   .isOnboardingView ~ .MainView {
     margin-top: 120px;
   }
 
+  .isOmnibarActive .MainView,
   .isProfileMenuActive ~ .MainView {
     display: none;
   }
@@ -41,6 +45,10 @@ body.isModalActive .MainView {
 
   .TabListStreamContainer + .RelatedPostsStreamContainer .RelatedPostsTitle {
     margin-top: 45px;
+  }
+
+  .isOmnibarActive .Omnibar.isFullScreen ~ .MainView {
+    display: none;
   }
 }
 

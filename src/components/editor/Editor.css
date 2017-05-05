@@ -30,6 +30,10 @@
   border-right-color: #000;
 }
 
+.Omnibar > .editor {
+  padding: 20px 10px;
+}
+
 .editor-region {
   min-height: 100px;
   padding: 20px;
@@ -147,6 +151,17 @@
   margin-bottom: 10px;
 }
 
+/* // MAX-WIDTH! */
+@media (--break-2-max) {
+  .Omnibar > .editor::before {
+    display: none;
+  }
+
+  .Omnibar > .editor::after {
+    left: 51px;
+  }
+}
+
 @media (--break-2) {
   .editor.isComment {
     max-width: 640px;
@@ -170,6 +185,29 @@
 
   .editor.isComment .DragBlock {
     left: 80px;
+  }
+
+  .Omnibar > .editor {
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-left: 60px;
+  }
+
+  /* stylelint-disable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
+  body.isOmnibarActive .Omnibar.isFullScreen > .editor {
+    max-width: none;
+    padding-right: 40px;
+  }
+
+  body.isOmnibarActive .Omnibar.isFullScreen > .editor .editor-region {
+    min-height: calc(100vh - 100px);
+  }
+  /* stylelint-enable selector-max-compound-selectors, selector-max-specificity, selector-no-qualifying-type */
+}
+
+@media (--break-4) {
+  .Omnibar > .editor {
+    margin-left: 80px;
   }
 }
 
