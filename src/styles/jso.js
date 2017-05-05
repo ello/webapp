@@ -225,7 +225,9 @@ export const mx40 = { ...mr40, ...ml40 }
 export const my40 = { ...mt40, ...mb40 }
 
 export const mAuto = { margin: 'auto' }
+export const mtAuto = { marginTop: 'auto' }
 export const mrAuto = { marginRight: 'auto' }
+export const mbAuto = { marginBottom: 'auto' }
 export const mlAuto = { marginLeft: 'auto' }
 export const mxAuto = { ...mrAuto, ...mlAuto }
 
