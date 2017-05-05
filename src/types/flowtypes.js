@@ -16,6 +16,7 @@ export type EditorialProps = {
     title: string,
     postId: string,
   },
-  isLoggedIn: boolean,
+  postPath?: string,
+  isPostLoved: boolean,
 }
 
