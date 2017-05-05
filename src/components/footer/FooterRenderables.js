@@ -26,10 +26,12 @@ const baseStyle = css(
   media('(max-width: 23.375em)', s.hv40, s.lh40), // 374 and below
   media(s.maxBreak2,
     parent('.isEditorFocused', s.displayNone),
+    parent('.isOmnibarActive', s.displayNone),
     select('.isProfileMenuActive ~ &', s.displayNone),
   ),
   media(s.minBreak2,
     s.px20,
+    select('.isOmnibarActive .Omnibar.isFullScreen ~ &', s.displayNone),
     select(
       '.no-touch .isNavbarHidden ~ &::before',
       s.absolute,
