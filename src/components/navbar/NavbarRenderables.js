@@ -21,6 +21,65 @@ import {
 } from './NavbarParts'
 import { CategoryTabBar } from '../tabs/CategoryTabBar'
 import NotificationsContainer from '../../containers/NotificationsContainer'
+import { css, media, parent, select } from '../../styles/jss'
+import * as s from '../../styles/jso'
+
+const navbarStyle = css(
+  s.fixed,
+  { top: 0, right: 0, left: 0 },
+  s.zNavbar,
+  s.p10,
+  s.bgcWhite,
+  { transition: 'transform 150ms ease, height 150ms ease, background-color 0s' },
+  parent('.isLoggedIn', { height: 85 }),
+  parent('.isLoggedOut', { height: 50 }),
+  select('.isOnboardingView ~ &', s.displayNone),
+  select('.isNavbarHidden ~ &',
+    s.bgcTransparent,
+    {
+      transitionDelay: '0s, 0s, 150ms',
+      transform: 'translate3d(0, -100%, 0)',
+    },
+  ),
+  media(s.minBreak2,
+    s.p20,
+    parent('.isLoggedIn', { height: 80 }),
+    parent('.isLoggedOut', { height: 80 }),
+    select('.no-touch .isNavbarHidden ~ &:hover', s.bgcWhite, s.transformNone, { transitionDelay: '0s' }),
+    select('.no-touch .isNavbarHidden ~ .Discover + &:hover', { transitionDelay: '1.5s' }),
+    select('.no-touch .isNavbarHidden ~ &::after',
+      s.absolute,
+      { right: 0, bottom: -15, left: 0, height: 15 },
+      { content: '""', backgroundColor: 'rgba(0, 0, 0, 0)' },
+    ),
+  ),
+  media(s.minBreak4, s.px40),
+)
+
+const mainStyle = css(
+  { transition: 'opacity 0s' },
+  parent('.isNavbarHidden ~ .Navbar', s.opacity0, { transitionDelay: '150ms' }),
+  media(s.minBreak2,
+    parent('.no-touch .isNavbarHidden ~ .Navbar:hover', s.opacity1, { transitionDelay: '0s' }),
+    parent('.no-touch .isNavbarHidden ~ .Discover + .Navbar:hover', { transitionDelay: '1.5s' }),
+  ),
+)
+
+const linksStyle = css(
+  s.absolute,
+  { top: 7 },
+  s.nowrap,
+  parent('.isLoggedIn', { left: 10 }),
+  parent('.isLoggedOut', { right: 10 }),
+  media(s.minBreak2,
+    parent('.isLoggedIn', { top: '50%', right: 80, left: 'auto', marginTop: -20 }),
+    parent('.isLoggedOut', { top: '50%', right: 20, marginTop: -20 }),
+  ),
+  media(s.minBreak4,
+    parent('.isLoggedIn', { right: 100 }),
+    parent('.isLoggedOut', { right: 40 }),
+  ),
+)
 
 export const NavbarLoggedOut = ({
   categoryTabs,
@@ -29,12 +88,12 @@ export const NavbarLoggedOut = ({
   onClickNavbarMark,
   pathname,
 }, { onClickLogin, onClickSignup }) =>
-  <nav className="Navbar" role="navigation" >
-    <div className="NavbarMain">
+  <nav className={`Navbar ${navbarStyle}`} role="navigation" >
+    <div className={`NavbarMain ${mainStyle}`}>
       <NavbarMark onClick={onClickNavbarMark} />
       <NavbarLabel />
       {hasLoadMoreButton ? <NavbarMorePostsButton onClick={onClickLoadMorePosts} /> : null}
-      <div className="NavbarLinks">
+      <div className={`NavbarLinks ${linksStyle}`}>
         <NavbarLink
           className="LabelOnly"
           icon={<SparklesIcon />}
@@ -108,15 +167,15 @@ export const NavbarLoggedIn = ({
   pathname,
   username,
 }) =>
-  <nav className="Navbar" role="navigation" >
-    <div className="NavbarMain">
+  <nav className={`Navbar ${navbarStyle}`} role="navigation" >
+    <div className={`NavbarMain ${mainStyle}`}>
       <NavbarMark onClick={onClickNavbarMark} />
       <NavbarOmniButton
         onClick={onClickOmniButton}
         onDragOver={onDragOverOmniButton}
       />
       {hasLoadMoreButton ? <NavbarMorePostsButton onClick={onClickLoadMorePosts} /> : null}
-      <div className="NavbarLinks">
+      <div className={`NavbarLinks ${linksStyle}`}>
         <NavbarLink
           className="LabelOnly"
           icon={<SparklesIcon />}
