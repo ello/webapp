@@ -75,6 +75,7 @@ export const zIndex2 = { zIndex: 2 }
 export const zIndex3 = { zIndex: 3 }
 export const zFooter = { zIndex: 1030 }
 export const zDecapitated = { zIndex: 1035 }
+export const zNavbar = { zIndex: 1040 }
 export const zTools = { zIndex: 1070 }
 export const zModal = { zIndex: 1080 }
 export const zGrid = { zIndex: 3000 }
