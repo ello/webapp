@@ -170,6 +170,14 @@ export const NavbarLoggedIn = ({
       />
       {hasLoadMoreButton ? <NavbarMorePostsButton onClick={onClickLoadMorePosts} /> : null}
       <div className={`NavbarLinks ${linksStyle}`}>
+        { deviceSize === 'mobile' &&
+          <NavbarLink
+            className="LabelOnly"
+            label="Editorial"
+            pathname={pathname}
+            to="/"
+          />
+        }
         <NavbarLink
           className="LabelOnly"
           icon={<SparklesIcon />}
