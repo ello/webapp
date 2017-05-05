@@ -126,6 +126,14 @@ export const pl0 = { paddingLeft: 0 }
 export const px0 = { ...pr0, ...pl0 }
 export const py0 = { ...pt0, ...pb0 }
 
+export const p5 = { padding: 5 }
+export const pt5 = { paddingTop: 5 }
+export const pr5 = { paddingRight: 5 }
+export const pb5 = { paddingBottom: 5 }
+export const pl5 = { paddingLeft: 5 }
+export const px5 = { ...pr5, ...pl5 }
+export const py5 = { ...pt5, ...pb5 }
+
 export const p10 = { padding: 10 }
 export const pt10 = { paddingTop: 10 }
 export const pr10 = { paddingRight: 10 }
@@ -295,6 +303,7 @@ export const colorA = { color: '#aaa' }
 export const colorC = { color: '#ccc' }
 export const colorWhite = { color: '#fff' }
 
+export const bgcCurrentColor = { backgroundColor: 'currentColor' }
 export const bgcTransparent = { backgroundColor: 'transparent' }
 export const bgcBlack = { backgroundColor: '#000' }
 export const bgc4 = { backgroundColor: '#4d4d4d' }
@@ -306,6 +315,7 @@ export const bgcE5 = { backgroundColor: '#e5e5e5' }
 export const bgcWhite = { backgroundColor: '#fff' }
 export const bgcGreen = { backgroundColor: '#00d100' }
 export const bgcRed = { backgroundColor: '#f00' }
+export const bgcYellow = { backgroundColor: '#ffc' }
 
 export const opacity0 = { opacity: 0 }
 export const opacity1 = { opacity: 1 }

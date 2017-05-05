@@ -220,10 +220,6 @@
     transition-delay: 0.5s;
   }
 
-  .no-touch .NavbarLink.IconOnly:hover > .NavbarLinkLabel::after {
-    transition-delay: 0.6s;
-  }
-
   /* // Specific widths for the labels */
   /* // TODO: will need to figure out how to do this for i18n */
   .no-touch .NavbarLink[href^="/notifications"]:hover {
