@@ -24,9 +24,11 @@ const baseStyle = css(
   select('.isAuthenticationView ~ &', s.displayNone),
   select('.isOnboardingView ~ &', s.displayNone),
   media('(max-width: 23.375em)', s.hv40, s.lh40), // 374 and below
-  media(s.maxBreak2, parent('.isEditorFocused', s.displayNone)),
-  media(
-    s.minBreak2,
+  media(s.maxBreak2,
+    parent('.isEditorFocused', s.displayNone),
+    select('.isProfileMenuActive ~ &', s.displayNone),
+  ),
+  media(s.minBreak2,
     s.px20,
     select(
       '.no-touch .isNavbarHidden ~ &::before',

@@ -25,6 +25,9 @@ export const select = (selector: string, ...styles:Array<JSO>) =>
 export const hover = (...styles:Array<JSO>) =>
   select('.no-touch &:hover', ...styles)
 
+export const active = (...styles:Array<JSO>) =>
+  select(':active', ...styles)
+
 export const focus = (...styles:Array<JSO>) =>
   select(':focus', ...styles)
 

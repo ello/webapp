@@ -41,21 +41,6 @@
   height: 50px;
 }
 
-.isLoggedIn .NavbarMark {
-  display: none;
-}
-
-.isLoggedOut .NavbarMark {
-  display: inline-block;
-}
-
-.NavbarMark + .NavbarLabel {
-  position: relative;
-  top: 2px;
-  display: none;
-  margin-left: 20px;
-}
-
 .NavbarLinks {
   position: absolute;
   top: 7px;
@@ -70,54 +55,7 @@
   right: 10px;
 }
 
-.NavbarLinks > .NavbarLink + .NavbarLink {
-  margin-left: 30px;
-}
-
-/* stylelint-disable selector-max-compound-selectors */
-/* Crunch spacing on logged out for smaller devices: 360 / 16 = 22.5em */
-@media (max-width: 22.5em) {
-  .isLoggedOut .NavbarLinks > .NavbarLink + .NavbarLink {
-    margin-left: 18px;
-  }
-}
-/* stylelint-enable selector-max-compound-selectors */
-
-.NavbarProfile {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 4;
-}
-
-.NavbarLayoutTool {
-  position: absolute;
-  top: 12px;
-  left: 155px;
-  color: #aaa;
-}
-
 /* // MAX-WIDTH! */
-@media (--break-2-max) {
-  .isLoggedIn .NavbarLink {
-    margin-top: 40px;
-  }
-
-  .isLoggedIn .NavbarLink[href^="/notifications"] {
-    position: absolute;
-    top: 0;
-    left: 55px;
-    margin: 0;
-  }
-
-  .isLoggedIn .NavbarLink[href="/search"] {
-    position: absolute;
-    top: 0;
-    left: 100px;
-    margin: 0;
-  }
-}
-
 @media (--break-2) {
   .Navbar {
     padding: 20px;
@@ -162,14 +100,6 @@
     height: 80px;
   }
 
-  .isLoggedIn .NavbarMark {
-    display: inline-block;
-  }
-
-  .NavbarMark + .NavbarLabel {
-    display: inline-block;
-  }
-
   .isLoggedIn .NavbarLinks,
   .isLoggedOut .NavbarLinks {
     top: 50%;
@@ -184,12 +114,6 @@
   .isLoggedOut .NavbarLinks {
     right: 20px;
   }
-
-  .NavbarProfile {
-    top: 20px;
-    right: 20px;
-    left: auto;
-  }
 }
 
 @media (--break-4) {
@@ -203,10 +127,6 @@
   }
 
   .isLoggedOut .NavbarLinks {
-    right: 40px;
-  }
-
-  .NavbarProfile {
     right: 40px;
   }
 }
