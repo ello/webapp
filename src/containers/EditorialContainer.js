@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { trackEvent } from '../actions/analytics'
 import { openModal } from '../actions/modals'
+import { lovePost, unlovePost } from '../actions/posts'
+import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } from '../selectors/post'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import {
@@ -22,6 +24,7 @@ const makeMapStateToProps = () => (
     const postId = editorial.getIn(['links', 'post', 'id'])
     return {
       editorial,
+      isLoggedIn: selectIsLoggedIn(state),
       isPostLoved: selectPostLoved(state, { postId }),
       post: selectPost(state, { postId }),
       postAuthor: selectPostAuthor(state, { postId }),
@@ -33,15 +36,21 @@ const makeMapStateToProps = () => (
 class EditorialContainer extends Component {
   props: EditorialProps
 
+  static contextTypes = {
+    onClickOpenRegistrationRequestDialog: PropTypes.func.isRequired,
+  }
+
   static childContextTypes = {
-    // onClickLovePost: PropTypes.func.isRequired,
+    onClickLovePost: PropTypes.func,
+    onClickOpenSignupModal: PropTypes.func,
     onClickSharePost: PropTypes.func.isRequired,
   }
 
   getChildContext() {
-    // const { isLoggedIn } = this.props
+    const { isLoggedIn } = this.props
     return {
-      // onClickLovePost: isLoggedIn ? this.onClickLovePost : this.onOpenSignupModal,
+      onClickOpenSignupModal: isLoggedIn ? null : this.onClickOpenSignupModal,
+      onClickLovePost: isLoggedIn ? this.onClickLovePost : this.onClickOpenSignupModal,
       onClickSharePost: this.onClickSharePost,
     }
   }
@@ -51,6 +60,21 @@ class EditorialContainer extends Component {
       !is(nextProps.editorial, this.props.editorial) ||
       !is(nextProps.post, this.props.post)
     )
+  }
+
+  onClickLovePost = () => {
+    const { dispatch, isPostLoved, post } = this.props
+    if (isPostLoved) {
+      dispatch(unlovePost(post))
+    } else {
+      dispatch(lovePost(post))
+    }
+  }
+
+
+  onClickOpenSignupModal = () => {
+    const { onClickOpenRegistrationRequestDialog } = this.context
+    onClickOpenRegistrationRequestDialog('editorial')
   }
 
   onClickSharePost = () => {
@@ -65,14 +89,6 @@ class EditorialContainer extends Component {
   }
 
   render() {
-    if (!this.props.post.isEmpty()) {
-      console.log(
-        this.props.editorial.get('title'),
-        this.props.post.toJS(),
-        this.props.postPath,
-        this.props.isPostLoved,
-      )
-    }
     switch (this.props.editorial.get('kind')) {
       case 'post_stream':
         return <CuratedPostEditorial {...this.props} />
