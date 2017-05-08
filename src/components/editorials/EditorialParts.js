@@ -55,26 +55,44 @@ type ToolProps = {
 }
 
 type ToolContext = {
+  onClickLovePost?: () => {},
+  onClickOpenSignupModal?: () => {},
   onClickSharePost: () => {},
 }
 
 export const EditorialTools = (props: ToolProps, context: ToolContext) => (
   <div className={toolsStyle}>
-    <ToolButton className={props.isPostLoved ? 'isActive' : null}>
+    <ToolButton
+      className={props.isPostLoved ? 'isActive' : null}
+      onClick={context.onClickLovePost}
+    >
       <HeartIcon />
     </ToolButton>
-    <ToolButton className={leftSpacer} to={props.postPath}>
+    <ToolButton
+      className={leftSpacer}
+      onClick={context.onClickOpenSignupModal}
+      to={context.onClickOpenSignupModal ? null : props.postPath}
+    >
       <BubbleIcon />
     </ToolButton>
-    <ToolButton className={leftSpacer} to={props.postPath}>
+    <ToolButton
+      className={leftSpacer}
+      onClick={context.onClickOpenSignupModal}
+      to={context.onClickOpenSignupModal ? null : props.postPath}
+    >
       <RepostIcon />
     </ToolButton>
-    <ToolButton className={alignEnd} onClick={context.onClickSharePost}>
+    <ToolButton
+      className={alignEnd}
+      onClick={context.onClickSharePost}
+    >
       <ShareIcon />
     </ToolButton>
   </div>
 )
 EditorialTools.contextTypes = {
+  onClickLovePost: PropTypes.func,
+  onClickOpenSignupModal: PropTypes.func,
   onClickSharePost: PropTypes.func.isRequired,
 }
 
@@ -89,6 +107,8 @@ export const EditorialTitle = ({ label }: { label: string }) => (
   <h2 className={titleStyle}>{label}</h2>
 )
 
+// -------------------------------------
+
 const subtitleStyle = css(
   s.fontSize24,
   s.colorWhite,
@@ -99,5 +119,4 @@ export const EditorialSubtitle = ({ label }: { label: string }) => (
     <span>{label}</span>
   </h3>
 )
-    // <span>asdfa asdf asdf asdf asd fas df asdf asdfasdfas dfas dfa sdfasdf:w</span>
 
