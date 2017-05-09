@@ -18,7 +18,6 @@ import {
 } from '../components/editorials/EditorialRenderables'
 import type { EditorialProps } from '../types/flowtypes'
 
-// TODO: Selectors!
 const makeMapStateToProps = () => (
   (state: any, props: EditorialProps) => {
     const editorial = selectEditorial(state, props)

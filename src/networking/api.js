@@ -16,9 +16,9 @@ function getAPIPath(relPath, queryParams = {}) {
   return path
 }
 // Editorials
-export function editorials() {
+export function editorials(isPreview) {
   return {
-    path: getAPIPath('editorials'),
+    path: getAPIPath('editorials', isPreview ? { preview: true } : {}),
   }
 }
 // Announcements
