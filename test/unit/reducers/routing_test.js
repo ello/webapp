@@ -19,6 +19,7 @@ describe('routing reducer', () => {
         pathname: '/discover/trending',
         state: undefined,
         terms: undefined,
+        preview: undefined,
       },
       locationBeforeTransitions: { pathname: '/discover/trending' },
       previousPath: undefined,
