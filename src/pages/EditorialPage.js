@@ -5,7 +5,6 @@ import { editorials } from '../actions/editorials'
 import StreamContainer from '../containers/StreamContainer'
 import { MainView } from '../components/views/MainView'
 import { selectQueryPreview } from '../selectors/routing'
-import { getQueryParamValue } from '../helpers/uri_helper'
 import { media } from '../styles/jss'
 import { maxBreak2 } from '../styles/jso'
 
@@ -14,11 +13,17 @@ const streamStyle = media(maxBreak2, {
   paddingRight: '0 !important',
 })
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   isPreview: selectQueryPreview(state) === 'true',
 })
 
+type Props = {
+  isPreview: boolean,
+}
+
 class EditorialPage extends Component {
+  props: Props
+
   shouldComponentUpdate() {
     return false
   }
