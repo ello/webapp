@@ -91,6 +91,47 @@ export function stubAnnouncementNotification(properties = {}, shouldAdd = true) 
   return model
 }
 
+// TODO: Update these as the API changes...
+export function stubEditorial(kind, properties, shouldAdd = true) {
+  const linkPost = { href: '/api/v2/posts/1', id: '1', type: 'posts' }
+  const defaultProps = () => {
+    switch (kind) {
+      case 'post_stream': {
+        return {
+          id: 'editorialExternalId',
+          image: null,
+          kind: 'post',
+          title: 'Editorial Title',
+        }
+      }
+      case 'external': {
+        return {
+          id: 'editorialExternalId',
+          image: null,
+          kind: 'post',
+          subtitle: 'Editorial Post Subtitle',
+          title: 'Editorial Title',
+          url: '/external/url',
+        }
+      }
+      case 'post':
+      default: {
+        return {
+          id: 'editorialPostId',
+          image: null,
+          kind: 'post',
+          links: { post: linkPost },
+          subtitle: 'Editorial Post Subtitle',
+          title: 'Editorial Title',
+        }
+      }
+    }
+  }
+  const model = Immutable.fromJS({ ...defaultProps(), ...properties })
+  if (shouldAdd) { addToJSON(MAPPING_TYPES.EDITORIALS, model) }
+  return model
+}
+
 function stubUser(properties, shouldAdd = true) {
   const defaultProps = {
     avatar: stubAvatar(),
