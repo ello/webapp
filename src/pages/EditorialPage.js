@@ -1,8 +1,10 @@
 // @flow
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { editorials } from '../actions/editorials'
 import StreamContainer from '../containers/StreamContainer'
 import { MainView } from '../components/views/MainView'
+import { selectQueryPreview } from '../selectors/routing'
 import { media } from '../styles/jss'
 import { maxBreak2 } from '../styles/jso'
 
@@ -11,7 +13,17 @@ const streamStyle = media(maxBreak2, {
   paddingRight: '0 !important',
 })
 
-export default class extends Component {
+const mapStateToProps = state => ({
+  isPreview: selectQueryPreview(state) === 'true',
+})
+
+type Props = {
+  isPreview: boolean,
+}
+
+class EditorialPage extends Component {
+  props: Props
+
   shouldComponentUpdate() {
     return false
   }
@@ -20,7 +32,7 @@ export default class extends Component {
     return (
       <MainView className="Editorial">
         <StreamContainer
-          action={editorials()}
+          action={editorials(this.props.isPreview)}
           className={`${streamStyle}`}
           shouldInfiniteScroll={false}
         />
@@ -28,4 +40,6 @@ export default class extends Component {
     )
   }
 }
+
+export default connect(mapStateToProps)(EditorialPage)
 
