@@ -1,5 +1,5 @@
 // @flow
-import { is, Map } from 'immutable'
+import { is } from 'immutable'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
@@ -8,6 +8,7 @@ import { trackEvent } from '../actions/analytics'
 import { openModal } from '../actions/modals'
 import { lovePost, unlovePost } from '../actions/posts'
 import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectEditorial, selectEditorialPostId } from '../selectors/editorial'
 import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } from '../selectors/post'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import {
@@ -20,8 +21,8 @@ import type { EditorialProps } from '../types/flowtypes'
 // TODO: Selectors!
 const makeMapStateToProps = () => (
   (state: any, props: EditorialProps) => {
-    const editorial = state.json.getIn(['editorials', props.editorialId], Map())
-    const postId = editorial.getIn(['links', 'post', 'id'])
+    const editorial = selectEditorial(state, props)
+    const postId = selectEditorialPostId(state, props)
     return {
       editorial,
       isLoggedIn: selectIsLoggedIn(state),
