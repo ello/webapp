@@ -9,6 +9,7 @@ import * as s from '../../styles/jso'
 // Row
 
 const rowStyle = css(
+  s.fullWidth,
   media(s.minBreak3, s.mb20, s.flex, s.flexWrap),
   media(s.minBreak4, s.mb40),
 )
