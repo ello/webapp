@@ -16,3 +16,4 @@ export const selectBadge = createSelector(
 export const selectBadgesHasLoaded = createSelector(
   [selectBadges], badges => !badges.isEmpty(),
 )
+
