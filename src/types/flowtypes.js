@@ -19,5 +19,8 @@ export type EditorialProps = {
   isLoggedIn: boolean,
   isPostLoved: boolean,
   postPath?: string,
+  size?: string,
+  dpi: string,
+  sources: any,
 }
 
