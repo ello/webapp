@@ -94,35 +94,52 @@ export function stubAnnouncementNotification(properties = {}, shouldAdd = true) 
 // TODO: Update these as the API changes...
 export function stubEditorial(kind, properties, shouldAdd = true) {
   const linkPost = { href: '/api/v2/posts/1', id: '1', type: 'posts' }
+  const stubImageSet = (prefix, size) => {
+    const set = {};
+    ['hdpi', 'xhdpi', 'optimized', 'original'].forEach((dpi) => {
+      set[dpi] = { url: `${prefix}-${size}-${dpi}.jpg` }
+    })
+    return set
+  }
+
   const defaultProps = () => {
     switch (kind) {
       case 'post_stream': {
         return {
-          id: 'editorialExternalId',
-          image: null,
-          kind: 'post',
-          title: 'Editorial Title',
+          id: 'editorialCuratedId',
+          kind: 'post_stream',
+          title: 'Editorial PostStream Title',
+          oneByOneImage: stubImageSet('post_stream', '1x1'),
+          oneByTwoImage: stubImageSet('post_stream', '1x2'),
+          twoByOneImage: stubImageSet('post_stream', '2x1'),
+          twoByTwoImage: stubImageSet('post_stream', '2x2'),
         }
       }
       case 'external': {
         return {
           id: 'editorialExternalId',
-          image: null,
-          kind: 'post',
-          subtitle: 'Editorial Post Subtitle',
-          title: 'Editorial Title',
+          kind: 'external',
+          subtitle: 'Editorial External Subtitle',
+          title: 'Editorial External Title',
           url: '/external/url',
+          oneByOneImage: stubImageSet('external', '1x1'),
+          oneByTwoImage: stubImageSet('external', '1x2'),
+          twoByOneImage: stubImageSet('external', '2x1'),
+          twoByTwoImage: stubImageSet('external', '2x2'),
         }
       }
       case 'post':
       default: {
         return {
           id: 'editorialPostId',
-          image: null,
           kind: 'post',
           links: { post: linkPost },
           subtitle: 'Editorial Post Subtitle',
-          title: 'Editorial Title',
+          title: 'Editorial Post Title',
+          oneByOneImage: stubImageSet('post', '1x1'),
+          oneByTwoImage: stubImageSet('post', '1x2'),
+          twoByOneImage: stubImageSet('post', '2x1'),
+          twoByTwoImage: stubImageSet('post', '2x2'),
         }
       }
     }
