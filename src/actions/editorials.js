@@ -3,8 +3,8 @@ import { EDITORIALS } from '../constants/mapping_types'
 import { editorials as editorialsApi } from '../networking/api'
 import { editorials as editorialRenderable } from '../components/streams/StreamRenderables'
 
-export function editorials(isPreview) { // eslint-disable-line
-  return {
+export const loadEditorials = isPreview => ( // eslint-disable-line
+  {
     type: LOAD_STREAM,
     payload: { endpoint: editorialsApi(isPreview) },
     meta: {
@@ -15,5 +15,5 @@ export function editorials(isPreview) { // eslint-disable-line
       },
     },
   }
-}
+)
 

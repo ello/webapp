@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { editorials } from '../actions/editorials'
+import { loadEditorials } from '../actions/editorials'
 import StreamContainer from '../containers/StreamContainer'
 import { MainView } from '../components/views/MainView'
 import { selectQueryPreview } from '../selectors/routing'
@@ -24,6 +24,14 @@ type Props = {
 class EditorialPage extends Component {
   props: Props
 
+  static preRender = (store) => {
+    const streamAction = loadEditorials(false)
+    return Promise.all([
+      store.dispatch(streamAction),
+    ])
+  }
+
+
   shouldComponentUpdate() {
     return false
   }
@@ -32,7 +40,7 @@ class EditorialPage extends Component {
     return (
       <MainView className="Editorial">
         <StreamContainer
-          action={editorials(this.props.isPreview)}
+          action={loadEditorials(this.props.isPreview)}
           className={`${streamStyle}`}
           shouldInfiniteScroll={false}
         />
