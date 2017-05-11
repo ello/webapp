@@ -8,7 +8,12 @@ import { trackEvent } from '../actions/analytics'
 import { openModal } from '../actions/modals'
 import { lovePost, unlovePost } from '../actions/posts'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectEditorial, selectEditorialPostId } from '../selectors/editorial'
+import {
+  selectEditorial,
+  selectEditorialPostId,
+  selectEditorialImageSource,
+} from '../selectors/editorial'
+import { selectDPI } from '../selectors/gui'
 import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } from '../selectors/post'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import {
@@ -23,9 +28,11 @@ const makeMapStateToProps = () => (
     const editorial = selectEditorial(state, props)
     const postId = selectEditorialPostId(state, props)
     return {
+      dpi: selectDPI(state),
       editorial,
       isLoggedIn: selectIsLoggedIn(state),
       isPostLoved: selectPostLoved(state, { postId }),
+      sources: selectEditorialImageSource(state, props),
       post: selectPost(state, { postId }),
       postAuthor: selectPostAuthor(state, { postId }),
       postPath: selectPostDetailPath(state, { postId }),
@@ -70,7 +77,6 @@ class EditorialContainer extends Component {
       dispatch(lovePost(post))
     }
   }
-
 
   onClickOpenSignupModal = () => {
     const { onClickOpenRegistrationRequestDialog } = this.context

@@ -8,9 +8,9 @@ describe('editorial selectors', () => {
   let editorialExternal
   let state
   beforeEach(() => {
-    editorialPost = stubEditorial('post', { id: 'editorialPost' })
-    editorialCurated = stubEditorial('post_stream', { id: 'editorialCurated' })
-    editorialExternal = stubEditorial('external', { id: 'editorialExternal' })
+    editorialPost = stubEditorial('post')
+    editorialCurated = stubEditorial('post_stream')
+    editorialExternal = stubEditorial('external')
     state = { json }
   })
 
@@ -23,13 +23,13 @@ describe('editorial selectors', () => {
 
   context('#selectPropsEditorialId', () => {
     it('returns the correct props editorial id from a editorialId', () => {
-      const props = { editorialId: 'editorialPost' }
-      expect(selector.selectPropsEditorialId(state, props)).to.equal('editorialPost')
+      const props = { editorialId: 'editorialPostId' }
+      expect(selector.selectPropsEditorialId(state, props)).to.equal('editorialPostId')
     })
 
     it('returns the correct props editorial id from a editorial', () => {
       const props = { editorial: editorialCurated }
-      expect(selector.selectPropsEditorialId(state, props)).to.equal('editorialCurated')
+      expect(selector.selectPropsEditorialId(state, props)).to.equal('editorialCuratedId')
     })
   })
 
@@ -41,7 +41,7 @@ describe('editorial selectors', () => {
 
   context('#selectEditorial', () => {
     it('returns a editorial from a editorialId', () => {
-      const props = { editorialId: 'editorialPost' }
+      const props = { editorialId: 'editorialPostId' }
       const editorial = selector.selectEditorial(state, props)
       expect(editorial).to.deep.equal(editorialPost)
     })
@@ -59,7 +59,7 @@ describe('editorial selectors', () => {
     })
 
     it('returns an empty Map if editorial.id is not found', () => {
-      const props = { editorial: stubEditorial() }
+      const props = { editorial: stubEditorial('post', { id: '666' }) }
       const editorial = selector.selectEditorial(state, props)
       expect(editorial).to.deep.equal(Immutable.Map())
     })
@@ -73,8 +73,38 @@ describe('editorial selectors', () => {
 
   context('#selectEditorialPostId', () => {
     it('returns the correct linked post id', () => {
-      const props = { editorialId: 'editorialPost' }
+      const props = { editorialId: 'editorialPostId' }
       expect(selector.selectEditorialPostId(state, props)).to.equal('1')
+    })
+  })
+
+  context('#selectEditorialImageSource', () => {
+    it('returns the correct image source based on a size of 1x1', () => {
+      const props = { editorialId: 'editorialPostId', size: '1x1' }
+      const expected = editorialPost.get('oneByOneImage')
+      const result = selector.selectEditorialImageSource(state, props)
+      expect(expected).to.equal(result)
+    })
+
+    it('returns the correct image source based on a size of 1x2', () => {
+      const props = { editorialId: 'editorialPostId', size: '1x2' }
+      const expected = editorialPost.get('oneByTwoImage')
+      const result = selector.selectEditorialImageSource(state, props)
+      expect(expected).to.equal(result)
+    })
+
+    it('returns the correct image source based on a size of 2x1', () => {
+      const props = { editorialId: 'editorialPostId', size: '2x1' }
+      const expected = editorialPost.get('twoByOneImage')
+      const result = selector.selectEditorialImageSource(state, props)
+      expect(expected).to.equal(result)
+    })
+
+    it('returns the correct image source based on a size of 2x2', () => {
+      const props = { editorialId: 'editorialPostId', size: '2x2' }
+      const expected = editorialPost.get('twoByTwoImage')
+      const result = selector.selectEditorialImageSource(state, props)
+      expect(expected).to.equal(result)
     })
   })
 })
