@@ -53,7 +53,7 @@ function getPostTrackingMetadata(url, state, renderProps) {
 
   let result = state.json.getIn(['pages', url], Immutable.Map())
   if (result.get('type') === POSTS || result.get('type') === EDITORIALS) {
-    postIds = result.get('ids').toArray()
+    postIds = result.get('ids', Immutable.List()).toArray()
   } else if (renderProps.params.token) {
     postTokens = [renderProps.params.token]
   }
