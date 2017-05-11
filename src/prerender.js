@@ -13,7 +13,7 @@ import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 import './vendor/glamor-pxtorem'
-import { POSTS } from './constants/mapping_types'
+import { EDITORIALS, POSTS } from './constants/mapping_types'
 import { createServerStore } from './store'
 import { selectViewNameFromRoute } from './selectors/routing'
 import createRoutes from './routes'
@@ -52,13 +52,16 @@ function getPostTrackingMetadata(url, state, renderProps) {
   let streamId = null
 
   let result = state.json.getIn(['pages', url], Immutable.Map())
-  if (result.get('type') === POSTS) {
+  if (result.get('type') === POSTS || result.get('type') === EDITORIALS) {
     postIds = result.get('ids').toArray()
   } else if (renderProps.params.token) {
     postTokens = [renderProps.params.token]
   }
 
   switch (selectViewNameFromRoute(state, renderProps)) {
+    case 'editorial':
+      streamKind = 'editorial'
+      break
     case 'search':
       streamKind = 'search'
       result = state.json.getIn(['pages', '/search/posts'], Immutable.Map())
