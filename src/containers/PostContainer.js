@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { push, replace } from 'react-router-redux'
-import { bindActionCreators } from 'redux'
 import classNames from 'classnames'
 import set from 'lodash/set'
 import { selectIsLoggedIn } from '../selectors/authentication'
@@ -55,18 +54,15 @@ import {
   flagPost,
   loadComments,
   loadEditablePost,
-  lovePost,
   toggleComments,
   toggleEditing,
   toggleReposting,
-  unlovePost,
   unwatchPost,
   watchPost,
 } from '../actions/posts'
 import StreamContainer from '../containers/StreamContainer'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
-import ShareDialog from '../components/dialogs/ShareDialog'
 import Editor from '../components/editor/Editor'
 import {
   CategoryHeader,
@@ -213,6 +209,8 @@ class PostContainer extends Component {
   static contextTypes = {
     onClickOpenRegistrationRequestDialog: PropTypes.func.isRequired,
     onLaunchNativeEditor: PropTypes.func.isRequired,
+    openShareDialog: PropTypes.func.isRequired,
+    toggleLovePost: PropTypes.func.isRequired,
   }
 
   getChildContext() {
@@ -287,12 +285,10 @@ class PostContainer extends Component {
   }
 
   onClickLovePost = () => {
-    const { dispatch, post, postLoved } = this.props
-    if (postLoved) {
-      dispatch(unlovePost(post))
-    } else {
-      dispatch(lovePost(post))
-    }
+    const { postLoved, post } = this.props
+    const { toggleLovePost } = this.context
+    const trackLabel = 'web_production.post_actions_love'
+    toggleLovePost({ isLoved: postLoved, post, trackLabel })
   }
 
   onClickRepostPost = () => {
@@ -307,9 +303,9 @@ class PostContainer extends Component {
   }
 
   onClickSharePost = () => {
-    const { author, dispatch, post } = this.props
-    const action = bindActionCreators(trackEvent, dispatch)
-    dispatch(openModal(<ShareDialog author={author} post={post} trackEvent={action} />, '', null, 'open-share-dialog'))
+    const { post, author } = this.props
+    const { openShareDialog } = this.context
+    openShareDialog({ post, author })
   }
 
   onClickToggleComments = () => {

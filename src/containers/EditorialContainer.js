@@ -2,20 +2,19 @@
 import { is } from 'immutable'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { trackEvent } from '../actions/analytics'
-import { openModal } from '../actions/modals'
-import { lovePost, unlovePost } from '../actions/posts'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import {
   selectEditorial,
-  selectEditorialPostId,
+  selectEditorialAnalyticsOptions,
   selectEditorialImageSource,
+  selectEditorialKind,
+  selectEditorialPostId,
+  selectEditorialUrl,
 } from '../selectors/editorial'
 import { selectDPI } from '../selectors/gui'
 import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } from '../selectors/post'
-import ShareDialog from '../components/dialogs/ShareDialog'
 import {
   ExternalEditorial,
   CuratedPostEditorial,
@@ -32,10 +31,13 @@ const makeMapStateToProps = () => (
       editorial,
       isLoggedIn: selectIsLoggedIn(state),
       isPostLoved: selectPostLoved(state, { postId }),
+      kind: selectEditorialKind(state, props),
       sources: selectEditorialImageSource(state, props),
       post: selectPost(state, { postId }),
       postAuthor: selectPostAuthor(state, { postId }),
       postPath: selectPostDetailPath(state, { postId }),
+      url: selectEditorialUrl(state, props),
+      trackOptions: selectEditorialAnalyticsOptions(state, props),
     }
   }
 )
@@ -45,6 +47,8 @@ class EditorialContainer extends Component {
 
   static contextTypes = {
     onClickOpenRegistrationRequestDialog: PropTypes.func.isRequired,
+    openShareDialog: PropTypes.func.isRequired,
+    toggleLovePost: PropTypes.func.isRequired,
   }
 
   static childContextTypes = {
@@ -56,11 +60,17 @@ class EditorialContainer extends Component {
   getChildContext() {
     const { isLoggedIn } = this.props
     return {
-      onClickOpenSignupModal: isLoggedIn ? null : this.onClickOpenSignupModal,
       onClickLovePost: isLoggedIn ? this.onClickLovePost : this.onClickOpenSignupModal,
+      onClickOpenSignupModal: isLoggedIn ? null : this.onClickOpenSignupModal,
       onClickSharePost: this.onClickSharePost,
     }
   }
+
+  componentDidMount() {
+    const { dispatch, trackOptions } = this.props
+    dispatch(trackEvent('editorial-module-viewed', trackOptions))
+  }
+
   shouldComponentUpdate(nextProps) {
     return (
       nextProps.editorialId !== this.props.editorialId ||
@@ -70,12 +80,10 @@ class EditorialContainer extends Component {
   }
 
   onClickLovePost = () => {
-    const { dispatch, isPostLoved, post } = this.props
-    if (isPostLoved) {
-      dispatch(unlovePost(post))
-    } else {
-      dispatch(lovePost(post))
-    }
+    const { isPostLoved, post, trackOptions } = this.props
+    const { toggleLovePost } = this.context
+    const trackLabel = 'editorial-module-loved'
+    toggleLovePost({ isLoved: isPostLoved, post, trackLabel, trackOptions })
   }
 
   onClickOpenSignupModal = () => {
@@ -84,25 +92,29 @@ class EditorialContainer extends Component {
   }
 
   onClickSharePost = () => {
-    const { dispatch, post, postAuthor } = this.props
-    const action = bindActionCreators(trackEvent, dispatch)
-    dispatch(openModal(
-      <ShareDialog author={postAuthor} post={post} trackEvent={action} />,
-      '',
-      null,
-      'open-share-dialog'),
-    )
+    const { post, postAuthor, trackOptions } = this.props
+    const { openShareDialog } = this.context
+    openShareDialog({ post, postAuthor, trackOptions })
+  }
+
+  onClickEditorial = () => {
+    const { dispatch, trackOptions } = this.props
+    dispatch(trackEvent('editorial-module-clicked', trackOptions))
   }
 
   render() {
-    switch (this.props.editorial.get('kind')) {
+    const props = {
+      ...this.props,
+      onClickEditorial: this.onClickEditorial,
+    }
+    switch (this.props.kind) {
       case 'post_stream':
-        return <CuratedPostEditorial {...this.props} />
+        return <CuratedPostEditorial {...props} />
       case 'external':
-        return <ExternalEditorial {...this.props} />
+        return <ExternalEditorial {...props} />
       case 'post':
       default:
-        return <PostEditorial {...this.props} />
+        return <PostEditorial {...props} />
     }
   }
 }
