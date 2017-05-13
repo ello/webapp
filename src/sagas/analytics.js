@@ -60,7 +60,7 @@ function* trackEvents() {
       case ACTION_TYPES.POST.LOVE_REQUEST: {
         const method = get(action, 'payload.method')
         if (method === 'POST') {
-          yield put(trackEventAction('web_production.post_actions_love'))
+          yield put(trackEventAction(get(action, 'payload.trackLabel'), get(action, 'payload.trackOptions')))
         }
         break
       }

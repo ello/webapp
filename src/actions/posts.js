@@ -114,7 +114,7 @@ export function loadRelatedPosts(postId, perPage) {
   }
 }
 
-export function lovePost(post) {
+export function lovePost({ post, trackLabel, trackOptions }) {
   const postId = post.get('id')
   return {
     type: POST.LOVE,
@@ -122,6 +122,8 @@ export function lovePost(post) {
       endpoint: api.lovePost(postId),
       method: 'POST',
       model: post,
+      trackLabel,
+      trackOptions,
     },
     meta: {
       mappingType: MAPPING_TYPES.LOVES,
@@ -178,7 +180,8 @@ export function toggleReposting(post, isReposting) {
   }
 }
 
-export function unlovePost(post) {
+// Currently not tracking unlove's but trying to keep the api similar to the `lovePost` action.
+export function unlovePost({ post, trackLabel, trackOptions }) {
   const postId = post.get('id')
   return {
     type: POST.LOVE,
@@ -186,6 +189,8 @@ export function unlovePost(post) {
       endpoint: api.unlovePost(postId),
       method: 'DELETE',
       model: post,
+      trackLabel,
+      trackOptions,
     },
     meta: {
       resultKey: `/posts/${postId}/love`,

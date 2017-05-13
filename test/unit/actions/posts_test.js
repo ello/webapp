@@ -139,7 +139,7 @@ describe('posts.js', () => {
 
   context('#lovePost', () => {
     const post = stub('post')
-    const action = subject.lovePost(post)
+    const action = subject.lovePost({ post, trackLabel: 'track-love-post', trackOptions: { f: 1 } })
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
@@ -153,6 +153,8 @@ describe('posts.js', () => {
       expect(action.payload.endpoint.path).to.contain('/posts/1/love')
       expect(action.payload.method).to.equal('POST')
       expect(action.payload.model).to.deep.equal(post)
+      expect(action.payload.trackLabel).to.deep.equal('track-love-post')
+      expect(action.payload.trackOptions).to.deep.equal({ f: 1 })
     })
 
     it('sets the appropriate meta information', () => {
@@ -218,7 +220,7 @@ describe('posts.js', () => {
 
   context('#unlovePost', () => {
     const post = stub('post')
-    const action = subject.unlovePost(post)
+    const action = subject.unlovePost({ post, trackLabel: 'track-unlove-post', trackOptions: { f: 2 } })
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
@@ -233,6 +235,8 @@ describe('posts.js', () => {
       expect(action.payload.endpoint.path).to.contain('/posts/1/love')
       expect(action.payload.method).to.equal('DELETE')
       expect(action.payload.model).to.deep.equal(post)
+      expect(action.payload.trackLabel).to.deep.equal('track-unlove-post')
+      expect(action.payload.trackOptions).to.deep.equal({ f: 2 })
     })
 
     it('sets the appropriate meta information', () => {

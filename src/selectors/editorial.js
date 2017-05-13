@@ -8,6 +8,9 @@ import type { EditorialProps } from '../types/flowtypes'
 const selectPropsSize = (state, props) =>
   get(props, 'size', '1x1')
 
+const selectPropsPosition = (state, props) =>
+  get(props, 'position')
+
 export const selectPropsEditorialId = (state: any, props: EditorialProps) =>
   get(props, 'editorialId') || get(props, 'editorial', Map()).get('id')
 
@@ -22,11 +25,6 @@ export const selectEditorial = createSelector(
     editorials.get(editorialId, Map()),
 )
 
-export const selectEditorialPostId = createSelector(
-  [selectEditorial], editorial =>
-    editorial.getIn(['links', 'post', 'id']),
-)
-
 export const selectEditorialImageSource = createSelector(
   [selectEditorial, selectPropsSize], (editorial, size) => {
     switch (size) {
@@ -38,4 +36,32 @@ export const selectEditorialImageSource = createSelector(
     }
   },
 )
+
+export const selectEditorialKind = createSelector(
+  [selectEditorial], editorial =>
+    editorial.get('kind'),
+)
+
+export const selectEditorialPostId = createSelector(
+  [selectEditorial], editorial =>
+    editorial.getIn(['links', 'post', 'id']),
+)
+
+export const selectEditorialUrl = createSelector(
+  [selectEditorial], editorial =>
+    editorial.get('url'),
+)
+
+// Derived
+export const selectEditorialAnalyticsOptions = createSelector(
+  [selectEditorialKind, selectEditorialPostId, selectPropsPosition, selectPropsSize],
+  (kind, postId, position, size) => (
+    {
+      kind,
+      ...(postId ? { postId } : {}),
+      parent: 'editorial',
+      position,
+      size,
+    }
+))
 
