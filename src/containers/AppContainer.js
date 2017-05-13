@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import {
@@ -17,6 +18,7 @@ import { getCategories, getPagePromotionals } from '../actions/discover'
 import { setSignupModalLaunched } from '../actions/gui'
 import { openModal } from '../actions/modals'
 import { loadAnnouncements, loadNotifications } from '../actions/notifications'
+import { lovePost, unlovePost } from '../actions/posts'
 import { loadProfile } from '../actions/profile'
 import { fetchAuthenticationPromos } from '../actions/promotions'
 import RegistrationRequestDialog from '../components/dialogs/RegistrationRequestDialog'
@@ -34,6 +36,7 @@ import OmnibarContainer from '../containers/OmnibarContainer'
 import ViewportContainer from '../containers/ViewportContainer'
 import { scrollToPosition } from '../lib/jello'
 import * as ElloAndroidInterface from '../lib/android_interface'
+import ShareDialog from '../components/dialogs/ShareDialog'
 
 function mapStateToProps(state) {
   return {
@@ -87,6 +90,8 @@ class AppContainer extends Component {
     onClickTrackCredits: PropTypes.func,
     onClickTrackCTA: PropTypes.func,
     onLaunchNativeEditor: PropTypes.func,
+    openShareDialog: PropTypes.func,
+    toggleLovePost: PropTypes.func,
   }
 
   getChildContext() {
@@ -96,6 +101,8 @@ class AppContainer extends Component {
       onClickTrackCredits: this.onClickTrackCredits,
       onClickTrackCTA: this.onClickTrackCTA,
       onLaunchNativeEditor: this.onLaunchNativeEditor,
+      openShareDialog: this.openShareDialog,
+      toggleLovePost: this.toggleLovePost,
     }
   }
 
@@ -142,6 +149,8 @@ class AppContainer extends Component {
     removeGlobalDrag()
   }
 
+  // TODO: Rename this to openRegistrationRequestDialog since it's a method
+  // call and not coming directly from an event.
   onClickOpenRegistrationRequestDialog = (trackPostfix = 'modal') => {
     const { authPromo, dispatch, isAuthenticationView } = this.props
     if (isAuthenticationView || !authPromo) { return }
@@ -183,6 +192,27 @@ class AppContainer extends Component {
       comment ? JSON.stringify(comment.toJS()) : null,
       text,
     )
+  }
+
+  openShareDialog = ({ post, postAuthor, trackLabel, trackOptions }) => {
+    const { dispatch } = this.props
+    const action = bindActionCreators(trackEvent, dispatch)
+    dispatch(openModal(
+      <ShareDialog author={postAuthor} post={post} trackEvent={action} />,
+      '',
+      null,
+      trackLabel || 'open-share-dialog',
+      trackOptions || {},
+    ))
+  }
+
+  toggleLovePost = ({ isLoved, post, trackLabel, trackOptions }) => {
+    const { dispatch } = this.props
+    if (isLoved) {
+      dispatch(unlovePost({ post, trackLabel, trackOptions }))
+    } else {
+      dispatch(lovePost({ post, trackLabel, trackOptions }))
+    }
   }
 
   render() {

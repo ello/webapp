@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -61,11 +62,13 @@ const baseStyle = css(
 export default class BackgroundImage extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
+    onClick: PropTypes.func,
     to: PropTypes.string,
   }
 
   static defaultProps = {
     className: null,
+    onClick: null,
     to: null,
   }
 
@@ -94,7 +97,7 @@ export default class BackgroundImage extends PureComponent {
   }
 
   render() {
-    const { className, to } = this.props
+    const { className, onClick, to } = this.props
     const { status } = this.state
     const classList = classNames(`BackgroundImage ${baseStyle}`, status, className)
     const imageAssetProps = {
@@ -104,10 +107,10 @@ export default class BackgroundImage extends PureComponent {
       src: getSource(this.props),
     }
     return to ?
-      <Link className={classNames(classList, 'isLink')} to={to}>
+      <Link className={classNames(classList, 'isLink')} onClick={onClick} to={to}>
         <ImageAsset {...imageAssetProps} />
       </Link> :
-      <div className={classList}>
+      <div className={classList} onClick={onClick}>
         <ImageAsset {...imageAssetProps} />
       </div>
   }

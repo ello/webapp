@@ -37,15 +37,14 @@ export const PostEditorial = (props: EditorialProps) => (
     </header>
     <div className={bodyStyle}>
       <EditorialSubtitle label={props.editorial.get('subtitle')} />
-      <EditorialTools
-        isPostLoved={props.isPostLoved}
-        postPath={props.postPath}
-      />
+      <EditorialTools isPostLoved={props.isPostLoved} postPath={props.postPath} />
     </div>
     <BackgroundImage
       className="inEditorial hasOverlay5"
       dpi={props.dpi}
       sources={props.sources}
+      to={props.postPath}
+      onClick={props.onClickEditorial}
     />
   </div>
 )
@@ -62,6 +61,8 @@ export const CuratedPostEditorial = (props: EditorialProps) => (
       className="inEditorial hasOverlay5"
       dpi={props.dpi}
       sources={props.sources}
+      to={props.postPath}
+      onClick={props.onClickEditorial}
     />
   </div>
 )
@@ -78,6 +79,8 @@ export const ExternalEditorial = (props: EditorialProps) => (
       className="inEditorial hasOverlay5"
       dpi={props.dpi}
       sources={props.sources}
+      to={props.url}
+      onClick={props.onClickEditorial}
     />
   </div>
 )
