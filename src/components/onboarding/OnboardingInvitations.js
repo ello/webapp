@@ -2,13 +2,14 @@ import React from 'react'
 import OnboardingNavbar from './OnboardingNavbar'
 import { MainView } from '../views/MainView'
 import InvitationFormContainer from '../../containers/InvitationFormContainer'
+import { Title } from './OnboardingParts'
 
 const OnboardingInvitations = () =>
-  <MainView className="Onboarding OnboardingInvitations">
-    <h1 className="OnboardingHeading">
-      <span>Invite some cool people. </span>
-      <span>Make Ello better.</span>
-    </h1>
+  <MainView className="Onboarding">
+    <Title
+      text1="Invite some cool people. "
+      text2="Make Ello better."
+    />
     <InvitationFormContainer />
     <OnboardingNavbar />
   </MainView>

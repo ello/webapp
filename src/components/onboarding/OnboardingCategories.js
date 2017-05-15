@@ -5,6 +5,7 @@ import OnboardingNavbar from './OnboardingNavbar'
 import { MainView } from '../views/MainView'
 import { CheckIconSM } from '../assets/Icons'
 import { categoryLinkStyle, categoryLinkTextStyle } from '../buttons/Buttons'
+import { Title } from './OnboardingParts'
 import { css, media } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
@@ -66,10 +67,10 @@ const OnboardingCategories = ({ categories, isNextDisabled, onCategoryClick }) =
   )
   return (
     <MainView className="Onboarding OnboardingCategories">
-      <h1 className="OnboardingHeading">
-        <span>{'Pick what you\'re into.'}</span>
-        <span> Slow down & check out some cool ass shit.</span>
-      </h1>
+      <Title
+        text1="Pick what you're into. "
+        text2="Slow down & check out some cool ass shit."
+      />
       <section className="StreamContainer">
         <div className={categoriesStyle}>{btns}</div>
       </section>

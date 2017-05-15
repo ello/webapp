@@ -102,6 +102,18 @@
   transform: translateX(-2px);
 }
 
+.OnboardingAvatarPicker .ElloOutlineMark {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  margin: 0 auto;
+  pointer-events: none;
+  transform: scale(1.5);
+  transform-origin: 50% 0;
+}
+
 .ElloNinjaSuit {
   position: absolute;
   top: 0;
@@ -131,6 +143,21 @@
 .TabListStreamContainer .ElloMark.isSpinner > .SmileShape,
 .MutedUsers .ElloMark.isSpinner > .SmileShape {
   fill: #fff !important;
+}
+
+.OnboardingNavbar > .ElloMark {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  transform-origin: 0 0;
+}
+
+@media (--break-2) {
+  .OnboardingNavbar > .ElloMark {
+    top: 20px;
+    left: 20px;
+    transform: scale(1.5);
+  }
 }
 
 /* ------------------------------------- */

@@ -23,6 +23,7 @@
 }
 
 .Onboarding .InvitationsForm {
+  padding: 0 10px;
   margin-right: auto !important;
   margin-left: auto !important;
 }
@@ -65,6 +66,10 @@
   .InvitationsStreamHeading {
     margin-right: 40px;
     margin-left: 40px;
+  }
+
+  .Onboarding .InvitationsForm {
+    padding: 0;
   }
 }
 

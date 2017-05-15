@@ -8,6 +8,7 @@ import InfoForm from '../forms/InfoForm'
 import Uploader from '../uploaders/Uploader'
 import Avatar from '../assets/Avatar'
 import BackgroundImage from '../assets/BackgroundImage'
+import { Title } from './OnboardingParts'
 import { css, media } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
@@ -16,17 +17,29 @@ const formStyle = css(
   media(s.minBreak2, s.pt40, { minHeight: 410, marginLeft: 285 }),
 )
 
+const mainStyle = css(
+  s.relative,
+  s.mxAuto,
+  { maxWidth: 780 },
+)
+
+const coverStyle = css(s.relative, s.mb20, s.center)
+const avatarStyle = css(
+  s.relative, s.my20, s.mxAuto, s.center,
+  media(s.minBreak2, s.absolute, { left: 0 }),
+)
+
 const OnboardingSettings = (props, context) => {
   const { avatar, isAvatarBlank, saveAvatar } = context
   const { coverImage, dpi, isCoverImageBlank, isMobile, saveCover } = context
   const { isNextDisabled } = props
   return (
-    <MainView className="Onboarding OnboardingSettings">
-      <h1 className="OnboardingHeading">
-        <span>Grow your creative influence. </span>
-        <span>Completed profiles get way more views.</span>
-      </h1>
-      <div className="OnboardingCoverPicker">
+    <MainView className={`Onboarding ${mainStyle}`}>
+      <Title
+        text1="Grow your creative influence. "
+        text2="Completed profiles get way more views."
+      />
+      <div className={coverStyle}>
         <Uploader
           className={classNames('isCoverUploader', { isCoverImageBlank })}
           kind="coverImage"
@@ -43,7 +56,7 @@ const OnboardingSettings = (props, context) => {
           useGif
         />
       </div>
-      <div className="OnboardingAvatarPicker" >
+      <div className={`OnboardingAvatarPicker ${avatarStyle}`} >
         <Uploader
           className={classNames('isAvatarUploader isXLUploader', { isAvatarBlank })}
           kind="avatar"

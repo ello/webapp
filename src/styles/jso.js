@@ -325,6 +325,7 @@ export const opacity1 = { opacity: 1 }
 
 // -------------------------------------
 // Borders & strokes
+export const borderSolid = { border: '1px solid' }
 export const borderTop = { borderTop: '1px solid' }
 export const borderBottom = { borderBottom: '1px solid' }
 export const borderBlack = { border: '1px solid #000' }
