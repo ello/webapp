@@ -191,7 +191,7 @@ class NotificationsContainer extends Component {
   }
 
   onClickDocument = (e) => {
-    if (e.target.classList.contains('AnnouncementNotificationX') ||
+    if (e.target.classList.contains('js-closeAnnouncement') ||
       (typeof e.target.closest === 'function' && e.target.closest('.NotificationsContainer'))) {
       return
     }
