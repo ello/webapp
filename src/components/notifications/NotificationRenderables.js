@@ -7,6 +7,8 @@ import { XIcon } from '../assets/Icons'
 import ImageAsset from '../assets/ImageAsset'
 import { regionItemsForNotifications } from '../regions/RegionRenderables'
 import { Notification } from './Notification'
+import { css, modifier } from '../../styles/jss'
+import * as s from '../../styles/jso'
 
 // HELPERS
 function getActivityPath(user, post) {
@@ -61,6 +63,33 @@ PostTextLink.defaultProps = {
   text: 'post',
 }
 
+const announcementNotificationStyle = css(
+  s.relative,
+  s.p10,
+  { marginTop: 1 },
+  s.fontSize14,
+  s.colorWhite,
+  s.bgcBlack,
+  modifier('.hasAsset', { minHeight: 100, paddingLeft: 90 }),
+  modifier('.isStaffPreview', s.bgcRed),
+)
+
+const announcementNotificationAssetStyle = css(
+  s.absolute,
+  { top: 10, left: 10, width: 70 },
+  s.overflowHidden,
+)
+
+const announcementNotificationTitleStyle = css(
+  { maxWidth: 'calc(100% - 15px)', marginBottom: 15 },
+  s.sansBold,
+  s.fontSize16,
+)
+
+const announcementNotificationBodyStyle = css({ marginBottom: 15 })
+const announcementNotificationCTAStyle = css(s.inline, s.borderBottom)
+const announcementNotificationXStyle = css(s.absolute, { top: 10, right: 10 })
+
 export const AnnouncementNotification = (props, context) => {
   const re = new RegExp(ENV.AUTH_DOMAIN.replace('https://', ''))
   const isInternalLink = props.ctaHref && (props.ctaHref[0] === '/' || re.test(props.ctaHref))
@@ -82,46 +111,46 @@ export const AnnouncementNotification = (props, context) => {
   const image = props.src &&
     <ImageAsset
       alt={props.title || props.src}
-      className={!isInternalLink && !isExternalLink ? 'AnnouncementNotificationAsset' : ''}
+      className={!isInternalLink && !isExternalLink ? `${announcementNotificationAssetStyle}` : ''}
       src={props.src}
     />
 
   return (
     <div
       className={classNames(
-        'AnnouncementNotification',
+        `${announcementNotificationStyle}`,
         { hasAsset: props.src, isStaffPreview: props.isStaffPreview },
       )}
     >
       {!isInternalLink && !isExternalLink && image}
       {isInternalLink && image &&
-        <Link className="AnnouncementNotificationAsset js-ANCTA" {...linkProps} >
+        <Link className={`${announcementNotificationAssetStyle} js-ANCTA`} {...linkProps} >
           {image}
         </Link>
       }
       {isExternalLink && image &&
-        <a className="AnnouncementNotificationAsset js-ANCTA" {...linkProps} >
+        <a className={`${announcementNotificationAssetStyle} js-ANCTA`} {...linkProps} >
           {image}
         </a>
       }
 
       {props.title &&
-        <h2 className="AnnouncementNotificationTitle">{props.title}</h2>
+        <h2 className={announcementNotificationTitleStyle}>{props.title}</h2>
       }
       {props.body &&
-        <div className="AnnouncementNotificationBody">{props.body}</div>
+        <div className={announcementNotificationBodyStyle}>{props.body}</div>
       }
       {isInternalLink &&
-        <Link className="AnnouncementNotificationCTA js-ANCTA" {...linkProps} >
+        <Link className={`${announcementNotificationCTAStyle} js-ANCTA`} {...linkProps} >
           {props.ctaCaption}
         </Link>
       }
       {isExternalLink &&
-        <a className="AnnouncementNotificationCTA js-ANCTA" {...linkProps} >
+        <a className={`${announcementNotificationCTAStyle} js-ANCTA`} {...linkProps} >
           {props.ctaCaption}
         </a>
       }
-      <button className="AnnouncementNotificationX" onClick={context.onClickAnnouncementNotification}>
+      <button className={`${announcementNotificationXStyle} js-closeAnnouncement`} onClick={context.onClickAnnouncementNotification}>
         <XIcon />
       </button>
     </div>

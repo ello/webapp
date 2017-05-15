@@ -118,8 +118,9 @@ export function regionItemsForNotifications(content, detailPath) {
           />,
         )
         break
+      // Hidden <hr>
       case 'rule':
-        texts.push(<hr className="NotificationRule" key={`NotificationRule_${detailPath}`} />)
+        texts.push(<hr style={{ margin: '0.375rem', border: 0 }} key={`NotificationRule_${detailPath}`} />)
         break
       default:
         break

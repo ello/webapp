@@ -8,9 +8,6 @@
 @import "components/editor/Editor.css";
 @import "components/forms/FormControl.css";
 
-@import "components/notifications/Notification.css";
-@import "components/notifications/NotificationRenderables.css";
-
 @import "components/posts/Post.css";
 @import "components/posts/PostBody.css";
 @import "components/posts/PostHeader.css";

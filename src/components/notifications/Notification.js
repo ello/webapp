@@ -3,78 +3,120 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 import Avatar from '../assets/Avatar'
+import { css, hover, parent, select } from '../../styles/jss'
+import * as s from '../../styles/jso'
 
-function renderHeader({ notifier }) {
-  if (!notifier) { return null }
-  return (
-    <header className="NotificationHeader">
-      <Avatar
-        priority={notifier.get('relationshipPriority')}
-        sources={notifier.get('avatar')}
-        to={`/${notifier.get('username')}`}
-        userId={`${notifier.get('id')}`}
-        username={notifier.get('username')}
-      />
-    </header>
-  )
-}
-renderHeader.propTypes = {
-  notifier: PropTypes.object,
-}
-renderHeader.defaultProps = {
-  notifier: null,
+// -------------------------------------
+
+const headerStyle = css(s.absolute, { top: 10, left: 10 })
+
+const Header = ({ notifier }) => (
+  <header className={headerStyle}>
+    <Avatar
+      priority={notifier.get('relationshipPriority')}
+      sources={notifier.get('avatar')}
+      to={`/${notifier.get('username')}`}
+      userId={`${notifier.get('id')}`}
+      username={notifier.get('username')}
+    />
+  </header>
+)
+
+Header.propTypes = {
+  notifier: PropTypes.object.isRequired,
 }
 
-function renderBody({ children, summary }) {
-  if (!children) { return null }
-  return (
-    <div className="NotificationBody">
-      {children}
-      {summary && summary.texts && summary.texts.length ?
-        <div className="NotificationSummaryTexts">{summary.texts}</div> : null
-      }
-    </div>
-  )
+// -------------------------------------
+
+const assetStyle = css(
+  { float: 'right', width: 80, maxHeight: 80, marginBottom: 4 },
+  s.overflowHidden,
+  select('& > *', s.inlineBlock, s.alignTop),
+  select('& .embetter', s.pointerNone),
+  select('& .EmbedRegionContent', s.pointerAuto),
+)
+
+const Asset = ({ summaryAsset }) => (
+  <div className={assetStyle}>
+    {summaryAsset}
+  </div>
+)
+Asset.propTypes = {
+  summaryAsset: PropTypes.object.isRequired,
 }
-renderBody.propTypes = {
+
+// -------------------------------------
+
+const bodyStyle = css(
+  { marginBottom: 15 },
+  s.breakWord,
+  select('& > p', s.mt0, s.mb5, s.colorA),
+  select('& a', s.fit, s.breakWord),
+  select('& > p a',
+    s.inlineBlock,
+    s.alignMiddle,
+    s.overflowHidden,
+    { maxWidth: 150, lineHeight: 1.2, textOverflow: 'ellipsis' },
+    s.nowrap,
+    s.transitionColor,
+  ),
+  select('.no-touch & > p a:hover', s.colorBlack),
+  parent('.Notification.hasAsset', s.inlineBlock, s.mr10, s.alignTop, { width: 'calc(100% - 90px)' }),
+)
+
+const hideMarkdownImageStyle = select('& > .TextRegion img:not(.emoji)', s.displayNone)
+
+const Body = ({ children, summary }) => (
+  <div className={bodyStyle}>
+    {children}
+    {summary && summary.texts && summary.texts.length &&
+      <div className={hideMarkdownImageStyle}>
+        {summary.texts}
+      </div>
+    }
+  </div>
+)
+Body.propTypes = {
   children: PropTypes.node,
   summary: PropTypes.object,
 }
-renderBody.defaultProps = {
+Body.defaultProps = {
   children: null,
   summary: null,
 }
 
-function renderAssets({ summary }) {
-  return (
-    summary && summary.assets && summary.assets.length ?
-      <div className="NotificationAsset">{summary.assets[0]}</div> : null
-  )
-}
-renderAssets.propTypes = {
-  summary: PropTypes.object,
-}
-renderAssets.defaultProps = {
-  summary: null,
+// -------------------------------------
+const footerStyle = css(
+  s.fontSize14,
+  s.colorA,
+  { marginTop: -10 },
+)
+
+const footerLinkStyle = css(
+  s.transitionColor,
+  hover(s.colorBlack),
+)
+
+const Footer = ({ activityPath, createdAt }) => (
+  <footer className={footerStyle}>
+    <Link className={footerLinkStyle} to={activityPath}>
+      {new Date(createdAt).timeAgoInWords()}
+    </Link>
+  </footer>
+)
+Footer.propTypes = {
+  activityPath: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
 }
 
-function renderFooter({ activityPath, createdAt }) {
-  if (!createdAt) { return null }
-  return (
-    <footer className="NotificationFooter">
-      <Link className="NotificationFooterTimestamp" to={activityPath}>
-        {new Date(createdAt).timeAgoInWords()}
-      </Link>
-    </footer>
-  )
-}
-renderFooter.propTypes = {
-  activityPath: PropTypes.string.isRequired,
-  createdAt: PropTypes.string,
-}
-renderFooter.defaultProps = {
-  createdAt: null,
-}
+// -------------------------------------
+
+const notificationStyle = css(
+  s.relative,
+  { padding: '10px 10px 5px 60px', lineHeight: 18 },
+  s.overflowHidden,
+  select('& + &', { borderTop: '1px solid #e5e5e5' }),
+)
 
 export const Notification = ({
   activityPath,
@@ -86,11 +128,19 @@ export const Notification = ({
   }) => {
   const hasAsset = summary && summary.assets && summary.assets.length
   return (
-    <div className={classNames('Notification', className, { hasAsset })}>
-      {renderHeader({ notifier })}
-      {renderAssets({ summary })}
-      {renderBody({ children, summary })}
-      {renderFooter({ activityPath, createdAt })}
+    <div className={classNames(`Notification ${notificationStyle}`, className, { hasAsset })}>
+      { notifier &&
+        <Header notifier={notifier} />
+      }
+      {summary && summary.assets && summary.assets.length &&
+        <Asset summaryAsset={summary.assets[0]} />
+      }
+      { children &&
+        <Body summary={summary}>{children}</Body>
+      }
+      { createdAt &&
+        <Footer activityPath={activityPath} createdAt={createdAt} />
+      }
     </div>
   )
 }
