@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { css, parent } from '../../styles/jss'
+import { css, media, parent } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
 const showHintStyle = css(
@@ -37,6 +37,8 @@ const hintStyle = css(
   parent('.no-touch', s.inlineBlock),
   parent('.no-touch a:hover >', showHintStyle),
   parent('.no-touch button:hover >', showHintStyle),
+  parent('.BlockMuteButton', { top: 5, left: 30 }, s.fontSize14),
+  media(s.minBreak2, parent('.BlockMuteButton', { top: 5, left: 30 }, s.fontSize14)),
 )
 
 const Hint = ({ className, children }) =>

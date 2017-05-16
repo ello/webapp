@@ -19,6 +19,7 @@ import { flagUser } from '../actions/user'
 import BlockMuteDialog from '../components/dialogs/BlockMuteDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import BlockMuteButton from '../components/relationships/BlockMuteButton'
+import Relationship from '../components/relationships/Relationship'
 import FollowButton from '../components/relationships/FollowButton'
 
 const selectRelationshipPriority = (state, props) => props.relationshipPriority
@@ -175,8 +176,8 @@ class RelationshipContainer extends PureComponent {
     const { className, id, relationshipPriority } = this.props
     const { onClickCallback, shouldRenderBlockMute } = this.props
     return (
-      <div
-        className={classNames('RelationshipContainer', className)}
+      <Relationship
+        className={className}
         data-priority={relationshipPriority}
       >
         {shouldRenderBlockMute &&
@@ -195,7 +196,7 @@ class RelationshipContainer extends PureComponent {
             userId={id}
           />
         }
-      </div>
+      </Relationship>
     )
   }
 }

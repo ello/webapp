@@ -13,9 +13,6 @@
 @import "components/posts/PostHeader.css";
 @import "components/posts/PostTools.css";
 
-@import "components/relationships/BlockMuteButton.css";
-@import "components/relationships/FollowButton.css";
-
 @import "components/streams/Paginator.css";
 @import "components/streams/StreamContainer.css";
 

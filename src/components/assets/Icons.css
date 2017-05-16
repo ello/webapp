@@ -185,6 +185,14 @@
   stroke: #535353;
 }
 
+.FollowButton:not(.isInHeader) > .PlusIconSM {
+  margin-top: -2px;
+}
+
+.FollowButton:not(.isInHeader) > .CheckIconSM {
+  margin-top: -4px;
+}
+
 /* Navbar
 ------------------------------------- */
 
@@ -576,5 +584,13 @@
   transform: rotate(180deg);
 }
 
+.BlockMuteButton > .DotsIcon > g {
+  fill: #fff;
+  stroke: transparent;
+}
+
+.no-touch .BlockMuteButton:hover > .DotsIcon > g {
+  fill: var(--color-danger);
+}
 /* stylelint-enable selector-max-compound-selectors, selector-max-specificity */
 
