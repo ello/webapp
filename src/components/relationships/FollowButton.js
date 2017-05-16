@@ -4,8 +4,83 @@ import { Link } from 'react-router'
 import classNames from 'classnames'
 import { RELATIONSHIP_PRIORITY } from '../../constants/relationship_types'
 import { CheckCircleIcon, CheckIconSM, PlusCircleIcon, PlusIconSM } from '../assets/Icons'
+import { css, hover, media, modifier, parent, select } from '../../styles/jss'
+import * as s from '../../styles/jso'
 
-export function getNextPriority(currentPriority) {
+const blockMuteStyle = {
+  color: '#fff !important',
+  backgroundColor: '#f00',
+  borderColor: '#f00',
+}
+
+const buttonStyle = css(
+  {
+    width: 100,
+    height: 30,
+    paddingRight: 10,
+    paddingLeft: 4,
+    borderRadius: 15,
+  },
+  s.py0,
+  s.overflowHidden,
+  s.fontSize12,
+  s.lh30,
+  s.colorWhite,
+  s.center,
+  s.nowrap,
+  s.bgcGreen,
+  s.borderGreen,
+  { transition: `background-color 0.2s ${s.ease}, border-color 0.2s ${s.ease}, border-radius 0.2s ${s.ease}, color 0.2s ${s.ease}, width 0.2s ${s.ease}` },
+  hover(s.colorWhite, s.bgcBlack, { borderColor: '#000' }),
+  modifier('[data-priority="self"]', s.px10, s.bgcA, s.borderA),
+  modifier('[data-priority="friend"]', s.colorWhite, s.bgcA, s.borderA),
+  modifier('[data-priority="noise"]', s.colorWhite, s.bgcA, s.borderA),
+  modifier('[data-priority="block"]', blockMuteStyle),
+  modifier('[data-priority="mute"]', blockMuteStyle),
+  modifier('[data-priority="block"]', hover(blockMuteStyle)),
+  modifier('[data-priority="mute"]', hover(blockMuteStyle)),
+  modifier('.isInHeader',
+    { width: 20, height: 20, fontSize: 0, border: 0, borderRadius: 0 },
+    s.p0,
+    s.colorA,
+    s.bgcTransparent,
+    hover(s.colorWhite, s.bgcTransparent),
+    modifier('[data-priority="self"]', s.displayNone),
+    modifier('[data-priority="friend"]', s.colorWhite),
+    modifier('[data-priority="noise"]', s.colorWhite),
+  ),
+  media(s.minBreak2,
+    select('.no-touch &.isInHeader', s.overflowVisible, s.fontSize12),
+  ),
+)
+
+const labelStyle = media(s.minBreak2,
+  parent('.no-touch .FollowButton.isInHeader',
+    s.absolute,
+    {
+      top: -25,
+      left: '-50%',
+      height: 22,
+      lineHeight: 22,
+      paddingRight: 11,
+      paddingLeft: 11,
+      borderRadius: 11,
+    },
+    s.nowrap,
+    s.hidden,
+    s.bgcBlack,
+    s.opacity0,
+    { transition: 'opacity 0.2s ease, visibility 0s ease 0.2s' },
+  ),
+  parent('.no-touch .FollowButton.isInHeader:hover',
+    s.visible,
+    s.opacity1,
+    { transitionDelay: '0.5s, 0s' },
+  ),
+)
+
+    // Hints...
+export const getNextPriority = (currentPriority) => {
   switch (currentPriority) {
     case RELATIONSHIP_PRIORITY.INACTIVE:
     case RELATIONSHIP_PRIORITY.NOISE:
@@ -61,12 +136,12 @@ class FollowButton extends PureComponent {
     const { className, priority } = this.props
     return (
       <button
-        className={classNames('FollowButton', className)}
+        className={classNames(`FollowButton ${buttonStyle}`, className)}
         data-priority={priority}
         onClick={this.onClickUpdatePriority}
       >
         {icon}
-        <span className="FollowButtonLabel">{label}</span>
+        <span className={labelStyle}>{label}</span>
       </button>
     )
   }
@@ -75,7 +150,7 @@ class FollowButton extends PureComponent {
     const { className, onClick, priority } = this.props
     return (
       <button
-        className={classNames('FollowButton', className)}
+        className={classNames(`FollowButton ${buttonStyle}`, className)}
         data-priority={priority}
         onClick={onClick}
       >
@@ -88,7 +163,7 @@ class FollowButton extends PureComponent {
     const { className, priority } = this.props
     return (
       <Link
-        className={classNames('FollowButton', className)}
+        className={classNames(`FollowButton ${buttonStyle}`, className)}
         data-priority={priority}
         to="/settings"
       >
