@@ -2,6 +2,73 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import * as ElloAndroidInterface from '../../lib/android_interface'
+import { before, css, media, modifier, parent, select } from '../../styles/jss'
+import * as s from '../../styles/jso'
+
+const uploaderStyle = css(
+  s.relative,
+  s.zIndex2,
+  before(s.absolute, s.flood, s.zIndex2, s.bgcTransparent, s.transitionBgColor, { content: '""' }),
+  modifier('.isAvatarUploader', s.center, before({ borderRadius: '50%' })),
+  modifier('.isCoverUploader', s.block, s.fullWidth, { height: 220 }),
+  modifier('.isXLUploader', { width: 220, paddingTop: 240 }, before({ width: 220, height: 220 })),
+  modifier('.isLGUploader',
+    { width: 120, paddingTop: 140 },
+    before({ width: 120, height: 120 }),
+    media(s.minBreak2,
+      { width: 180, paddingTop: 200 },
+      before({ width: 180, height: 180 }),
+    ),
+  ),
+  modifier('.isSettingsAvatarUploader',
+    s.fullWidth,
+    s.pt20,
+    s.leftAlign,
+    { paddingLeft: 140 },
+    media(s.minBreak2, s.fullWidth, s.py40, { maxWidth: 400, minHeight: 180, paddingLeft: 220 }),
+  ),
+  modifier('.hasDragOver', before({ backgroundColor: 'rgba(0, 0, 0, 0.4)' })),
+  modifier('.isAvatarBlank', before({ backgroundColor: '#f0f0f0' })),
+  modifier('.isCoverBlank', before({ backgroundColor: '#f0f0f0' })),
+)
+
+const buttonStyle = css(
+  s.relative,
+  s.zIndex3,
+  s.inlineBlock,
+  { minWidth: 160, borderRadius: 5 },
+  s.hv40,
+  s.lh40,
+  s.py0,
+  s.px20,
+  s.fontSize14,
+  s.colorA,
+  s.center,
+  s.bgcWhite,
+  s.borderA,
+  { transition: `background-color 0.2s ${s.ease}, border-color 0.2s ${s.ease}, color 0.2s ${s.ease}, width 0.2s ${s.ease}, opacity 0.2s` },
+  parent('.isAvatarBlank', s.colorWhite, s.bgcGreen, s.borderGreen),
+  parent('.isCoverImageBlank', s.colorWhite, s.bgcGreen, s.borderGreen),
+  parent('.hasDragOver', s.colorWhite, { backgroundColor: '#00b100', borderColor: '#00b100' }),
+  parent('.no-touch .Uploader:hover', s.colorWhite, { backgroundColor: '#00b100', borderColor: '#00b100' }),
+)
+
+const messageStyle = css(
+  s.relative,
+  s.zIndex3,
+  { maxWidth: 160 },
+  s.mxAuto,
+  s.colorA,
+  select('& > p', s.mb0),
+  select('& > p + p', s.mt0),
+  parent('.SettingsAvatarPicker', { width: 160, margin: 0 }),
+  // 1160 / 16 = 72.5em
+  media('(min-width: 72.5em)', parent('.isCoverUploader',
+    s.absolute,
+    { top: -15, right: -180 },
+    s.leftAlign,
+  )),
+)
 
 class Uploader extends PureComponent {
 
@@ -64,7 +131,7 @@ class Uploader extends PureComponent {
   render() {
     const { className, title, line1, line2, line3 } = this.props
     const classList = classNames(
-      'Uploader',
+      `Uploader ${uploaderStyle}`,
       className,
       { hasDragOver: this.state.hasDragOver },
     )
@@ -77,10 +144,10 @@ class Uploader extends PureComponent {
         onDragOver={this.onDragOver}
         onDragLeave={this.onDragLeave}
       >
-        <span className="UploaderButton">
+        <span className={buttonStyle}>
           {title}
         </span>
-        <div className="UploaderMessages">
+        <div className={messageStyle}>
           {line1 && <p>{line1}</p>}
           {line2 && <p>{line2}</p>}
           {line3 && <p>{line3}</p>}
