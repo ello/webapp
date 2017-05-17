@@ -47,6 +47,11 @@ export const selectEditorialPostId = createSelector(
     editorial.getIn(['links', 'post', 'id']),
 )
 
+export const selectEditorialPostStreamHref = createSelector(
+  [selectEditorial], editorial =>
+    editorial.getIn(['links', 'postStream', 'href']),
+)
+
 export const selectEditorialUrl = createSelector(
   [selectEditorial], editorial =>
     editorial.get('url'),
