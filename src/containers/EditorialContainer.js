@@ -11,13 +11,14 @@ import {
   selectEditorialImageSource,
   selectEditorialKind,
   selectEditorialPostId,
+  selectEditorialPostStreamHref,
   selectEditorialUrl,
 } from '../selectors/editorial'
 import { selectDPI } from '../selectors/gui'
 import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } from '../selectors/post'
 import {
   ExternalEditorial,
-  CuratedPostEditorial,
+  CuratedEditorial,
   PostEditorial,
 } from '../components/editorials/EditorialRenderables'
 import type { EditorialProps } from '../types/flowtypes'
@@ -32,10 +33,11 @@ const makeMapStateToProps = () => (
       isLoggedIn: selectIsLoggedIn(state),
       isPostLoved: selectPostLoved(state, { postId }),
       kind: selectEditorialKind(state, props),
-      sources: selectEditorialImageSource(state, props),
       post: selectPost(state, { postId }),
       postAuthor: selectPostAuthor(state, { postId }),
       postPath: selectPostDetailPath(state, { postId }),
+      postStreamHref: selectEditorialPostStreamHref(state, props),
+      sources: selectEditorialImageSource(state, props),
       url: selectEditorialUrl(state, props),
       trackOptions: selectEditorialAnalyticsOptions(state, props),
     }
@@ -109,7 +111,7 @@ class EditorialContainer extends Component {
     }
     switch (this.props.kind) {
       case 'post_stream':
-        return <CuratedPostEditorial {...props} />
+        return <CuratedEditorial {...props} />
       case 'external':
         return <ExternalEditorial {...props} />
       case 'post':

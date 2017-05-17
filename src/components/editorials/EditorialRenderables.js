@@ -1,10 +1,12 @@
 // @flow
 import React from 'react'
+import { loadCuratedPosts } from '../../actions/editorials'
+import StreamContainer from '../../containers/StreamContainer'
+import BackgroundImage from '../assets/BackgroundImage'
 import { EditorialTitle, EditorialSubtitle, EditorialTools } from './EditorialParts'
 import { css } from '../../styles/jss'
 import * as s from '../../styles/jso'
 import type { EditorialProps } from '../../types/flowtypes'
-import BackgroundImage from '../assets/BackgroundImage'
 
 const baseStyle = css(
   s.relative,
@@ -30,6 +32,8 @@ const bodyStyle = css(
   s.selfEnd,
 )
 
+// -------------------------------------
+
 export const PostEditorial = (props: EditorialProps) => (
   <div className={baseStyle}>
     <header className={headerStyle}>
@@ -45,27 +49,64 @@ export const PostEditorial = (props: EditorialProps) => (
       sources={props.sources}
       to={props.postPath}
       onClick={props.onClickEditorial}
+      useGif
     />
   </div>
 )
 
-export const CuratedPostEditorial = (props: EditorialProps) => (
+// -------------------------------------
+
+const curatedBaseStyle = css(
+  { ...baseStyle },
+  s.px0,
+  s.py0,
+)
+
+export const CuratedEditorial = (props: EditorialProps) => (
+  <div className={curatedBaseStyle}>
+    { props.postStreamHref &&
+      <StreamContainer
+        className="inEditorial"
+        action={loadCuratedPosts({
+          endpointPath: props.postStreamHref,
+          resultKey: `${props.editorialId}_${props.size}_${props.position}`,
+          title: props.editorial.get('title'),
+        })}
+        shouldInfiniteScroll={false}
+      />
+    }
+  </div>
+)
+// -------------------------------------
+
+type PostProps = {
+  dpi: string,
+  detailPath: string,
+  sources: any,
+  title: string,
+  username: string,
+}
+
+export const CuratedPost = (props: PostProps) => (
   <div className={baseStyle}>
     <header className={headerStyle}>
-      <EditorialTitle label={props.editorial.get('title')} />
+      <EditorialTitle label={`${props.title} `} />
+      <EditorialTitle label={`@${props.username}`} />
     </header>
     <div className={bodyStyle}>
-      <EditorialTools isPostLoved={props.isPostLoved} postPath={props.postPath} />
+      <EditorialTools isPostLoved={true && true} postPath={props.detailPath} />
     </div>
     <BackgroundImage
       className="inEditorial hasOverlay5"
       dpi={props.dpi}
       sources={props.sources}
-      to={props.postPath}
-      onClick={props.onClickEditorial}
+      to={props.detailPath}
+      useGif
     />
   </div>
 )
+
+// -------------------------------------
 
 export const ExternalEditorial = (props: EditorialProps) => (
   <div className={baseStyle}>
@@ -81,6 +122,7 @@ export const ExternalEditorial = (props: EditorialProps) => (
       sources={props.sources}
       to={props.url}
       onClick={props.onClickEditorial}
+      useGif
     />
   </div>
 )
