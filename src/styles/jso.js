@@ -91,6 +91,7 @@ export const hidden = { visibility: 'hidden' }
 export const overflowVisible = { overflow: 'visible' }
 export const overflowHidden = { overflow: 'hidden' }
 export const overflowScroll = { overflow: 'scroll' }
+export const overflowScrollWebX = { WebkitOverflowScrolling: 'touch', overflowX: 'auto', overflowY: 'hidden' }
 export const overflowScrollWebY = { WebkitOverflowScrolling: 'touch', overflowX: 'hidden', overflowY: 'auto' }
 
 // -------------------------------------
