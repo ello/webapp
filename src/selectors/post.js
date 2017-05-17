@@ -270,3 +270,12 @@ export const selectPostDetailTabs = createSelector(
   ].filter(tab => tab),
 )
 
+export const selectPostFirstImage = createSelector(
+  [selectPostSummary], (blocks) => {
+    if (blocks.isEmpty()) { return Immutable.Map() }
+    return blocks.filter(block => /image/.test(block.get('kind')) && block.getIn(['asset', 'attachment']))
+      .map(block => block.getIn(['asset', 'attachment']))
+      .first()
+  },
+)
+

@@ -124,6 +124,13 @@ describe('editorial selectors', () => {
     })
   })
 
+  context('#selectEditorialPostStreamHref', () => {
+    it('returns the correct linked post id', () => {
+      const props = { editorialId: 'editorialCuratedId' }
+      expect(selector.selectEditorialPostStreamHref(state, props)).to.equal('/postStream/href')
+    })
+  })
+
   context('#selectEditorialUrl', () => {
     it('returns the url property on a ExternalEditorial', () => {
       const expected = '/external/url'

@@ -91,9 +91,7 @@ export function stubAnnouncementNotification(properties = {}, shouldAdd = true) 
   return model
 }
 
-// TODO: Update these as the API changes...
 export function stubEditorial(kind, properties, shouldAdd = true) {
-  const linkPost = { href: '/api/v2/posts/1', id: '1', type: 'posts' }
   const stubImageSet = (prefix, size) => {
     const set = {};
     ['hdpi', 'xhdpi', 'optimized', 'original'].forEach((dpi) => {
@@ -108,6 +106,7 @@ export function stubEditorial(kind, properties, shouldAdd = true) {
         return {
           id: 'editorialCuratedId',
           kind: 'post_stream',
+          links: { postStream: { href: '/postStream/href' } },
           title: 'Editorial PostStream Title',
           oneByOneImage: stubImageSet('post_stream', '1x1'),
           oneByTwoImage: stubImageSet('post_stream', '1x2'),
@@ -133,7 +132,7 @@ export function stubEditorial(kind, properties, shouldAdd = true) {
         return {
           id: 'editorialPostId',
           kind: 'post',
-          links: { post: linkPost },
+          links: { post: { href: '/api/v2/posts/1', id: '1', type: 'posts' } },
           subtitle: 'Editorial Post Subtitle',
           title: 'Editorial Post Title',
           oneByOneImage: stubImageSet('post', '1x1'),

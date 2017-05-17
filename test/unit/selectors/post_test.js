@@ -44,7 +44,7 @@ describe('post selectors', () => {
       showComments: true,
       showLovers: true,
       showReposters: true,
-      summary: [stubTextRegion(), stubImageRegion()],
+      summary: [stubTextRegion(), stubImageRegion({ asset: { attachment: '6286' } })],
       token: 'token666',
       viewsCount: 1666,
       watching: true,
@@ -875,6 +875,14 @@ describe('post selectors', () => {
       const result = selector.selectPostDetailTabs(state, props)
       const expected = []
       expect(result).to.deep.equal(expected)
+    })
+  })
+
+  context('#selectPostFirstImage', () => {
+    it('returns the content for only image blocks', () => {
+      const expected = '6286'
+      const result = selector.selectPostFirstImage(state, { postId: '666' })
+      expect(expected).to.deep.equal(result)
     })
   })
 })
