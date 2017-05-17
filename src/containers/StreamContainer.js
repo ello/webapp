@@ -302,7 +302,7 @@ class StreamContainer extends Component {
     const pagination = result.get('pagination')
     return (
       <section className={classNames('StreamContainer', className)}>
-        {meta.renderStream[renderMethod](result.get('ids'), columnCount, isPostHeaderHidden)}
+        {meta.renderStream[renderMethod](result.get('ids'), columnCount, isPostHeaderHidden, meta.renderProps)}
         <Paginator
           hasShowMoreButton={
             typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'
