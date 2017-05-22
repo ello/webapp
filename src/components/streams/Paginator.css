@@ -44,6 +44,7 @@
 /* // Position to the bottom for post detail */
 .BlockedUsers .Paginator,
 .TabListStreamContainer .Paginator,
+.Editorial .Paginator,
 .MutedUsers .Paginator {
   position: static;
   width: 100%;
@@ -57,8 +58,13 @@
   transform: none;
 }
 
+.Editorial .Paginator {
+  margin-bottom: 60px;
+}
+
 .no-touch .BlockedUsers .Paginator:hover,
 .no-touch .TabListStreamContainer .Paginator:hover,
+.no-touch .Editorial .Paginator:hover,
 .no-touch .MutedUsers .Paginator:hover {
   background-color: #000;
 }
@@ -68,16 +74,19 @@
   margin-bottom: 30px;
 }
 
+.Editorial .Paginator,
 .TabListStreamContainer .Paginator {
   max-width: 580px;
 }
 
+.Editorial .Paginator button,
 .TabListStreamContainer .Paginator button {
   width: calc(100% - 40px);
 }
 
 .BlockedUsers .Paginator:not(.isBusy) .ElloMark,
 .TabListStreamContainer .Paginator:not(.isBusy) .ElloMark,
+.Editorial .Paginator:not(.isBusy) .ElloMark,
 .MutedUsers .Paginator:not(.isBusy) .ElloMark {
   display: none;
 }
