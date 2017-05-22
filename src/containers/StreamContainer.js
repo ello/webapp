@@ -57,6 +57,7 @@ class StreamContainer extends Component {
     columnCount: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasLaunchedSignupModal: PropTypes.bool.isRequired,
+    hasShowMoreButton: PropTypes.bool,
     isGridMode: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isModalComponent: PropTypes.bool,
@@ -75,6 +76,7 @@ class StreamContainer extends Component {
   static defaultProps = {
     action: null,
     className: '',
+    hasShowMoreButton: false,
     isModalComponent: false,
     isPostHeaderHidden: false,
     paginatorCentered: false,
@@ -278,7 +280,7 @@ class StreamContainer extends Component {
   }
 
   render() {
-    const { className, columnCount, isGridMode, isPostHeaderHidden,
+    const { className, columnCount, hasShowMoreButton, isGridMode, isPostHeaderHidden,
       paginatorCentered, paginatorText, paginatorTo, result, stream } = this.props
     const { action, hidePaginator, renderType } = this.state
     if (!action) { return null }
@@ -305,7 +307,7 @@ class StreamContainer extends Component {
         {meta.renderStream[renderMethod](result.get('ids'), columnCount, isPostHeaderHidden, meta.renderProps)}
         <Paginator
           hasShowMoreButton={
-            typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined'
+            hasShowMoreButton || (typeof meta.resultKey !== 'undefined' && typeof meta.updateKey !== 'undefined')
           }
           isCentered={paginatorCentered}
           isHidden={hidePaginator}
