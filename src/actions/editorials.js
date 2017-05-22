@@ -17,13 +17,13 @@ export const loadEditorials = isPreview => (
   }
 )
 
-export const loadCuratedPosts = ({ endpointPath, title, resultKey }) => (
+export const loadCuratedPosts = ({ endpointPath, resultKey, ...props }) => (
   {
     type: LOAD_STREAM,
     payload: { endpoint: { path: endpointPath } },
     meta: {
       mappingType: POSTS,
-      renderProps: { title },
+      renderProps: { ...props },
       renderStream: {
         asList: postsAsCuratedEditorial,
         asGrid: postsAsCuratedEditorial,

@@ -115,8 +115,9 @@ class EditorialContainer extends Component {
       case 'external':
         return <ExternalEditorial {...props} />
       case 'post':
-      default:
         return <PostEditorial {...props} />
+      default:
+        return null
     }
   }
 }
