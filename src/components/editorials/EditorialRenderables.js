@@ -46,9 +46,9 @@ export const PostEditorial = (props: EditorialProps) => (
     <BackgroundImage
       className="inEditorial hasOverlay5"
       dpi={props.dpi}
+      onClick={props.onClickEditorial}
       sources={props.sources}
       to={props.postPath}
-      onClick={props.onClickEditorial}
       useGif
     />
   </div>
@@ -69,6 +69,9 @@ export const CuratedEditorial = (props: EditorialProps) => (
         className="inEditorial"
         action={loadCuratedPosts({
           endpointPath: props.postStreamHref,
+          editorialTrackOptions: props.trackOptions,
+          fallbackSources: props.sources,
+          onClickEditorial: props.onClickEditorial,
           resultKey: `${props.editorialId}_${props.size}_${props.position}`,
           title: props.editorial.get('title'),
         })}
@@ -77,11 +80,13 @@ export const CuratedEditorial = (props: EditorialProps) => (
     }
   </div>
 )
-// -------------------------------------
 
 type PostProps = {
   dpi: string,
   detailPath: string,
+  fallbackSources: string,
+  isPostLoved: boolean,
+  onClickEditorial: () => {},
   sources: any,
   title: string,
   username: string,
@@ -94,12 +99,13 @@ export const CuratedPost = (props: PostProps) => (
       <EditorialTitle label={`@${props.username}`} />
     </header>
     <div className={bodyStyle}>
-      <EditorialTools isPostLoved={true && true} postPath={props.detailPath} />
+      <EditorialTools isPostLoved={props.isPostLoved} postPath={props.detailPath} />
     </div>
     <BackgroundImage
       className="inEditorial hasOverlay5"
       dpi={props.dpi}
-      sources={props.sources}
+      onClick={props.onClickEditorial}
+      sources={props.sources || props.fallbackSources}
       to={props.detailPath}
       useGif
     />
@@ -119,9 +125,9 @@ export const ExternalEditorial = (props: EditorialProps) => (
     <BackgroundImage
       className="inEditorial hasOverlay5"
       dpi={props.dpi}
+      onClick={props.onClickEditorial}
       sources={props.sources}
       to={props.url}
-      onClick={props.onClickEditorial}
       useGif
     />
   </div>
