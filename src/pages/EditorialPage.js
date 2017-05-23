@@ -1,10 +1,10 @@
 // @flow
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { selectQueryPreview } from 'ello-brains/selectors/routing'
 import { loadEditorials } from '../actions/editorials'
 import StreamContainer from '../containers/StreamContainer'
 import { MainView } from '../components/views/MainView'
-import { selectQueryPreview } from '../selectors/routing'
 import { media } from '../styles/jss'
 import { maxBreak2 } from '../styles/jso'
 

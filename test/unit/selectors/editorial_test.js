@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
+import * as selector from 'ello-brains/selectors/editorial'
 import { clearJSON, json, stubEditorial } from '../../support/stubs'
-import * as selector from '../../../src/selectors/editorial'
 
 describe('editorial selectors', () => {
   let editorialPost

@@ -9,7 +9,6 @@ import { selectIsLoggedIn } from 'ello-brains/selectors/authentication'
 import { selectAvatar, selectUsername } from 'ello-brains/selectors/profile'
 import { selectAnnouncementHasBeenViewed } from 'ello-brains/selectors/notifications'
 import { push } from 'react-router-redux'
-import { scrollToPosition } from '../lib/jello'
 import {
   selectActiveNotificationsType,
   selectDeviceSize,
@@ -25,6 +24,8 @@ import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
+import { scrollToPosition } from '../lib/jello'
+import * as ElloAndroidInterface from '../lib/android_interface'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
 
 function mapStateToProps(state, props) {

@@ -6,7 +6,6 @@ import { replace } from 'react-router-redux'
 import debounce from 'lodash/debounce'
 import set from 'lodash/set'
 import { FORM_CONTROL_STATUS as STATUS } from 'ello-brains/constants/status_types'
-import { isAndroid, isElloAndroid } from '../lib/jello'
 import {
   selectBuildVersion,
   selectBundleId,
@@ -14,7 +13,6 @@ import {
   selectRegistrationId,
   selectWebOnboardingVersion,
 } from 'ello-brains/selectors/profile'
-import { selectHomeStream } from 'ello-brains/selectors/gui'
 import { isAndroid, isElloAndroid } from '../lib/jello'
 import { loadProfile, requestPushSubscription } from '../actions/profile'
 import { signIn } from '../actions/authentication'

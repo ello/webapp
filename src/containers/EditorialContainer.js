@@ -3,8 +3,7 @@ import { is } from 'immutable'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { trackEvent } from '../actions/analytics'
-import { selectIsLoggedIn } from '../selectors/authentication'
+import { selectIsLoggedIn } from 'ello-brains/selectors/authentication'
 import {
   selectEditorial,
   selectEditorialAnalyticsOptions,
@@ -13,15 +12,16 @@ import {
   selectEditorialPostId,
   selectEditorialPostStreamHref,
   selectEditorialUrl,
-} from '../selectors/editorial'
-import { selectDPI } from '../selectors/gui'
-import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } from '../selectors/post'
+} from 'ello-brains/selectors/editorial'
+import { selectDPI } from 'ello-brains/selectors/gui'
+import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } from 'ello-brains/selectors/post'
+import type { EditorialProps } from 'ello-brains/types/flowtypes'
+import { trackEvent } from '../actions/analytics'
 import {
   ExternalEditorial,
   CuratedEditorial,
   PostEditorial,
 } from '../components/editorials/EditorialRenderables'
-import type { EditorialProps } from '../types/flowtypes'
 
 const makeMapStateToProps = () => (
   (state: any, props: EditorialProps) => {
@@ -77,6 +77,7 @@ class EditorialContainer extends Component {
     return (
       nextProps.editorialId !== this.props.editorialId ||
       !is(nextProps.editorial, this.props.editorial) ||
+      !is(nextProps.sources, this.props.sources) ||
       !is(nextProps.post, this.props.post)
     )
   }
