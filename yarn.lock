@@ -2137,9 +2137,9 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-"ello-brains@https://github.com/ello/brains.git":
+"ello-brains@https://github.com/ello/brains":
   version "1.0.0"
-  resolved "https://github.com/ello/brains.git#26ca3a4e0c78d16e59678a27d8312c787823ccd8"
+  resolved "https://github.com/ello/brains#8ba2523cd929e8a6b8894390309e0429a9dad700"
   dependencies:
     humps "2.0.0"
     immutable "3.8.1"
