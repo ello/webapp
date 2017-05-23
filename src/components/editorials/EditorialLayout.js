@@ -88,123 +88,123 @@ const sectionStyle = css(
 export default({ ids }: { ids: List<string> }) => (
   <section className={sectionStyle}>
     { /* Row 1 */ }
-    <Row>
-      { ids.get(0) &&
+    { ids.get(0) &&
+      <Row>
         <Cell className={`${width2} ${height1} ${pushRight}`}>
           <EditorialContainer editorialId={ids.get(0)} size="2x1" position={1} />
         </Cell>
-      }
-      { ids.get(1) &&
-        <Cell className={`${width1} ${height1}`}>
-          <EditorialContainer editorialId={ids.get(1)} size="1x1" position={2} />
-        </Cell>
-      }
-    </Row>
+        { ids.get(1) &&
+          <Cell className={`${width1} ${height1}`}>
+            <EditorialContainer editorialId={ids.get(1)} size="1x1" position={2} />
+          </Cell>
+        }
+      </Row>
+    }
 
     { /* Row 2 */ }
-    <Row>
-      { ids.get(2) &&
+    { ids.get(2) &&
+      <Row>
         <Cell className={`${width1} ${height1} ${pushRight}`}>
           <EditorialContainer editorialId={ids.get(2)} size="1x1" position={3} />
         </Cell>
+        { ids.get(3) &&
+          <Cell className={`${width1} ${height1} ${pushRight}`}>
+            <EditorialContainer editorialId={ids.get(3)} size="1x1" position={4} />
+          </Cell>
+        }
+        { ids.get(4) &&
+          <Cell className={`${width1} ${height1}`}>
+            <EditorialContainer editorialId={ids.get(4)} size="1x1" position={5} />
+          </Cell>
+        }
+      </Row>
       }
-      { ids.get(3) &&
-        <Cell className={`${width1} ${height1} ${pushRight}`}>
-          <EditorialContainer editorialId={ids.get(3)} size="1x1" position={4} />
-        </Cell>
-      }
-      { ids.get(4) &&
-        <Cell className={`${width1} ${height1}`}>
-          <EditorialContainer editorialId={ids.get(4)} size="1x1" position={5} />
-        </Cell>
-      }
-    </Row>
 
     { /* Row 3 */ }
-    <Row>
-      { ids.get(5) &&
+    { ids.get(5) &&
+      <Row>
         <Cell className={`${width2} ${height2} ${pushRight}`}>
           <EditorialContainer editorialId={ids.get(5)} size="2x2" position={6} />
         </Cell>
-      }
-      { ids.get(6) &&
-        <Cell className={`${width1} ${height2}`}>
-          <Cell className={halfHeight}>
-            <EditorialContainer editorialId={ids.get(6)} size="1x2" position={7} />
-          </Cell>
-          { ids.get(7) &&
-            <Cell className={`${halfHeight} ${alignEnd}`}>
-              <EditorialContainer editorialId={ids.get(7)} size="1x1" position={8} />
+        { ids.get(6) &&
+          <Cell className={`${width1} ${height2}`}>
+            <Cell className={halfHeight}>
+              <EditorialContainer editorialId={ids.get(6)} size="1x2" position={7} />
             </Cell>
-          }
-        </Cell>
-      }
-    </Row>
+            { ids.get(7) &&
+              <Cell className={`${halfHeight} ${alignEnd}`}>
+                <EditorialContainer editorialId={ids.get(7)} size="1x1" position={8} />
+              </Cell>
+            }
+          </Cell>
+        }
+      </Row>
+    }
 
     { /* Row 4 */ }
-    <Row>
-      { ids.get(8) &&
+    { ids.get(8) &&
+      <Row>
         <Cell className={`${width1} ${height2} ${pushRight}`}>
           <EditorialContainer editorialId={ids.get(8)} size="1x2" position={9} />
         </Cell>
-      }
-      { ids.get(9) &&
-        <Cell className={`${width2} ${height2}`}>
-          <Cell className={halfHeight}>
-            <EditorialContainer editorialId={ids.get(9)} size="2x1" position={10} />
+        { ids.get(9) &&
+          <Cell className={`${width2} ${height2}`}>
+            <Cell className={halfHeight}>
+              <EditorialContainer editorialId={ids.get(9)} size="2x1" position={10} />
+            </Cell>
+            { ids.get(10) &&
+              <Cell className={`${halfWidth} ${halfHeight} ${pushRight} ${alignEnd}`}>
+                <EditorialContainer editorialId={ids.get(10)} size="1x1" position={11} />
+              </Cell>
+            }
+            { ids.get(11) &&
+              <Cell className={`${halfWidth} ${halfHeight} ${alignEnd}`}>
+                <EditorialContainer editorialId={ids.get(11)} size="1x1" position={12} />
+              </Cell>
+            }
           </Cell>
-          { ids.get(10) &&
-            <Cell className={`${halfWidth} ${halfHeight} ${pushRight} ${alignEnd}`}>
-              <EditorialContainer editorialId={ids.get(10)} size="1x1" position={11} />
-            </Cell>
-          }
-          { ids.get(11) &&
-            <Cell className={`${halfWidth} ${halfHeight} ${alignEnd}`}>
-              <EditorialContainer editorialId={ids.get(11)} size="1x1" position={12} />
-            </Cell>
-          }
-        </Cell>
+        }
+      </Row>
       }
-    </Row>
 
     { /* Reverse */ }
 
     { /* Row 5 (1) */ }
-    <Row>
-      { ids.get(12) &&
+    { ids.get(12) &&
+      <Row>
         <Cell className={`${width1} ${height1} ${pushRight}`}>
           <EditorialContainer editorialId={ids.get(12)} size="1x1" position={13} />
         </Cell>
+        { ids.get(13) &&
+          <Cell className={`${width2} ${height1}`}>
+            <EditorialContainer editorialId={ids.get(13)} size="2x1" position={14} />
+          </Cell>
+        }
+      </Row>
       }
-      { ids.get(13) &&
-        <Cell className={`${width2} ${height1}`}>
-          <EditorialContainer editorialId={ids.get(13)} size="2x1" position={14} />
-        </Cell>
-      }
-    </Row>
 
     { /* Row 6 (2) */ }
-    <Row>
-      { ids.get(14) &&
+    { ids.get(14) &&
+      <Row>
         <Cell className={`${width1} ${height1} ${pushRight}`}>
           <EditorialContainer editorialId={ids.get(14)} size="1x1" position={15} />
         </Cell>
+        { ids.get(15) &&
+          <Cell className={`${width1} ${height1} ${pushRight}`}>
+            <EditorialContainer editorialId={ids.get(15)} size="1x1" position={16} />
+          </Cell>
+        }
+        { ids.get(16) &&
+          <Cell className={`${width1} ${height1}`}>
+            <EditorialContainer editorialId={ids.get(16)} size="1x1" position={17} />
+          </Cell>
+        }
+      </Row>
       }
-      { ids.get(15) &&
-        <Cell className={`${width1} ${height1} ${pushRight}`}>
-          <EditorialContainer editorialId={ids.get(15)} size="1x1" position={16} />
-        </Cell>
-      }
-      { ids.get(16) &&
-        <Cell className={`${width1} ${height1}`}>
-          <EditorialContainer editorialId={ids.get(16)} size="1x1" position={17} />
-        </Cell>
-      }
-    </Row>
 
     { /* Row 7 (3) */ }
-    <Row>
-      { ids.get(17) &&
+    { ids.get(17) &&
+      <Row>
         <Cell className={`${width1} ${height2} ${pushRight}`}>
           <Cell className={halfHeight}>
             <EditorialContainer editorialId={ids.get(17)} size="1x1" position={18} />
@@ -215,17 +215,17 @@ export default({ ids }: { ids: List<string> }) => (
             </Cell>
           }
         </Cell>
+        { ids.get(19) &&
+          <Cell className={`${width2} ${height2}`}>
+            <EditorialContainer editorialId={ids.get(19)} size="2x2" position={20} />
+          </Cell>
+        }
+      </Row>
       }
-      { ids.get(19) &&
-        <Cell className={`${width2} ${height2}`}>
-          <EditorialContainer editorialId={ids.get(19)} size="2x2" position={20} />
-        </Cell>
-      }
-    </Row>
 
     { /* Row 8 (4) */ }
-    <Row>
-      { ids.get(20) &&
+    { ids.get(20) &&
+      <Row>
         <Cell className={`${width2} ${height2} ${pushRight}`}>
           <Cell className={halfHeight}>
             <EditorialContainer editorialId={ids.get(20)} size="2x1" position={21} />
@@ -241,13 +241,13 @@ export default({ ids }: { ids: List<string> }) => (
             </Cell>
           }
         </Cell>
+        { ids.get(23) &&
+          <Cell className={`${width1} ${height2}`}>
+            <EditorialContainer editorialId={ids.get(23)} size="1x2" position={24} />
+          </Cell>
+        }
+      </Row>
       }
-      { ids.get(23) &&
-        <Cell className={`${width1} ${height2}`}>
-          <EditorialContainer editorialId={ids.get(23)} size="1x2" position={24} />
-        </Cell>
-      }
-    </Row>
   </section>
 )
 
