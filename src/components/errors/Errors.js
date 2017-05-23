@@ -50,3 +50,22 @@ ErrorState5xx.propTypes = {
   withImage: PropTypes.bool,
 }
 
+// -------------------------------------
+
+const errorStateEditorialStyle = css(
+  s.absolute,
+  s.flood,
+  s.flex,
+  s.justifyCenter,
+  s.itemsCenter,
+  s.fontSize14,
+  s.colorWhite,
+  s.bgcRed,
+)
+
+export const ErrorStateEditorial = () => (
+  <div className={errorStateEditorialStyle}>
+    <span>Something went wrong.</span>
+  </div>
+)
+

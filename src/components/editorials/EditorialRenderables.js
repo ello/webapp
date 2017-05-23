@@ -167,3 +167,21 @@ export const ExternalEditorial = (props: EditorialProps) => (
   </div>
 )
 
+// -------------------------------------
+
+const errorStyle = css(
+  { ...baseStyle },
+  s.flex,
+  s.justifyCenter,
+  s.itemsCenter,
+  s.fontSize14,
+  s.colorWhite,
+  s.bgcRed,
+)
+
+export const ErrorEditorial = () => (
+  <div className={errorStyle}>
+    <span>Something went wrong.</span>
+  </div>
+)
+
