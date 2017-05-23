@@ -73,6 +73,7 @@ export const zIndex0 = { zIndex: 0 }
 export const zIndex1 = { zIndex: 1 }
 export const zIndex2 = { zIndex: 2 }
 export const zIndex3 = { zIndex: 3 }
+export const zIndex4 = { zIndex: 4 }
 export const zFooter = { zIndex: 1030 }
 export const zDecapitated = { zIndex: 1035 }
 export const zNavbar = { zIndex: 1040 }
@@ -283,6 +284,7 @@ export const fontSize16 = { fontSize: 16 }
 export const fontSize18 = { fontSize: 18 }
 export const fontSize24 = { fontSize: 24 }
 export const fontSize28 = { fontSize: 28 }
+export const fontSize32 = { fontSize: 32 }
 export const fontSize48 = { fontSize: 48 }
 
 export const leftAlign = { textAlign: 'left' }
@@ -343,6 +345,7 @@ export const rotate90 = { transform: 'rotate(90deg)' }
 // Transitions & animations
 
 export const transitionBgColor = { transition: 'background-color 0.2s ease' }
+export const transitionBgColorSlow = { transition: 'background-color 0.4s ease' }
 export const transitionColor = { transition: 'color 0.2s ease' }
 export const transitionOpacity = { transition: 'opacity 0.2s ease' }
 export const transitionTransform = { transition: `transform 0.2s ${ease}` }

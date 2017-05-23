@@ -75,6 +75,7 @@
 }
 
 .Editorial .Paginator {
+  width: calc(100% - 20px);
   max-width: 420px;
   margin-top: 0;
   margin-bottom: 60px;

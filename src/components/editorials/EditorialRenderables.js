@@ -4,8 +4,8 @@ import { Link } from 'react-router'
 import { loadCuratedPosts } from '../../actions/editorials'
 import StreamContainer from '../../containers/StreamContainer'
 import BackgroundImage from '../assets/BackgroundImage'
-import { EditorialTitle, EditorialSubtitle, EditorialTools } from './EditorialParts'
-import { css } from '../../styles/jss'
+import { EditorialOverlay, EditorialTitle, EditorialSubtitle, EditorialTools } from './EditorialParts'
+import { css, media } from '../../styles/jss'
 import * as s from '../../styles/jso'
 import type { EditorialProps } from '../../types/flowtypes'
 
@@ -15,20 +15,22 @@ const baseStyle = css(
   s.flexWrap,
   s.fullWidth,
   s.fullHeight,
-  s.px40,
-  s.py40,
+  s.px20,
+  s.py20,
   s.bgcTransparent,
+  media(s.minBreak2, s.px40, s.py40),
 )
 
 const headerStyle = css(
   s.relative,
-  s.zIndex1,
+  s.zIndex2,
   s.fullWidth,
+  s.transitionOpacity,
 )
 
 const bodyStyle = css(
   s.relative,
-  s.zIndex3,
+  s.zIndex4,
   s.fullWidth,
   s.selfEnd,
 )
@@ -36,7 +38,7 @@ const bodyStyle = css(
 const linkStyle = css(
   s.absolute,
   s.flood,
-  s.zIndex2,
+  s.zIndex3,
   { color: 'rgba(0, 0, 0, 0)' },
   s.bgcCurrentColor,
 )
@@ -63,8 +65,8 @@ export const PostEditorial = (props: EditorialProps) => (
       <EditorialSubtitle label={props.editorial.get('subtitle')} />
       <EditorialTools isPostLoved={props.isPostLoved} postPath={props.postPath} />
     </div>
+    <EditorialOverlay />
     <BackgroundImage
-      className="inEditorial hasOverlay5"
       dpi={props.dpi}
       sources={props.sources}
       useGif
@@ -76,8 +78,7 @@ export const PostEditorial = (props: EditorialProps) => (
 
 const curatedBaseStyle = css(
   { ...baseStyle },
-  s.px0,
-  s.py0,
+  { padding: '0 !important' },
 )
 
 export const CuratedEditorial = (props: EditorialProps) => (
@@ -128,8 +129,8 @@ export const CuratedPost = (props: PostProps) => (
     <div className={bodyStyle}>
       <EditorialTools isPostLoved={props.isPostLoved} postPath={props.detailPath} />
     </div>
+    <EditorialOverlay />
     <BackgroundImage
-      className="inEditorial hasOverlay5"
       dpi={props.dpi}
       sources={props.sources || props.fallbackSources}
       useGif
@@ -158,8 +159,8 @@ export const ExternalEditorial = (props: EditorialProps) => (
     <div className={bodyStyle}>
       <EditorialSubtitle label={props.editorial.get('subtitle')} />
     </div>
+    <EditorialOverlay />
     <BackgroundImage
-      className="inEditorial hasOverlay5"
       dpi={props.dpi}
       sources={props.sources}
       useGif
@@ -175,13 +176,20 @@ const errorStyle = css(
   s.justifyCenter,
   s.itemsCenter,
   s.fontSize14,
-  s.colorWhite,
   s.bgcRed,
+  s.pointerNone,
+)
+
+const errorTextStyle = css(
+  s.relative,
+  s.zIndex2,
+  s.colorWhite,
 )
 
 export const ErrorEditorial = () => (
   <div className={errorStyle}>
-    <span>Something went wrong.</span>
+    <span className={errorTextStyle}>Something went wrong.</span>
+    <EditorialOverlay />
   </div>
 )
 

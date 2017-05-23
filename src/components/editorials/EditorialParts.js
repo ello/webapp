@@ -3,15 +3,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import { BubbleIcon, HeartIcon, RepostIcon, ShareIcon } from '../assets/Icons'
-import { css, select } from '../../styles/jss'
+import { after, css, media, hover, select } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
 // -------------------------------------
 
 const buttonStyle = css(
   s.colorWhite,
+  s.transitionColor,
   select('&.isActive .HeartIcon > g', { fill: 'currentColor' }),
   select('& .BubbleIcon > g:nth-child(2)', s.displayNone),
+  hover(
+    s.colorA,
+    select('& .HeartIcon > g', { fill: 'currentColor' }),
+    select('& .BubbleIcon > g', { fill: 'currentColor' }),
+  ),
 )
 
 type ToolButtonProps = {
@@ -99,8 +105,10 @@ EditorialTools.contextTypes = {
 // -------------------------------------
 
 const titleStyle = css(
-  s.fontSize48,
   s.colorWhite,
+  s.fontSize32,
+  { lineHeight: 38 },
+  media(s.minBreak2, s.fontSize48, { lineHeight: 54 }),
 )
 
 export const EditorialTitle = ({ label }: { label: string }) => (
@@ -110,13 +118,38 @@ export const EditorialTitle = ({ label }: { label: string }) => (
 // -------------------------------------
 
 const subtitleStyle = css(
-  s.fontSize24,
   s.colorWhite,
+  s.fontSize18,
+  { lineHeight: 24 },
+  media(s.minBreak2, s.fontSize24, { lineHeight: 30 }),
 )
 
 export const EditorialSubtitle = ({ label }: { label: string }) => (
   <h3 className={subtitleStyle}>
     <span>{label}</span>
   </h3>
+)
+
+// -------------------------------------
+
+const overlayStyle = css(
+  s.absolute,
+  s.flood,
+  s.zIndex1,
+  s.transitionBgColorSlow,
+  { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+  after(
+    s.absolute,
+    s.flood,
+    s.zIndex1,
+    { top: '50%', content: '""' },
+    { background: 'linear-gradient(to top, rgba(0, 0, 0, 0.666) 0%, rgba(0, 0, 0, 0) 80%)' },
+  ),
+  select('.no-touch *:hover ~ &', { backgroundColor: 'rgba(0, 0, 0, 0.1)' }),
+)
+
+
+export const EditorialOverlay = () => (
+  <div className={overlayStyle} />
 )
 

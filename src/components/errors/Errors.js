@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { EditorialOverlay } from '../editorials/EditorialParts'
 import { css, media } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
@@ -52,7 +53,7 @@ ErrorState5xx.propTypes = {
 
 // -------------------------------------
 
-const errorStateEditorialStyle = css(
+const errorEditorialStyle = css(
   s.absolute,
   s.flood,
   s.flex,
@@ -61,11 +62,19 @@ const errorStateEditorialStyle = css(
   s.fontSize14,
   s.colorWhite,
   s.bgcRed,
+  s.pointerNone,
+)
+
+const errorEditorialTextStyle = css(
+  s.relative,
+  s.zIndex2,
+  s.colorWhite,
 )
 
 export const ErrorStateEditorial = () => (
-  <div className={errorStateEditorialStyle}>
-    <span>Something went wrong.</span>
+  <div className={errorEditorialStyle}>
+    <span className={errorEditorialTextStyle}>Something went wrong.</span>
+    <EditorialOverlay />
   </div>
 )
 
