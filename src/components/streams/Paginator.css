@@ -81,6 +81,11 @@
   margin-bottom: 60px;
 }
 
+.inEditorial .Paginator {
+  display: none;
+  margin-bottom: 0;
+}
+
 .Editorial .Paginator button {
   width: 100%;
 }
