@@ -109,7 +109,7 @@
   white-space: pre-wrap;
   word-break: break-word; /* stylelint-disable-line */
   border: 1px dashed #666;
-  outline: 0;
+  outline: 0; /* stylelint-disable-line */
 }
 
 .editor.withQuickEmoji .editable {
