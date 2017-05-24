@@ -18,6 +18,7 @@ import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } f
 import type { EditorialProps } from 'ello-brains/types/flowtypes'
 import { trackEvent } from '../actions/analytics'
 import {
+  ErrorEditorial,
   ExternalEditorial,
   CuratedEditorial,
   PostEditorial,
@@ -118,7 +119,7 @@ class EditorialContainer extends Component {
       case 'post':
         return <PostEditorial {...props} />
       default:
-        return null
+        return <ErrorEditorial {...props} />
     }
   }
 }

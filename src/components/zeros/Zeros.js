@@ -121,3 +121,22 @@ ZeroStateFirstPost.propTypes = {
   onSubmit: PropTypes.func,
 }
 
+// -------------------------------------
+
+const zeroStateEditorialStyle = css(
+  s.absolute,
+  s.flood,
+  s.flex,
+  s.justifyCenter,
+  s.itemsCenter,
+  s.fontSize14,
+  s.colorWhite,
+  s.bgcE5,
+)
+
+export const ZeroStateEditorial = () => (
+  <div className={zeroStateEditorialStyle}>
+    <span>Sorry, no results found.</span>
+  </div>
+)
+

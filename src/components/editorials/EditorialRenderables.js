@@ -1,10 +1,11 @@
 // @flow
 import React from 'react'
+import { Link } from 'react-router'
 import { loadCuratedPosts } from '../../actions/editorials'
 import StreamContainer from '../../containers/StreamContainer'
 import BackgroundImage from '../assets/BackgroundImage'
-import { EditorialTitle, EditorialSubtitle, EditorialTools } from './EditorialParts'
-import { css } from '../../styles/jss'
+import { EditorialOverlay, EditorialTitle, EditorialSubtitle, EditorialTools } from './EditorialParts'
+import { css, media } from '../../styles/jss'
 import * as s from '../../styles/jso'
 import type { EditorialProps } from '../../types/flowtypes'
 
@@ -14,28 +15,49 @@ const baseStyle = css(
   s.flexWrap,
   s.fullWidth,
   s.fullHeight,
-  s.px40,
-  s.py40,
+  s.px20,
+  s.py20,
   s.bgcTransparent,
+  media(s.minBreak2, s.px40, s.py40),
 )
 
 const headerStyle = css(
   s.relative,
-  s.zIndex1,
+  s.zIndex2,
   s.fullWidth,
+  s.transitionOpacity,
 )
 
 const bodyStyle = css(
   s.relative,
-  s.zIndex1,
+  s.zIndex4,
   s.fullWidth,
   s.selfEnd,
 )
+
+const linkStyle = css(
+  s.absolute,
+  s.flood,
+  s.zIndex3,
+  { color: 'rgba(0, 0, 0, 0)' },
+  s.bgcCurrentColor,
+)
+
+const linkTextStyle = css(s.hidden)
 
 // -------------------------------------
 
 export const PostEditorial = (props: EditorialProps) => (
   <div className={baseStyle}>
+    { props.postPath &&
+      <Link
+        className={linkStyle}
+        onClick={props.onClickEditorial}
+        to={props.postPath}
+      >
+        <span className={linkTextStyle}>{props.postPath}</span>
+      </Link>
+    }
     <header className={headerStyle}>
       <EditorialTitle label={props.editorial.get('title')} />
     </header>
@@ -43,12 +65,10 @@ export const PostEditorial = (props: EditorialProps) => (
       <EditorialSubtitle label={props.editorial.get('subtitle')} />
       <EditorialTools isPostLoved={props.isPostLoved} postPath={props.postPath} />
     </div>
+    <EditorialOverlay />
     <BackgroundImage
-      className="inEditorial hasOverlay5"
       dpi={props.dpi}
-      onClick={props.onClickEditorial}
       sources={props.sources}
-      to={props.postPath}
       useGif
     />
   </div>
@@ -58,8 +78,7 @@ export const PostEditorial = (props: EditorialProps) => (
 
 const curatedBaseStyle = css(
   { ...baseStyle },
-  s.px0,
-  s.py0,
+  { padding: '0 !important' },
 )
 
 export const CuratedEditorial = (props: EditorialProps) => (
@@ -94,6 +113,15 @@ type PostProps = {
 
 export const CuratedPost = (props: PostProps) => (
   <div className={baseStyle}>
+    { props.detailPath &&
+      <Link
+        className={linkStyle}
+        onClick={props.onClickEditorial}
+        to={props.detailPath}
+      >
+        <span className={linkTextStyle}>{props.detailPath}</span>
+      </Link>
+    }
     <header className={headerStyle}>
       <EditorialTitle label={`${props.title} `} />
       <EditorialTitle label={`@${props.username}`} />
@@ -101,12 +129,10 @@ export const CuratedPost = (props: PostProps) => (
     <div className={bodyStyle}>
       <EditorialTools isPostLoved={props.isPostLoved} postPath={props.detailPath} />
     </div>
+    <EditorialOverlay />
     <BackgroundImage
-      className="inEditorial hasOverlay5"
       dpi={props.dpi}
-      onClick={props.onClickEditorial}
       sources={props.sources || props.fallbackSources}
-      to={props.detailPath}
       useGif
     />
   </div>
@@ -116,20 +142,54 @@ export const CuratedPost = (props: PostProps) => (
 
 export const ExternalEditorial = (props: EditorialProps) => (
   <div className={baseStyle}>
+    { props.url &&
+      <a
+        className={linkStyle}
+        href={props.url}
+        onClick={props.onClickEditorial}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <span className={linkTextStyle}>{props.url}</span>
+      </a>
+    }
     <header className={headerStyle}>
       <EditorialTitle label={props.editorial.get('title')} />
     </header>
     <div className={bodyStyle}>
       <EditorialSubtitle label={props.editorial.get('subtitle')} />
     </div>
+    <EditorialOverlay />
     <BackgroundImage
-      className="inEditorial hasOverlay5"
       dpi={props.dpi}
-      onClick={props.onClickEditorial}
       sources={props.sources}
-      to={props.url}
       useGif
     />
+  </div>
+)
+
+// -------------------------------------
+
+const errorStyle = css(
+  { ...baseStyle },
+  s.flex,
+  s.justifyCenter,
+  s.itemsCenter,
+  s.fontSize14,
+  s.bgcRed,
+  s.pointerNone,
+)
+
+const errorTextStyle = css(
+  s.relative,
+  s.zIndex2,
+  s.colorWhite,
+)
+
+export const ErrorEditorial = () => (
+  <div className={errorStyle}>
+    <span className={errorTextStyle}>Something went wrong.</span>
+    <EditorialOverlay />
   </div>
 )
 

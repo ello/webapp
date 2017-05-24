@@ -10,7 +10,6 @@ const slidesStyle = css(
   s.fullWidth,
   s.fullHeight,
   s.overflowScrollWebX,
-  s.borderGreen,
 )
 
 type SlidesProps = {
@@ -30,7 +29,6 @@ const slideStyle = css(
   { minWidth: '100%' },
   s.fullWidth,
   s.fullHeight,
-  s.borderBlack,
 )
 
 type SlideProps = {

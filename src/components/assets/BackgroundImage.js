@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router'
 import ImageAsset from '../assets/ImageAsset'
 import { isGif } from '../../helpers/file_helper'
-import { after, before, css, media, modifier, select } from '../../styles/jss'
+import { before, css, media, modifier, select } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
 const STATUS = {
@@ -42,13 +42,6 @@ const baseStyle = css(
   modifier('.inOnboarding', { height: 220 }),
   modifier('.inSettings', { height: 220 }),
   modifier('.inUserProfileCard', { height: 260 }),
-  modifier('.inEditorial', after(
-    s.absolute,
-    s.flood,
-    s.zIndex1,
-    { top: '50%', content: '""' },
-    { background: 'linear-gradient(to top, rgba(0, 0, 0, 0.666) 0%, rgba(0, 0, 0, 0) 80%)' },
-  )),
   before(s.absolute, s.flood, s.zIndex1, s.bgcTransparent, s.transitionBgColor, { content: '""' }),
   modifier('.hasOverlay3', before({ backgroundColor: 'rgba(0, 0, 0, 0.3)' })),
   modifier('.hasOverlay4', before({ backgroundColor: 'rgba(0, 0, 0, 0.4)' })),

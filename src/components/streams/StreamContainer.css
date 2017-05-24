@@ -14,6 +14,7 @@
   height: 100%;
   padding: 0 !important;
 }
+
 @media (--break-2) {
   .StreamContainer {
     padding: 20px;
@@ -36,6 +37,13 @@
 .StreamContainer.isBusy {
   min-height: 120px;
   text-align: center;
+}
+
+.StreamContainer.inEditorial.isBusy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e5e5e5;
 }
 
 .PostList .TabListStreamContainer.isBusy {
@@ -70,6 +78,10 @@
 
 .MainView > .StreamContainer .StreamBusyIndicator {
   top: 80px;
+}
+
+.StreamContainer.inEditorial .StreamBusyIndicator {
+  top: 0 !important;
 }
 
 .MainView > .UserDetails {
