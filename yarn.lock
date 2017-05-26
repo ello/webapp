@@ -2140,7 +2140,7 @@ elliptic@^6.0.0:
 
 "ello-brains@https://github.com/ello/brains.git":
   version "1.0.0"
-  resolved "https://github.com/ello/brains.git#7bfc95788b54e9893a93be22c5b9214a241f5061"
+  resolved "https://github.com/ello/brains.git#26ca3a4e0c78d16e59678a27d8312c787823ccd8"
   dependencies:
     humps "2.0.0"
     immutable "3.8.1"

@@ -37,27 +37,28 @@ type EditorialComponentProps = {
   goto: () => {},
 }
 
+type EditorialComponentState = {
+  isScrolling: boolean,
+}
+
 type ScrollProps = {
-  scrollWidth: number,
   scrollX: number,
 }
 
 class EditorialComponent extends Component {
   props: EditorialComponentProps
+  state: EditorialComponentState
   scrollable: any | null
   scrollObject: any | null
   wrapper: any | null
-  isScrolling: boolean
 
-  componentWillMount() {
-    this.isScrolling = false
-  }
+  state = { isScrolling: false }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.tickCount !== nextProps.tickCount) {
       // this.props.next()
     }
-    if (this.props.index !== nextProps.index && !this.isScrolling && this.scrollable) {
+    if (this.props.index !== nextProps.index && this.scrollable) {
       this.scrollToIndex(nextProps.index)
     }
   }
@@ -88,10 +89,11 @@ class EditorialComponent extends Component {
   }
 
   onScrollCompleteTarget = (props: ScrollProps) => {
-    if (this.isScrolling) { return }
+    if (this.state.isScrolling) { return }
     const { goto, index } = this.props
+    const { scrollX } = props
     const wrapperWidth = getWrapperWidth(this.wrapper)
-    const newIndex = Math.floor((props.scrollX + (wrapperWidth / 2)) / wrapperWidth)
+    const newIndex = Math.floor((scrollX + (wrapperWidth / 2)) / wrapperWidth)
     if (newIndex !== index) {
       goto(newIndex)
     } else {
@@ -101,10 +103,10 @@ class EditorialComponent extends Component {
 
   scrollToIndex = (index) => {
     const wrapperWidth = getWrapperWidth(this.wrapper)
-    this.isScrolling = true
+    this.setState({ isScrolling: true })
     scrollToPosition(wrapperWidth * index, 0, {
       el: this.scrollable,
-      onComplete: () => { this.isScrolling = false },
+      onComplete: () => { this.setState({ isScrolling: false }) },
     })
   }
 
@@ -126,10 +128,10 @@ class EditorialComponent extends Component {
         </Carousel>
         <nav className={editorialNavStyle}>
           { (isContinuous || index !== 0) &&
-            <PrevPaddle disabled={this.isScrolling} onClick={this.onClickPrevious} />
+            <PrevPaddle onClick={this.onClickPrevious} />
           }
           { (isContinuous || index !== limit) &&
-            <NextPaddle disabled={this.isScrolling} onClick={this.onClickNext} />
+            <NextPaddle onClick={this.onClickNext} />
           }
         </nav>
       </div>
