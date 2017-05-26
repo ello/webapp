@@ -69,7 +69,6 @@ export const PostEditorial = (props: EditorialProps) => (
     <BackgroundImage
       dpi={props.dpi}
       sources={props.sources}
-      useGif
     />
   </div>
 )
@@ -133,7 +132,6 @@ export const CuratedPost = (props: PostProps) => (
     <BackgroundImage
       dpi={props.dpi}
       sources={props.sources || props.fallbackSources}
-      useGif
     />
   </div>
 )
@@ -163,7 +161,6 @@ export const ExternalEditorial = (props: EditorialProps) => (
     <BackgroundImage
       dpi={props.dpi}
       sources={props.sources}
-      useGif
     />
   </div>
 )
