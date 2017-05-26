@@ -5,9 +5,6 @@ let ticking = false
 const scrollObjects = []
 const scrollTargetObjects = []
 
-let lastScrollXTarget = null
-let lastScrollDirectionTarget = null
-
 // SHARED METHODS
 // -------------------------------------
 
@@ -146,19 +143,12 @@ function getTargetScrollBottom(scrollHeight, el) {
   return Math.round(scrollHeight - el.offsetHeight)
 }
 
-function getTargetScrollScreenX(scrollX, innerWidth) {
-  return Math.floor((scrollX + 1) / innerWidth)
-}
-
 function getTargetScrollProperties(el) {
   const scrollX = getTargetScrollX(el)
   const scrollY = getTargetScrollY(el)
   const scrollWidth = getTargetScrollWidth(el)
   const scrollHeight = getTargetScrollHeight(el)
   const scrollBottom = getTargetScrollBottom(scrollHeight, el)
-  const scrollScreenX = getTargetScrollScreenX(scrollX, el.offsetWidth)
-  lastScrollDirectionTarget = lastScrollXTarget < scrollX ? 'left' : 'right'
-  lastScrollXTarget = scrollX
   return {
     scrollX,
     scrollY,
@@ -166,45 +156,36 @@ function getTargetScrollProperties(el) {
     scrollHeight,
     scrollBottom,
     scrollPercent: getScrollPercent(0, scrollBottom, scrollY),
-    scrollPercentX: getScrollPercent(0, scrollWidth, scrollX),
-    scrollScreenX,
-    scrollDirection: lastScrollDirectionTarget,
   }
 }
 
-/* eslint-disable no-param-reassign */
-function targetScrolled() {
-  scrollTargetObjects.forEach((obj) => {
-    const scrollProperties = getTargetScrollProperties(obj.element)
-    const scrollAction = getScrollAction(scrollProperties)
-    callMethod(obj.component, 'onScrollTarget', scrollProperties)
-    if (scrollAction) {
-      callMethod(obj.component, `${scrollAction}Target`, scrollProperties)
-    }
-    if (obj.screen !== scrollProperties.scrollScreenX) {
-      obj.screen = scrollProperties.scrollScreenX
-      callMethod(obj.component, 'onScrollScreenXTarget', scrollProperties)
-    }
-    if (obj.timeoutId) {
+function targetScrolled(e) {
+  const obj = scrollTargetObjects.find(o => e.target === o.element)
+  if (!obj) { return }
+  const scrollProperties = getTargetScrollProperties(obj.element)
+  const scrollAction = getScrollAction(scrollProperties)
+  callMethod(obj.component, 'onScrollTarget', scrollProperties)
+  if (scrollAction) {
+    callMethod(obj.component, `${scrollAction}Target`, scrollProperties)
+  }
+  if (obj.timeoutId) {
+    clearTimeout(obj.timeoutId)
+    obj.timeoutId = null
+  }
+  const handlerDelayed = () => {
+    if (scrollProperties.scrollX === getTargetScrollX(obj.element)) {
       clearTimeout(obj.timeoutId)
       obj.timeoutId = null
+      callMethod(obj.component, 'onScrollCompleteTarget', scrollProperties)
     }
-    const handlerDelayed = () => {
-      if (scrollProperties.scrollX === getTargetScrollX(obj.element)) {
-        clearTimeout(obj.timeoutId)
-        obj.timeoutId = null
-        callMethod(obj.component, 'onScrollCompleteTarget', scrollProperties)
-      }
-    }
-    obj.timeoutId = setTimeout(handlerDelayed, 50)
-  })
+  }
+  obj.timeoutId = setTimeout(handlerDelayed, 50)
 }
-/* eslint-enable no-param-reassign */
 
-function targetWasScrolled() {
+function targetWasScrolled(e) {
   if (!ticking) {
     requestAnimationFrame(() => {
-      targetScrolled()
+      targetScrolled(e)
       ticking = false
     })
     ticking = true
@@ -215,8 +196,6 @@ export function addScrollTarget(obj) {
   if (scrollTargetObjects.indexOf(obj) === -1) {
     scrollTargetObjects.push(obj)
     obj.element.addEventListener('scroll', targetWasScrolled)
-    // eslint-disable-next-line no-param-reassign
-    obj.screen = 0
   }
 }
 

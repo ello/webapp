@@ -11,8 +11,8 @@ import * as s from '../../styles/jso'
 // TODO:
 // 1. Fix naming (limit, etc.)
 // 2. Cache DOM lookup
-// 3. Handle scroll events to update the current slide index
-// 4. Test resize
+// 3. Test resize
+// 4. Arrow buttons seem to break when clicking on them fast
 
 const getWrapperWidth = wrapper => (wrapper && wrapper.offsetWidth) || 0
 
@@ -38,10 +38,8 @@ type EditorialComponentProps = {
 }
 
 type ScrollProps = {
-  scrollPercentX: number,
-  scrollScreenX: number,
-  // scrollWidth: number,
-  // scrollX: number,
+  scrollWidth: number,
+  scrollX: number,
 }
 
 class EditorialComponent extends Component {
@@ -49,23 +47,18 @@ class EditorialComponent extends Component {
   scrollable: any | null
   scrollObject: any | null
   wrapper: any | null
-  scrollScreenX: number
   isScrolling: boolean
+
+  componentWillMount() {
+    this.isScrolling = false
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.tickCount !== nextProps.tickCount) {
       // this.props.next()
     }
-    if (this.props.index !== nextProps.index && !this.isScrolling) {
-      const wrapperWidth = getWrapperWidth(this.wrapper)
-      if (this.scrollable) {
-        this.isScrolling = true
-        console.log('stuff', this.props.index, nextProps.index, wrapperWidth, wrapperWidth * nextProps.index)
-        scrollToPosition(wrapperWidth * nextProps.index, 0, {
-          el: this.scrollable,
-          onComplete: () => { this.isScrolling = false },
-        })
-      }
+    if (this.props.index !== nextProps.index && !this.isScrolling && this.scrollable) {
+      this.scrollToIndex(nextProps.index)
     }
   }
 
@@ -94,36 +87,28 @@ class EditorialComponent extends Component {
     start()
   }
 
-  // onScrollTarget = (props: ScrollProps) => {
-  //   const { limit } = this.props
-  //   const { scrollX, scrollWidth, scrollScreenX, scrollPercentX } = props
-
-  //   const oldPercent = Math.abs((scrollPercentX * (limit + 1)) - ((scrollScreenX + 1) * 100))
-
-  //   const scrollMax = Math.round((scrollWidth / (limit + 1)) / (scrollScreenX + 1))
-  //   const percent = getScrollPercent(0, scrollMax, scrollX)
-
-  //   if (percent !== 0) {
-  //     console.log('onScrollTarget', oldPercent)
-  //   }
-  // }
-
   onScrollCompleteTarget = (props: ScrollProps) => {
     if (this.isScrolling) { return }
-    const { limit, next, previous } = this.props
-    const { scrollScreenX, scrollPercentX } = props
-    const percent = Math.abs((scrollPercentX * (limit + 1)) - ((scrollScreenX + 1) * 100))
-
-    if (percent > 0 && percent < 50 && props.scrollDirection === 'right') {
-      console.log('onScrollCompleteTarget next', percent, props, this.props.index, props.scrollScreenX)
-      next()
-    } else if (percent >= 50 && percent < 100 && props.scrollDirection === 'left') {
-      console.log('onScrollCompleteTarget previous', percent, props, this.props.index, props.scrollScreenX)
-      previous()
+    const { goto, index } = this.props
+    const wrapperWidth = getWrapperWidth(this.wrapper)
+    const newIndex = Math.floor((props.scrollX + (wrapperWidth / 2)) / wrapperWidth)
+    if (newIndex !== index) {
+      goto(newIndex)
+    } else {
+      this.scrollToIndex(newIndex)
     }
   }
 
-  setElements = (comp) => {
+  scrollToIndex = (index) => {
+    const wrapperWidth = getWrapperWidth(this.wrapper)
+    this.isScrolling = true
+    scrollToPosition(wrapperWidth * index, 0, {
+      el: this.scrollable,
+      onComplete: () => { this.isScrolling = false },
+    })
+  }
+
+  addScrollCapabilities = (comp) => {
     if (!this.wrapper) {
       this.wrapper = comp
       this.scrollable = comp.querySelector('[data-slides]')
@@ -135,16 +120,16 @@ class EditorialComponent extends Component {
   render() {
     const { children, index, isContinuous, limit } = this.props
     return (
-      <div className={editorialWrapperStyle} ref={this.setElements} >
+      <div className={editorialWrapperStyle} ref={this.addScrollCapabilities} >
         <Carousel>
           {children}
         </Carousel>
         <nav className={editorialNavStyle}>
           { (isContinuous || index !== 0) &&
-            <PrevPaddle onClick={this.onClickPrevious} />
+            <PrevPaddle disabled={this.isScrolling} onClick={this.onClickPrevious} />
           }
           { (isContinuous || index !== limit) &&
-            <NextPaddle onClick={this.onClickNext} />
+            <NextPaddle disabled={this.isScrolling} onClick={this.onClickNext} />
           }
         </nav>
       </div>
