@@ -59,7 +59,13 @@ export const editorials = editorialIds => (
 )
 
 export const postsAsCuratedEditorial = (postIds, columnCount, isPostHeaderHidden, renderProps) => (
-  <EditorialCarousel isContinuous maxTicks={(postIds.size || 0) * 2} >
+  <EditorialCarousel
+    isContinuous
+    limit={(postIds.size || 0)}
+    maxTicks={(postIds.size || 0) * 2}
+    timerDuration={5000}
+    timerRange={1000}
+  >
     {postIds.map(id =>
       <CuratedPostContainer
         key={`curatedEditorial_post_${id}`}

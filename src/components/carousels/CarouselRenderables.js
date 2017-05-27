@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react'
+import TWEEN from 'tween.js'
 import { scrollToPosition } from '../../lib/jello'
 import CycleContainer from '../../containers/CycleContainer'
 import TimerContainer from '../../containers/TimerContainer'
@@ -7,12 +8,6 @@ import { addScrollTarget, removeScrollTarget } from '../viewport/ScrollComponent
 import { Carousel, NextPaddle, PrevPaddle } from './CarouselParts'
 import { css, media } from '../../styles/jss'
 import * as s from '../../styles/jso'
-
-// TODO:
-// 1. Fix naming (limit, etc.)
-// 2. Cache DOM lookup
-// 3. Test resize
-// 4. Arrow buttons seem to break when clicking on them fast
 
 const getWrapperWidth = wrapper => (wrapper && wrapper.offsetWidth) || 0
 
@@ -26,15 +21,15 @@ const editorialNavStyle = css(
 
 type EditorialComponentProps = {
   children: React.Element<*>,
+  goto: () => {},
   index: number,
   isContinuous: boolean,
   limit: number,
-  tickCount: number,
   next: () => {},
   previous: () => {},
   start: () => {},
   stop: () => {},
-  goto: () => {},
+  tickCount: number,
 }
 
 type EditorialComponentState = {
@@ -48,15 +43,24 @@ type ScrollProps = {
 class EditorialComponent extends Component {
   props: EditorialComponentProps
   state: EditorialComponentState
-  scrollable: any | null
-  scrollObject: any | null
-  wrapper: any | null
+  scrollObject: {
+    component: React.Component<*, EditorialComponentProps, EditorialComponentState>,
+    element: React.Element<*>
+  } | null
+  scrollable: React.Element<*> | null
+  wrapper: HTMLElement | null
 
   state = { isScrolling: false }
 
+  componentWillMount() {
+    if (this.props.limit <= 1) {
+      this.props.stop()
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.tickCount !== nextProps.tickCount) {
-      // this.props.next()
+      this.props.next()
     }
     if (this.props.index !== nextProps.index && this.scrollable) {
       this.scrollToIndex(nextProps.index)
@@ -107,6 +111,8 @@ class EditorialComponent extends Component {
     scrollToPosition(wrapperWidth * index, 0, {
       el: this.scrollable,
       onComplete: () => { this.setState({ isScrolling: false }) },
+      easing: TWEEN.Easing.Exponential.Out,
+      duration: 750,
     })
   }
 
@@ -126,14 +132,16 @@ class EditorialComponent extends Component {
         <Carousel>
           {children}
         </Carousel>
-        <nav className={editorialNavStyle}>
-          { (isContinuous || index !== 0) &&
-            <PrevPaddle onClick={this.onClickPrevious} />
-          }
-          { (isContinuous || index !== limit) &&
-            <NextPaddle onClick={this.onClickNext} />
-          }
-        </nav>
+        { limit > 1 &&
+          <nav className={editorialNavStyle}>
+            { (isContinuous || index !== 0) &&
+              <PrevPaddle onClick={this.onClickPrevious} />
+            }
+            { (isContinuous || index !== limit) &&
+              <NextPaddle onClick={this.onClickNext} />
+            }
+          </nav>
+        }
       </div>
     )
   }
