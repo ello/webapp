@@ -22,7 +22,7 @@ function getScrollDirection(scrollY) {
 }
 
 // This is handy, but we're not using it anywhere at the moment
-export function getScrollPercent(bottom, top, val) {
+function getScrollPercent(bottom, top, val) {
   let bottomRange = bottom
   let topRange = top
   let valueInRange = val
@@ -131,10 +131,6 @@ function getTargetScrollY(el) {
   return Math.ceil(el.scrollTop)
 }
 
-function getTargetScrollWidth(el) {
-  return Math.max(el.scrollWidth, el.offsetWidth)
-}
-
 function getTargetScrollHeight(el) {
   return Math.max(el.scrollHeight, el.offsetHeight)
 }
@@ -146,13 +142,11 @@ function getTargetScrollBottom(scrollHeight, el) {
 function getTargetScrollProperties(el) {
   const scrollX = getTargetScrollX(el)
   const scrollY = getTargetScrollY(el)
-  const scrollWidth = getTargetScrollWidth(el)
   const scrollHeight = getTargetScrollHeight(el)
   const scrollBottom = getTargetScrollBottom(scrollHeight, el)
   return {
     scrollX,
     scrollY,
-    scrollWidth,
     scrollHeight,
     scrollBottom,
     scrollPercent: getScrollPercent(0, scrollBottom, scrollY),
@@ -172,14 +166,14 @@ function targetScrolled(e) {
     clearTimeout(obj.timeoutId)
     obj.timeoutId = null
   }
-  const handlerDelayed = () => {
+  const checkForScrollComplete = () => {
     if (scrollProperties.scrollX === getTargetScrollX(obj.element)) {
       clearTimeout(obj.timeoutId)
       obj.timeoutId = null
       callMethod(obj.component, 'onScrollCompleteTarget', scrollProperties)
     }
   }
-  obj.timeoutId = setTimeout(handlerDelayed, 50)
+  obj.timeoutId = setTimeout(checkForScrollComplete, 50)
 }
 
 function targetWasScrolled(e) {
