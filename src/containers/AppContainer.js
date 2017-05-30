@@ -198,7 +198,12 @@ class AppContainer extends Component {
     const { dispatch } = this.props
     const action = bindActionCreators(trackEvent, dispatch)
     dispatch(openModal(
-      <ShareDialog author={postAuthor} post={post} trackEvent={action} />,
+      <ShareDialog
+        author={postAuthor}
+        post={post}
+        trackEvent={action}
+        trackOptions={trackOptions}
+      />,
       '',
       null,
       trackLabel || 'open-share-dialog',

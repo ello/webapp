@@ -63,12 +63,14 @@ class ShareDialog extends PureComponent {
     post: PropTypes.object,
     username: PropTypes.string,
     trackEvent: PropTypes.func.isRequired,
+    trackOptions: PropTypes.object,
   }
 
   static defaultProps = {
     author: null,
     post: null,
     username: null,
+    trackOptions: null,
   }
 
   componentWillMount() {
@@ -79,7 +81,7 @@ class ShareDialog extends PureComponent {
   onClickOpenShareWindow = (e) => {
     const type = e.target.dataset.type
     const url = this.getUrl(type)
-    const { trackEvent, username } = this.props
+    const { trackEvent, trackOptions, username } = this.props
     if (url.indexOf('mailto') === 0) {
       document.location.href = url
     } else {
@@ -89,7 +91,7 @@ class ShareDialog extends PureComponent {
     }
     if (trackEvent) {
       const eventType = username ? `share-user-to-${type}-profile` : `share-to-${type}`
-      trackEvent(eventType)
+      trackEvent(eventType, trackOptions || {})
     }
   }
 
