@@ -137,7 +137,7 @@ const overlayStyle = css(
   s.flood,
   s.zIndex1,
   s.transitionBgColorSlow,
-  { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+  { backgroundColor: 'rgba(0, 0, 0, 0.1)' },
   after(
     s.absolute,
     s.flood,
@@ -145,7 +145,7 @@ const overlayStyle = css(
     { top: '50%', content: '""' },
     { background: 'linear-gradient(to top, rgba(0, 0, 0, 0.666) 0%, rgba(0, 0, 0, 0) 80%)' },
   ),
-  select('.no-touch *:hover ~ &', { backgroundColor: 'rgba(0, 0, 0, 0.1)' }),
+  select('.no-touch *:hover ~ &', { backgroundColor: 'rgba(0, 0, 0, 0.8)' }),
 )
 
 
