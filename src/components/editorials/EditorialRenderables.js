@@ -111,6 +111,11 @@ type PostProps = {
   username: string,
 }
 
+const postHeaderStyle = css(
+  { ...headerStyle },
+  media(s.minBreak2, { width: 'calc(100% - 35px)' }),
+)
+
 export const CuratedPost = (props: PostProps) => (
   <div className={baseStyle}>
     { props.detailPath &&
@@ -122,7 +127,7 @@ export const CuratedPost = (props: PostProps) => (
         <span className={linkTextStyle}>{props.detailPath}</span>
       </Link>
     }
-    <header className={headerStyle}>
+    <header className={postHeaderStyle}>
       <EditorialTitle label={`${props.title} `} />
       <EditorialTitle label={`@${props.username}`} />
     </header>
