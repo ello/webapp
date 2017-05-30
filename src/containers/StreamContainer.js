@@ -182,13 +182,9 @@ class StreamContainer extends Component {
   }
 
   onScrollBottom() {
-    const { hasLaunchedSignupModal, isLoggedIn, result, shouldInfiniteScroll } = this.props
+    const { result, shouldInfiniteScroll } = this.props
     if (!shouldInfiniteScroll || !result.get('ids').size) { return }
     this.onLoadNextPage()
-    if (!isLoggedIn && !hasLaunchedSignupModal) {
-      const { onClickOpenRegistrationRequestDialog } = this.context
-      onClickOpenRegistrationRequestDialog('scroll')
-    }
   }
 
   onScrollBottomTarget() {
@@ -197,6 +193,11 @@ class StreamContainer extends Component {
   }
 
   onLoadNextPage = () => {
+    const { hasLaunchedSignupModal, isLoggedIn } = this.props
+    if (!isLoggedIn && !hasLaunchedSignupModal) {
+      const { onClickOpenRegistrationRequestDialog } = this.context
+      onClickOpenRegistrationRequestDialog('scroll')
+    }
     this.loadPage('next')
   }
 
