@@ -78,20 +78,6 @@ class EditorialComponent extends Component {
     removeScrollTarget(this.scrollObject)
   }
 
-  onClickNext = () => {
-    const { next, start, stop } = this.props
-    stop()
-    next()
-    start()
-  }
-
-  onClickPrevious = () => {
-    const { previous, start, stop } = this.props
-    stop()
-    previous()
-    start()
-  }
-
   onScrollCompleteTarget = (props: ScrollProps) => {
     if (this.state.isScrolling) { return }
     const { goto, index } = this.props
@@ -108,9 +94,13 @@ class EditorialComponent extends Component {
   scrollToIndex = (index) => {
     const wrapperWidth = getWrapperWidth(this.wrapper)
     this.setState({ isScrolling: true })
+    this.props.stop()
     scrollToPosition(wrapperWidth * index, 0, {
       el: this.scrollable,
-      onComplete: () => { this.setState({ isScrolling: false }) },
+      onComplete: () => {
+        this.setState({ isScrolling: false })
+        this.props.start()
+      },
       easing: TWEEN.Easing.Exponential.Out,
       duration: 750,
     })
@@ -135,10 +125,10 @@ class EditorialComponent extends Component {
         { limit > 1 &&
           <nav className={editorialNavStyle}>
             { (isContinuous || index !== 0) &&
-              <PrevPaddle onClick={this.onClickPrevious} />
+              <PrevPaddle onClick={this.props.previous} />
             }
             { (isContinuous || index !== limit) &&
-              <NextPaddle onClick={this.onClickNext} />
+              <NextPaddle onClick={this.props.next} />
             }
           </nav>
         }

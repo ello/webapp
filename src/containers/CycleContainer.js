@@ -11,6 +11,7 @@ const constrainIndex = (index, limit, isContinuous) => {
   }
   return index
 }
+
 type Props = {
   isContinuous: boolean,
   limit: number,
