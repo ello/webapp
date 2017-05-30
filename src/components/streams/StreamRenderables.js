@@ -62,7 +62,7 @@ export const postsAsCuratedEditorial = (postIds, columnCount, isPostHeaderHidden
   <EditorialCarousel
     isContinuous
     limit={(postIds.size || 0)}
-    maxTicks={(postIds.size || 0) * 2}
+    maxTicks={(postIds.size || 0) * 5}
     timerDuration={5000}
     timerRange={1000}
   >
