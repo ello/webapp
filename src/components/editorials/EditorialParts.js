@@ -108,7 +108,7 @@ const titleStyle = css(
   s.colorWhite,
   s.fontSize32,
   { lineHeight: 38 },
-  media(s.minBreak2, s.fontSize48, { lineHeight: 54 }),
+  media(s.minBreak2, { fontSize: 38, lineHeight: 42 }),
 )
 
 export const EditorialTitle = ({ label }: { label: string }) => (
