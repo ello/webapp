@@ -123,6 +123,10 @@ export function removeScrollObject(obj) {
 // SCROLLING AN ELEMENT
 // -------------------------------------
 
+function getTargetScrollX(el) {
+  return Math.ceil(el.scrollLeft)
+}
+
 function getTargetScrollY(el) {
   return Math.ceil(el.scrollTop)
 }
@@ -136,10 +140,12 @@ function getTargetScrollBottom(scrollHeight, el) {
 }
 
 function getTargetScrollProperties(el) {
+  const scrollX = getTargetScrollX(el)
   const scrollY = getTargetScrollY(el)
   const scrollHeight = getTargetScrollHeight(el)
   const scrollBottom = getTargetScrollBottom(scrollHeight, el)
   return {
+    scrollX,
     scrollY,
     scrollHeight,
     scrollBottom,
@@ -147,21 +153,33 @@ function getTargetScrollProperties(el) {
   }
 }
 
-function targetScrolled() {
-  scrollTargetObjects.forEach((obj) => {
-    const scrollProperties = getTargetScrollProperties(obj.element)
-    const scrollAction = getScrollAction(scrollProperties)
-    callMethod(obj.component, 'onScrollTarget', scrollProperties)
-    if (scrollAction) {
-      callMethod(obj.component, `${scrollAction}Target`, scrollProperties)
+function targetScrolled(e) {
+  const obj = scrollTargetObjects.find(o => e.target === o.element)
+  if (!obj) { return }
+  const scrollProperties = getTargetScrollProperties(obj.element)
+  const scrollAction = getScrollAction(scrollProperties)
+  callMethod(obj.component, 'onScrollTarget', scrollProperties)
+  if (scrollAction) {
+    callMethod(obj.component, `${scrollAction}Target`, scrollProperties)
+  }
+  if (obj.timeoutId) {
+    clearTimeout(obj.timeoutId)
+    obj.timeoutId = null
+  }
+  const checkForScrollComplete = () => {
+    if (scrollProperties.scrollX === getTargetScrollX(obj.element)) {
+      clearTimeout(obj.timeoutId)
+      obj.timeoutId = null
+      callMethod(obj.component, 'onScrollCompleteTarget', scrollProperties)
     }
-  })
+  }
+  obj.timeoutId = setTimeout(checkForScrollComplete, 50)
 }
 
-function targetWasScrolled() {
+function targetWasScrolled(e) {
   if (!ticking) {
     requestAnimationFrame(() => {
-      targetScrolled()
+      targetScrolled(e)
       ticking = false
     })
     ticking = true

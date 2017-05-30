@@ -113,7 +113,10 @@ export function scrollToPosition(x, y, options = {}) {
     .easing(options.easing || TWEEN.Easing.Quartic.InOut)
     .to({ x: x || 0, y: y || 0 }, options.duration || 1000)
     .onUpdate(updateScroll)
-    .onComplete(() => { animate = () => {} })
+    .onComplete(() => {
+      animate = () => {}
+      if (typeof options.onComplete === 'function') { options.onComplete() }
+    })
     .start()
   requestAnimationFrame(animate)
 }

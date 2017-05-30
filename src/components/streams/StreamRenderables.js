@@ -6,7 +6,7 @@ import NotificationContainer from '../../containers/NotificationContainer'
 import PostContainer from '../../containers/PostContainer'
 import CuratedPostContainer from '../../containers/CuratedPostContainer'
 import UserContainer from '../../containers/UserContainer'
-import { Slides, Slide } from '../../components/carousels/CarouselParts'
+import { EditorialCarousel } from '../../components/carousels/CarouselRenderables'
 import EditorialLayout from '../../components/editorials/EditorialLayout'
 import Preference from '../../components/forms/Preference'
 import TreeButton from '../../components/navigation/TreeButton'
@@ -59,13 +59,21 @@ export const editorials = editorialIds => (
 )
 
 export const postsAsCuratedEditorial = (postIds, columnCount, isPostHeaderHidden, renderProps) => (
-  <Slides>
+  <EditorialCarousel
+    isContinuous
+    limit={(postIds.size || 0)}
+    maxTicks={(postIds.size || 0) * 2}
+    timerDuration={5000}
+    timerRange={1000}
+  >
     {postIds.map(id =>
-      <Slide key={`curatedEditorial_slide_${id}`}>
-        <CuratedPostContainer postId={id} {...renderProps} />
-      </Slide>,
+      <CuratedPostContainer
+        key={`curatedEditorial_post_${id}`}
+        postId={id}
+        {...renderProps}
+      />,
     )}
-  </Slides>
+  </EditorialCarousel>
 )
 
 // POSTS

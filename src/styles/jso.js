@@ -101,14 +101,17 @@ export const fit = { maxWidth: '100%' }
 export const fullWidth = { width: '100%' }
 export const fullHeight = { height: '100%' }
 
+export const wv20 = { width: 20 }
 export const wv30 = { width: 30 }
 export const wv40 = { width: 40 }
 export const wv60 = { width: 60 }
 
+export const hv20 = { height: 20 }
 export const hv30 = { height: 30 }
 export const hv40 = { height: 40 }
 export const hv60 = { height: 60 }
 
+export const lh20 = { lineHeight: 20 }
 export const lh30 = { lineHeight: 30 }
 export const lh40 = { lineHeight: 40 }
 export const lh60 = { lineHeight: 60 }
@@ -340,6 +343,7 @@ export const borderA = { border: '1px solid #aaa' }
 // Transforms
 export const transformNone = { transform: 'none' }
 export const rotate90 = { transform: 'rotate(90deg)' }
+export const rotate180 = { transform: 'rotate(180deg)' }
 
 // -------------------------------------
 // Transitions & animations
