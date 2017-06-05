@@ -5,12 +5,14 @@ import { MainView } from '../views/MainView'
 
 export const Discover = ({
   streamAction,
+  inAllCategories,
   }) =>
     <MainView className="Discover">
-      <StreamContainer action={streamAction} />
+      <StreamContainer className={inAllCategories ? 'inAllCategories' : null} action={streamAction} />
     </MainView>
 
 Discover.propTypes = {
+  inAllCategories: PropTypes.bool.isRequired,
   streamAction: PropTypes.object.isRequired,
 }
 

@@ -18,6 +18,7 @@ import {
   selectIsNotificationsUnread,
   selectIsProfileMenuActive,
 } from 'ello-brains/selectors/gui'
+import { selectParamsType } from 'ello-brains/selectors/params'
 import { trackEvent } from '../actions/analytics'
 import { logout } from '../actions/authentication'
 import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
@@ -32,9 +33,10 @@ function mapStateToProps(state, props) {
   const isLoggedIn = selectIsLoggedIn(state)
   const pathname = selectPathname(state)
   const pageResult = selectPage(state)
+  const paramsType = selectParamsType(state, props)
   const hasLoadMoreButton = !!(pageResult && pageResult.get('morePostIds'))
   const viewName = selectViewNameFromRoute(state)
-  const categoryTabs = viewName === 'discover' ? selectCategoryTabs(state) : null
+  const categoryTabs = viewName === 'discover' && paramsType !== 'all' ? selectCategoryTabs(state) : null
   const isUnread = selectIsNotificationsUnread(state) || !selectAnnouncementHasBeenViewed(state)
   const isGridMode = selectIsGridMode(state)
 

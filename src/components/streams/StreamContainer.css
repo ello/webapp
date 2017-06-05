@@ -84,6 +84,10 @@
   top: 0 !important;
 }
 
+.StreamContainer.inAllCategories {
+  padding-top: 0;
+}
+
 .MainView > .UserDetails {
   min-height: 100vh;
 }

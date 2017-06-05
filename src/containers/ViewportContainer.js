@@ -18,6 +18,7 @@ import {
   selectIsProfileMenuActive,
   selectScrollOffset,
 } from 'ello-brains/selectors/gui'
+import { selectParamsType } from 'ello-brains/selectors/params'
 import { selectModalType } from '../selectors/modal'
 import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
@@ -39,12 +40,13 @@ export const selectUserDetailPathClassName = createSelector(
 )
 
 function mapStateToProps(state, props) {
+  const paramsType = selectParamsType(state, props)
   return {
     hasLaunchedSignupModal: selectHasLaunchedSignupModal(state),
     innerHeight: selectInnerHeight(state),
     innerWidth: selectInnerWidth(state),
     isAuthenticationView: selectIsAuthenticationView(state),
-    isDiscoverView: selectViewNameFromRoute(state) === 'discover',
+    isDiscoverView: selectViewNameFromRoute(state) === 'discover' && paramsType !== 'all',
     isLoggedIn: selectIsLoggedIn(state),
     isNavbarHidden: selectIsNavbarHidden(state),
     isNotificationsActive: selectIsNotificationsActive(state),

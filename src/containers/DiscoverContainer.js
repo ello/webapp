@@ -68,7 +68,13 @@ class DiscoverContainer extends PureComponent {
 
   render() {
     const { paramsType } = this.props
-    return <Discover key={`discover_${paramsType}`} streamAction={getStreamAction(paramsType)} />
+    return (
+      <Discover
+        inAllCategories={paramsType === 'all'}
+        key={`discover_${paramsType}`}
+        streamAction={getStreamAction(paramsType)}
+      />
+    )
   }
 }
 
