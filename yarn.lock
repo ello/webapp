@@ -2149,15 +2149,18 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-"ello-brains@https://github.com/ello/brains#4b43f716ee3c14b968cd53c182847445811bbd4f":
-  version "1.0.0"
-  resolved "https://github.com/ello/brains#4b43f716ee3c14b968cd53c182847445811bbd4f"
+ello-brains@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ello-brains/-/ello-brains-1.0.2.tgz#d7ee786faaa451011ee78195130f11bd229f4d85"
   dependencies:
     humps "2.0.0"
     immutable "3.8.1"
+    isomorphic-fetch "2.2.1"
+    jwt-decode "2.2.0"
     lodash "4.17.4"
     react-router-redux "4.0.8"
     redux-persist "4.7.1"
+    redux-saga "0.15.3"
     reselect "3.0.0"
     trunc-html "1.1.2"
 
@@ -5634,6 +5637,10 @@ redux-persist@4.7.1, redux-persist@^4.0.0:
 redux-saga@0.15.1:
   version "0.15.1"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.15.1.tgz#13db6b78d34ca9e77c983935143ec0ed1cfe34b5"
+
+redux-saga@0.15.3:
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.15.3.tgz#be2b86b4ad46bf0d84fcfcb0ca96cfc33db91acb"
 
 redux@3.6.0:
   version "3.6.0"
