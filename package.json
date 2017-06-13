@@ -119,7 +119,7 @@
     "cookie-parser": "1.4.3",
     "css-loader": "0.28.0",
     "dotenv": "4.0.0",
-    "ello-brains": "1.0.2",
+    "ello-brains": "1.0.3",
     "entities": "1.1.1",
     "estraverse-fb": "1.3.1",
     "exif-js": "2.2.1",
