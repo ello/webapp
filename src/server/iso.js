@@ -199,6 +199,9 @@ const noPreRenderPaths = {
 }
 
 export function canPrerenderRequest(req) {
+  if (process.env.SKIP_PRERENDER === 'true') {
+    return false
+  }
   // Don't pre-render if user is (assumed to be) logged in
   if (req.cookies.ello_skip_prerender === 'true') {
     return false
