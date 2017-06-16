@@ -1,5 +1,4 @@
 /* eslint-disable no-use-before-define */
-import 'isomorphic-fetch'
 import { push } from 'react-router-redux'
 import { call, put, select, take } from 'redux-saga/effects'
 import { AUTHENTICATION } from 'ello-brains/constants/action_types'

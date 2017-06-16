@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { createLogger } from 'redux-logger'
 import Immutable from 'immutable'
-import { browserHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
 import { compose, combineReducers, createStore, applyMiddleware } from 'redux'
 import { autoRehydrate } from 'redux-persist'
@@ -17,7 +16,7 @@ const reducer = combineReducers({ ...reducers })
 // seems to be a subset of what is actually returned from the rehydrate action
 const stateReconciler = (state, inboundState, reducedState) => ({ ...reducedState })
 
-const createBrowserStore = (history, passedInitialState = {}) => {
+const createElloStore = (history, passedInitialState = {}) => {
   const logConfig = {
     collapsed: true,
     predicate: () => ENV.APP_DEBUG,
@@ -65,25 +64,7 @@ const createBrowserStore = (history, passedInitialState = {}) => {
   return store
 }
 
-const createServerStore = (history, initialState = {}) => {
-  const reduxRouterMiddleware = routerMiddleware(history)
-  const sagaMiddleware = createSagaMiddleware()
-  const logger = createLogger({ collapsed: true, predicate: () => ENV.APP_DEBUG, colors: false })
-  const store = compose(
-    applyMiddleware(sagaMiddleware, reduxRouterMiddleware, logger),
-  )(createStore)(reducer, initialState)
-
-  store.runSaga = sagaMiddleware.run
-  store.close = () => store.dispatch(END)
-  return store
-}
-
-const createElloStore = (history, initialState = {}) => {
-  if (typeof window !== 'undefined') return createBrowserStore(browserHistory, initialState)
-  return createServerStore(history, initialState)
-}
-
-export { createElloStore, createServerStore }
+export { createElloStore }
 
 export default createElloStore()
 

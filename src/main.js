@@ -1,6 +1,5 @@
 /* eslint-disable import/first */
 import 'babel-polyfill'
-import 'isomorphic-fetch'
 // This needs to be imported before everything else to work properly
 import './vendor/glamor-pxtorem'
 
@@ -20,7 +19,7 @@ import { addFeatureDetection, isIOS } from './lib/jello'
 import MemoryStore from './lib/memory_store'
 import { updateStrings as updateTimeAgoStrings } from './lib/time_ago_in_words'
 import createRoutes from './routes'
-import Honeybadger from './vendor/honeybadger'
+import Honeybadger from 'honeybadger-js'
 import './vendor/embetter'
 import './vendor/embetter_initializer'
 
