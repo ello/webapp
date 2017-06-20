@@ -187,6 +187,7 @@
     "eslint": "3.19.0",
     "eslint-config-ello": "1.0.3",
     "flow-bin": "0.45.0",
+    "isomorphic-fetch": "^2.2.1",
     "mocha": "3.3.0",
     "react-addons-perf": "15.4.2",
     "react-addons-test-utils": "15.5.1",

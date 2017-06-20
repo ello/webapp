@@ -1,4 +1,5 @@
 import 'babel-polyfill'
+import 'isomorphic-fetch'
 import fs from 'fs'
 import path from 'path'
 import jsdom from 'jsdom'
