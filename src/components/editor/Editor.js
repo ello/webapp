@@ -11,20 +11,20 @@ import {
   selectPostIsOwn,
   selectPostIsReposting,
 } from 'ello-brains/selectors/post'
-import { openModal, closeModal } from '../../actions/modals'
+import { openModal, closeModal } from 'ello-brains/actions/modals'
 import {
   createComment,
   toggleEditing as toggleCommentEditing,
   updateComment,
-} from '../../actions/comments'
+} from 'ello-brains/actions/comments'
 import {
   createPost,
   toggleEditing,
   toggleReposting,
   updatePost,
-} from '../../actions/posts'
-import { resetEditor, initializeEditor } from '../../actions/editor'
-import { closeOmnibar } from '../../actions/omnibar'
+} from 'ello-brains/actions/posts'
+import { resetEditor, initializeEditor } from 'ello-brains/actions/editor'
+import { closeOmnibar } from 'ello-brains/actions/omnibar'
 import BlockCollection from './BlockCollection'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 

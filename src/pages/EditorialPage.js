@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { selectQueryPreview } from 'ello-brains/selectors/routing'
-import { loadEditorials } from '../actions/editorials'
+import { loadEditorials } from 'ello-brains/actions/editorials'
 import StreamContainer from '../containers/StreamContainer'
 import { MainView } from '../components/views/MainView'
 import { media } from '../styles/jss'

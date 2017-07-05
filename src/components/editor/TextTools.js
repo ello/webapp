@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import { textToolsPath } from 'ello-brains/networking/api'
 import { LinkIcon } from '../assets/Icons'
-import { textToolsPath } from '../../networking/api'
 import { css, focus, hover, media, modifier, parent, placeholder, select } from '../../styles/jss'
 import * as s from '../../styles/jso'
 

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { loadInvitedUsers } from '../actions/invitations'
+import { loadInvitedUsers } from 'ello-brains/actions/invitations'
 import { Invitations } from '../components/views/Invitations'
 
 class InvitationsContainer extends PureComponent {

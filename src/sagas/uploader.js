@@ -13,19 +13,19 @@ import {
 
 import { AUTHENTICATION, EDITOR, PROFILE } from 'ello-brains/constants/action_types'
 
-import { fetchCredentials, getHeaders, sagaFetch } from './api'
-import { s3CredentialsPath } from '../networking/api'
-import DialogContainer from '../containers/DialogContainer'
+import { s3CredentialsPath } from 'ello-brains/networking/api'
 
-import { openAlert } from '../actions/modals'
-import { temporaryEditorAssetCreated } from '../actions/editor'
-import { temporaryAssetCreated } from '../actions/profile'
+import { openAlert } from 'ello-brains/actions/modals'
+import { temporaryEditorAssetCreated } from 'ello-brains/actions/editor'
+import { temporaryAssetCreated } from 'ello-brains/actions/profile'
 import {
   imageGuid,
   isValidFileType,
   processImage,
   SUPPORTED_IMAGE_TYPES,
-} from '../helpers/file_helper'
+} from 'ello-brains/helpers/file_helper'
+import { fetchCredentials, getHeaders, sagaFetch } from 'ello-brains/sagas/api'
+import DialogContainer from '../containers/DialogContainer'
 
 const uploadTypes = [
   PROFILE.SAVE_AVATAR,

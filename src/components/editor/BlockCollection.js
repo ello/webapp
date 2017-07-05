@@ -9,14 +9,6 @@ import { addDragObject, removeDragObject } from 'ello-brains/interactions/Drag'
 import { selectPropsPostId } from 'ello-brains/selectors/post'
 import { selectAvatar } from 'ello-brains/selectors/profile'
 import { selectIsMobileGridStream, selectIsNavbarHidden } from 'ello-brains/selectors/gui'
-import Avatar from '../assets/Avatar'
-import Block from './Block'
-import EmbedBlock from './EmbedBlock'
-import ImageBlock from './ImageBlock'
-import QuickEmoji from './QuickEmoji'
-import RepostBlock from './RepostBlock'
-import TextBlock from './TextBlock'
-import PostActionBar from './PostActionBar'
 import {
   addBlock,
   addDragBlock,
@@ -27,8 +19,16 @@ import {
   reorderBlocks,
   saveAsset,
   updateBlock,
-} from '../../actions/editor'
-import { closeOmnibar } from '../../actions/omnibar'
+} from 'ello-brains/actions/editor'
+import { closeOmnibar } from 'ello-brains/actions/omnibar'
+import Avatar from '../assets/Avatar'
+import Block from './Block'
+import EmbedBlock from './EmbedBlock'
+import ImageBlock from './ImageBlock'
+import QuickEmoji from './QuickEmoji'
+import RepostBlock from './RepostBlock'
+import TextBlock from './TextBlock'
+import PostActionBar from './PostActionBar'
 import { scrollToLastTextBlock } from '../../lib/jello'
 import { addInputObject, removeInputObject } from './InputComponent'
 

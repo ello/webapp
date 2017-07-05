@@ -52,8 +52,8 @@ import {
   selectInnerHeight,
   selectIsMobile,
 } from 'ello-brains/selectors/gui'
-import { trackEvent } from '../actions/analytics'
-import { openModal, closeModal } from '../actions/modals'
+import { trackEvent } from 'ello-brains/actions/analytics'
+import { openModal, closeModal } from 'ello-brains/actions/modals'
 import {
   deletePost,
   flagPost,
@@ -64,7 +64,7 @@ import {
   toggleReposting,
   unwatchPost,
   watchPost,
-} from '../actions/posts'
+} from 'ello-brains/actions/posts'
 import StreamContainer from '../containers/StreamContainer'
 import ConfirmDialog from '../components/dialogs/ConfirmDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'

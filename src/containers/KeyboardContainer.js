@@ -7,8 +7,8 @@ import { SET_LAYOUT_MODE } from 'ello-brains/constants/action_types'
 import { selectIsLoggedIn } from 'ello-brains/selectors/authentication'
 import { SHORTCUT_KEYS } from 'ello-brains/constants/application_types'
 import { selectDiscoverKeyType, selectIsGridMode } from 'ello-brains/selectors/gui'
+import { openModal, closeModal } from 'ello-brains/actions/modals'
 import { selectIsModalActive } from '../selectors/modal'
-import { openModal, closeModal } from '../actions/modals'
 import HelpDialog from '../components/dialogs/HelpDialog'
 
 function mapStateToProps(state) {

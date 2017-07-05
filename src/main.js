@@ -13,8 +13,18 @@ import { persistStore } from 'redux-persist'
 import { asyncLocalStorage } from 'redux-persist/storages'
 import immutableTransform from 'redux-persist-transform-immutable'
 import { syncHistoryWithStore } from 'react-router-redux'
-import store from './store'
+import {
+  setApiDomain,
+  setAuthClientId,
+  setAuthDomain,
+  setErrorRenderables,
+  setPromoHost,
+  setStreamRenderables,
+  setUseLocalEmoji,
+  setZeroRenderables,
+} from 'ello-brains/networking/api'
 
+import store from './store'
 import './main.css'
 import { addFeatureDetection, isIOS } from './lib/jello'
 import MemoryStore from './lib/memory_store'
@@ -23,6 +33,9 @@ import createRoutes from './routes'
 import Honeybadger from './vendor/honeybadger'
 import './vendor/embetter'
 import './vendor/embetter_initializer'
+import * as StreamRenderables from './components/streams/StreamRenderables'
+import * as ErrorRenderables from './components/errors/Errors'
+import * as ZeroRenderables from './components/zeros/Zeros'
 
 /* eslint-disable global-require */
 // only use fastclick if we are on iOS
@@ -51,6 +64,14 @@ Honeybadger.configure({
 updateTimeAgoStrings({ about: '' })
 
 const APP_VERSION = '4.0.0'
+setApiDomain(ENV.API_DOMAIN)
+setAuthClientId(ENV.AUTH_CLIENT_ID)
+setAuthDomain(ENV.AUTH_DOMAIN)
+setErrorRenderables(ErrorRenderables)
+setPromoHost(ENV.PROMO_HOST)
+setStreamRenderables(StreamRenderables)
+setUseLocalEmoji(ENV.USE_LOCAL_EMOJI)
+setZeroRenderables(ZeroRenderables)
 
 const createSelectLocationState = () => {
   let prevRoutingState

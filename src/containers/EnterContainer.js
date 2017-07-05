@@ -13,9 +13,10 @@ import {
   selectRegistrationId,
   selectWebOnboardingVersion,
 } from 'ello-brains/selectors/profile'
+import { loadProfile, requestPushSubscription } from 'ello-brains/actions/profile'
+import { signIn } from 'ello-brains/actions/authentication'
+import { loginToken } from 'ello-brains/networking/api'
 import { isAndroid, isElloAndroid } from '../lib/jello'
-import { loadProfile, requestPushSubscription } from '../actions/profile'
-import { signIn } from '../actions/authentication'
 import TextControl from '../components/forms/TextControl'
 import PasswordControl from '../components/forms/PasswordControl'
 import FormButton from '../components/forms/FormButton'
@@ -25,7 +26,6 @@ import {
   getPasswordState,
 } from '../components/forms/Validators'
 import { MainView } from '../components/views/MainView'
-import { loginToken } from '../networking/api'
 import { css } from '../styles/jss'
 import * as s from '../styles/jso'
 

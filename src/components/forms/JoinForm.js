@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import { FORM_CONTROL_STATUS as STATUS } from 'ello-brains/constants/status_types'
 import { selectAvailability } from 'ello-brains/selectors/profile'
-import { checkAvailability, signUpUser } from '../../actions/profile'
+import { checkAvailability, signUpUser } from 'ello-brains/actions/profile'
+import { signupPath } from 'ello-brains/networking/api'
 import FormButton from './FormButton'
 import PasswordControl from './PasswordControl'
 import UsernameControl from './UsernameControl'
@@ -14,7 +15,6 @@ import {
   getUsernameStateFromServer,
   getPasswordState,
 } from './Validators'
-import { signupPath } from '../../networking/api'
 
 function renderStatus(state) {
   return () => {

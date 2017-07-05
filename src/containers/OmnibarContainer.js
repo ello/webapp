@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from 'ello-brains/constants/application_types'
 import { selectAvatar } from 'ello-brains/selectors/profile'
-import { closeOmnibar } from '../actions/omnibar'
+import { closeOmnibar } from 'ello-brains/actions/omnibar'
 import { Omnibar } from '../components/omnibar/Omnibar'
 
 export function mapStateToProps(state) {

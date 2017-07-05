@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
+import { setIsNavbarHidden, setViewportSizeAttributes } from 'ello-brains/actions/gui'
 import {
   selectIsAuthenticationView,
   selectIsOnboardingView,
@@ -20,7 +21,6 @@ import {
 } from 'ello-brains/selectors/gui'
 import { selectParamsType } from 'ello-brains/selectors/params'
 import { selectModalType } from '../selectors/modal'
-import { setIsNavbarHidden, setViewportSizeAttributes } from '../actions/gui'
 import { addScrollObject, removeScrollObject } from '../components/viewport/ScrollComponent'
 import {
   addPageVisibilityObserver,

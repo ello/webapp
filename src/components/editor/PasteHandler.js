@@ -1,7 +1,7 @@
 import some from 'lodash/some'
+import { postPreviews, saveAsset } from 'ello-brains/actions/editor'
+import { getBlobFromBase64 } from 'ello-brains/helpers/file_helper'
 import { replaceSelectionWithText } from './SelectionUtil'
-import { postPreviews, saveAsset } from '../../actions/editor'
-import { getBlobFromBase64 } from '../../helpers/file_helper'
 
 let dispatch = null
 let editorId = null

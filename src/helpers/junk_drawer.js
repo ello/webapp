@@ -1,7 +1,7 @@
 import { decamelizeKeys } from 'humps'
+import { saveProfile } from 'ello-brains/actions/profile'
+import { trackEvent } from 'ello-brains/actions/analytics'
 import store from '../store'
-import { saveProfile } from '../actions/profile'
-import { trackEvent } from '../actions/analytics'
 
 export function preferenceToggleChanged(obj) {
   const newObj = { ...obj }

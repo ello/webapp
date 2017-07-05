@@ -27,8 +27,8 @@ import {
   selectIsGridMode,
   selectIsNavbarHidden,
 } from 'ello-brains/selectors/gui'
-import { deleteComment, flagComment, loadEditableComment, toggleEditing } from '../actions/comments'
-import { openModal, closeModal } from '../actions/modals'
+import { deleteComment, flagComment, loadEditableComment, toggleEditing } from 'ello-brains/actions/comments'
+import { openModal, closeModal } from 'ello-brains/actions/modals'
 import Editor, { getEditorId } from '../components/editor/Editor'
 import { CommentBody, CommentHeader } from '../components/comments/CommentRenderables'
 import CommentTools from '../components/comments/CommentTools'

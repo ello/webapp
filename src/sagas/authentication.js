@@ -6,7 +6,7 @@ import {
   AUTHENTICATION,
   PROFILE,
 } from 'ello-brains/constants/action_types'
-import { getUserCredentials, refreshAuthenticationToken } from '../actions/authentication'
+import { getUserCredentials, refreshAuthenticationToken } from 'ello-brains/actions/authentication'
 
 const toMilliseconds = seconds => seconds * 1000
 

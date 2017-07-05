@@ -7,8 +7,8 @@ import { RELATIONSHIP_PRIORITY } from 'ello-brains/constants/relationship_types'
 import { selectPathname } from 'ello-brains/selectors/routing'
 import { selectIsLoggedIn } from 'ello-brains/selectors/authentication'
 import { selectActiveNotificationsType } from 'ello-brains/selectors/gui'
+import { trackEvent as trackEventAction } from 'ello-brains/actions/analytics'
 import { isElloAndroid } from '../lib/jello'
-import { trackEvent as trackEventAction } from '../actions/analytics'
 
 let shouldCallInitialTrackPage = false
 const agent = isElloAndroid() ? 'android' : 'webapp'

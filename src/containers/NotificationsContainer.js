@@ -20,9 +20,9 @@ import {
   selectIsNotificationsUnread,
 } from 'ello-brains/selectors/gui'
 import { selectStreamType } from 'ello-brains/selectors/stream'
-import { trackEvent } from '../actions/analytics'
-import { setLastAnnouncementSeen, setNotificationScrollY, toggleNotifications } from '../actions/gui'
-import { loadNotifications, markAnnouncementRead } from '../actions/notifications'
+import { trackEvent } from 'ello-brains/actions/analytics'
+import { setLastAnnouncementSeen, setNotificationScrollY, toggleNotifications } from 'ello-brains/actions/gui'
+import { loadNotifications, markAnnouncementRead } from 'ello-brains/actions/notifications'
 import {
   BubbleIcon,
   HeartIcon,

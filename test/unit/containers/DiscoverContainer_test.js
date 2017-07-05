@@ -2,7 +2,7 @@ import {
   loadCategoryPosts,
   loadDiscoverPosts,
   getCategories,
-} from '../../../src/actions/discover'
+} from 'ello-brains/actions/discover'
 import { getStreamAction } from '../../../src/containers/DiscoverContainer'
 
 describe('DiscoverContainer', () => {

@@ -6,7 +6,7 @@ import {
   selectProfileIsCollaborateable,
   selectProfileIsHireable,
 } from 'ello-brains/selectors/profile'
-import { trackEvent } from '../actions/analytics'
+import { trackEvent } from 'ello-brains/actions/analytics'
 import { preferenceToggleChanged } from '../helpers/junk_drawer'
 import OnboardingCollaborate from '../components/onboarding/OnboardingCollaborate'
 

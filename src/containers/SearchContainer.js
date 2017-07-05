@@ -10,9 +10,9 @@ import {
   selectPropsQueryType,
 } from 'ello-brains/selectors/routing'
 import { selectIsLoggedIn } from 'ello-brains/selectors/authentication'
-import { updateQueryParams } from '../helpers/uri_helper'
-import { searchForPosts, searchForUsers } from '../actions/search'
-import { trackEvent } from '../actions/analytics'
+import { updateQueryParams } from 'ello-brains/helpers/uri_helper'
+import { searchForPosts, searchForUsers } from 'ello-brains/actions/search'
+import { trackEvent } from 'ello-brains/actions/analytics'
 import { hideSoftKeyboard } from '../lib/jello'
 import SearchControl from '../components/forms/SearchControl'
 import StreamContainer from './StreamContainer'

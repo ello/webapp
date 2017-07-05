@@ -8,7 +8,7 @@ import { autoRehydrate } from 'redux-persist'
 import createSagaMiddleware, { END } from 'redux-saga'
 import { fromJSON } from 'transit-immutable-js'
 import { rehydrate } from 'glamor'
-import * as reducers from './reducers'
+import * as reducers from 'ello-brains/reducers'
 import rootSaga from './sagas'
 
 const reducer = combineReducers({ ...reducers })

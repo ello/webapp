@@ -6,10 +6,11 @@ import debounce from 'lodash/debounce'
 import { selectParamsInvitationCode } from 'ello-brains/selectors/params'
 import { FORM_CONTROL_STATUS as STATUS } from 'ello-brains/constants/status_types'
 import { selectAvailability, selectEmail } from 'ello-brains/selectors/profile'
+import { trackEvent } from 'ello-brains/actions/analytics'
+import { getInviteEmail } from 'ello-brains/actions/invitations'
+import { checkAvailability, resetAvailability } from 'ello-brains/actions/profile'
+import { invite } from 'ello-brains/networking/api'
 import { isAndroid } from '../../lib/jello'
-import { trackEvent } from '../../actions/analytics'
-import { getInviteEmail } from '../../actions/invitations'
-import { checkAvailability, resetAvailability } from '../../actions/profile'
 import EmailControl from './EmailControl'
 import FormButton from './FormButton'
 import JoinForm from './JoinForm'
@@ -19,7 +20,6 @@ import {
   getEmailStateFromServer,
   getInvitationCodeStateFromServer,
 } from './Validators'
-import { invite } from '../../networking/api'
 import {
   addPageVisibilityObserver,
   removePageVisibilityObserver,

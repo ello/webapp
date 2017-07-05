@@ -15,9 +15,9 @@ import memjs from 'memjs'
 import kue from 'kue'
 import crypto from 'crypto'
 import httpProxy from 'http-proxy'
-import { updateStrings as updateTimeAgoStrings } from './../lib/time_ago_in_words'
+import { trackPostViews as trackPostViewsPath } from 'ello-brains/networking/api'
+import { updateStrings as updateTimeAgoStrings } from '../lib/time_ago_in_words'
 import { addOauthRoute, currentToken } from './oauth'
-import { trackPostViews as trackPostViewsPath } from './../networking/api'
 
 function handleZlibError(error) {
   if (error.code === 'Z_BUF_ERROR') {

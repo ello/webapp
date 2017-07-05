@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { openModal, closeModal } from '../../actions/modals'
+import { openModal, closeModal } from 'ello-brains/actions/modals'
 import { DragIcon, XIcon } from '../assets/Icons'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 import { css, hover, parent } from '../../styles/jss'

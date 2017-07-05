@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { forgotPassword } from 'ello-brains/networking/api'
 import { MainView } from '../views/MainView'
 import Emoji from '../assets/Emoji'
 import EmailControl from '../forms/EmailControl'
 import FormButton from '../forms/FormButton'
-import { forgotPassword } from '../../networking/api'
 
 const SubmittedState = () =>
   <div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Mousetrap from 'mousetrap'
 import { SHORTCUT_KEYS } from 'ello-brains/constants/application_types'
-import { closeModal, closeAlert } from '../actions/modals'
+import { closeModal, closeAlert } from 'ello-brains/actions/modals'
 import { Modal } from '../components/modals/Modal'
 
 export function mapStateToProps(state) {

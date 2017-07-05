@@ -33,12 +33,12 @@ import {
   selectIsMobile,
 } from 'ello-brains/selectors/gui'
 import { selectStreamType } from 'ello-brains/selectors/stream'
-import { trackEvent } from '../actions/analytics'
+import { trackEvent } from 'ello-brains/actions/analytics'
 import {
   setLastDiscoverBeaconVersion,
   setLastFollowingBeaconVersion,
-} from '../actions/gui'
-import { openModal } from '../actions/modals'
+} from 'ello-brains/actions/gui'
+import { openModal } from 'ello-brains/actions/modals'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import {
   Hero,

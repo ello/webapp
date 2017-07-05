@@ -14,16 +14,16 @@ import {
 } from 'ello-brains/selectors/profile'
 import { FORM_CONTROL_STATUS as STATUS } from 'ello-brains/constants/status_types'
 import { selectIsCompleterActive } from 'ello-brains/selectors/gui'
+import { setIsCompleterActive } from 'ello-brains/actions/editor'
+import { saveProfile } from 'ello-brains/actions/profile'
+import { profilePath } from 'ello-brains/networking/api'
 import { hideSoftKeyboard } from '../../lib/jello'
-import { setIsCompleterActive } from '../../actions/editor'
-import { saveProfile } from '../../actions/profile'
 import { MarkerIcon } from '../assets/Icons'
 import BioControl from '../forms/BioControl'
 import NameControl from '../forms/NameControl'
 import LinksControl from '../forms/LinksControl'
 import TextControl from '../forms/TextControl'
 import { isValidURL } from '../forms/Validators'
-import { profilePath } from '../../networking/api'
 
 function mapStateToProps(state) {
   return {

@@ -10,7 +10,7 @@ import {
   // loadCommunities,
   loadDiscoverPosts,
   // loadFeaturedUsers,
-} from '../actions/discover'
+} from 'ello-brains/actions/discover'
 import { Discover } from '../components/views/Discover'
 
 // TODO: Move to a selector

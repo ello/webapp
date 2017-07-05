@@ -13,9 +13,8 @@ import {
   selectMutedCount,
 } from 'ello-brains/selectors/profile'
 import { selectDPI, selectIsMobile } from 'ello-brains/selectors/gui'
-import { preferenceToggleChanged } from '../helpers/junk_drawer'
-import { openModal, closeModal } from '../actions/modals'
-import { logout } from '../actions/authentication'
+import { openModal, closeModal } from 'ello-brains/actions/modals'
+import { logout } from 'ello-brains/actions/authentication'
 import {
   availableToggles,
   blockedUsers,
@@ -27,7 +26,9 @@ import {
   saveAvatar,
   saveCover,
   saveProfile,
-} from '../actions/profile'
+} from 'ello-brains/actions/profile'
+import { profilePath } from 'ello-brains/networking/api'
+import { preferenceToggleChanged } from '../helpers/junk_drawer'
 import Emoji from '../components/assets/Emoji'
 import { SettingsLink } from '../components/buttons/Buttons'
 import AdultPostsDialog from '../components/dialogs/AdultPostsDialog'
@@ -53,7 +54,6 @@ import StreamContainer from '../containers/StreamContainer'
 import InfoForm from '../components/forms/InfoForm'
 import { MainView } from '../components/views/MainView'
 import { isElloAndroid } from '../lib/jello'
-import { profilePath } from '../networking/api'
 
 function getOriginalAssetUrl(asset) {
   return (

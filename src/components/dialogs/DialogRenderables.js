@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import ImageAsset from '../../components/assets/ImageAsset'
 import { DismissButton } from '../../components/buttons/Buttons'
-import { dialogStyle as baseDialogStyle } from './Dialog'
+import Dialog, { dialogStyle as baseDialogStyle } from './Dialog'
 import { css, hover, media, select } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
@@ -106,4 +106,10 @@ BadgeSummaryDialog.propTypes = {
   badges: PropTypes.object.isRequired,
   trackEvent: PropTypes.func.isRequired,
 }
+
+export const FourTwentyDialog = () =>
+  <Dialog
+    title="Take a breath. You're doing Ello way too fast. A few more seconds. That's better."
+    body="More Ello? Refresh the page to continue."
+  />
 

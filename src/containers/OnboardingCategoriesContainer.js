@@ -5,9 +5,9 @@ import { push } from 'react-router-redux'
 import { selectOnboardingCategoriesFiltered } from 'ello-brains/selectors/categories'
 import { ONBOARDING_VERSION } from 'ello-brains/constants/application_types'
 import { selectUuid } from 'ello-brains/selectors/profile'
+import { getCategories } from 'ello-brains/actions/discover'
+import { followCategories, saveProfile, splitFinish } from 'ello-brains/actions/profile'
 import OnboardingCategories from '../components/onboarding/OnboardingCategories'
-import { getCategories } from '../actions/discover'
-import { followCategories, saveProfile, splitFinish } from '../actions/profile'
 
 const CATEGORIES_NEEDED = 1
 

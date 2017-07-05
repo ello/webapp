@@ -17,13 +17,13 @@ import {
 } from 'ello-brains/selectors/post'
 import { selectColumnCount, selectInnerHeight } from 'ello-brains/selectors/gui'
 import { selectStreamType } from 'ello-brains/selectors/stream'
+import { loadComments, loadPostDetail, loadRelatedPosts } from 'ello-brains/actions/posts'
+import { postLovers, postReposters } from 'ello-brains/networking/api'
+import { loadUserDrawer } from 'ello-brains/actions/user'
 import { scrollToPosition, scrollToSelector } from '../lib/jello'
-import { loadComments, loadPostDetail, loadRelatedPosts } from '../actions/posts'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { Paginator } from '../components/streams/Paginator'
 import { PostDetail, PostDetailError } from '../components/views/PostDetail'
-import { postLovers, postReposters } from '../networking/api'
-import { loadUserDrawer } from '../actions/user'
 
 function mapStateToProps(state, props) {
   return {

@@ -7,7 +7,20 @@ import chai, { expect } from 'chai'
 import chaiImmutable from 'chai-immutable'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
+import {
+  setApiDomain,
+  setAuthClientId,
+  setAuthDomain,
+  setErrorRenderables,
+  setPromoHost,
+  setStreamRenderables,
+  setUseLocalEmoji,
+  setZeroRenderables,
+} from 'ello-brains/networking/api'
 import chaiSaga from './support/saga_helpers'
+import * as StreamRenderables from '../src/components/streams/StreamRenderables'
+import * as ErrorRenderables from '../src/components/errors/Errors'
+import * as ZeroRenderables from '../src/components/zeros/Zeros'
 
 chai.use(chaiSaga)
 chai.use(chaiImmutable)
@@ -51,4 +64,14 @@ window.matchMedia = window.matchMedia || function () {
     removeListener: () => {},
   }
 }
+
+// setup brains with env stuff
+setApiDomain(ENV.API_DOMAIN)
+setAuthClientId(ENV.AUTH_CLIENT_ID)
+setAuthDomain(ENV.AUTH_DOMAIN)
+setErrorRenderables(ErrorRenderables)
+setPromoHost(ENV.PROMO_HOST)
+setStreamRenderables(StreamRenderables)
+setUseLocalEmoji(ENV.USE_LOCAL_EMOJI)
+setZeroRenderables(ZeroRenderables)
 

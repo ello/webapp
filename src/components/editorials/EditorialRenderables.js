@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { Link } from 'react-router'
-import { loadPostStream } from '../../actions/editorials'
+import { loadPostStream } from 'ello-brains/actions/editorials'
 import InvitationFormContainer from '../../containers/InvitationFormContainer'
 import StreamContainer from '../../containers/StreamContainer'
 import BackgroundImage from '../assets/BackgroundImage'

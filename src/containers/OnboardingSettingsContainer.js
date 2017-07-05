@@ -11,8 +11,8 @@ import {
   selectIsInfoFormBlank,
 } from 'ello-brains/selectors/profile'
 import { selectDPI, selectIsMobile } from 'ello-brains/selectors/gui'
-import { trackEvent } from '../actions/analytics'
-import { saveAvatar, saveCover } from '../actions/profile'
+import { trackEvent } from 'ello-brains/actions/analytics'
+import { saveAvatar, saveCover } from 'ello-brains/actions/profile'
 import OnboardingSettings from '../components/onboarding/OnboardingSettings'
 
 

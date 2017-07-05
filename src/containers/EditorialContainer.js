@@ -17,7 +17,7 @@ import {
 import { selectDPI } from 'ello-brains/selectors/gui'
 import { selectPost, selectPostAuthor, selectPostDetailPath, selectPostLoved } from 'ello-brains/selectors/post'
 import type { EditorialProps } from 'ello-brains/types/flowtypes'
-import { trackEvent } from '../actions/analytics'
+import { trackEvent } from 'ello-brains/actions/analytics'
 import {
   ErrorEditorial,
   InviteEditorial,

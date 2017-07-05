@@ -12,9 +12,9 @@ import {
   selectUserUsername,
 } from 'ello-brains/selectors/user'
 import { selectDeviceSize } from 'ello-brains/selectors/gui'
-import { openModal, closeModal } from '../actions/modals'
-import { updateRelationship } from '../actions/relationships'
-import { flagUser } from '../actions/user'
+import { openModal, closeModal } from 'ello-brains/actions/modals'
+import { updateRelationship } from 'ello-brains/actions/relationships'
+import { flagUser } from 'ello-brains/actions/user'
 import BlockMuteDialog from '../components/dialogs/BlockMuteDialog'
 import FlagDialog from '../components/dialogs/FlagDialog'
 import BlockMuteButton from '../components/relationships/BlockMuteButton'

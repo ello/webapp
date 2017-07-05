@@ -22,9 +22,6 @@ const baseStyle = css(
   media(s.minBreak2, { maxWidth: 240, height: 320 }),
 )
 
-export const emojiRegex = /\s?:{1}(\w+|\+|-):{0}$/
-export const userRegex = /(\s|^)@{1}\w+/
-
 export default class Completer extends PureComponent {
 
   static propTypes = {

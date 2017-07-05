@@ -40,6 +40,10 @@ import {
   selectInvitationEmail,
 } from 'ello-brains/selectors/invitations'
 import { selectIsMobile } from 'ello-brains/selectors/gui'
+import { closeModal, openModal } from 'ello-brains/actions/modals'
+import { trackEvent } from 'ello-brains/actions/analytics'
+import { inviteUsers } from 'ello-brains/actions/invitations'
+import { collabWithUser, hireUser } from 'ello-brains/actions/user'
 import {
   UserCompact,
   UserInvitee,
@@ -49,10 +53,6 @@ import {
 import MessageDialog from '../components/dialogs/MessageDialog'
 import ShareDialog from '../components/dialogs/ShareDialog'
 import { BadgeSummaryDialog, TextMarkupDialog } from '../components/dialogs/DialogRenderables'
-import { closeModal, openModal } from '../actions/modals'
-import { trackEvent } from '../actions/analytics'
-import { inviteUsers } from '../actions/invitations'
-import { collabWithUser, hireUser } from '../actions/user'
 
 export function makeMapStateToProps() {
   return (state, props) => {

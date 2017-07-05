@@ -11,7 +11,6 @@ import {
   selectTextToolsCoordinates,
   selectTextToolsStates,
 } from 'ello-brains/selectors/gui'
-import { selectCompletions } from '../selectors/editor'
 import {
   autoCompleteUsers,
   loadEmojis,
@@ -19,8 +18,9 @@ import {
   setIsCompleterActive,
   setIsTextToolsActive,
   setTextToolsCoordinates,
-} from '../actions/editor'
-import { autoCompleteLocation } from '../actions/profile'
+} from 'ello-brains/actions/editor'
+import { autoCompleteLocation } from 'ello-brains/actions/profile'
+import { selectCompletions } from '../selectors/editor'
 import Completer from '../components/completers/Completer'
 import TextTools from '../components/editor/TextTools'
 import { addInputObject, removeInputObject } from '../components/editor/InputComponent'

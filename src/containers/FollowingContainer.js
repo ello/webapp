@@ -1,5 +1,5 @@
 import React from 'react'
-import { loadFollowing } from '../actions/stream'
+import { loadFollowing } from 'ello-brains/actions/stream'
 import { Following } from '../components/views/Following'
 
 const FollowingContainer = () =>

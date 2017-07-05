@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { selectDeviceSize } from 'ello-brains/selectors/gui'
+import { openModal, closeModal } from 'ello-brains/actions/modals'
+import { updateBuyLink } from 'ello-brains/actions/editor'
 import {
   ArrowIcon,
   BrowseIcon,
@@ -12,8 +14,6 @@ import {
   ReplyAllIcon,
   XIcon,
 } from '../assets/Icons'
-import { openModal, closeModal } from '../../actions/modals'
-import { updateBuyLink } from '../../actions/editor'
 import BuyLinkDialog from '../dialogs/BuyLinkDialog'
 
 import { css, disabled, hover, media, modifier, parent, select } from '../../styles/jss'

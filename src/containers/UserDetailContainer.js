@@ -16,10 +16,10 @@ import {
 } from 'ello-brains/selectors/user'
 import { selectHasSaidHelloTo } from 'ello-brains/selectors/gui'
 import { selectStreamType } from 'ello-brains/selectors/stream'
-import { sayHello } from '../actions/zeros'
+import { sayHello } from 'ello-brains/actions/zeros'
 import {
   loadUserDetail, loadUserLoves, loadUserPosts, loadUserUsers, loadUserFollowing,
-} from '../actions/user'
+} from 'ello-brains/actions/user'
 import { ErrorState4xx } from '../components/errors/Errors'
 import { UserDetail, UserDetailError } from '../components/views/UserDetail'
 

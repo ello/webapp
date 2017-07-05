@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { searchPosts, searchUsers } from 'ello-brains/networking/api'
 import FormControl from './FormControl'
 import { SearchIcon } from '../assets/Icons'
 import { TabListButtons } from '../tabs/TabList'
-import { searchPosts, searchUsers } from '../../networking/api'
 import { css, media, select } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
