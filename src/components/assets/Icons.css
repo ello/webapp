@@ -446,6 +446,10 @@
   stroke-width: 0.5;
 }
 
+.PostActionButton {
+  display: inline-block;
+}
+
 .PostActionButton > .BrowseIcon > g {
   fill: transparent;
 }
