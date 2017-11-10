@@ -11,8 +11,10 @@ export const SHORTCUT_KEYS = {
   FOLLOWING: 'f',
   FULLSCREEN: 'g m',
   HELP: '?',
+  NEXT_POST: 'j',
   NOTIFICATIONS: 'r',
   OMNIBAR: '2',
+  PREVIOUS_POST: 'k',
   SEARCH: 's',
   TOGGLE_LAYOUT: '=',
 }

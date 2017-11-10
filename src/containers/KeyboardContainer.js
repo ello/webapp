@@ -10,6 +10,7 @@ import { SHORTCUT_KEYS } from '../constants/application_types'
 import { selectIsLoggedIn } from '../selectors/authentication'
 import { selectDiscoverKeyType, selectIsGridMode } from '../selectors/gui'
 import { selectIsModalActive } from '../selectors/modal'
+import { scrollToNextPost, scrollToPreviousPost } from '../helpers/scroll_helper'
 
 function mapStateToProps(state) {
   return {
@@ -87,6 +88,10 @@ class KeyboardContainer extends Component {
         }
         dispatch(openModal(<HelpDialog />))
       })
+
+      Mousetrap.bind(SHORTCUT_KEYS.NEXT_POST, () => scrollToNextPost())
+
+      Mousetrap.bind(SHORTCUT_KEYS.PREVIOUS_POST, () => scrollToPreviousPost())
     }
   }
 
