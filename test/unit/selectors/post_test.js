@@ -149,45 +149,6 @@ describe('post selectors', () => {
     })
   })
 
-  context('#addAssetToRegion', () => {
-    it('returns the region if the kind is not text', () => {
-      const region = Immutable.fromJS({
-        kind: 'text',
-      })
-      expect(selector.addAssetToRegion(region, {})).to.equal(region)
-    })
-
-    it('sets an asset on the region from links', () => {
-      const region = Immutable.fromJS({
-        kind: 'image',
-        links: { assets: '1' },
-      })
-      const assets = Immutable.fromJS({ 1: 'blah' })
-      const newRegion = selector.addAssetToRegion(region, assets)
-      expect(newRegion.get('asset')).to.equal('blah')
-    })
-
-    it('sets an asset on the region from the content url for notifications', () => {
-      const region = Immutable.fromJS({
-        kind: 'image',
-        content: { url: '/asset/attachment/1/' },
-      })
-      const assets = Immutable.fromJS({ 1: 'blah' })
-      const newRegion = selector.addAssetToRegion(region, assets)
-      expect(newRegion.get('asset')).to.equal('blah')
-    })
-
-    it('doesn\'t set an asset on the region if no asset exists', () => {
-      const region = Immutable.fromJS({
-        kind: 'image',
-        links: { assets: '2' },
-      })
-      const assets = Immutable.fromJS({ 1: 'blah' })
-      const newRegion = selector.addAssetToRegion(region, assets)
-      expect(newRegion).to.equal(region)
-    })
-  })
-
   context('#selectPostAuthorId', () => {
     it('returns the post authorId', () => {
       const props = { postId: '666' }

@@ -81,12 +81,27 @@ methods.removePageId = (state, pageName, id) => {
   return state
 }
 
-function normalizeModel(type, model) {
-  if (type !== MAPPING_TYPES.POSTS) { return model }
+function normalizePostContentRegion(model, field, state) {
+  return model.get(field, Immutable.List()).map((region, index) => {
+    const id = `${model.get('id')}-${index}`
+    const assetId = region.getIn(['links', 'assets'])
+    if (region.get('kind') === 'image' && assetId) {
+      const asset = state.getIn(['assets', assetId])
+      if (asset) {
+        return region.merge({ id, asset })
+      }
+    }
+    return region.merge({ id })
+  })
+}
 
-  const content = model.get('content', Immutable.List()).map((region, index) =>
-    region.set('id', `${model.get('id')}-${index}`))
-  return model.set('content', content)
+function normalizeModel(type, model, state) {
+  if (type !== MAPPING_TYPES.POSTS) { return model }
+  return model.merge({
+    content: normalizePostContentRegion(model, 'content', state),
+    summary: normalizePostContentRegion(model, 'summary', state),
+    repostContent: normalizePostContentRegion(model, 'repostContent', state),
+  })
 }
 
 methods.mergeModel = (state, type, params) => {
@@ -97,7 +112,7 @@ methods.mergeModel = (state, type, params) => {
   params.id = `${params.id}`
   return state.setIn(
     [type, params.id],
-    normalizeModel(type, state.getIn([type, params.id], Immutable.Map()).mergeDeep(params)),
+    normalizeModel(type, state.getIn([type, params.id], Immutable.Map()).mergeDeep(params), state),
   )
 }
 
