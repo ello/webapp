@@ -2,9 +2,8 @@ import Immutable from 'immutable'
 import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { COMMENTS } from '../constants/mapping_types'
-import { selectAssets } from '../selectors/assets'
 import { selectId as selectProfileId, selectIsStaff } from '../selectors/profile'
-import { addAssetToRegion, selectPosts } from '../selectors/post'
+import { selectPosts } from '../selectors/post'
 import { selectUsers } from './user'
 
 export const selectPropsCommentId = (state, props) =>
@@ -23,10 +22,7 @@ export const selectComment = createSelector(
 // Properties on the comments reducer
 export const selectCommentAuthorId = createSelector([selectComment], comment => comment.get('authorId'))
 export const selectCommentBody = createSelector([selectComment], comment => comment.get('body'))
-export const selectCommentContent = createSelector(
-  [selectComment, selectAssets], (comment, assets) =>
-    comment.get('content', Immutable.Map()).map(region => addAssetToRegion(region, assets)),
-)
+export const selectCommentContent = createSelector([selectComment], comment => (comment.get('content') || Immutable.Map()))
 export const selectCommentCreatedAt = createSelector([selectComment], comment => comment.get('createdAt'))
 export const selectCommentOriginalPostId = createSelector([selectComment], comment => comment.get('originalPostId'))
 export const selectCommentPostId = createSelector([selectComment], comment => comment.get('postId'))

@@ -7,7 +7,6 @@ import { selectCategoryCollection } from './categories'
 import { LOAD_STREAM_REQUEST } from '../constants/action_types'
 import { COMMENTS, POSTS } from '../constants/mapping_types'
 import { selectIsPostDetail } from './routing'
-import { selectAssets } from './assets'
 import { numberToHuman } from '../lib/number_to_human'
 import { selectIsLoggedIn } from './authentication'
 import { selectIsGridMode, selectIsMobile } from './gui'
@@ -38,31 +37,11 @@ export const selectPost = createSelector(
   },
 )
 
-export const addAssetToRegion = (region, assets) => {
-  if (region.get('kind') === 'image') {
-    let assetId = region.getIn(['links', 'assets'], -1)
-    if (assetId < 0) {
-      const assetMatch = region.getIn(['content', 'url'], '').match(/asset\/attachment\/(\d+)\//)
-      if (assetMatch) {
-        assetId = `${assetMatch[1]}`
-      }
-    }
-    const asset = assets.get(assetId)
-    if (asset) {
-      return region.set('asset', asset)
-    }
-  }
-  return region
-}
-
 // Properties on the post reducer
 export const selectPostAuthorId = createSelector([selectPost], post => post.get('authorId'))
 export const selectPostBody = createSelector([selectPost], post => post.get('body'))
 export const selectPostCommentsCount = createSelector([selectPost], post => countProtector(post.get('commentsCount')))
-export const selectPostContent = createSelector(
-  [selectPost, selectAssets], (post, assets) =>
-    (post.get('content') || Immutable.Map()).map(region => addAssetToRegion(region, assets)),
-)
+export const selectPostContent = createSelector([selectPost], post => (post.get('content') || Immutable.Map()))
 export const selectPostContentWarning = createSelector([selectPost], post => post.get('contentWarning'))
 export const selectPostCreatedAt = createSelector([selectPost], post => post.get('createdAt'))
 export const selectPostHref = createSelector([selectPost], post => post.get('href'))
@@ -71,18 +50,12 @@ export const selectPostIsAdultContent = createSelector([selectPost], post => pos
 export const selectPostMetaAttributes = createSelector([selectPost], post => post.get('metaAttributes', Immutable.Map()))
 export const selectPostLoved = createSelector([selectPost], post => post.get('loved'))
 export const selectPostLovesCount = createSelector([selectPost], post => countProtector(post.get('lovesCount')))
-export const selectPostRepostContent = createSelector(
-  [selectPost, selectAssets], (post, assets) =>
-    (post.get('repostContent') || Immutable.Map()).map(region => addAssetToRegion(region, assets)),
-)
+export const selectPostRepostContent = createSelector([selectPost], post => (post.get('repostContent') || Immutable.Map()))
 export const selectPostRepostId = createSelector([selectPost], post => post.get('repostId'))
 export const selectPostReposted = createSelector([selectPost], post => post.get('reposted'))
 export const selectPostRepostsCount = createSelector([selectPost], post => countProtector(post.get('repostsCount')))
 export const selectPostShowComments = createSelector([selectPost], post => post.get('showComments', false))
-export const selectPostSummary = createSelector(
-  [selectPost, selectAssets], (post, assets) =>
-    (post.get('summary') || Immutable.Map()).map(region => addAssetToRegion(region, assets)),
-)
+export const selectPostSummary = createSelector([selectPost], post => (post.get('summary') || Immutable.Map()))
 export const selectPostToken = createSelector([selectPost], post => post.get('token'))
 export const selectPostViewsCount = createSelector([selectPost], post => countProtector(post.get('viewsCount')))
 export const selectPostViewsCountRounded = createSelector(
