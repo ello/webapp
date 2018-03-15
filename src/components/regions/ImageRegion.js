@@ -246,17 +246,24 @@ class ImageRegion extends PureComponent {
   }
 
   getImageSourceSet() {
-    const { isGridMode } = this.props
+    const { isGridMode, isPostDetail } = this.props
     const images = []
     if (!this.isBasicAttachment()) {
       if (isGridMode) {
         images.push(`${this.attachment.getIn(['mdpi', 'url'])} 375w`)
         images.push(`${this.attachment.getIn(['hdpi', 'url'])} 1920w`)
       } else {
+        if (isPostDetail) {
+          images.push(`${this.attachment.getIn(['mdpi', 'url'])} 180w`)
+          images.push(`${this.attachment.getIn(['hdpi', 'url'])} 750w`)
+          images.push(`${this.attachment.getIn(['xhdpi', 'url'])} 1500w`)
+          images.push(`${this.attachment.getIn(['optimized', 'url'])} 1920w`)
+          return images
+        }
         images.push(`${this.attachment.getIn(['mdpi', 'url'])} 180w`)
         images.push(`${this.attachment.getIn(['hdpi', 'url'])} 750w`)
         images.push(`${this.attachment.getIn(['xhdpi', 'url'])} 1500w`)
-        images.push(`${this.attachment.getIn(['optimized', 'url'])} 1920w`)
+        return images
       }
     }
     return images.join(', ')
