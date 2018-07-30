@@ -563,6 +563,10 @@ function parseQueryType(state, type, stream, pathname, query, variables) {
       models = stream.posts
       parser = parsePost
       break;
+    case 'userNetworkStream':
+      models = stream.users
+      parser = parseUser
+      break;
     case 'editorialStream':
       models = stream.editorials
       parser = parseEditorial
