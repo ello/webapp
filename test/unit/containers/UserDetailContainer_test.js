@@ -5,13 +5,17 @@ describe('UserDetailContainer', () => {
     it('returns the correct stream action for following', () => {
       const vo = { type: 'following', username: 'archer' }
       const action = getStreamAction(vo)
-      expect(action.payload.endpoint.path).to.contain('/~archer/following')
+      expect(action.payload.query).to.contain('userNetworkStream')
+      expect(action.payload.variables.username).to.equal('archer')
+      expect(action.payload.variables.kind).to.equal('FOLLOWING')
     })
 
     it('returns the correct stream action for followers', () => {
       const vo = { type: 'followers', username: 'archer' }
       const action = getStreamAction(vo)
-      expect(action.payload.endpoint.path).to.contain('/~archer/followers')
+      expect(action.payload.query).to.contain('userNetworkStream')
+      expect(action.payload.variables.username).to.equal('archer')
+      expect(action.payload.variables.kind).to.equal('FOLLOWERS')
     })
 
     it('returns the correct stream action for loves', () => {

@@ -8,7 +8,7 @@ import { ErrorState } from '../components/errors/Errors'
 import userPostStreamQuery from '../queries/userPostStream'
 import userLoveStreamQuery from '../queries/userLoveStreamQuery'
 import userQuickSearchQuery from '../queries/userQuickSearchQuery'
-import userNetworkStreamQuery from '../queries/userNetworkStreamQuery'
+import { userNetworkStreamQuery } from '../queries/userNetworkStreamQuery'
 import { findUserQuery } from '../queries/findUser'
 
 export function flagUser(username, kind) {
