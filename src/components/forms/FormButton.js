@@ -49,9 +49,8 @@ const FormButton = ({ children, className, ...rest }) =>
   </button>)
 
 FormButton.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
   className: PropTypes.string,
 }
 
 export default FormButton
-

@@ -38,23 +38,6 @@ function mapStateToProps(state, props) {
   const pathname = selectPathname(state)
   const viewName = selectViewNameFromRoute(state, props)
 
-  if (viewName === 'postDetail') {
-    const images = selectPostMetaImages(state, props)
-    const hasImages = images.schemaImages && images.schemaImages.length
-    return {
-      canonicalUrl: selectPostMetaCanonicalUrl(state, props),
-      card: hasImages ? 'summary_large_image' : 'summary',
-      description: selectPostMetaDescription(state, props),
-      embeds: selectPostMetaEmbeds(state, props),
-      images,
-      pathname,
-      robots: selectPostMetaRobots(state, props),
-      title: selectPostMetaTitle(state, props),
-      url: selectPostMetaUrl(state, props),
-      viewName,
-    }
-  }
-
   const baseTags = {
     description: META.DESCRIPTION,
     image: META.IMAGE,
@@ -64,6 +47,24 @@ function mapStateToProps(state, props) {
     title: META.TITLE,
     url: `${ENV.AUTH_DOMAIN}${pathname}`,
     viewName,
+  }
+
+  if (viewName === 'postDetail') {
+    const images = selectPostMetaImages(state, props)
+    const hasImages = images.schemaImages && images.schemaImages.length
+    return {
+      canonicalUrl: selectPostMetaCanonicalUrl(state, props),
+      card: hasImages ? 'summary_large_image' : 'summary',
+      description: selectPostMetaDescription(state, props) || baseTags.description,
+      embeds: selectPostMetaEmbeds(state, props),
+      images,
+      image: baseTags.description,
+      pathname,
+      robots: selectPostMetaRobots(state, props),
+      title: selectPostMetaTitle(state, props) || baseTags.title,
+      url: selectPostMetaUrl(state, props) || baseTags.url,
+      viewName,
+    }
   }
 
   switch (viewName) {
