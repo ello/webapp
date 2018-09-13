@@ -37,6 +37,11 @@ export const selectShortDescription = createSelector([selectArtistInvite], ai =>
 export const selectSlug = createSelector([selectArtistInvite], ai => ai.get('slug'))
 export const selectStatus = createSelector([selectArtistInvite], ai => ai.get('status'))
 export const selectSubmissionBodyBlock = createSelector([selectArtistInvite], ai => ai.get('submissionBodyBlock'))
+export const selectSubmitURL = createSelector([selectArtistInvite], ai => (
+  ai.get('slug') === 'ello-celebrates-diversity' ?
+    'https://www.talenthouse.com/i/advertising-inspired-work-for-the-drum'
+    : null
+  ))
 export const selectTitle = createSelector([selectArtistInvite], ai => ai.get('title'))
 
 // Artist Invite Submissions

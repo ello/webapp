@@ -13,6 +13,7 @@ import * as ElloAndroidInterface from '../lib/android_interface'
 import { scrollToPosition } from '../lib/jello'
 import {
   selectArtistInvite,
+  selectSubmitURL,
   selectClosedAt,
   selectDescription,
   selectGuide,
@@ -48,6 +49,7 @@ function mapStateToProps(state, props) {
     slug: selectSlug(state, props),
     status: selectStatus(state, props),
     submissionBodyBlock: selectSubmissionBodyBlock(state, props),
+    submitURL: selectSubmitURL(state, props),
     title: selectTitle(state, props),
     // other
     dpi: selectDPI(state),
@@ -75,6 +77,7 @@ class ArtistInviteContainer extends PureComponent {
     slug: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
     submissionBodyBlock: PropTypes.string.isRequired,
+    submitURL: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     isCompletingOnboarding: PropTypes.bool.isRequired,
   }
@@ -126,8 +129,10 @@ class ArtistInviteContainer extends PureComponent {
   }
 
   onClickSubmit = () => {
-    const { artistInvite, dispatch, isLoggedIn } = this.props
-    if (isLoggedIn) {
+    const { artistInvite, submitURL, dispatch, isLoggedIn } = this.props
+    if (submitURL) {
+      this.openSubmitURL()
+    } else if (isLoggedIn) {
       this.openArtistInviteOmnibar()
     } else {
       const { onClickOpenRegistrationRequestDialog } = this.context
@@ -139,6 +144,12 @@ class ArtistInviteContainer extends PureComponent {
       })
       onClickOpenRegistrationRequestDialog('artist-invites')
     }
+  }
+
+  openSubmitURL = () => {
+    const { submitURL } = this.props
+    const win = window.open(submitURL, '_blank')
+    win.focus()
   }
 
   openArtistInviteOmnibar = () => {

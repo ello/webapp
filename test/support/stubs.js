@@ -139,6 +139,16 @@ function stubUser(properties, shouldAdd = true) {
   return model
 }
 
+function stubArtistInvite(properties, shouldAdd = true) {
+  const defaultProps = {
+    slug: 'artist-invite',
+    title: 'Artist Invite',
+  }
+  const model = Immutable.fromJS({ ...commonProps, ...defaultProps, ...properties })
+  if (shouldAdd) { addToJSON('artistInvites', model) }
+  return model
+}
+
 function stubCategoryUser(properties, shouldAdd = true) {
   const defaultProps = { role: 'FEATURED' }
   const model = Immutable.fromJS({ ...commonProps, ...defaultProps, ...properties })
@@ -352,6 +362,8 @@ export function stub(model, properties) {
       return stubUser(properties)
     case 'categoryuser':
       return stubCategoryUser(properties)
+    case 'artistinvite':
+      return stubArtistInvite(properties)
     default:
       return null
   }
