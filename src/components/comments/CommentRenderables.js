@@ -8,10 +8,16 @@ import Avatar from '../assets/Avatar'
 export class CommentHeader extends PureComponent {
   static propTypes = {
     author: PropTypes.object.isRequired,
+    badge: PropTypes.string,
     commentId: PropTypes.string.isRequired,
   }
+
+  static defaultProps = {
+    badge: null,
+  }
+
   render() {
-    const { author, commentId } = this.props
+    const { author, commentId, badge } = this.props
     return (
       <header className="CommentHeader" key={`CommentHeader_${commentId}`}>
         <div className="CommentHeaderAuthor">
@@ -22,6 +28,7 @@ export class CommentHeader extends PureComponent {
               userId={`${author.get('id')}`}
               username={author.get('username')}
             />
+            {badge}
             <span
               className="CommentUsername DraggableUsername"
               data-priority={author.get('relationshipPriority', 'inactive')}

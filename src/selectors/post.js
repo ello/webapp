@@ -56,6 +56,7 @@ export const selectPostHref = createSelector([selectPost], post => post.get('hre
 export const selectPostId = createSelector([selectPost], post => post.get('id'))
 export const selectPostIsAdultContent = createSelector([selectPost], post => post.get('isAdultContent'))
 export const selectPostMetaAttributes = createSelector([selectPost], post => post.get('metaAttributes', Immutable.Map()))
+export const selectPostLinks = createSelector([selectPost], post => post.get('links', Immutable.Map()))
 export const selectPostLoved = createSelector([selectPost], post => post.get('loved'))
 export const selectPostLovesCount = createSelector([selectPost], post => countProtector(post.get('lovesCount')))
 export const selectPostRepostContent = createSelector([selectPost], post => (post.get('repostContent') || Immutable.Map()))
@@ -129,12 +130,12 @@ export const selectPostHasRelatedButton = createSelector(
 )
 
 // TODO: Pull other properties out of post.get('links')?
-export const selectPostRepostAuthorId = createSelector([selectPost], post =>
-  post.getIn(['links', 'repostAuthor', 'id']),
+export const selectPostRepostAuthorId = createSelector([selectPostLinks], links =>
+  links.getIn(['repostAuthor', 'id']),
 )
 
 export const selectPostCategories = createSelector(
-  [selectPost], post => post.getIn(['links', 'categories'], Immutable.List()),
+  [selectPostLinks, selectCategoryCollection], links => links.get('categories', Immutable.List()),
 )
 
 export const selectPostCategory = createSelector(
@@ -151,7 +152,7 @@ export const selectPostCategorySlug = createSelector(
 )
 
 export const selectPostCategoryPostIds = createSelector(
-  [selectPost], post => post.getIn(['links', 'categoryPosts'], Immutable.List()))
+  [selectPostLinks], links => links.get('categoryPosts', Immutable.List()))
 
 export const selectPostCategoryPosts = createSelector(
   [selectCategoryPostCollection, selectPostCategoryPostIds], (collection, cpIds) =>
@@ -307,8 +308,8 @@ export const selectPostFirstImage = createSelector(
 
 // Proxy selectors from the repost to the original post.
 
-export const selectOriginalPostId = createSelector([selectPost], post =>
-  post.getIn(['links', 'repostedSource', 'id'], null))
+export const selectOriginalPostId = createSelector([selectPostLinks], links =>
+  links.getIn(['repostedSource', 'id'], null))
 
 export const selectOriginalPostArtistInviteSubmission = (state, props) => {
   const postId = selectOriginalPostId(state, props)

@@ -3,8 +3,8 @@ import { createSelector } from 'reselect'
 import get from 'lodash/get'
 import { COMMENTS } from '../constants/mapping_types'
 import { selectId as selectProfileId, selectIsStaff } from '../selectors/profile'
-import { selectPosts } from '../selectors/post'
-import { selectUsers } from './user'
+import { selectPosts, selectPost, selectPostLinks, selectPostCategories } from '../selectors/post'
+import { selectUsers, selectUserCategories } from './user'
 
 export const selectPropsCommentId = (state, props) =>
   get(props, 'commentId') || get(props, 'comment', Immutable.Map()).get('id')
@@ -36,6 +36,49 @@ export const selectCommentAuthor = createSelector(
 
 export const selectCommentPost = createSelector(
   [selectPosts, selectCommentPostId], (posts, postId) => posts.get(postId, Immutable.Map()),
+)
+
+export const selectCommentPostCategories = (state, props) =>
+  selectPostCategories(state, { postId: selectCommentPostId(state, props) })
+
+export const selectCommentAuthorCategories = (state, props) =>
+  selectUserCategories(state, { userId: selectCommentAuthorId(state, props) })
+
+export const selectProps = (state, props) => props
+export const selectState = state => state
+
+export const selectCommentBadge = createSelector(
+  [selectCommentAuthorCategories, selectCommentPostCategories, selectState, selectProps], (authorCategories, postCategories, state, props) => {
+    const commentId = props.commentId
+    const comment = state.json.getIn(['comments', props.commentId]).toJS()
+    const postId = selectCommentPostId(state, props)
+    const post = selectPost(state, props).toJS()
+    const links = selectPostLinks(state, props).toJS()
+    const postCategoryIds = state.json.getIn(['posts', postId, 'links', 'categories'], Immutable.Map()).toJS()
+    const authorId = comment.authorId
+    const categoryUsers = state.json.get('categoryUsers')
+      .filter(cu => cu.get('userId') === authorId)
+      .valueSeq()
+      .toList()
+      .toJS()
+    if (authorId === '548729') {
+      console.log('=============== comment.js at line 49 ===============');
+      console.log({
+        postId,
+        post,
+        links,
+        postCategoryIds,
+        props,
+        commentId,
+        comment,
+        authorId,
+        categoryUsers,
+        authorCategories: authorCategories.toJS(),
+        postCategories: postCategories.toJS(),
+      })
+    }
+    return '' // authorCategories.get('')
+  },
 )
 
 export const selectCommentPostAuthorId = createSelector(

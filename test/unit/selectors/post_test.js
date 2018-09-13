@@ -493,7 +493,10 @@ describe('post selectors', () => {
     it('returns the post categories list', () => {
       const props = { postId: '666' }
       const result = selector.selectPostCategories(state, props)
-      expect(result).to.equal(Immutable.List([1, 4]))
+      expect(result).to.equal(Immutable.List([
+        state.json.getIn(['categories', 1]),
+        state.json.getIn(['categories', 4]),
+      ]))
     })
   })
 
