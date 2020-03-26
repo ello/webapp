@@ -7,6 +7,7 @@ import {
   PROFILE,
   UPDATE_STATE_FROM_NATIVE,
 } from '../constants/action_types'
+import { REQUEST_STATUS } from '../constants/status_types'
 
 export const initialState = Immutable.Map({
   accessToken: null,
@@ -14,7 +15,7 @@ export const initialState = Immutable.Map({
   expirationDate: null,
   expiresIn: null,
   isLoggedIn: false,
-  confirmationCodeIsValid: false,
+  confirmationCodeRequestStatus: REQUEST_STATUS.NOT_ASKED,
   refreshToken: null,
   tokenType: null,
   publicToken: Immutable.Map({
@@ -36,10 +37,15 @@ export default (state = initialState, action) => {
         ...auth,
         expirationDate: new Date((auth.createdAt + auth.expiresIn) * 1000),
       }))
+    case AUTHENTICATION.CHECK_CONFIRMATION_CODE_REQUEST:
+      return state.merge({
+        confirmationCodeRequestStatus: REQUEST_STATUS.LOADING,
+      })
     case AUTHENTICATION.CHECK_CONFIRMATION_CODE_SUCCESS:
     case AUTHENTICATION.CHECK_CONFIRMATION_CODE_FAILURE:
       return state.merge({
-        confirmationCodeIsValid: action.payload.serverStatus === 204,
+        confirmationCodeRequestStatus: action.payload.serverStatus === 204 ?
+          REQUEST_STATUS.SUCCESS : REQUEST_STATUS.FAILURE,
       })
     case AUTHENTICATION.LOGOUT_SUCCESS:
     case AUTHENTICATION.LOGOUT_FAILURE:
@@ -67,6 +73,7 @@ export default (state = initialState, action) => {
       auth = action.payload.authentication
       if (auth) {
         return auth.set(
+          'confirmationCodeRequestStatus': REQUEST_STATUS.NOT_ASKED,
           'expirationDate', new Date((auth.get('createdAt') + auth.get('expiresIn')) * 1000),
         )
       }

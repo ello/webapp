@@ -22,12 +22,13 @@ import { trackEvent } from '../../actions/analytics'
 import { getInviteEmail } from '../../actions/invitations'
 import { sendEmailForConfirmation, checkConfirmationCode } from '../../actions/authentication'
 import { checkAvailability, resetAvailability } from '../../actions/profile'
-import { FORM_CONTROL_STATUS as STATUS } from '../../constants/status_types'
+import { ERROR_MESSAGES } from '../../constants/locales/en'
+import { FORM_CONTROL_STATUS as STATUS, REQUEST_STATUS } from '../../constants/status_types'
 import { isAndroid } from '../../lib/jello'
 import { invite } from '../../networking/api'
 import { selectParamsInvitationCode, selectParamsConfirmationCode } from '../../selectors/params'
 import { selectAvailability, selectEmail } from '../../selectors/profile'
-import { selectConfirmationCodeIsValid } from '../../selectors/authentication'
+import { selectConfirmationCodeRequestStatus } from '../../selectors/authentication'
 import { css, media, parent, descendent } from '../../styles/jss'
 import * as s from '../../styles/jso'
 
@@ -37,7 +38,7 @@ function mapStateToProps(state, props) {
     email: selectEmail(state),
     invitationCode: selectParamsInvitationCode(state, props),
     confirmationCode: selectParamsConfirmationCode(state, props),
-    confirmationCodeIsValid: selectConfirmationCodeIsValid(state),
+    confirmationCodeRequestStatus: selectConfirmationCodeRequestStatus(state),
   }
 }
 
@@ -87,7 +88,7 @@ class RegistrationRequestForm extends Component {
   }
 
   componentWillMount() {
-    const { email, confirmationCode, confirmationCodeIsValid} = this.props
+    const { email, confirmationCode, confirmationCodeRequestStatus } = this.props
     var emailFormStatus = STATUS.INDETERMINATE
     var confirmationCodeFormStatus = STATUS.INDETERMINATE
     if (email && confirmationCode) {
@@ -113,7 +114,7 @@ class RegistrationRequestForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { availability, confirmationCodeIsValid } = nextProps
+    const { availability, confirmationCodeRequestStatus } = nextProps
 
     if (nextProps.email !== this.props.email) {
       this.checkForInviteCode(nextProps)
@@ -129,8 +130,8 @@ class RegistrationRequestForm extends Component {
       }
     }
 
-    if (confirmationCodeIsValid) {
-      this.validateConfirmationCode(confirmationCodeIsValid)
+    if (confirmationCodeRequestStatus) {
+      this.validateConfirmationCode(confirmationCodeRequestStatus)
     }
   }
 
@@ -196,7 +197,7 @@ class RegistrationRequestForm extends Component {
 
   onClickBack = (e) => {
     e.preventDefault()
-    this.setState({ emailFormStatus: STATUS.INDETERMINATE })
+    this.setState({ emailFormStatus: STATUS.SUCCESS })
   }
 
   onSubmitEmail = (e) => {
@@ -213,6 +214,8 @@ class RegistrationRequestForm extends Component {
   onSubmitCode = (e) => {
     e.preventDefault()
     const { confirmationCodeFormStatus, codeValue, emailValue } = this.state
+    console.log('=============== RegistrationRequestForm.js at line 217 ===============');
+    console.log({ confirmationCodeFormStatus, codeValue, emailValue })
     if (confirmationCodeFormStatus === STATUS.SUCCESS) {
       this.setState({ confirmationCodeFormStatus: STATUS.REQUEST })
       this.props.dispatch(checkConfirmationCode({ email: emailValue, code: codeValue }))
@@ -242,9 +245,8 @@ class RegistrationRequestForm extends Component {
     this.props.dispatch(checkAvailability(vo))
   }
 
-  validateConfirmationCode(isValid) {
-    const { dispatch } = this.props
-    if (isValid) {
+  validateConfirmationCode(status) {
+    if (status === REQUEST_STATUS.SUCCESS) {
       this.setState({ confirmationCodeFormStatus: STATUS.SUBMITTED })
     }
   }
@@ -350,7 +352,10 @@ class RegistrationRequestForm extends Component {
 
   renderConfirmationCodeForm() {
     const { confirmationCodeFormStatus, emailValue } = this.state
-    const { confirmationCode } = this.props
+    const { confirmationCode, confirmationCodeRequestStatus } = this.props
+    const message = (confirmationCodeRequestStatus === REQUEST_STATUS.FAILURE) && ERROR_MESSAGES.CONFIRMATION_CODE.INVALID
+    console.log('=============== RegistrationRequestForm.js at line 357 ===============');
+    console.log({ message, confirmationCodeRequestStatus })
     const isValid = isFormValid([confirmationCodeFormStatus])
     const isRequesting = confirmationCodeFormStatus === STATUS.REQUEST
     const onClickResendCode = this.onClickResendCode
@@ -360,12 +365,12 @@ class RegistrationRequestForm extends Component {
           Join The Creators Network.
         </h1>
         <h2>
-          <BackIcon />
-          <button onClick={this.onClickBack}>Back</button>
+          <button onClick={this.onClickBack}><BackIcon /> Back</button>
         </h2>
         <h2>
           You will receive a confirmation code via email.  Please click the link, or enter the code below.
         </h2>
+        {message && <p>{message}</p>}
         <form
           className="AuthenticationForm"
           noValidate="novalidate"

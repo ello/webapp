@@ -2,7 +2,7 @@
 export const selectAccessToken = state => state.authentication.get('accessToken')
 export const selectExpirationDate = state => state.authentication.get('expirationDate')
 export const selectIsLoggedIn = state => state.authentication.get('isLoggedIn')
-export const selectConfirmationCodeIsValid = state => state.profile.get('confirmationCodeIsValid')
+export const selectConfirmationCodeRequestStatus = state => state.authentication.get('confirmationCodeRequestStatus')
 export const selectRefreshToken = state => state.authentication.get('refreshToken')
 export const selectPublicToken = state => state.authentication.getIn(['publicToken', 'accessToken'])
 export const selectPublicTokenExpirationDate = state =>
