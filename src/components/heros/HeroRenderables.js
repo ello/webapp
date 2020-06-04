@@ -69,18 +69,21 @@ const profileStyle = css(
 )
 
 export const HeroProfile = ({ dpi, sources, userId, useGif, isRoleAdministrator, userHasRoles }) =>
-  (<div className={profileStyle}>
-    <BackgroundImage
-      className="inHeroProfile hasOverlay6"
-      dpi={dpi}
-      sources={sources}
-      useGif={useGif}
-    />
-    <UserContainer userId={userId} type="profile" />
-    <HeroUserRolesButton isRoleAdministrator={isRoleAdministrator} userHasRoles={userHasRoles} />
-    <HeroShareUserButton />
-    <HeroScrollToContentButton />
-  </div>)
+  (userId === '2694355' || userId === 2694355 ? null : (
+    <div className={profileStyle}>
+      <BackgroundImage
+        className="inHeroProfile hasOverlay6"
+        dpi={dpi}
+        sources={sources}
+        useGif={useGif}
+      />
+      <UserContainer userId={userId} type="profile" />
+      <HeroUserRolesButton isRoleAdministrator={isRoleAdministrator} userHasRoles={userHasRoles} />
+      <HeroShareUserButton />
+      <HeroScrollToContentButton />
+    </div>
+   )
+  )
 
 HeroProfile.propTypes = {
   dpi: PropTypes.string.isRequired,
