@@ -214,8 +214,6 @@ class RegistrationRequestForm extends Component {
   onSubmitCode = (e) => {
     e.preventDefault()
     const { confirmationCodeFormStatus, codeValue, emailValue } = this.state
-    console.log('=============== RegistrationRequestForm.js at line 217 ===============');
-    console.log({ confirmationCodeFormStatus, codeValue, emailValue })
     if (confirmationCodeFormStatus === STATUS.SUCCESS) {
       this.setState({ confirmationCodeFormStatus: STATUS.REQUEST })
       this.props.dispatch(checkConfirmationCode({ email: emailValue, code: codeValue }))
@@ -354,8 +352,6 @@ class RegistrationRequestForm extends Component {
     const { confirmationCodeFormStatus, emailValue } = this.state
     const { confirmationCode, confirmationCodeRequestStatus } = this.props
     const message = (confirmationCodeRequestStatus === REQUEST_STATUS.FAILURE) && ERROR_MESSAGES.CONFIRMATION_CODE.INVALID
-    console.log('=============== RegistrationRequestForm.js at line 357 ===============');
-    console.log({ message, confirmationCodeRequestStatus })
     const isValid = isFormValid([confirmationCodeFormStatus])
     const isRequesting = confirmationCodeFormStatus === STATUS.REQUEST
     const onClickResendCode = this.onClickResendCode

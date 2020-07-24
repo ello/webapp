@@ -117,3 +117,17 @@ export function acceptDataPolicy() {
     payload: { now: now },
   }
 }
+
+export function closeClubhouseAlert() {
+  const now = moment().toDate()
+  return {
+    type: GUI.CLOSED_CLUBHOUSE_ALERT,
+    payload: { now: now },
+  }
+}
+
+export function resetClubhouseAlert() {
+  return {
+    type: GUI.RESET_CLUBHOUSE_ALERT,
+  }
+}
