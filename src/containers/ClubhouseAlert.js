@@ -94,7 +94,7 @@ class ClubhouseAlert extends PureComponent {
 
   onClickAccept = () => {
     const { dispatch } = this.props
-    const redirectUrl = 'https://tlnt.at/3h7mdIo'
+    const redirectUrl = 'https://tlnt.at/3g6BOHY'
     const win = window.open(redirectUrl, '_blank')
     win.focus()
     this.closeModalAndAlert()
