@@ -173,17 +173,15 @@ export const selectBroadcast = createSelector(
 
 export const selectShouldShowDataPolicy = createSelector(
   [selectAcceptedDataPolicy],
-  (acceptedDataPolicy) => {
-    return !acceptedDataPolicy
-  },
+  acceptedDataPolicy => !acceptedDataPolicy,
 )
 
 export const selectShouldShowClubhouseAlert = createSelector(
   [selectDidCloseClubhouseAlert],
   (closedClubhouseAlert) => {
     const now = moment()
-    const showDate = moment("2020-07-30")
-    const hideDate = moment("2020-08-16")
+    const showDate = moment('2020-07-30')
+    const hideDate = moment('2020-09-03')
     if (now.isBefore(showDate) || now.isAfter(hideDate)) {
       return false
     }
