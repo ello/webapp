@@ -128,6 +128,7 @@ class AppContainer extends Component {
       dispatch(getNavCategories())
       dispatch(loadBadges())
     }
+
     if (nextProps.shouldShowClubhouseAlert) {
       dispatch(openModal(<ClubhouseAlert />))
     } else if (nextProps.showCreatorTypeModal) {
