@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { closeClubhouseAlert } from '../actions/gui'
 import { closeModal } from '../actions/modals'
-import { css, select, media, descendent } from '../styles/jss'
-import * as s from '../styles/jso'
+import { css, media, descendent } from '../styles/jss'
 
-export function mapStateToProps(_) {
+export function mapStateToProps() {
   return {
   }
 }
@@ -93,15 +91,13 @@ class ClubhouseAlert extends PureComponent {
   }
 
   onClickAccept = () => {
-    const { dispatch } = this.props
-    const redirectUrl = 'https://tlnt.at/3g6BOHY'
+    const redirectUrl = 'https://tlnt.at/2G4EMzy'
     const win = window.open(redirectUrl, '_blank')
     win.focus()
     this.closeModalAndAlert()
   }
 
   onClickClose = () => {
-    const { dispatch } = this.props
     this.closeModalAndAlert()
   }
 
@@ -115,13 +111,14 @@ class ClubhouseAlert extends PureComponent {
     return (
       <div className={clubhouseAlertStyle}>
         <h2>
-          Make an Impact!
+          Let&rsquo;s build a more creative world with Club.House
         </h2>
         <p>
-          Take this quick survey to help make a more creative world through Art Education.
+          Club.House is a place for Young Creators to learn and collaborate with brands,
+          celebrities and educators.
         </p>
         <div className="actions">
-          <button className="main" onClick={this.onClickAccept}>Let’s Create Change Together</button>
+          <button className="main" onClick={this.onClickAccept}>Join the Club</button>
           <button className="main" onClick={this.onClickClose}>No Thanks</button>
         </div>
       </div>)

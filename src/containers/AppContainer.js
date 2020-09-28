@@ -130,8 +130,7 @@ class AppContainer extends Component {
     }
     if (nextProps.shouldShowClubhouseAlert) {
       dispatch(openModal(<ClubhouseAlert />))
-    }
-    else if (nextProps.showCreatorTypeModal) {
+    } else if (nextProps.showCreatorTypeModal) {
       setTimeout(() => {
         dispatch(openModal(<CreatorTypesModal />))
       }, 5000)
