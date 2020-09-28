@@ -182,12 +182,12 @@ export const selectShouldShowClubhouseAlert = createSelector(
     if (closedClubhouseAlert) {
       return false
     }
-    const now = moment()
-    const showDate = moment('2020-07-30')
-    const hideDate = moment('2020-09-02')
-    if (now.isBefore(showDate) || now.isAfter(hideDate)) {
-      return false
-    }
+    // const now = moment()
+    // const showDate = moment('2020-07-30')
+    // const hideDate = moment('2020-09-02')
+    // if (now.isBefore(showDate) || now.isAfter(hideDate)) {
+    //   return false
+    // }
     return true
   },
 )
