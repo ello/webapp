@@ -118,16 +118,16 @@ export function acceptDataPolicy() {
   }
 }
 
-export function closeClubhouseAlert() {
+export function closeGamingAlert() {
   const now = moment().toDate()
   return {
-    type: GUI.CLOSED_CLUBHOUSE_ALERT,
+    type: GUI.CLOSED_GAMING_ALERT,
     payload: { now: now },
   }
 }
 
-export function resetClubhouseAlert() {
+export function resetGamingAlert() {
   return {
-    type: GUI.RESET_CLUBHOUSE_ALERT,
+    type: GUI.RESET_GAMING_ALERT,
   }
 }

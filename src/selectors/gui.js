@@ -42,7 +42,7 @@ export const selectTextToolsStates = state => state.gui.get('textToolsStates')
 export const selectOnboardToArtistInvite = state => state.gui.get('onboardToArtistInvite')
 export const selectIsCompletingOnboardingWithArtistInvite = state => state.gui.get('isCompletingOnboardToArtistInvite')
 export const selectAcceptedDataPolicy = state => state.gui.get('acceptedDataPolicy')
-export const selectDidCloseClubhouseAlert = state => state.gui.get('closedClubhouseAlert.1')
+export const selectDidCloseGamingAlert = state => state.gui.get('closedGamingAlert')
 
 // Memoized selectors
 export const selectActiveNotificationScrollPosition = createSelector(
@@ -176,10 +176,10 @@ export const selectShouldShowDataPolicy = createSelector(
   acceptedDataPolicy => !acceptedDataPolicy,
 )
 
-export const selectShouldShowClubhouseAlert = createSelector(
-  [selectDidCloseClubhouseAlert],
-  (closedClubhouseAlert) => {
-    if (closedClubhouseAlert) {
+export const selectShouldShowGamingAlert = createSelector(
+  [selectDidCloseGamingAlert],
+  (closedGamingAlert) => {
+    if (closedGamingAlert) {
       return false
     }
     // const now = moment()

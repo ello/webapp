@@ -8,7 +8,7 @@ import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
 import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
-import { resetClubhouseAlert } from '../actions/gui'
+import { resetGamingAlert } from '../actions/gui'
 import { NavbarLoggedIn, NavbarLoggedOut } from '../components/navbar/NavbarRenderables'
 import { ADD_NEW_IDS_TO_RESULT, SET_LAYOUT_MODE } from '../constants/action_types'
 import { scrollToPosition } from '../lib/jello'
@@ -192,7 +192,7 @@ class NavbarContainer extends PureComponent {
   onClickLogin = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('clicked_nav_login'))
-    dispatch(resetClubhouseAlert())
+    dispatch(resetGamingAlert())
   }
 
   onClickSignup = () => {
@@ -303,4 +303,3 @@ class NavbarContainer extends PureComponent {
 }
 
 export default connect(mapStateToProps)(NavbarContainer)
-
