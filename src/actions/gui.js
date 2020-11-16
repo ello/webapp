@@ -117,17 +117,3 @@ export function acceptDataPolicy() {
     payload: { now: now },
   }
 }
-
-export function closeGamingAlert() {
-  const now = moment().toDate()
-  return {
-    type: GUI.CLOSED_GAMING_ALERT,
-    payload: { now: now },
-  }
-}
-
-export function resetGamingAlert() {
-  return {
-    type: GUI.RESET_GAMING_ALERT,
-  }
-}

@@ -29,12 +29,11 @@ import ModalContainer from '../containers/ModalContainer'
 import NavbarContainer from '../containers/NavbarContainer'
 import OmnibarContainer from '../containers/OmnibarContainer'
 import DataPolicy from '../containers/DataPolicy'
-import GamingAlert from '../containers/GamingAlert'
 import ViewportContainer from '../containers/ViewportContainer'
 import { scrollToPosition, isLink } from '../lib/jello'
 import * as ElloAndroidInterface from '../lib/android_interface'
 import { selectIsLoggedIn } from '../selectors/authentication'
-import { selectIsGridMode, selectShouldShowDataPolicy, selectShouldShowGamingAlert } from '../selectors/gui'
+import { selectIsGridMode, selectShouldShowDataPolicy } from '../selectors/gui'
 import { selectIsStaff, selectShowCreatorTypeModal } from '../selectors/profile'
 import { selectIsAuthenticationView } from '../selectors/routing'
 import { selectRandomAuthPageHeader } from '../selectors/page_headers'
@@ -46,7 +45,6 @@ function mapStateToProps(state) {
     authPromo,
     authPromoUser: authPromo ? selectUser(state, { userId: authPromo.get('userId') }) : Map(),
     shouldShowDataPolicy: selectShouldShowDataPolicy(state),
-    shouldShowGamingAlert: selectShouldShowGamingAlert(state),
     isAuthenticationView: selectIsAuthenticationView(state),
     isLoggedIn: selectIsLoggedIn(state),
     isStaff: selectIsStaff(state),
@@ -61,7 +59,6 @@ class AppContainer extends Component {
     authPromoUser: PropTypes.object,
     children: PropTypes.node.isRequired,
     shouldShowDataPolicy: PropTypes.bool.isRequired,
-    shouldShowGamingAlert: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     isAuthenticationView: PropTypes.bool.isRequired,
     isGridMode: PropTypes.bool.isRequired,
@@ -129,9 +126,7 @@ class AppContainer extends Component {
       dispatch(loadBadges())
     }
 
-    if (nextProps.shouldShowGamingAlert) {
-      dispatch(openModal(<GamingAlert />))
-    } else if (nextProps.showCreatorTypeModal) {
+    if (nextProps.showCreatorTypeModal) {
       setTimeout(() => {
         dispatch(openModal(<CreatorTypesModal />))
       }, 5000)
@@ -139,7 +134,7 @@ class AppContainer extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return ['isAuthenticationView', 'isLoggedIn', 'params', 'children', 'shouldShowDataPolicy', 'shouldShowGamingAlert'].some(prop =>
+    return ['isAuthenticationView', 'isLoggedIn', 'params', 'children', 'shouldShowDataPolicy'].some(prop =>
       nextProps[prop] !== this.props[prop],
     )
   }
