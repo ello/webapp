@@ -43,6 +43,7 @@ export const FOOTER_LINKS = [
   { label: 'Apps', to: '/wtf/resources/apps/' },
   { label: 'Terms', to: '/wtf/policies/terms/' },
   { label: 'Privacy', to: '/wtf/policies/privacy/' },
+  { label: 'Careers', to: 'https://start.talenthouse.com' },
 ]
 
 export const META = {
