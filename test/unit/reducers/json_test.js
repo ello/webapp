@@ -491,33 +491,33 @@ describe('json reducer', () => {
       it('returns state if there is no response')
       context('and it should not update the result', () => {
         it('calls #parseLinked and #addModels')
-          // // TODO: need to figure out how to pass an action through the method
-          // methodsCalledWithActions(
-          //   [subject.methods, subject.methods],
-          //   ['parseLinked', 'addModels'],
-          //   [
-          //     ACTION_TYPES.COMMENT.EDITABLE_SUCCESS,
-          //     ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS,
-          //     ACTION_TYPES.LOAD_STREAM_SUCCESS,
-          //     ACTION_TYPES.POST.EDITABLE_SUCCESS,
-          //     ACTION_TYPES.USER.DETAIL_SUCCESS,
-          //   ],
-          // )
+        // // TODO: need to figure out how to pass an action through the method
+        // methodsCalledWithActions(
+        //   [subject.methods, subject.methods],
+        //   ['parseLinked', 'addModels'],
+        //   [
+        //     ACTION_TYPES.COMMENT.EDITABLE_SUCCESS,
+        //     ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS,
+        //     ACTION_TYPES.LOAD_STREAM_SUCCESS,
+        //     ACTION_TYPES.POST.EDITABLE_SUCCESS,
+        //     ACTION_TYPES.USER.DETAIL_SUCCESS,
+        //   ],
+        // )
       })
 
       context('and it should update the result', () => {
         it('calls #parseLinked, #addParentPostIdToComments, and #updateResult')
-          // methodsCalledWithActions(
-          //   [subject.methods, subject.methods, subject.methods],
-          //   ['parseLinked', 'addParentPostIdToComments', 'updateResult'],
-          //   [
-          //     ACTION_TYPES.COMMENT.EDITABLE_SUCCESS,
-          //     ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS,
-          //     ACTION_TYPES.LOAD_STREAM_SUCCESS,
-          //     ACTION_TYPES.POST.EDITABLE_SUCCESS,
-          //     ACTION_TYPES.USER.DETAIL_SUCCESS,
-          //   ],
-          // )
+        // methodsCalledWithActions(
+        //   [subject.methods, subject.methods, subject.methods],
+        //   ['parseLinked', 'addParentPostIdToComments', 'updateResult'],
+        //   [
+        //     ACTION_TYPES.COMMENT.EDITABLE_SUCCESS,
+        //     ACTION_TYPES.LOAD_NEXT_CONTENT_SUCCESS,
+        //     ACTION_TYPES.LOAD_STREAM_SUCCESS,
+        //     ACTION_TYPES.POST.EDITABLE_SUCCESS,
+        //     ACTION_TYPES.USER.DETAIL_SUCCESS,
+        //   ],
+        // )
       })
     })
 

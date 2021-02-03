@@ -125,7 +125,7 @@ export const Notification = ({
   createdAt,
   notifier,
   summary,
-  }) => {
+}) => {
   const hasAsset = summary && summary.assets && summary.assets.length > 0
   return (
     <div className={classNames(`Notification ${notificationStyle}`, className, { hasAsset })}>

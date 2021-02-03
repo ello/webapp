@@ -139,7 +139,7 @@ const asideStyle = css(
 const CommentContent = (
   { activeType, avatar, hasEditor, isInlineCommenting, isLoggedIn, post, streamAction },
   { onToggleInlineCommenting },
-  ) => {
+) => {
   let editorOrButton = null
   if (isLoggedIn && ElloAndroidInterface.supportsNativeEditor()) {
     editorOrButton = <LaunchNativeCommentEditorButton avatar={avatar} post={post} />

@@ -594,7 +594,7 @@ function parseQueryType(state, type, stream, pathname, query, variables) {
 function parseStream(state, { meta, payload: { response: { data }, pathname, query, variables } }) {
   return Object.keys(data).reduce((s, key) =>
     parseQueryType(s, key, data[key], meta.resultKey || pathname, query, variables),
-    state,
+  state,
   )
 }
 

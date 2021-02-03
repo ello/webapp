@@ -279,7 +279,7 @@ export const UserAddedAsFeaturedNotification = (props) => {
           {category.get('name')}
         </Link>
         {'. '}
-        <Link to={'https://ello.co/wtf/support/featured-members/'}>
+        <Link to="https://ello.co/wtf/support/featured-members/">
           {'Learn more here.'}
         </Link>
       </p>

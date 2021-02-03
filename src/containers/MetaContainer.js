@@ -92,9 +92,9 @@ function mapStateToProps(state, props) {
       }
     case 'authentication': {
       if (pathname.startsWith('/confirm')) {
-          return {
-            ...baseTags,
-          }
+        return {
+          ...baseTags,
+        }
       }
 
       switch (pathname) {

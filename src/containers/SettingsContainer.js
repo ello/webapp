@@ -64,15 +64,15 @@ const creatorTypeStyle = css(
 
 function getOriginalAssetUrl(asset) {
   return (
-  asset && asset.original && asset.original.url ?
-    <a
-      href={asset.original.url}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
+    asset && asset.original && asset.original.url ?
+      <a
+        href={asset.original.url}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
       View original image
-    </a> :
-    <span>&mdash;</span>
+      </a> :
+      <span>&mdash;</span>
   )
 }
 
@@ -235,7 +235,7 @@ class SettingsContainer extends PureComponent {
         onConfirm={this.onConfirmAccountWasDeleted}
         onDismiss={this.closeModal}
       />
-    , 'isDangerZone'))
+      , 'isDangerZone'))
   }
 
   onConfirmAccountWasDeleted = () => {
@@ -559,7 +559,7 @@ class SettingsContainer extends PureComponent {
                       ref={(comp) => { this.exportButton = comp }}
                     >
                         Request Export
-                      </button>
+                    </button>
                   }
                 </div>
               </TreePanel>

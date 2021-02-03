@@ -64,17 +64,17 @@ PaginatorLoader.propTypes = {
 }
 
 export const Paginator = ({
-    className,
-    hasShowMoreButton,
-    isCentered,
-    isHidden,
-    loadNextPage,
-    messageText,
-    to,
-    totalPages,
-    totalPagesRemaining,
-    nextPagePath,
-  }) => {
+  className,
+  hasShowMoreButton,
+  isCentered,
+  isHidden,
+  loadNextPage,
+  messageText,
+  to,
+  totalPages,
+  totalPagesRemaining,
+  nextPagePath,
+}) => {
   const message = getMessage({ hasShowMoreButton, messageText, totalPages, totalPagesRemaining })
   if (!message.length) { return null }
   let el

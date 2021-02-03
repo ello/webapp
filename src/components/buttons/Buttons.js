@@ -77,7 +77,7 @@ export const categoryLinkTextStyle = css(
   media(
     s.minBreak2,
     after({ top: 32 })),
-    select('& .CheckIconSM', { top: 5 }),
+  select('& .CheckIconSM', { top: 5 }),
 )
 
 // -------------------------------------

@@ -46,7 +46,7 @@ const emailFormWrapperStyle = css(
   s.relative,
   s.zIndex1,
   descendent('a:link, a:visited, a:hover, a:focus, a:active', {
-      textDecoration: 'underline',
+    textDecoration: 'underline',
   }),
   descendent('label[for]', {
     paddingLeft: 5,
@@ -54,7 +54,7 @@ const emailFormWrapperStyle = css(
   descendent('input[type="checkbox"]', {
     MozAppearance: 'checkbox',
     WebkitAppearance: 'checkbox',
-  })
+  }),
 )
 const clickHereStyle = css({
   textDecoration: 'underline',
@@ -89,8 +89,8 @@ class RegistrationRequestForm extends Component {
 
   componentWillMount() {
     const { email, confirmationCode, confirmationCodeRequestStatus } = this.props
-    var emailFormStatus = STATUS.INDETERMINATE
-    var confirmationCodeFormStatus = STATUS.INDETERMINATE
+    let emailFormStatus = STATUS.INDETERMINATE
+    let confirmationCodeFormStatus = STATUS.INDETERMINATE
     if (email && confirmationCode) {
       emailFormStatus = STATUS.SUBMITTED
       confirmationCodeFormStatus = STATUS.SUCCESS
@@ -98,7 +98,7 @@ class RegistrationRequestForm extends Component {
 
     this.state = {
       emailState: { status: STATUS.INDETERMINATE, message: '' },
-      emailFormStatus: emailFormStatus,
+      emailFormStatus,
       confirmationCodeFormStatus: emailFormStatus,
       invitationCodeState: { status: STATUS.INDETERMINATE, message: '' },
       isTermsChecked: false,
@@ -159,23 +159,21 @@ class RegistrationRequestForm extends Component {
       }
       // This will end up landing on `validateEmailResponse` after fetching
       this.checkServerForAvailability({ email })
-    }
-    else if (currentStatus !== clientState.status) {
+    } else if (currentStatus !== clientState.status) {
       this.setState({ emailState: clientState })
     }
   }
 
   onChangeCodeControl = ({ confirmation_code }) => {
     const { confirmationCodeFormStatus } = this.state
-    const codeValue = confirmation_code || ""
+    const codeValue = confirmation_code || ''
     if (codeValue.length === 6) {
       this.setState({ confirmationCodeFormStatus: STATUS.SUCCESS })
-    }
-    else if (confirmationCodeFormStatus === STATUS.SUCCESS) {
+    } else if (confirmationCodeFormStatus === STATUS.SUCCESS) {
       this.setState({ confirmationCodeFormStatus: STATUS.FAILURE })
     }
 
-    this.setState({ codeValue: codeValue })
+    this.setState({ codeValue })
   }
 
   onChangeTermsControl = () => {
@@ -297,7 +295,7 @@ class RegistrationRequestForm extends Component {
     const termsMessage = emailFormStatus === STATUS.FAILURE && !isTermsChecked
       ? 'You must first accept the Terms and Privacy Policy' : null
     const showTermMessage = termsMessage && termsMessage.length
-    const termsCheckboxId = "termsCheckbox"
+    const termsCheckboxId = 'termsCheckbox'
     return (
       <div className={emailFormWrapperStyle}>
         <h1>
@@ -398,13 +396,12 @@ class RegistrationRequestForm extends Component {
     const { emailFormStatus, confirmationCodeFormStatus } = this.state
     if (confirmationCodeFormStatus === STATUS.SUBMITTED) {
       return this.renderSignupForm()
-    }
-    else if (emailFormStatus === STATUS.SUBMITTED) {
+    } else if (emailFormStatus === STATUS.SUBMITTED) {
       return this.renderConfirmationCodeForm()
     }
-    else {
-      return this.renderEmailForm()
-    }
+
+    return this.renderEmailForm()
+
   }
 }
 

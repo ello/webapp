@@ -72,7 +72,7 @@ const linkLabelStyle = css(
   parent('.no-touch .NavbarLink.IconOnly:hover >', after({ transitionDelay: '0.6s' })),
 )
 
- // TODO: Move over styles from Icons
+// TODO: Move over styles from Icons
 const linkStyle = css(
   s.relative,
   s.hv40,
@@ -122,16 +122,16 @@ const highlightingRules = {
 }
 
 export const NavbarLink = ({
-    className = '',
-    icon,
-    label,
-    onClick,
-    onDragLeave,
-    onDragOver,
-    onDrop,
-    pathname,
-    to,
-  }) => {
+  className = '',
+  icon,
+  label,
+  onClick,
+  onDragLeave,
+  onDragOver,
+  onDrop,
+  pathname,
+  to,
+}) => {
   const klassNames = classNames(
     'NavbarLink',
     className,

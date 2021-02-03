@@ -72,16 +72,14 @@ export function isValidEmail(value) {
 export function getEmailStateFromClient({ currentStatus, value, formStatus }) {
   if (!value && !value.length && currentStatus) {
     return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
-  }
-  else if (isValidEmail(value)) {
+  } else if (isValidEmail(value)) {
     return { status: STATUS.SUCCESS, message: ERROR.NONE }
-  }
-  else if (formStatus === STATUS.INDETERMINATE) {
+  } else if (formStatus === STATUS.INDETERMINATE) {
     return { status: STATUS.INDETERMINATE, message: ERROR.NONE }
   }
-  else {
-    return { status: STATUS.FAILURE, message: ERROR.EMAIL.INVALID }
-  }
+
+  return { status: STATUS.FAILURE, message: ERROR.EMAIL.INVALID }
+
 }
 
 export const isValidInvitationCode = value => value.match(/^\S+$/)

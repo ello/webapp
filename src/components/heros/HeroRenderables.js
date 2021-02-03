@@ -82,7 +82,7 @@ export const HeroProfile = ({ dpi, sources, userId, useGif, isRoleAdministrator,
       <HeroShareUserButton />
       <HeroScrollToContentButton />
     </div>
-   )
+  )
   )
 
 HeroProfile.propTypes = {

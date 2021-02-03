@@ -244,15 +244,15 @@ function LightBoxWrapper(WrappedComponent) {
       let newPostIdToSet = null
 
       switch (direction) {
-        case 'prev' :
+        case 'prev':
           newAssetIdToSet = assetIdToSetPrev
           newPostIdToSet = postIdToSetPrev
           break
-        case 'next' :
+        case 'next':
           newAssetIdToSet = assetIdToSetNext
           newPostIdToSet = postIdToSetNext
           break
-        default :
+        default:
           newAssetIdToSet = assetIdToSet
           newPostIdToSet = postIdToSet
       }
@@ -457,7 +457,7 @@ function LightBoxWrapper(WrappedComponent) {
       const assetsOffset = 6
       const indexOfSelected = postAssetIdPairs.findIndex(
         postAssetIdPair =>
-        (postAssetIdPair[0] === postIdToSet && postAssetIdPair[1] === assetIdToSet))
+          (postAssetIdPair[0] === postIdToSet && postAssetIdPair[1] === assetIdToSet))
       const indexLower = indexOfSelected > (assetsOffset - 1) ? (indexOfSelected - assetsOffset) : 0
       const indexHigher = indexOfSelected + assetsOffset
 

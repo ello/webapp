@@ -9,7 +9,7 @@ const h1Style = css(s.fontSize24)
 const navStyle = css(s.flex, s.py20)
 const buttonStyle = css(s.fontSize18, s.mr10)
 
-export default() =>
+export default () =>
   (<MainView className="StyleGuide">
     <header className={headerStyle}>
       <h1 className={h1Style}>Ello style guide</h1>
@@ -19,5 +19,5 @@ export default() =>
     </header>
   </MainView>)
 
-    // <StyleGuideIcons />
+// <StyleGuideIcons />
 

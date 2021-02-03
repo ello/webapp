@@ -275,7 +275,7 @@ export class UserProfileCard extends PureComponent {
         }
         <BackgroundImage
           className={classNames('inUserProfileCard hasOverlay6', { isMiniProfileCard })}
-          dpi={'xhdpi'}
+          dpi="xhdpi"
           sources={coverImage}
           to={`/${username}`}
         />

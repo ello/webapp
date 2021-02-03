@@ -24,20 +24,20 @@ const ZeroStates = ({
   onSubmitHello,
   userId,
   username,
-  }) =>
-    (<div className={`ZeroStates ${zeroStatesStyle}`}>
-      {isSelf && hasZeroPosts && !isElloAndroid() && <ZeroStateFirstPost />}
-      {!isSelf && hasZeroFollowers &&
-        <ZeroStateCreateRelationship {...{ userId, username }} />
+}) =>
+  (<div className={`ZeroStates ${zeroStatesStyle}`}>
+    {isSelf && hasZeroPosts && !isElloAndroid() && <ZeroStateFirstPost />}
+    {!isSelf && hasZeroFollowers &&
+    <ZeroStateCreateRelationship {...{ userId, username }} />
       }
-      {isLoggedIn && !isSelf && hasZeroPosts && !isElloAndroid() &&
-        <ZeroStateSayHello
-          onSubmit={() => onSubmitHello({ username })}
-          hasPosted={hasSaidHelloTo}
-          username={username}
-        />
+    {isLoggedIn && !isSelf && hasZeroPosts && !isElloAndroid() &&
+    <ZeroStateSayHello
+      onSubmit={() => onSubmitHello({ username })}
+      hasPosted={hasSaidHelloTo}
+      username={username}
+    />
       }
-    </div>)
+  </div>)
 ZeroStates.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   isSelf: PropTypes.bool.isRequired,

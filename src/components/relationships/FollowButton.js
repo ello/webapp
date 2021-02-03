@@ -79,7 +79,7 @@ const labelStyle = media(s.minBreak2,
   ),
 )
 
-    // Hints...
+// Hints...
 export const getNextPriority = (currentPriority) => {
   switch (currentPriority) {
     case RELATIONSHIP_PRIORITY.INACTIVE:
