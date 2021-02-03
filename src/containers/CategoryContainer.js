@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { CategoryCard } from '../components/categories/CategoryRenderables'
@@ -20,45 +20,39 @@ function mapStateToProps(state, props) {
   }
 }
 
-class CategoryContainer extends Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    slug: PropTypes.string.isRequired,
-    tileImageUrl: PropTypes.string,
-    isSubscribed: PropTypes.bool.isRequired,
-    isPromo: PropTypes.bool.isRequired,
-    categoryId: PropTypes.string.isRequired,
-  }
+export const CategoryContainer = ({
+  categoryId,
+  isPromo,
+  isSubscribed,
+  name,
+  slug,
+  tileImageUrl,
+}) => (
+  <CategoryCard
+    categoryId={categoryId}
+    imageUrl={tileImageUrl}
+    isPromo={isPromo}
+    isSubscribed={isSubscribed}
+    name={name}
+    to={`/discover/${slug}`}
+  />
+)
 
-  static defaultProps = {
-    tileImageUrl: null,
-  }
+CategoryContainer.propTypes = {
+  categoryId: PropTypes.string.isRequired,
+  isPromo: PropTypes.bool.isRequired,
+  isSubscribed: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
+  tileImageUrl: PropTypes.string,
+}
 
-  static contextTypes = {
-    onClickOpenRegistrationRequestDialog: PropTypes.func.isRequired,
-  }
+CategoryContainer.defaultProps = {
+  tileImageUrl: null,
+}
 
-  render() {
-    const {
-      categoryId,
-      isSubscribed,
-      isPromo,
-      name,
-      slug,
-      tileImageUrl,
-    } = this.props
-    return (
-      <CategoryCard
-        categoryId={categoryId}
-        name={name}
-        imageUrl={tileImageUrl}
-        to={`/discover/${slug}`}
-        isSubscribed={isSubscribed}
-        isPromo={isPromo}
-      />
-    )
-  }
+CategoryContainer.contextTypes = {
+  onClickOpenRegistrationRequestDialog: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps)(CategoryContainer)
-

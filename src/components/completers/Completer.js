@@ -35,14 +35,14 @@ export default class Completer extends PureComponent {
   }
 
   static defaultProps = {
-    className: null,
     deviceSize: null,
   }
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.state = {
       selectedIndex: 0,
-      scrollY: 0,
+      // scrollY: 0, // NOTE: reported by eslint as unused, therefore commented
     }
   }
 
@@ -72,9 +72,11 @@ export default class Completer extends PureComponent {
     }
   }
 
+  /* NOTE: reported by eslint as unused, therefore commented
   onScroll({ scrollY }) {
     this.setState({ scrollY })
   }
+  */
 
   nextSelection() {
     const { completions } = this.props

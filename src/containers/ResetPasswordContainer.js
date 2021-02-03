@@ -14,10 +14,11 @@ class ResetPasswordContainer extends PureComponent {
     location: PropTypes.object.isRequired,
   }
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+
     this.state = {
       passwordState: { status: STATUS.INDETERMINATE, message: '' },
-      formStatus: STATUS.INDETERMINATE,
       failureMessage: '',
     }
     this.passwordValue = ''
@@ -37,7 +38,6 @@ class ResetPasswordContainer extends PureComponent {
     }))
 
     if (newState.status === STATUS.SUCCESS) {
-      this.setState({ formStatus: STATUS.SUBMITTED })
       dispatch(action)
     } else if (newState.status !== currentStatus) {
       this.setState({ passwordState: newState })

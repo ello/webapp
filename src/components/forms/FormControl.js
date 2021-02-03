@@ -21,7 +21,9 @@ class FormControl extends Component {
     renderStatus: PropTypes.func,
     renderFeedback: PropTypes.func,
     status: PropTypes.string,
+    tabIndex: PropTypes.number,
     trimWhitespace: PropTypes.bool,
+    type: PropTypes.string,
     text: PropTypes.string,
   }
 

@@ -25,11 +25,6 @@ class CommentsAsListSimple extends PureComponent { // eslint-disable-line react/
     commentIds: PropTypes.object,
   }
 
-  static defaultProps = {
-    toggleLightBox: null,
-    commentIds: null,
-  }
-
   render() {
     const {
       toggleLightBox,

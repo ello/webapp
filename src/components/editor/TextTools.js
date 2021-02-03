@@ -104,19 +104,9 @@ export default class TextTools extends PureComponent {
     this.initialValue = text
   }
 
-  handleFocus = () => {
-    this.setState({ hasFocus: true })
-  }
-
-  handleBlur = () => {
-    this.setState({ hasFocus: false })
-  }
-
   handleChange = (e) => {
     const val = e.target.value
     this.setState({
-      hasValue: val.length,
-      isInitialValue: val === this.initialValue,
       text: val,
     })
   }

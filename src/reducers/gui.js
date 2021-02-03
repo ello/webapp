@@ -168,7 +168,6 @@ export default (state = initialState, action = { type: '' }) => {
       return state
     case LOCATION_CHANGE: {
       location = payload
-      const pathname = location.pathname
       return state.withMutations((s) => {
         s.set('isGridMode', getIsGridMode(state))
           .set('isNavbarHidden', false)

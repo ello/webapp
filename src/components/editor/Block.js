@@ -20,11 +20,6 @@ class Block extends PureComponent {
     linkURL: null,
   }
 
-  static defaultProps = {
-    data: '',
-    ref: 'editable',
-  }
-
   removeBlock = () => {
     const { onRemoveBlock, uid } = this.props
     onRemoveBlock(uid)

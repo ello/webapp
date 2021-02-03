@@ -32,10 +32,15 @@ class SearchControl extends Component {
 
   static propTypes = {
     activeType: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    id: PropTypes.string,
+    label: PropTypes.string,
+    name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    text: PropTypes.string,
+    placeholder: PropTypes.string,
     tabs: PropTypes.array.isRequired,
+    text: PropTypes.string,
   }
 
   static defaultProps = {

@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { createSelector } from 'reselect'
 import { selectParamsUsername } from './params'
 import {

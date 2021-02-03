@@ -61,7 +61,6 @@ function LightBoxWrapper(WrappedComponent) {
         postIdToSetNext: null,
         queuePostIdsArray: null,
         oldestQueuePostId: null,
-        newestQueuePostId: null,
         innerWidth: this.props.innerWidth,
         innerHeight: this.props.innerHeight,
         resize: false,
@@ -471,7 +470,6 @@ function LightBoxWrapper(WrappedComponent) {
       this.setState({
         queuePostIdsArray: postIds,
         oldestQueuePostId: postIds[0],
-        newestQueuePostId: postIds.slice(-1)[0],
       })
 
       return postIds

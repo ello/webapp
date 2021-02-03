@@ -81,25 +81,25 @@ const mapStateToProps = (state, props) => {
 class ArtistInviteSubmissionsContainer extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    hasLoaded: PropTypes.bool,
+    hasSubmissions: PropTypes.bool,
+    innerWidth: PropTypes.number.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     links: PropTypes.object.isRequired,
+    pathname: PropTypes.string.isRequired,
+    selectedKey: PropTypes.string.isRequired,
+    sendResultStatus: PropTypes.func,
     slug: PropTypes.string.isRequired,
     status: PropTypes.string,
     streamAction: PropTypes.object,
-    selectedKey: PropTypes.string.isRequired,
-    pathname: PropTypes.string.isRequired,
-    sendResultStatus: PropTypes.func,
-    hasSubmissions: PropTypes.bool.isRequired,
-    hasLoaded: PropTypes.bool.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    innerWidth: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
+    hasLoaded: false,
+    hasSubmissions: false,
+    sendResultStatus: null,
     status: null,
     streamAction: null,
-    sendResultStatus: null,
-    hasSubmissions: false,
-    hasLoaded: false,
   }
 
   constructor(props) {

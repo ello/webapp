@@ -19,7 +19,7 @@ export const AppleStore = ({ to }) =>
   </a>)
 
 AppleStore.propTypes = {
-  to: PropTypes.string.isRequired,
+  to: PropTypes.string,
 }
 
 AppleStore.defaultProps = {
@@ -38,7 +38,7 @@ export const GooglePlayStore = ({ to }) =>
   </a>)
 
 GooglePlayStore.propTypes = {
-  to: PropTypes.string.isRequired,
+  to: PropTypes.string,
 }
 
 GooglePlayStore.defaultProps = {

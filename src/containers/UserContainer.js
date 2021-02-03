@@ -131,6 +131,7 @@ class UserContainer extends Component {
     name: PropTypes.string,
     postsCount: PropTypes.number.isRequired,
     relationshipPriority: PropTypes.string,
+    showBlockMuteButton: PropTypes.bool,
     totalViewsCount: PropTypes.string,
     truncatedShortBio: PropTypes.string.isRequired,
     type: PropTypes.oneOf([
@@ -163,7 +164,6 @@ class UserContainer extends Component {
     location: null,
     name: null,
     relationshipPriority: null,
-    showBlockMuteButton: false,
     totalViewsCount: null,
     useGif: false,
     useSmallRelationships: false,

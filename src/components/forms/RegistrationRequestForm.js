@@ -74,6 +74,8 @@ const accountLinkStyle = css(
 class RegistrationRequestForm extends Component {
   static propTypes = {
     availability: PropTypes.object,
+    confirmationCode: PropTypes.string, // NOTE: best effort guess
+    confirmationCodeRequestStatus: PropTypes.string, // NOTE: best effort guess
     dispatch: PropTypes.func.isRequired,
     email: PropTypes.string,
     inModal: PropTypes.bool,
@@ -88,12 +90,10 @@ class RegistrationRequestForm extends Component {
   }
 
   componentWillMount() {
-    const { email, confirmationCode, confirmationCodeRequestStatus } = this.props
+    const { email, confirmationCode } = this.props
     let emailFormStatus = STATUS.INDETERMINATE
-    let confirmationCodeFormStatus = STATUS.INDETERMINATE
     if (email && confirmationCode) {
       emailFormStatus = STATUS.SUBMITTED
-      confirmationCodeFormStatus = STATUS.SUCCESS
     }
 
     this.state = {
@@ -152,7 +152,11 @@ class RegistrationRequestForm extends Component {
 
     const { emailState, emailFormStatus } = this.state
     const currentStatus = emailState.status
-    const clientState = getEmailStateFromClient({ value: email, currentStatus, formStatus: emailFormStatus })
+    const clientState = getEmailStateFromClient({
+      value: email,
+      currentStatus,
+      formStatus: emailFormStatus,
+    })
     if (clientState.status === STATUS.SUCCESS) {
       if (currentStatus !== STATUS.REQUEST) {
         this.setState({ emailState: { status: STATUS.REQUEST, message: 'checking...' } })
@@ -164,9 +168,9 @@ class RegistrationRequestForm extends Component {
     }
   }
 
-  onChangeCodeControl = ({ confirmation_code }) => {
+  onChangeCodeControl = ({ confirmation_code: confirmationCode }) => {
     const { confirmationCodeFormStatus } = this.state
-    const codeValue = confirmation_code || ''
+    const codeValue = confirmationCode || ''
     if (codeValue.length === 6) {
       this.setState({ confirmationCodeFormStatus: STATUS.SUCCESS })
     } else if (confirmationCodeFormStatus === STATUS.SUCCESS) {
@@ -349,10 +353,11 @@ class RegistrationRequestForm extends Component {
   renderConfirmationCodeForm() {
     const { confirmationCodeFormStatus, emailValue } = this.state
     const { confirmationCode, confirmationCodeRequestStatus } = this.props
-    const message = (confirmationCodeRequestStatus === REQUEST_STATUS.FAILURE) && ERROR_MESSAGES.CONFIRMATION_CODE.INVALID
+    const message = (confirmationCodeRequestStatus === REQUEST_STATUS.FAILURE) &&
+      ERROR_MESSAGES.CONFIRMATION_CODE.INVALID
     const isValid = isFormValid([confirmationCodeFormStatus])
     const isRequesting = confirmationCodeFormStatus === STATUS.REQUEST
-    const onClickResendCode = this.onClickResendCode
+
     return (
       <div className={emailFormWrapperStyle}>
         <h1>
@@ -362,7 +367,8 @@ class RegistrationRequestForm extends Component {
           <button onClick={this.onClickBack}><BackIcon /> Back</button>
         </h2>
         <h2>
-          You will receive a confirmation code via email.  Please click the link, or enter the code below.
+          You will receive a confirmation code via email.
+          Please click the link, or enter the code below.
         </h2>
         {message && <p>{message}</p>}
         <form

@@ -6,3 +6,6 @@ export function getABState() {
     return {}
   }
 }
+
+// adding default export to please ESLint
+export default getABState;

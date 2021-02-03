@@ -139,7 +139,7 @@ class ImageRegion extends PureComponent {
     detailPath: PropTypes.string.isRequired,
     isComment: PropTypes.bool,
     isPostBody: PropTypes.bool,
-    isGridMode: PropTypes.bool.isRequired,
+    isGridMode: PropTypes.bool,
     isPostDetail: PropTypes.bool,
     isRelatedPost: PropTypes.bool,
     isNotification: PropTypes.bool,

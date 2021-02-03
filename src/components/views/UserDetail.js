@@ -89,6 +89,7 @@ export const UserDetail = (props) => {
     </MainView>
   )
 }
+
 UserDetail.propTypes = {
   hasSaidHelloTo: PropTypes.bool.isRequired,
   hasZeroFollowers: PropTypes.bool.isRequired,
@@ -98,13 +99,10 @@ UserDetail.propTypes = {
   isSelf: PropTypes.bool.isRequired,
   isSystemUser: PropTypes.bool.isRequired,
   onSubmitHello: PropTypes.func,
+  onTabClick: PropTypes.func,
   streamAction: PropTypes.object.isRequired,
   userId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-}
-UserDetail.defaultProps = {
-  onSubmitHello: null,
-  onTabClick: null,
 }
 
 export const UserDetailError = ({ children }) =>
@@ -113,6 +111,7 @@ export const UserDetailError = ({ children }) =>
       {children}
     </section>
   </MainView>)
+
 UserDetailError.propTypes = {
   children: PropTypes.node.isRequired,
 }

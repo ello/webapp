@@ -91,7 +91,6 @@ class PostLightBoxContainer extends Component {
     postReposted: false,
     postRepostsCount: null,
     postViewsCountRounded: null,
-    previousPath: null,
   }
 
   static childContextTypes = {

@@ -85,21 +85,19 @@ class NavbarContainer extends PureComponent {
   static propTypes = {
     activeTabType: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    innerWidth: PropTypes.number,
     isGridMode: PropTypes.bool.isRequired,
     isLightBoxActive: PropTypes.bool.isRequired,
-    isProfileMenuActive: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     isNotificationsActive: PropTypes.bool.isRequired,
-    pathname: PropTypes.string.isRequired,
+    isProfileMenuActive: PropTypes.bool.isRequired,
     params: PropTypes.object.isRequired,
+    pathname: PropTypes.string.isRequired,
     viewName: PropTypes.string.isRequired,
-    innerWidth: PropTypes.number,
   }
 
   static defaultProps = {
     activeTabType: '',
-    isProfileMenuActive: false,
-    isNotificationsActive: false,
     innerWidth: null,
   }
 
