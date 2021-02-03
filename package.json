@@ -70,8 +70,6 @@
     ],
     "rules": {
       "comment-empty-line-before": null,
-      "selector-class-pattern": null,
-      "selector-max-type": null,
       "plugin/no-unsupported-browser-features": [
         true,
         {
@@ -81,9 +79,14 @@
             "flexbox",
             "viewport-units",
             "will-change"
-          ]
+          ],
+          "severity": "warning"
         }
-      ]
+      ],
+      "selector-class-pattern": null,
+      "selector-max-id": [0, { "severity": "warning" }],
+      "selector-max-specificity": ["0,4,0", { "severity": "warning" }],
+      "selector-max-type": null
     }
   },
   "dependencies": {
