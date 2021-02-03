@@ -65,11 +65,14 @@
   },
   "stylelint": {
     "extends": "stylelint-config-primer",
+    "plugins": [
+      "stylelint-no-unsupported-browser-features"
+    ],
     "rules": {
       "comment-empty-line-before": null,
       "selector-class-pattern": null,
       "selector-max-type": null,
-      "no-unsupported-browser-features": [
+      "plugin/no-unsupported-browser-features": [
         true,
         {
           "browsers": "> 5%, last 2 firefox versions, last 2 chrome versions, last 2 safari versions, last 2 edge versions, ie 11, not OperaMini all",
@@ -168,6 +171,7 @@
     "style-loader": "0.18.2",
     "stylelint": "^13.9.0",
     "stylelint-config-primer": "^9.3.3",
+    "stylelint-no-unsupported-browser-features": "^4.1.4",
     "webpack": "4.35.3",
     "webpack-cli": "^3.3.6",
     "webpack-dev-middleware": "3.7.0",
