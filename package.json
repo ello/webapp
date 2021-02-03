@@ -49,7 +49,12 @@
       "AndroidInterface": false
     },
     "rules": {
-      "react/require-default-props": 0
+      "react/require-default-props": 0,
+      "jsx-a11y/label-has-for": [2, {
+        "required": {
+          "every": ["id"]
+        }
+      }]
     }
   },
   "stylelint": {
