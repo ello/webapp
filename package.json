@@ -68,7 +68,7 @@
     "rules": {
       "comment-empty-line-before": null,
       "selector-class-pattern": null,
-      "selector-no-type": null,
+      "selector-max-type": null,
       "no-unsupported-browser-features": [
         true,
         {
@@ -131,6 +131,7 @@
     "url-regex": "3.2.0"
   },
   "devDependencies": {
+    "@primer/css": "^15.2.0",
     "autoprefixer": "7.1.2",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
