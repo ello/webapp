@@ -47,6 +47,9 @@
     "extends": "ello",
     "globals": {
       "AndroidInterface": false
+    },
+    "rules": {
+      "react/require-default-props": 0
     }
   },
   "stylelint": {
