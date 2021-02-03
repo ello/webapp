@@ -151,6 +151,7 @@
     "http-proxy": "1.17.0",
     "jsdom": "11.11.0",
     "mocha": "4.0.1",
+    "prettier": "^2.2.1",
     "react-addons-perf": "15.4.2",
     "react-addons-test-utils": "15.6.2",
     "redbox-react": "1.6.0",
