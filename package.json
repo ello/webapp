@@ -135,7 +135,7 @@
     "css-loader": "^3.1.0",
     "dotenv": "4.0.0",
     "eslint": "4.18.2",
-    "eslint-config-ello": "1.0.5",
+    "eslint-config-ello": "ello/eslint-config-ello",
     "express": "4.16.3",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "html-loader": "0.5.5",
