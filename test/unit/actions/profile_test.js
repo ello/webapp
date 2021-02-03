@@ -53,6 +53,7 @@ describe('profile actions', () => {
 
     it('has the correct body in the action', () => {
       expect(action.payload.body).to.deep.equal({
+        code: 'confirmation-code',
         email: 'vader@ello.co',
         username: 'vader',
         password: '12345678',
