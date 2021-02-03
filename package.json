@@ -50,11 +50,16 @@
     },
     "rules": {
       "import/no-named-as-default": 0,
-      "jsx-a11y/label-has-for": [2, {
-        "required": {
-          "every": ["id"]
+      "jsx-a11y/label-has-for": [
+        2,
+        {
+          "required": {
+            "every": [
+              "id"
+            ]
+          }
         }
-      }],
+      ],
       "react/require-default-props": 0
     }
   },
@@ -160,8 +165,8 @@
     "sinon-chai": "2.12.0",
     "source-map-support": "0.4.15",
     "style-loader": "0.18.2",
-    "stylelint": "7.12.0",
-    "stylelint-config-primer": "1.4.0",
+    "stylelint": "^13.9.0",
+    "stylelint-config-primer": "^9.3.3",
     "webpack": "4.35.3",
     "webpack-cli": "^3.3.6",
     "webpack-dev-middleware": "3.7.0",
