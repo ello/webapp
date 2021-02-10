@@ -85,23 +85,15 @@ class CommentContainer extends Component {
     innerHeight: PropTypes.number.isRequired,
     isEditing: PropTypes.bool.isRequired,
     isGridMode: PropTypes.bool.isRequired,
+    isLightBox: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     isNavbarHidden: PropTypes.bool.isRequired,
     isOwnComment: PropTypes.bool.isRequired,
     isPostDetail: PropTypes.bool.isRequired,
-    isLightBox: PropTypes.bool,
-    resizeLightBox: PropTypes.bool,
-    toggleLightBox: PropTypes.func.isRequired,
     lightBoxSelectedIdPair: PropTypes.object,
     post: PropTypes.object.isRequired,
-  }
-
-  static defaultProps = {
-    commentBody: null,
-    isLightBox: false,
-    resizeLightBox: false,
-    toggleLightBox: null,
-    lightBoxSelectedIdPair: null,
+    resizeLightBox: PropTypes.bool,
+    toggleLightBox: PropTypes.func.isRequired,
   }
 
   static contextTypes = {

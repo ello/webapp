@@ -32,7 +32,7 @@ function updateFollowedCategoryIds(state, { payload: { body } }) {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case PROFILE.AVAILABILITY_SUCCESS:
+    case PROFILE.AVAILABILITY_SUCCESS: {
       const isValid = get(action, 'payload.response.availability.email') === true
       return state.merge({
         email: isValid ? get(action, 'payload.body.email') : null,
@@ -41,6 +41,7 @@ export default (state = initialState, action) => {
           ...action.payload.response.availability,
         },
       })
+    }
     case PROFILE.AVAILABILITY_RESET:
       return state.set('availability', null)
     case AUTHENTICATION.LOGOUT_SUCCESS:

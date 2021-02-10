@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { browserHistory } from 'react-router'
 import { isElloAndroid } from '../../lib/jello'
 import { trackEvent } from '../../actions/analytics'
 import {
@@ -129,9 +128,9 @@ export const NavbarLoggedOut = ({
 }, { onClickArtistInvites, onClickLogin, onClickSignup }) => {
   const isTruncatedHeader = deviceSize === 'mobile' || deviceSize === 'tablet'
   const elloBlogPath = '/elloblog'
-  const trackBlogLink = ((e) => {
+  const trackBlogLink = () => {
     dispatch(trackEvent('elloblog-nav-link-clicked'))
-  })
+  }
   return (
     <nav className={`Navbar ${navbarStyle}`} >
       <div className={`navbar-content ${wrapperStyle}`}>
@@ -270,9 +269,9 @@ export const NavbarLoggedIn = ({
 }, { onClickArtistInvites }) => {
   const isTruncatedHeader = deviceSize === 'mobile' || deviceSize === 'tablet'
   const elloBlogPath = '/elloblog'
-  const trackBlogLink = ((e) => {
+  const trackBlogLink = () => {
     dispatch(trackEvent('elloblog-nav-link-clicked'))
-  })
+  }
   return (
     <nav className={`Navbar ${navbarStyle}`}>
       <div className={`navbar-content ${wrapperStyle}`}>

@@ -11,22 +11,22 @@ export function batchUpdateRelationship(userIds, priority) {
 
 export function updateRelationship(userId, priority, existing, internal = false) {
   const action = internal ?
-  {
-    type: RELATIONSHIPS.UPDATE_INTERNAL,
-    meta: { mappingType: MAPPING_TYPES.RELATIONSHIPS },
-    payload: { userId, priority, existing },
-  } :
-  {
-    type: RELATIONSHIPS.UPDATE,
-    meta: { mappingType: MAPPING_TYPES.RELATIONSHIPS },
-    payload: {
-      endpoint: api.relationshipAdd(userId, priority),
-      existing,
-      method: 'POST',
-      priority,
-      userId,
-    },
-  }
+    {
+      type: RELATIONSHIPS.UPDATE_INTERNAL,
+      meta: { mappingType: MAPPING_TYPES.RELATIONSHIPS },
+      payload: { userId, priority, existing },
+    } :
+    {
+      type: RELATIONSHIPS.UPDATE,
+      meta: { mappingType: MAPPING_TYPES.RELATIONSHIPS },
+      payload: {
+        endpoint: api.relationshipAdd(userId, priority),
+        existing,
+        method: 'POST',
+        priority,
+        userId,
+      },
+    }
   return action
 }
 

@@ -51,6 +51,7 @@ class PostStreamContainer extends Component {
     ]).isRequired,
     onClickEditorial: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    isPostEmpty: PropTypes.bool,
     isPostLoved: PropTypes.bool.isRequired,
     post: PropTypes.object.isRequired,
     postAuthor: PropTypes.object.isRequired,

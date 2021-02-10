@@ -14,7 +14,7 @@ const groupStyle = css(
 // TODO: Move to icons...
 const badgeStyle = select('& .CheckShape', { stroke: '#fff' })
 
-export default() =>
+export default () =>
   (<section className={sectionStyle}>
     <h2 className={h2Style}>Ello icons</h2>
     <div className={groupStyle}>

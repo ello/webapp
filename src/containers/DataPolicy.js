@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { acceptDataPolicy } from '../actions/gui'
-import { css, select, media, descendent } from '../styles/jss'
+import { css, media, descendent } from '../styles/jss'
 
-export function mapStateToProps(_) {
-  return {
-  }
+export function mapStateToProps() {
+  return {}
 }
 
 const dataPolicyStyle = css(

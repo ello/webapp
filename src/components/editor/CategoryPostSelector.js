@@ -362,10 +362,7 @@ export default class CategoryPostSelector extends PureComponent {
           {!selectedCategory &&
             <span className="input-with-label">
               {!searchText &&
-                <label
-                  className="selector-label"
-                  htmlFor="categorySelector"
-                >
+                <label className="selector-label" htmlFor="categorySelector">
                   {open ? 'Type category name' : 'Choose Category'}
                 </label>
               }

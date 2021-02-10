@@ -99,7 +99,6 @@ class Uploader extends PureComponent {
     line1: null,
     line2: null,
     line3: null,
-    title: '',
   }
 
   componentWillMount() {

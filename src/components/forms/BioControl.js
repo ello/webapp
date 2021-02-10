@@ -5,9 +5,12 @@ import FormControl from './FormControl'
 
 class BioControl extends PureComponent {
   static propTypes = {
-    id: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    id: PropTypes.string,
     label: PropTypes.string,
+    name: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    placeholder: PropTypes.string,
     text: PropTypes.string,
   }
 
@@ -17,7 +20,6 @@ class BioControl extends PureComponent {
     label: 'Bio',
     name: 'user[unsanitized_short_bio]',
     placeholder: 'Bio',
-    text: null,
   }
 
   componentWillMount() {

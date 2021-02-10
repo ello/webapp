@@ -68,7 +68,7 @@ class InvitationFormContainer extends PureComponent {
     if (/\/onboarding\/invitations/.test(pathname) &&
         this.batchEmailValue.every(email => email.length > 0)) {
       dispatch(trackEvent('Onboarding.Invitations.Emails.Completed',
-                          { emails: this.batchEmailValue.length }))
+        { emails: this.batchEmailValue.length }))
     }
     // set form back to initial state
     setTimeout(() => {

@@ -16,6 +16,7 @@ import pkg from './package.json'
 require('dotenv').load()
 
 module.exports = {
+  mode: 'development',
   devtool: 'source-map',
   entry: {
     main: ['./src/main', 'webpack-hot-middleware/client'],
@@ -24,6 +25,9 @@ module.exports = {
     filename: '[name].entry.js',
     path: path.join(__dirname, 'public/static'),
     publicPath: '/static/',
+  },
+  optimization: {
+    minimize: false,
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

@@ -40,7 +40,6 @@ function mapStateToProps(state, props) {
     isInfoCollapsed,
     isSubscribed,
     isPromo,
-    subscribedIds,
     categoryId,
   }
 }
@@ -61,7 +60,6 @@ class HeroPageHeaderContainer extends Component {
   static defaultProps = {
     pageHeader: null,
     user: null,
-    subscribedIds: null,
     categoryId: null,
   }
 

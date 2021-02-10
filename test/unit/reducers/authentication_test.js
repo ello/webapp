@@ -34,9 +34,18 @@ describe('authentication reducer', () => {
         'expirationDate',
         'expiresIn',
         'isLoggedIn',
+        'confirmationCodeRequestStatus',
         'refreshToken',
         'tokenType',
         'publicToken',
+      )
+      expect(
+        reducer(undefined, {}).get('publicToken'),
+      ).to.have.keys(
+        'accessToken',
+        'expiresIn',
+        'createdAt',
+        'tokenType',
       )
     })
   })

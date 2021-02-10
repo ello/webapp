@@ -256,7 +256,7 @@ export const ArrowIcon = props =>
   </SVGIcon>)
 
 ArrowIcon.propTypes = {
-  isAnimated: PropTypes.boolean,
+  isAnimated: PropTypes.bool,
 }
 
 export const BoltIcon = () =>

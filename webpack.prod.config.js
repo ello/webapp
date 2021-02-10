@@ -22,6 +22,7 @@ const UploadHTMLPlugin = require('./src/server/upload_html_plugin')
 require('dotenv').load({ silent: true })
 
 module.exports = env => ({
+  mode: 'production',
   devtool: 'source-map',
   entry: {
     main: './src/main',
@@ -33,7 +34,7 @@ module.exports = env => ({
     publicPath: `${(process.env.CDN || '')}/`,
   },
   optimization: {
-    minimize: true
+    minimize: true,
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),

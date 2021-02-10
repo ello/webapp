@@ -18,7 +18,7 @@ UploadHTMLPlugin.prototype.apply = function apply(compiler) {
         }
         console.log(`\n\nUploading version ${body.version} to apex/serve at ${this.endpoint}\n\n`)
         const headers = new Headers()
-        headers.append('Authorization', `Basic ${new Buffer(`${this.username}:${this.password}`).toString('base64')}`)
+        headers.append('Authorization', `Basic ${Buffer.from(`${this.username}:${this.password}`).toString('base64')}`)
         headers.append('Content-Type', 'application/json')
         const options = {
           body: JSON.stringify(body),

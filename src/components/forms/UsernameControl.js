@@ -4,6 +4,11 @@ import FormControl from './FormControl'
 
 class UsernameControl extends PureComponent {
   static propTypes = {
+    className: PropTypes.string,
+    id: PropTypes.string,
+    label: PropTypes.string,
+    name: PropTypes.string,
+    placeholder: PropTypes.string,
     suggestions: PropTypes.object,
   }
 
@@ -13,7 +18,6 @@ class UsernameControl extends PureComponent {
     label: 'Username',
     name: 'user[username]',
     placeholder: 'Enter your username',
-    suggestions: null,
   }
 
   onClickUsernameSuggestion = (e) => {

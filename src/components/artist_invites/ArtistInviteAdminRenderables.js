@@ -114,19 +114,19 @@ const SelectionTabSwitcher = ({
 
   let explainerText = null
   switch (dataKey) {
-    case 'unapprovedSubmissions' :
+    case 'unapprovedSubmissions':
       explainerText = 'Submissions to be Accepted or Declined. Not publicly visible.'
       break
-    case 'approvedSubmissions' :
+    case 'approvedSubmissions':
       explainerText = 'Accepting a submission sends an email to the artist letting them know you have received their work. It also notifies the followers of the artist that their submission was accepted for further consideration. Accepting a submission makes it publicly visible on the Invite.'
       break
-    case 'selectedSubmissions' :
+    case 'selectedSubmissions':
       explainerText = 'Submissions may be “selected” at any point during the submission period. We recommend using this tab to save top submissions for final review when the Invite closes. You can remove submissions from the Selected tab by toggling the selected icon. All selected submissions will remain visible on the Accepted tab while selected. Not publicly visible.'
       break
-    case 'declinedSubmissions' :
+    case 'declinedSubmissions':
       explainerText = 'We encourage only declining work that is incomplete, inappropriate, or extremely off-brand. Not publicly visible.'
       break
-    default :
+    default:
       explainerText = null
   }
 

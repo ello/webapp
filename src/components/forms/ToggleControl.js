@@ -33,7 +33,7 @@ const controlStyle = css(
     parent('.OnboardingPreference',
       s.fontSize18,
       { left: 10, width: 'calc(100% - 20px)', maxWidth: 330, height: 70, lineHeight: 70 },
-  )),
+    )),
   media(s.minBreak3, parent('.OnboardingPreference', s.fullWidth, { left: 40 })),
   media(s.minBreak4, parent('.OnboardingPreference', { left: 90 })),
 )

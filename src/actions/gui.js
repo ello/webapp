@@ -114,6 +114,6 @@ export function acceptDataPolicy() {
   const now = moment().toDate()
   return {
     type: GUI.ACCEPT_DATA_POLICY,
-    payload: { now: now },
+    payload: { now },
   }
 }

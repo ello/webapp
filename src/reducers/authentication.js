@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import Immutable from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
-import { LOCATION_CHANGE } from 'react-router-redux'
 import {
   AUTHENTICATION,
   PROFILE,
@@ -72,10 +71,10 @@ export default (state = initialState, action) => {
     case REHYDRATE:
       auth = action.payload.authentication
       if (auth) {
-        return auth.set(
-          'confirmationCodeRequestStatus': REQUEST_STATUS.NOT_ASKED,
-          'expirationDate', new Date((auth.get('createdAt') + auth.get('expiresIn')) * 1000),
-        )
+        return auth.merge({
+          confirmationCodeRequestStatus: REQUEST_STATUS.NOT_ASKED,
+          expirationDate: new Date((auth.get('createdAt') + auth.get('expiresIn')) * 1000),
+        })
       }
       return state
     default:

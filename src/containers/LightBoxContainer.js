@@ -61,7 +61,6 @@ function LightBoxWrapper(WrappedComponent) {
         postIdToSetNext: null,
         queuePostIdsArray: null,
         oldestQueuePostId: null,
-        newestQueuePostId: null,
         innerWidth: this.props.innerWidth,
         innerHeight: this.props.innerHeight,
         resize: false,
@@ -244,15 +243,15 @@ function LightBoxWrapper(WrappedComponent) {
       let newPostIdToSet = null
 
       switch (direction) {
-        case 'prev' :
+        case 'prev':
           newAssetIdToSet = assetIdToSetPrev
           newPostIdToSet = postIdToSetPrev
           break
-        case 'next' :
+        case 'next':
           newAssetIdToSet = assetIdToSetNext
           newPostIdToSet = postIdToSetNext
           break
-        default :
+        default:
           newAssetIdToSet = assetIdToSet
           newPostIdToSet = postIdToSet
       }
@@ -457,7 +456,7 @@ function LightBoxWrapper(WrappedComponent) {
       const assetsOffset = 6
       const indexOfSelected = postAssetIdPairs.findIndex(
         postAssetIdPair =>
-        (postAssetIdPair[0] === postIdToSet && postAssetIdPair[1] === assetIdToSet))
+          (postAssetIdPair[0] === postIdToSet && postAssetIdPair[1] === assetIdToSet))
       const indexLower = indexOfSelected > (assetsOffset - 1) ? (indexOfSelected - assetsOffset) : 0
       const indexHigher = indexOfSelected + assetsOffset
 
@@ -471,7 +470,6 @@ function LightBoxWrapper(WrappedComponent) {
       this.setState({
         queuePostIdsArray: postIds,
         oldestQueuePostId: postIds[0],
-        newestQueuePostId: postIds.slice(-1)[0],
       })
 
       return postIds

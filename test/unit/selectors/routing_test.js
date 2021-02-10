@@ -166,7 +166,7 @@ describe('routing selectors', () => {
       state = { routing: state.routing.setIn(['location', 'pathname'], '/signup') }
       expect(selectViewNameFromRoute(state)).to.equal('authentication')
 
-      expect(selectViewNameFromRoute.recomputations()).to.equal(20)
+      expect(selectViewNameFromRoute.recomputations()).to.equal(21)
       selectViewNameFromRoute.resetRecomputations()
     })
   })

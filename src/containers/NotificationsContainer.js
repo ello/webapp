@@ -67,10 +67,10 @@ function mapStateToProps(state, props) {
 
 class NotificationsContainer extends Component {
   static propTypes = {
-    activeTabType: PropTypes.string.isRequired,
+    activeTabType: PropTypes.string,
     announcementBody: PropTypes.string,
-    announcementCTAHref: PropTypes.string,
     announcementCTACaption: PropTypes.string,
+    announcementCTAHref: PropTypes.string,
     announcementId: PropTypes.string,
     announcementImage: PropTypes.string,
     announcementIsEmpty: PropTypes.bool.isRequired,
@@ -98,7 +98,6 @@ class NotificationsContainer extends Component {
     pathname: null,
     streamAction: null,
     streamType: null,
-    type: 'all',
   }
 
   static childContextTypes = {

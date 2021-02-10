@@ -174,8 +174,8 @@ function* performUpload(action) {
     // profile after successful upload to s3
     const saveLocationToApi = function* saveLocationToApi() {
       const vo = (type === PROFILE.SAVE_AVATAR) ?
-            { remote_avatar_url: assetUrl } :
-            { remote_cover_image_url: assetUrl }
+        { remote_avatar_url: assetUrl } :
+        { remote_cover_image_url: assetUrl }
       const response = yield call(sagaFetch, endpoint.path, {
         method: 'PATCH',
         headers: getHeaders(accessToken),

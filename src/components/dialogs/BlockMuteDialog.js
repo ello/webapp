@@ -37,7 +37,7 @@ const BlockMuteDialog = ({
   onFlag,
   onMute,
   username,
-  }) => {
+}) => {
   const blockButtonClasses = classNames({ isActive: isBlockActive }, `${buttonStyle}`)
   const muteButtonClasses = classNames({ isActive: isMuteActive }, `${buttonStyle}`)
   const blockButtonText = isBlockActive ? 'Unblock' : 'Block'
