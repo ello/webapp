@@ -48,13 +48,8 @@ const FormButton = ({ children, className, ...rest }) =>
     {children}
   </button>)
 
-FormButton.defaultProps = {
-  children: null,
-  className: null,
-}
-
 FormButton.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.node,
   className: PropTypes.string,
 }
 
