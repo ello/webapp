@@ -173,7 +173,7 @@
     "source-map-support": "0.4.15",
     "style-loader": "0.18.2",
     "stylelint": "^13.9.0",
-    "stylelint-config-primer": "^9.3.3",
+    "stylelint-config-primer": "^11.0.1",
     "stylelint-no-unsupported-browser-features": "^4.1.4",
     "webpack": "4.35.3",
     "webpack-cli": "^3.3.6",
