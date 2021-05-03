@@ -2,7 +2,7 @@
 
 # Ello Web Application
 
-[![Build Status](https://travis-ci.org/ello/webapp.svg?branch=master)](https://travis-ci.org/ello/webapp)
+[![Build Status](https://travis-ci.com/ello/webapp.svg?branch=master)](https://travis-ci.com/ello/webapp)
 
 The web app for [ello.co](http://ello.co).
 
