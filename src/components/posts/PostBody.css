@@ -1,5 +1,6 @@
 @import "../../lib/styles/properties.css";
 
+/* stylelint-disable-next-line selector-max-specificity */
 .MainView:not(.PostDetail) .ContentWarningButton:not(.isOpen) + .PostBody {
   height: 0;
   overflow: hidden;
