@@ -1,17 +1,23 @@
 language: node_js
+
 services:
   - redis-server
+
 cache: yarn
+
 before_install:
-- cp .env.example .env
+  - cp .env.test .env
+
 script:
-- yarn test
-- rvm install 2.3.1
-- rvm use 2.3.1
-- gem install danger -v 6.3.1 --no-document
-- danger
-after_success:
-- test $TRAVIS_PULL_REQUEST = false && test $TRAVIS_BRANCH = "master" && yarn build
+  - yarn test
+  - rvm install 2.3.1
+  - rvm use 2.3.1
+  - gem install danger -v 6.3.1 --no-document
+  - danger
+
+  after_success:
+  - test $TRAVIS_PULL_REQUEST = false && test $TRAVIS_BRANCH = "master" && yarn build
+
 notifications:
   email: false
   slack:
