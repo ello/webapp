@@ -1,6 +1,6 @@
 .DS_Store
 .env
 node_modules
-public/static/emojis.json
 public/static/*.map
+public/static/emojis.json
 webpack-stats/*.json
