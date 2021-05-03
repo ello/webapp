@@ -8,7 +8,7 @@
   position: relative;
 }
 
-/* stylelint-disable no-unsupported-browser-features */
+/* stylelint-disable plugin/no-unsupported-browser-features */
 @media (--break-2) {
   .isCategoryDrawerOpen ~ .MainView.show-info {
     display: grid;
@@ -124,7 +124,7 @@
     grid-column: col-start / span 6;
   }
 }
-/* stylelint-enable no-unsupported-browser-features */
+/* stylelint-enable plugin/no-unsupported-browser-features */
 
 .isModalActive .MainView {
   pointer-events: none;

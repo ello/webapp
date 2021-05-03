@@ -154,6 +154,7 @@
   border-color: #fff;
 }
 
+/* stylelint-disable-next-line selector-max-specificity */
 .hasValue:not(.isInitialValue) > .FormControlInput.isBoxControl.onGrey {
   color: #000;
   background-color: #fff;

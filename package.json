@@ -76,7 +76,13 @@
           "browsers": "> 5%, last 2 firefox versions, last 2 chrome versions, last 2 safari versions, last 2 edge versions, ie 11, not OperaMini all",
           "ignore": [
             "calc",
+            "css-appearance",
+            "css-font-stretch",
+            "css-gradients",
+            "css-resize",
             "flexbox",
+            "outline",
+            "text-size-adjust",
             "viewport-units",
             "will-change"
           ],
@@ -84,8 +90,18 @@
         }
       ],
       "selector-class-pattern": null,
-      "selector-max-id": [0, { "severity": "warning" }],
-      "selector-max-specificity": ["0,4,0", { "severity": "warning" }],
+      "selector-max-id": [
+        0,
+        {
+          "severity": "warning"
+        }
+      ],
+      "selector-max-specificity": [
+        "0,4,0",
+        {
+          "severity": "warning"
+        }
+      ],
       "selector-max-type": null
     }
   },

@@ -107,7 +107,7 @@ body.isModalActive {
   display: none;
 }
 
-/* stylelint-disable selector-max-specificity, selector-no-id */
+/* stylelint-disable selector-max-specificity, selector-no-id, selector-max-id */
 #root {
   overflow-x: hidden;
 }
@@ -133,7 +133,7 @@ body.isModalActive {
 @media (--break-5) { #root::after { z-index: 5; } }
 @media (--break-6) { #root::after { z-index: 6; } }
 @media (--break-7) { #root::after { z-index: 7; } }
-/* stylelint-enable selector-max-specificity, selector-no-id */
+/* stylelint-enable selector-max-specificity, selector-no-id, selector-max-id */
 
 /* Typography
 ------------------------------------- */
