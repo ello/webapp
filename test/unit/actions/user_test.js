@@ -74,52 +74,20 @@ describe('user actions', () => {
     })
   })
 
-  context('#loadUserFollowing', () => {
-    const action = subject.loadUserFollowing('archer', 'friend')
+  context('#loadUserNetwork', () => {
+    const action = subject.loadUserNetwork('archer', 'FOLLOWING')
 
     it('is an FSA compliant action', () => {
       expect(isFSA(action)).to.be.true
     })
 
-    it('has a top level action.type', () => {
-      expect(isFSAName(action, subject.loadUserFollowing)).to.be.true
+    it('has the correct query in the action', () => {
+      expect(action.payload.query).to.contain('userNetworkStream')
     })
 
-    it('has the correct api endpoint in the action', () => {
-      expect(action.payload.endpoint.path).to.contain('/archer/following')
-    })
-
-    it('has the correct mapping type in the action', () => {
-      expect(action.meta.mappingType).to.equal('users')
-    })
-
-    it('has asList and asGrid properties on renderStreams in the action', () => {
-      expect(action.meta.renderStream.asList).to.equal(usersAsGrid)
-      expect(action.meta.renderStream.asGrid).to.equal(usersAsGrid)
-    })
-
-    it('has the correct resultKey in the action', () => {
-      expect(action.meta.resultKey).to.equal('/archer/following?per_page=10&priority=friend')
-    })
-  })
-
-  context('#loadUserUsers', () => {
-    const action = subject.loadUserUsers('archer', 'followers')
-
-    it('is an FSA compliant action', () => {
-      expect(isFSA(action)).to.be.true
-    })
-
-    it('has a top level action.type', () => {
-      expect(isFSAName(action, subject.loadUserUsers)).to.be.true
-    })
-
-    it('has the correct api endpoint in the action', () => {
-      expect(action.payload.endpoint.path).to.contain('/archer/followers')
-    })
-
-    it('has the correct mapping type in the action', () => {
-      expect(action.meta.mappingType).to.equal('users')
+    it('has the correct variables in the action', () => {
+      expect(action.payload.variables.username).to.eq('archer')
+      expect(action.payload.variables.kind).to.eq('FOLLOWING')
     })
 
     it('has asList and asGrid properties on renderStreams in the action', () => {

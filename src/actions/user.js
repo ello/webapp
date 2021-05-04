@@ -8,6 +8,7 @@ import { ErrorState } from '../components/errors/Errors'
 import userPostStreamQuery from '../queries/userPostStream'
 import userLoveStreamQuery from '../queries/userLoveStreamQuery'
 import userQuickSearchQuery from '../queries/userQuickSearchQuery'
+import { userNetworkStreamQuery } from '../queries/userNetworkStreamQuery'
 import { findUserQuery } from '../queries/findUser'
 
 export function flagUser(username, kind) {
@@ -99,25 +100,13 @@ export function loadUserLoves(username) {
   }
 }
 
-export function loadUserFollowing(username, priority) {
-  const endpoint = api.userFollowing(username, priority)
+export function loadUserNetwork(username, kind) {
   return {
-    type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint },
-    meta: {
-      mappingType: MAPPING_TYPES.USERS,
-      renderStream: {
-        asList: StreamRenderables.usersAsGrid,
-        asGrid: StreamRenderables.usersAsGrid,
-      },
-      resultKey: `/${username}/following?per_page=10&priority=${priority}`,
+    type: ACTION_TYPES.V3.LOAD_STREAM,
+    payload: {
+      query: userNetworkStreamQuery,
+      variables: { username, kind },
     },
-  }
-}
-export function loadUserUsers(username, type) {
-  return {
-    type: ACTION_TYPES.LOAD_STREAM,
-    payload: { endpoint: api.userResources(username, type) },
     meta: {
       mappingType: MAPPING_TYPES.USERS,
       renderStream: {
