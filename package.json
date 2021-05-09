@@ -115,7 +115,7 @@
     "immutable": "3.8.2",
     "isomorphic-fetch": "2.2.1",
     "jwt-decode": "2.2.0",
-    "lodash": "4.17.19",
+    "lodash": "4.17.21",
     "moment": "2.24.0",
     "mousetrap": "1.6.3",
     "postcss": "6.0.22",
