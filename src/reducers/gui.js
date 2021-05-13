@@ -146,6 +146,10 @@ export default (state = initialState, action = { type: '' }) => {
         .set('isCompletingOnboardToArtistInvite', false)
     case GUI.ACCEPT_DATA_POLICY:
       return state.set('acceptedDataPolicy', payload.now)
+    case GUI.CLOSED_PROMO_ALERT:
+      return state.set('closedPromoAlert', payload.now)
+    case GUI.RESET_PROMO_ALERT:
+      return state.set('closedPromoAlert', null)
     case V3.NOTIFICATIONS.NEW_CONTENT_SUCCESS:
       return state.set(
         'isNotificationsUnread',
