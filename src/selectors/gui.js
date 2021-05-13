@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { createSelector } from 'reselect'
 import { selectParamsUsername } from './params'
 import {
@@ -41,6 +42,7 @@ export const selectTextToolsStates = state => state.gui.get('textToolsStates')
 export const selectOnboardToArtistInvite = state => state.gui.get('onboardToArtistInvite')
 export const selectIsCompletingOnboardingWithArtistInvite = state => state.gui.get('isCompletingOnboardToArtistInvite')
 export const selectAcceptedDataPolicy = state => state.gui.get('acceptedDataPolicy')
+export const selectDidClosePromoAlert = state => state.gui.get('closedPromoAlert')
 
 // Memoized selectors
 export const selectActiveNotificationScrollPosition = createSelector(
@@ -172,4 +174,17 @@ export const selectBroadcast = createSelector(
 export const selectShouldShowDataPolicy = createSelector(
   [selectAcceptedDataPolicy],
   acceptedDataPolicy => !acceptedDataPolicy,
+)
+
+export const selectShouldShowPromoAlert = createSelector(
+  [selectDidClosePromoAlert],
+  (closedPromoAlert) => {
+    const showDate = moment('2021-05-13')
+    const hideDate = moment('2021-05-28')
+    if (moment().isBefore(showDate) || moment().isAfter(hideDate)) {
+      return false
+    }
+
+    return !closedPromoAlert
+  },
 )

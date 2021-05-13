@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { trackEvent } from '../actions/analytics'
 import { logout } from '../actions/authentication'
-import { setIsProfileMenuActive, toggleNotifications } from '../actions/gui'
+import { setIsProfileMenuActive, toggleNotifications, resetPromoAlert } from '../actions/gui'
 import { checkForNewNotifications, loadAnnouncements } from '../actions/notifications'
 import { openOmnibar } from '../actions/omnibar'
 import { updateRelationship } from '../actions/relationships'
@@ -189,6 +189,7 @@ class NavbarContainer extends PureComponent {
   onClickLogin = () => {
     const { dispatch } = this.props
     dispatch(trackEvent('clicked_nav_login'))
+    dispatch(resetPromoAlert())
   }
 
   onClickSignup = () => {

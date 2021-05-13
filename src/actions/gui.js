@@ -117,3 +117,17 @@ export function acceptDataPolicy() {
     payload: { now },
   }
 }
+
+export function closePromoAlert() {
+  const now = moment().toDate();
+  return {
+    type: GUI.CLOSED_PROMO_ALERT,
+    payload: { now },
+  };
+}
+
+export function resetPromoAlert() {
+  return {
+    type: GUI.RESET_PROMO_ALERT,
+  };
+}
