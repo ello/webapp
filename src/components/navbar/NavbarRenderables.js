@@ -170,12 +170,6 @@ export const NavbarLoggedOut = ({
                 to="/discover"
               />
               <NavbarLink
-                className="LabelOnly"
-                label="Giveaways"
-                pathname={pathname}
-                to="/elloartgiveaways"
-              />
-              <NavbarLink
                 className="IconOnly"
                 icon={<SearchIcon />}
                 label="Search"
@@ -430,4 +424,3 @@ NavbarLoggedIn.defaultProps = {
 NavbarLoggedIn.contextTypes = {
   onClickArtistInvites: PropTypes.func.isRequired,
 }
-
