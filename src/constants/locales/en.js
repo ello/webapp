@@ -44,6 +44,7 @@ export const FOOTER_LINKS = [
   { label: 'Terms', to: '/wtf/policies/terms/' },
   { label: 'Privacy', to: '/wtf/policies/privacy/' },
   { label: 'Careers', to: 'https://start.talenthouse.com' },
+  { label: 'Brands', to: 'https://tlnt.holdings/?utm_source=ELLO&utm_medium=bottom_menu&utm_campaign=tlnt_partners#contacts' },
 ]
 
 export const META = {
