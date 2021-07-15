@@ -39,7 +39,6 @@ export const FOOTER_LINKS = [
   { label: 'About', to: '/wtf/artists/' },
   { label: 'Help', to: '/wtf/support/' },
   { label: 'Blog', to: '/elloblog' },
-  { label: 'Store', to: 'https://store.ello.co' },
   { label: 'Apps', to: '/wtf/resources/apps/' },
   { label: 'Terms', to: '/wtf/policies/terms/' },
   { label: 'Privacy', to: '/wtf/policies/privacy/' },
