@@ -238,4 +238,3 @@ class FooterContainer extends Component {
 }
 
 export default connect(mapStateToProps)(FooterContainer)
-
